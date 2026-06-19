@@ -163,6 +163,28 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
 .story-pick-btn{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .65rem;font-size:.78rem;color:var(--text2);cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap}
 .story-pick-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
 .story-pick-btn.active{background:var(--purple3);border-color:var(--purple);color:var(--purple);font-weight:600}
+
+/* IQ TEST */
+.iq-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.iq-timer{font-size:1.3rem;font-weight:700;color:var(--purple);font-variant-numeric:tabular-nums}
+.iq-timer.warn{color:var(--red)}
+.iq-qnum{font-size:.85rem;color:var(--text3)}
+.iq-domain-tag{display:inline-block;font-size:.75rem;font-weight:600;padding:.2rem .6rem;border-radius:999px;background:var(--bg3);color:var(--text2);margin-bottom:.85rem}
+.iq-question{font-size:1.05rem;line-height:1.7;margin-bottom:1.1rem;white-space:pre-line}
+.iq-question .iq-mono{font-family:var(--font-mono,monospace);font-size:1.15rem;letter-spacing:.05em;color:var(--purple)}
+.iq-options{display:flex;flex-direction:column;gap:.5rem}
+.iq-opt{display:flex;align-items:center;gap:.65rem;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);padding:.65rem .9rem;cursor:pointer;transition:.12s;font-size:.95rem;text-align:left}
+.iq-opt:hover{border-color:var(--purple);background:var(--purple3)}
+.iq-opt.selected{border-color:var(--purple);background:var(--purple3);color:var(--purple);font-weight:600}
+.iq-opt-letter{width:22px;height:22px;border-radius:50%;background:var(--bg3);color:var(--text2);font-size:.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.iq-opt.selected .iq-opt-letter{background:var(--purple);color:#fff}
+
+.iq-result-score{font-size:3.4rem;font-weight:700;color:var(--purple)}
+.iq-result-msg{font-size:.92rem;color:var(--text2);margin-top:.5rem;padding:.65rem 1rem;border-radius:var(--radius);background:var(--bg3);display:inline-block}
+.iq-domain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-top:1.25rem}
+.iq-domain-card{background:var(--bg3);border-radius:var(--radius);padding:.7rem .9rem}
+.iq-domain-name{font-size:.78rem;color:var(--text3);margin-bottom:.2rem}
+.iq-domain-score{font-size:1.1rem;font-weight:700;color:var(--purple)}
 </style>
 </head>
 <body>
@@ -174,6 +196,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
   </button>
   <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
     <span class="nav-ico">📚</span> 영단어
+  </button>
+  <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
+    <span class="nav-ico">🧠</span> IQ 테스트
   </button>
 </nav>
 
@@ -194,7 +219,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
       <div class="stat-box"><div class="stat-val" id="t-wpm">0</div><div class="stat-lbl">타/분</div></div>
       <div class="stat-box"><div class="stat-val" id="t-acc">100%</div><div class="stat-lbl">정확도</div></div>
       <div class="stat-box"><div class="stat-val" id="t-line">0/0</div><div class="stat-lbl">문장</div></div>
-      <div class="stat-box"><div class="stat-val" id="t-err">0</div><div class="stat-lbl">오타</div></div>
+      <div class="stat-box"><div class="stat-val" id="t-keys">0</div><div class="stat-lbl">타수</div></div>
       <div style="margin-left:auto;display:flex;gap:.5rem;align-items:center">
         <button class="btn btn-outline" onclick="loadNewStory()">새 소설</button>
         <button class="btn" id="t-start-btn" onclick="startTyping()">시작</button>
@@ -261,6 +286,14 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
     <div class="card">
       <div class="section-head"><h2>단어 시험</h2></div>
       <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem">학습한 레벨의 단어 중 랜덤 10개를 출제합니다. 한글 뜻을 보고 영어 단어를 입력하세요.</p>
+      <div class="difficulty-row">
+        <div class="diff-btn" id="exam-diff-jh" onclick="setExamDiff('jh')">
+          <h3>🏫 중학교</h3><p>중학 단어 범위에서 출제</p>
+        </div>
+        <div class="diff-btn" id="exam-diff-hs" onclick="setExamDiff('hs')">
+          <h3>🏛️ 고등학교</h3><p>고등 단어 범위에서 출제</p>
+        </div>
+      </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="exam-level-info"></div>
       <button class="btn amber" onclick="startExam()">시험 시작</button>
     </div>
@@ -282,6 +315,52 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
       <div style="margin-top:1rem;text-align:center">
         <button class="btn amber" onclick="startExam()">다시 시험</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== IQ TEST SCREEN ==================== -->
+<div class="screen" id="screen-iq">
+  <div class="card" id="iq-intro-card">
+    <div class="section-head"><h2>IQ 테스트</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6">
+      수열 완성, 언어 유추, 도형 패턴, 논리 추론 등 4개 영역에서 총 30문항이 출제됩니다.<br>
+      제한 시간은 10분이며, 시간이 끝나면 자동으로 채점됩니다.
+    </p>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
+      <span class="tag" style="background:var(--purple3);color:var(--purple)">수열 추론</span>
+      <span class="tag" style="background:var(--teal3);color:var(--teal2)">언어 유추</span>
+      <span class="tag" style="background:var(--amber3);color:var(--amber2)">도형 패턴</span>
+      <span class="tag" style="background:var(--blue3);color:var(--blue)">논리 추론</span>
+    </div>
+    <button class="btn" onclick="startIQTest()">테스트 시작</button>
+  </div>
+
+  <div class="card" id="iq-test-card" style="display:none">
+    <div class="iq-top-row">
+      <div class="iq-timer" id="iq-timer">10:00</div>
+      <div class="iq-qnum" id="iq-qnum">1 / 20</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="iq-progress" style="width:0%"></div></div>
+    <div class="iq-domain-tag" id="iq-domain-tag">수열 추론</div>
+    <div class="iq-question" id="iq-question">—</div>
+    <div class="iq-options" id="iq-options"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:1rem">
+      <button class="btn btn-outline" onclick="iqPrev()" id="iq-prev-btn">← 이전</button>
+      <button class="btn" onclick="iqNext()" id="iq-next-btn">다음 →</button>
+    </div>
+  </div>
+
+  <div class="card" id="iq-result-card" style="display:none">
+    <div style="text-align:center">
+      <div class="iq-result-score" id="iq-result-score">100</div>
+      <div style="font-size:.95rem;color:var(--text2);margin-bottom:.25rem">예상 IQ 점수</div>
+      <div class="iq-result-msg" id="iq-result-msg"></div>
+    </div>
+    <div class="iq-domain-grid" id="iq-domain-grid"></div>
+    <div class="exam-list" id="iq-review-list" style="margin-top:1rem"></div>
+    <div style="margin-top:1.25rem;text-align:center">
+      <button class="btn" onclick="resetIQTest()">다시 풀기</button>
     </div>
   </div>
 </div>
@@ -344,6 +423,7 @@ const S = {
   isRunning:false,
   // vocab
   diff:'jh',
+  examDiff:null, // 시험 탭 전용 난이도 선택값
   level:0, // 0-indexed
   wordIdx:0,
   streak:[],
@@ -470,7 +550,7 @@ function startTyping(){
   const inp=document.getElementById('typing-input');
   inp.disabled=false;inp.value='';inp.focus();
   document.getElementById('t-start-btn').textContent='중단';
-  document.getElementById('t-err').textContent='0';
+  document.getElementById('t-keys').textContent='0';
   document.getElementById('t-acc').textContent='100%';
   document.getElementById('t-wpm').textContent='0';
   S.timerHandle=setInterval(updateStats,500);
@@ -540,7 +620,7 @@ function updateStats(){
   const acc=total>0?Math.round((S.totalChars/total)*100):100;
   document.getElementById('t-wpm').textContent=wpm;
   document.getElementById('t-acc').textContent=acc+'%';
-  document.getElementById('t-err').textContent=S.errors;
+  document.getElementById('t-keys').textContent=S.totalChars;
 }
 
 function finishTyping(){
@@ -556,6 +636,7 @@ function finishTyping(){
   const rows=document.getElementById('r-rows');
   rows.innerHTML=`
     <div class="result-row"><span>정확도</span><span>${acc}%</span></div>
+    <div class="result-row"><span>타수</span><span>${S.totalChars}자</span></div>
     <div class="result-row"><span>오타</span><span>${S.errors}자</span></div>
     <div class="result-row"><span>완성 문장</span><span>${S.curLine}줄</span></div>
   `;
@@ -581,6 +662,12 @@ function setDiff(d){
   document.getElementById('diff-tag').className='tag '+d;
   renderLevelTabs();
   document.getElementById('word-study-card').style.display='none';
+}
+
+function setExamDiff(d){
+  S.examDiff=d;
+  document.getElementById('exam-diff-jh').classList.toggle('active',d==='jh');
+  document.getElementById('exam-diff-hs').classList.toggle('active',d==='hs');
   renderExamInfo();
 }
 
@@ -589,7 +676,11 @@ function setVtab(t){
   document.getElementById('vtab-'+t).classList.add('active');
   document.getElementById('vtab-learn-content').style.display=t==='learn'?'block':'none';
   document.getElementById('vtab-exam-content').style.display=t==='exam'?'block':'none';
-  if(t==='exam')renderExamInfo();
+  if(t==='exam'){
+    // 학습 탭에서 고른 난이도를 시험 탭 기본값으로 동기화
+    if(!S.examDiff) setExamDiff(S.diff);
+    renderExamInfo();
+  }
 }
 
 function renderLevelTabs(){
@@ -617,15 +708,9 @@ function selectLevel(i){
   document.getElementById('w-feedback').className='feedback';
 }
 
-function renderCurrentWord(){
-  const words=WORDS[S.diff][S.level];
-  const w=words[S.wordIdx];
-  document.getElementById('w-en').textContent=w.w;
-  document.getElementById('w-phon').textContent=w.p;
-  document.getElementById('w-ko').textContent=w.k;
-  document.getElementById('w-prog').textContent=(S.wordIdx+1)+' / '+words.length;
-  // streak
+function refreshStreakBar(){
   const bar=document.getElementById('streak-bar');
+  const words=WORDS[S.diff][S.level];
   bar.innerHTML='';
   const total=words.length;
   for(let i=0;i<total;i++){
@@ -633,6 +718,16 @@ function renderCurrentWord(){
     d.className='streak-dot'+(S.streak[i]==='hit'?' hit':S.streak[i]==='miss'?' miss':'');
     bar.appendChild(d);
   }
+}
+
+function renderCurrentWord(){
+  const words=WORDS[S.diff][S.level];
+  const w=words[S.wordIdx];
+  document.getElementById('w-en').textContent=w.w;
+  document.getElementById('w-phon').textContent=w.p;
+  document.getElementById('w-ko').textContent=w.k;
+  document.getElementById('w-prog').textContent=(S.wordIdx+1)+' / '+words.length;
+  refreshStreakBar();
   const inp=document.getElementById('word-input');
   inp.value='';inp.className='word-input';inp.focus();
 }
@@ -645,7 +740,10 @@ function clearFeedback(){
 
 function wordKey(e){if(e.key==='Enter')checkWord();}
 
+let wordLocked=false; // 정답 처리 중 중복 제출 방지
+
 function checkWord(){
+  if(wordLocked)return; // 이미 처리 중이면 무시 (중복 advance 방지)
   const words=WORDS[S.diff][S.level];
   const w=words[S.wordIdx];
   const inp=document.getElementById('word-input');
@@ -653,10 +751,11 @@ function checkWord(){
   const fb=document.getElementById('w-feedback');
   if(!val)return;
   if(val===w.w.toLowerCase()){
+    wordLocked=true;
     inp.className='word-input correct';
     fb.textContent='✓ 정답!';fb.className='feedback ok';
     S.streak[S.wordIdx]='hit';
-    setTimeout(()=>advanceWord(),700);
+    setTimeout(()=>{advanceWord();wordLocked=false;},700);
   }else{
     inp.className='word-input wrong';
     fb.textContent='✗ 정답: '+w.w;fb.className='feedback ng';
@@ -665,58 +764,65 @@ function checkWord(){
 }
 
 function skipWord(){
+  if(wordLocked)return;
   S.streak[S.wordIdx]='miss';
   advanceWord();
 }
 
 function prevWord(){
+  if(wordLocked)return;
   if(S.wordIdx>0){S.wordIdx--;renderCurrentWord();}
 }
 
 function advanceWord(){
   const words=WORDS[S.diff][S.level];
-  if(S.wordIdx<words.length-1){
-    S.wordIdx++;
-    renderCurrentWord();
-    document.getElementById('w-feedback').textContent='';
-    document.getElementById('w-feedback').className='feedback';
-  }else{
+  // 마지막 단어(인덱스 words.length-1)를 막 풀었을 때만 완료 처리
+  if(S.wordIdx>=words.length-1){
+    // 마지막 단어의 streak 결과를 화면에 반영
+    refreshStreakBar();
     // level complete
     S.levelProgress[S.diff][S.level]=2;
     if(S.level<9)S.levelProgress[S.diff][S.level+1]=Math.max(1,S.levelProgress[S.diff][S.level+1]);
     renderLevelTabs();
     const fb=document.getElementById('w-feedback');
-    fb.textContent='🎉 레벨 완료!';fb.className='feedback ok';
+    fb.textContent='🎉 레벨 완료! 전체 '+words.length+'개 단어를 모두 맞췄습니다.';fb.className='feedback ok';
     document.getElementById('word-input').disabled=true;
     setTimeout(()=>{document.getElementById('word-input').disabled=false;},1000);
     renderExamInfo();
+  }else{
+    S.wordIdx++;
+    renderCurrentWord();
+    document.getElementById('w-feedback').textContent='';
+    document.getElementById('w-feedback').className='feedback';
   }
 }
 
 // ========== EXAM ==========
 function renderExamInfo(){
-  const prog=S.levelProgress[S.diff];
+  const d=S.examDiff||S.diff;
+  const prog=S.levelProgress[d];
   const done=prog.filter(p=>p===2).length;
   const info=document.getElementById('exam-level-info');
   if(!info)return;
   if(done===0){
-    info.innerHTML='<span style="color:var(--text3);font-size:.88rem">아직 학습한 레벨이 없습니다. 먼저 단어를 학습하세요.</span>';
+    info.innerHTML='<span style="color:var(--text3);font-size:.88rem">'+(d==='jh'?'중학':'고등')+' 단어를 아직 학습하지 않았습니다. 먼저 [단어 학습] 탭에서 학습하세요.</span>';
   }else{
-    info.innerHTML='<span style="font-size:.88rem;color:var(--teal)">완료 레벨: '+done+'개 (단어 '+(done*20)+'개)</span>';
+    info.innerHTML='<span style="font-size:.88rem;color:var(--teal)">'+(d==='jh'?'중학':'고등')+' 완료 레벨: '+done+'개 (단어 '+(done*20)+'개)</span>';
   }
 }
 
 function startExam(){
-  const prog=S.levelProgress[S.diff];
+  const d=S.examDiff||S.diff;
+  const prog=S.levelProgress[d];
   const doneLevels=prog.map((p,i)=>p===2?i:-1).filter(i=>i>=0);
-  if(doneLevels.length===0){alert('먼저 단어를 학습하세요.');return;}
+  if(doneLevels.length===0){alert((d==='jh'?'중학':'고등')+' 단어를 먼저 학습하세요.');return;}
 
-  // collect all words from done levels
+  // collect all words from done levels of the selected difficulty
   let pool=[];
-  doneLevels.forEach(li=>pool.push(...WORDS[S.diff][li]));
-  // shuffle and pick 10
+  doneLevels.forEach(li=>pool.push(...WORDS[d][li]));
+  // shuffle and pick up to 10 (중복 없이)
   for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-  S.examWords=pool.slice(0,10);
+  S.examWords=pool.slice(0,Math.min(10,pool.length));
   S.examIdx=0;S.examResults=[];
 
   document.getElementById('exam-q-card').style.display='block';
@@ -741,11 +847,15 @@ function clearExamFeedback(){
 
 function examKey(e){if(e.key==='Enter')checkExam();}
 
+let examLocked=false; // 중복 제출 방지
+
 function checkExam(){
+  if(examLocked)return;
   const w=S.examWords[S.examIdx];
   const val=document.getElementById('exam-input').value.trim().toLowerCase();
   const fb=document.getElementById('exam-feedback');
   if(!val)return;
+  examLocked=true;
   const correct=val===w.w.toLowerCase();
   S.examResults.push({w,ans:val,correct});
   if(correct){
@@ -757,6 +867,7 @@ function checkExam(){
   }
   setTimeout(()=>{
     S.examIdx++;
+    examLocked=false;
     if(S.examIdx>=S.examWords.length) showExamResult();
     else renderExamQ();
   },800);
@@ -786,6 +897,241 @@ function showExamResult(){
       ${!r.correct?`<span class="ei-ans">입력: ${r.ans}</span>`:''}
     </div>`).join('');
   document.getElementById('exam-result').classList.add('show');
+}
+
+// ========== IQ TEST ==========
+// 4개 영역 x 15문항 = 60문항 풀에서 매회 30문항을 랜덤 출제. ICAR(국제 인지능력 자원) 프레임워크의 4개 추론 영역을 참고해 직접 제작.
+const IQ_QUESTIONS = [
+  // ---- 수열 추론 (Numerical / Letter Series) — 15문항 ----
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n2, 4, 8, 16, ?', opts:['24','30','32','36'], answer:2},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n1, 1, 2, 3, 5, 8, ?', opts:['11','12','13','14'], answer:2},
+  {domain:'수열 추론', q:'다음 문자 수열에서 빈칸에 들어갈 문자는?\nA, C, E, G, ?', opts:['H','I','J','K'], answer:1},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n3, 6, 12, 24, ?', opts:['36','42','48','54'], answer:2},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n100, 95, 85, 70, ?', opts:['50','55','60','65'], answer:0},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n1, 4, 9, 16, 25, ?', opts:['30','32','36','40'], answer:2},
+  {domain:'수열 추론', q:'다음 문자 수열에서 빈칸에 들어갈 문자는?\nB, D, G, K, ?', opts:['N','O','P','Q'], answer:2},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n5, 10, 20, 40, ?', opts:['60','70','80','90'], answer:2},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n2, 3, 5, 7, 11, ?', opts:['12','13','14','15'], answer:1},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n1, 2, 6, 24, ?', opts:['96','100','120','144'], answer:2},
+  {domain:'수열 추론', q:'다음 문자 수열에서 빈칸에 들어갈 문자는?\nZ, X, V, T, ?', opts:['S','R','Q','P'], answer:1},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n4, 9, 16, 25, 36, ?', opts:['42','45','49','54'], answer:2},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n81, 27, 9, 3, ?', opts:['0','1','1.5','2'], answer:1},
+  {domain:'수열 추론', q:'다음 수열에서 빈칸에 들어갈 숫자는?\n2, 6, 12, 20, 30, ?', opts:['38','40','42','44'], answer:2},
+  {domain:'수열 추론', q:'다음 문자 수열에서 빈칸에 들어갈 문자는?\nC, F, J, O, ?', opts:['S','T','U','V'], answer:2},
+
+  // ---- 언어 유추 (Verbal Reasoning / Analogy) — 15문항 ----
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n손 : 장갑 = 발 : ?', opts:['신발','다리','걷기','양말'], answer:0},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n의사 : 병원 = 교사 : ?', opts:['학생','학교','수업','칠판'], answer:1},
+  {domain:'언어 유추', q:'다음 중 나머지 셋과 성격이 다른 단어는?', opts:['장미','튤립','소나무','국화'], answer:2},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n물 : 얼음 = 액체 : ?', opts:['기체','고체','수증기','온도'], answer:1},
+  {domain:'언어 유추', q:'다음 단어와 반대 의미를 가진 것은?\n"풍부하다"', opts:['넉넉하다','부족하다','많다','크다'], answer:1},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n작가 : 소설 = 작곡가 : ?', opts:['악보','음악','피아노','가수'], answer:1},
+  {domain:'언어 유추', q:'다음 중 나머지 셋과 성격이 다른 단어는?', opts:['바이올린','첼로','플루트','비올라'], answer:2},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n새 : 둥지 = 사람 : ?', opts:['집','가족','옷','음식'], answer:0},
+  {domain:'언어 유추', q:'다음 단어와 비슷한 의미를 가진 것은?\n"신속하다"', opts:['느리다','빠르다','조용하다','정확하다'], answer:1},
+  {domain:'언어 유추', q:'다음 중 나머지 셋과 성격이 다른 단어는?', opts:['축구','농구','배구','수영'], answer:3},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n알 : 닭 = 애벌레 : ?', opts:['나비','거미','개구리','매미'], answer:0},
+  {domain:'언어 유추', q:'다음 단어와 반대 의미를 가진 것은?\n"겸손하다"', opts:['친절하다','거만하다','정직하다','용감하다'], answer:1},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n열쇠 : 자물쇠 = 비밀번호 : ?', opts:['금고','종이','지갑','카드'], answer:0},
+  {domain:'언어 유추', q:'다음 중 나머지 셋과 성격이 다른 단어는?', opts:['소설','시','수필','그림'], answer:3},
+  {domain:'언어 유추', q:'다음 관계와 같은 짝을 고르세요.\n선생님 : 가르치다 = 의사 : ?', opts:['진찰하다','공부하다','요리하다','운전하다'], answer:0},
+
+  // ---- 도형 패턴 (Matrix / Pattern, 텍스트로 단순화) — 15문항 ----
+  {domain:'도형 패턴', q:'다음 도형 패턴에서 빈칸에 들어갈 것은?\n● ○ ● ○ ● ?', opts:['●','○','◐','◇'], answer:1},
+  {domain:'도형 패턴', q:'다음 도형 패턴에서 빈칸에 들어갈 것은?\n▲ ▲▲ ▲▲▲ ?', opts:['▲▲','▲▲▲▲','▲','▲▲▲▲▲'], answer:1},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n□ ■ □□ ■■ □□□ ?', opts:['■','■■','■■■','□□□'], answer:2},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n★ ☆ ☆ ★ ★ ★ ☆ ☆ ☆ ?', opts:['★','☆','★★','☆☆'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n1개 2개 4개 8개 ?', opts:['10개','12개','16개','20개'], answer:2},
+  {domain:'도형 패턴', q:'다음 도형 회전 패턴에서 빈칸에 들어갈 것은?\n→ ↓ ← ↑ ?', opts:['→','↓','←','↑'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n◇ ◇◇ ◇◇◇ ◇ ◇◇ ?', opts:['◇','◇◇','◇◇◇','◇◇◇◇'], answer:2},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n● ●● ●●● ●●●● ?', opts:['●●●','●●●●●','●●●●●●','●●'], answer:1},
+  {domain:'도형 패턴', q:'다음 회전 패턴에서 빈칸에 들어갈 것은?\n◐ ◑ ◒ ◓ ?', opts:['◐','◑','◒','◓'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n♤ ♡ ♤ ♡ ♤ ♡ ?', opts:['♤','♡','♧','♢'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n△▽ △▽△▽ △▽△▽△▽ ?', opts:['△▽','△▽△▽','△▽△▽△▽','△▽△▽△▽△▽'], answer:3},
+  {domain:'도형 패턴', q:'다음은 삼각수 패턴입니다. 빈칸에 들어갈 숫자는?\n1, 3, 6, 10, ?', opts:['13','14','15','16'], answer:2},
+  {domain:'도형 패턴', q:'다음 회전 패턴에서 빈칸에 들어갈 것은?\n↑ ↗ → ↘ ↓ ↙ ← ?', opts:['↖','↑','↗','→'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n■□ □■ ■□ □■ ?', opts:['■□','□■','■■','□□'], answer:0},
+  {domain:'도형 패턴', q:'다음 패턴에서 빈칸에 들어갈 것은?\n2개 6개 12개 20개 ?', opts:['26개','28개','30개','32개'], answer:2},
+
+  // ---- 논리 추론 (Logical Reasoning) — 15문항 ----
+  {domain:'논리 추론', q:'모든 새는 날개가 있다. 참새는 새다. 따라서?', opts:['참새는 날개가 있다','참새는 날 수 있다','모든 동물은 날개가 있다','참새는 새가 아니다'], answer:0},
+  {domain:'논리 추론', q:'A는 B보다 크다. B는 C보다 크다. 다음 중 항상 참인 것은?', opts:['A는 C보다 작다','A는 C보다 크다','A와 C는 같다','알 수 없다'], answer:1},
+  {domain:'논리 추론', q:'민수, 지우, 하늘 세 사람 중 한 명만 진실을 말한다.\n민수: "내가 범인이다." 지우: "민수는 거짓말을 한다." 하늘: "나는 범인이 아니다."\n모두의 말이 앞뒤가 맞으려면 범인은?', opts:['민수','지우','하늘','알 수 없다'], answer:2},
+  {domain:'논리 추론', q:'비가 오면 땅이 젖는다. 오늘 땅이 젖지 않았다. 따라서?', opts:['오늘 비가 왔다','오늘 비가 오지 않았다','내일 비가 올 것이다','알 수 없다'], answer:1},
+  {domain:'논리 추론', q:'5명이 일렬로 줄을 서 있다. 철수는 영희보다 앞에 있고, 영희는 민수보다 앞에 있다. 다음 중 항상 참인 것은?', opts:['철수는 민수보다 앞에 있다','민수는 철수보다 앞에 있다','영희가 가장 앞에 있다','철수가 가장 뒤에 있다'], answer:0},
+  {domain:'논리 추론', q:'모든 곤충은 다리가 6개다. 어떤 생물은 다리가 4개다. 따라서?', opts:['그 생물은 곤충이다','그 생물은 곤충이 아니다','그 생물은 동물이 아니다','알 수 없다'], answer:1},
+  {domain:'논리 추론', q:'세 사람 중 한 명만 진실을 말한다.\n민호: "수진이 범인이다." 수진: "재익이 범인이다." 재익: "나는 범인이 아니다."\n진실을 말하는 사람이 정확히 한 명일 때, 범인은?', opts:['민호','수진','재익','알 수 없다'], answer:2},
+  {domain:'논리 추론', q:'모든 학생은 시험을 본다. 철수는 시험을 보지 않았다. 따라서?', opts:['철수는 학생이다','철수는 학생이 아니다','철수는 선생님이다','알 수 없다'], answer:1},
+  {domain:'논리 추론', q:'5개의 상자가 일렬로 있다. 빨간 상자는 파란 상자 바로 왼쪽에 있고, 파란 상자는 노란 상자 바로 왼쪽에 있다. 다음 중 항상 참인 것은?', opts:['빨간 상자가 노란 상자보다 왼쪽에 있다','노란 상자가 빨간 상자보다 왼쪽에 있다','파란 상자가 가장 왼쪽에 있다','빨간 상자가 가장 오른쪽에 있다'], answer:0},
+  {domain:'논리 추론', q:'어떤 새는 날 수 없다. 펭귄은 새다. 따라서?', opts:['펭귄은 반드시 날 수 있다','펭귄은 반드시 날 수 없다','펭귄이 날지 못할 수도 있다','펭귄은 새가 아니다'], answer:2},
+  {domain:'논리 추론', q:'A, B, C, D 네 명이 달리기를 했다. A는 B보다 빠르고, C는 D보다 빠르며, B는 C보다 빠르다. 가장 느린 사람은?', opts:['A','B','C','D'], answer:3},
+  {domain:'논리 추론', q:'모든 사각형은 네 변을 가진다. 어떤 도형은 세 변을 가진다. 따라서?', opts:['그 도형은 사각형이다','그 도형은 사각형이 아니다','그 도형은 원이다','알 수 없다'], answer:1},
+  {domain:'논리 추론', q:'두 사람 중 한 명만 사실을 말한다.\n태우: "오늘은 월요일이다." 은지: "오늘은 월요일이 아니다."\n실제로 오늘이 월요일이라면 사실을 말한 사람은?', opts:['태우','은지','둘 다','아무도 아님'], answer:0},
+  {domain:'논리 추론', q:'영수는 진수보다 나이가 많고, 진수는 동수보다 나이가 많다. 동수는 민재보다 나이가 많다. 가장 어린 사람은?', opts:['영수','진수','동수','민재'], answer:3},
+  {domain:'논리 추론', q:'어떤 자동차도 날 수 없다. 이 물체는 날 수 있다. 따라서?', opts:['이 물체는 자동차다','이 물체는 자동차가 아니다','이 물체는 비행기다','알 수 없다'], answer:1},
+];
+
+const IQ_TOTAL = 30;
+const IQ_TIME_LIMIT = 10*60; // 10분 (초 단위)
+
+const IQS = {
+  questions:[], // 이번 회차에 출제될 30문항 (60문항 풀에서 셔플된 부분집합)
+  answers:[],   // 사용자가 고른 선택지 인덱스 (null = 미응답)
+  curIdx:0,
+  timeLeft:IQ_TIME_LIMIT,
+  timerHandle:null,
+  running:false
+};
+
+function shuffleArr(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function startIQTest(){
+  // 영역별로 섞은 뒤 앞에서부터 채워 30문항 구성, 마지막에 전체 순서도 섞음
+  const byDomain={};
+  IQ_QUESTIONS.forEach(q=>{(byDomain[q.domain]=byDomain[q.domain]||[]).push(q);});
+  let pool=[];
+  Object.values(byDomain).forEach(arr=>pool.push(...shuffleArr(arr)));
+  pool=shuffleArr(pool).slice(0,IQ_TOTAL);
+
+  IQS.questions=pool;
+  IQS.answers=Array(pool.length).fill(null);
+  IQS.curIdx=0;
+  IQS.timeLeft=IQ_TIME_LIMIT;
+  IQS.running=true;
+
+  document.getElementById('iq-intro-card').style.display='none';
+  document.getElementById('iq-result-card').style.display='none';
+  document.getElementById('iq-test-card').style.display='block';
+
+  renderIQQuestion();
+  clearInterval(IQS.timerHandle);
+  IQS.timerHandle=setInterval(iqTick,1000);
+  updateIQTimerDisplay();
+}
+
+function iqTick(){
+  if(!IQS.running)return;
+  IQS.timeLeft--;
+  updateIQTimerDisplay();
+  if(IQS.timeLeft<=0){
+    IQS.timeLeft=0;
+    updateIQTimerDisplay();
+    finishIQTest();
+  }
+}
+
+function updateIQTimerDisplay(){
+  const m=Math.floor(IQS.timeLeft/60);
+  const s=IQS.timeLeft%60;
+  const el=document.getElementById('iq-timer');
+  el.textContent=m+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', IQS.timeLeft<=60);
+}
+
+function renderIQQuestion(){
+  const q=IQS.questions[IQS.curIdx];
+  document.getElementById('iq-qnum').textContent=(IQS.curIdx+1)+' / '+IQS.questions.length;
+  document.getElementById('iq-progress').style.width=((IQS.curIdx)/IQS.questions.length*100)+'%';
+  document.getElementById('iq-domain-tag').textContent=q.domain;
+
+  // 수열/패턴 문제는 모노스페이스 폰트로 강조 표시
+  const qEl=document.getElementById('iq-question');
+  const lines=q.q.split('\n');
+  qEl.innerHTML=lines.map((line,i)=> i===lines.length-1 && /[0-9A-Za-z●○◐◇▲□■★☆→↓←↑]/.test(line) && lines.length>1
+    ? `<span class="iq-mono">${line}</span>` : line
+  ).join('<br>');
+
+  const optsEl=document.getElementById('iq-options');
+  const letters=['A','B','C','D'];
+  optsEl.innerHTML=q.opts.map((opt,i)=>`
+    <button class="iq-opt ${IQS.answers[IQS.curIdx]===i?'selected':''}" onclick="iqSelect(${i})">
+      <span class="iq-opt-letter">${letters[i]}</span><span>${opt}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('iq-prev-btn').disabled=IQS.curIdx===0;
+  document.getElementById('iq-next-btn').textContent=
+    IQS.curIdx===IQS.questions.length-1 ? '제출하기' : '다음 →';
+}
+
+function iqSelect(i){
+  IQS.answers[IQS.curIdx]=i;
+  renderIQQuestion();
+}
+
+function iqNext(){
+  if(IQS.curIdx<IQS.questions.length-1){
+    IQS.curIdx++;
+    renderIQQuestion();
+  }else{
+    finishIQTest();
+  }
+}
+
+function iqPrev(){
+  if(IQS.curIdx>0){
+    IQS.curIdx--;
+    renderIQQuestion();
+  }
+}
+
+function finishIQTest(){
+  IQS.running=false;
+  clearInterval(IQS.timerHandle);
+
+  const total=IQS.questions.length;
+  let correctCount=0;
+  const domainStats={};
+  IQS.questions.forEach(q=>{ domainStats[q.domain]=domainStats[q.domain]||{correct:0,total:0}; domainStats[q.domain].total++; });
+
+  IQS.questions.forEach((q,i)=>{
+    const isCorrect = IQS.answers[i]===q.answer;
+    if(isCorrect){correctCount++; domainStats[q.domain].correct++;}
+  });
+
+  // 평균 100, 표준편차 15에 가깝게 단순 환산 (정답률 50%→100, 정답률 100%→145, 정답률 0%→55 근방)
+  const rate=correctCount/total;
+  const iqScore=Math.round(70 + rate*70);
+
+  document.getElementById('iq-test-card').style.display='none';
+  document.getElementById('iq-result-card').style.display='block';
+  document.getElementById('iq-result-score').textContent=iqScore;
+
+  const msgEl=document.getElementById('iq-result-msg');
+  const timeUsed=IQ_TIME_LIMIT-IQS.timeLeft;
+  const timeStr=Math.floor(timeUsed/60)+'분 '+(timeUsed%60)+'초';
+  msgEl.textContent=`${total}문항 중 ${correctCount}개 정답 (${Math.round(rate*100)}%) · 소요 시간 ${timeStr}`;
+
+  const gridEl=document.getElementById('iq-domain-grid');
+  gridEl.innerHTML=Object.entries(domainStats).map(([name,st])=>`
+    <div class="iq-domain-card">
+      <div class="iq-domain-name">${name}</div>
+      <div class="iq-domain-score">${st.correct} / ${st.total}</div>
+    </div>
+  `).join('');
+
+  const reviewEl=document.getElementById('iq-review-list');
+  reviewEl.innerHTML=IQS.questions.map((q,i)=>{
+    const userAns=IQS.answers[i];
+    const isCorrect=userAns===q.answer;
+    const userText=userAns===null?'미응답':q.opts[userAns];
+    return `
+    <div class="exam-item ${isCorrect?'correct':'wrong'}">
+      <span class="ei-mark">${isCorrect?'✓':'✗'}</span>
+      <span class="ei-word" style="min-width:auto;flex-shrink:0">${i+1}.</span>
+      <span class="ei-ko">${q.domain}</span>
+      ${!isCorrect?`<span class="ei-ans">입력: ${userText} / 정답: ${q.opts[q.answer]}</span>`:''}
+    </div>`;
+  }).join('');
+}
+
+function resetIQTest(){
+  document.getElementById('iq-result-card').style.display='none';
+  document.getElementById('iq-intro-card').style.display='block';
 }
 
 // INIT
