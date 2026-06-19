@@ -38,6 +38,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .nav-btn{font-size:.78rem;padding:.35rem .6rem;gap:.3rem}
   .nav-ico{font-size:1rem}
   .nav-btn .nav-label{display:none}
+
+  .screen{padding:.85rem}
+  .card{padding:1rem .9rem}
+  .word-input-row{gap:.4rem}
+  .word-input-row .btn{padding:.5rem .75rem;font-size:.82rem}
 }
 @media (max-width:420px){
   .nav-logo{font-size:.85rem}
@@ -110,6 +115,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .word-progress{font-size:.8rem;color:var(--text3);margin-top:.75rem}
 
 .word-input-row{display:flex;gap:.5rem;margin-bottom:.5rem}
+.word-input-row .word-input{min-width:0}
+.word-input-row .btn{flex-shrink:0;white-space:nowrap}
 .word-input{flex:1;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);padding:.65rem 1rem;font-size:1rem;color:var(--text);font-family:inherit;outline:none;transition:.15s;letter-spacing:.05em}
 .word-input::placeholder{color:var(--text3)}
 .word-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,158,112,.1)}
@@ -253,13 +260,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .mg-switch input:checked + .mg-switch-slider::before{transform:translateX(17px)}
 
 .mg-problem-row{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 0}
-.mg-expr{font-size:clamp(2rem,6vw,3rem);font-weight:700;color:var(--text);letter-spacing:.02em;white-space:nowrap}
+.mg-expr{font-size:clamp(1.6rem,6vw,3rem);font-weight:700;color:var(--text);letter-spacing:.02em}
 .mg-answer-input{width:160px;font-size:clamp(1.6rem,5vw,2.2rem);font-weight:700;text-align:center;background:#fff;border:2px solid var(--border2);border-radius:var(--radius);padding:.4rem .5rem;color:var(--purple);font-family:inherit;outline:none;transition:.15s}
 .mg-answer-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(91,79,240,.12)}
 .mg-answer-input.correct{border-color:var(--teal);background:var(--teal3);color:var(--teal2)}
 .mg-answer-input.wrong{border-color:var(--red);background:var(--red3);color:var(--red2)}
 
-.mg-feedback{text-align:center;font-size:.9rem;min-height:22px;color:var(--text3)}
+.mg-feedback{text-align:center;font-size:.85rem;min-height:40px;line-height:1.4;color:var(--text3);display:flex;align-items:center;justify-content:center;padding:0 .5rem}
 </style>
 </head>
 <body>
@@ -977,7 +984,7 @@ function checkWord(){
     inp.className='word-input correct';
     fb.textContent='✓ 정답!';fb.className='feedback ok';
     S.streak[S.wordIdx]='hit';
-    setTimeout(()=>{advanceWord();wordLocked=false;},700);
+    setTimeout(()=>{advanceWord();},700);
   }else{
     inp.className='word-input wrong';
     fb.textContent='✗ 정답: '+w.w;fb.className='feedback ng';
@@ -1008,14 +1015,16 @@ function advanceWord(){
     renderLevelTabs();
     const fb=document.getElementById('w-feedback');
     fb.textContent='🎉 레벨 완료! 전체 '+words.length+'개 단어를 모두 맞췄습니다.';fb.className='feedback ok';
-    document.getElementById('word-input').disabled=true;
-    setTimeout(()=>{document.getElementById('word-input').disabled=false;},1000);
+    // disabled를 쓰면 모바일에서 가상 키보드가 사라졌다 다시 나타나며 깜빡이므로
+    // 실제로 입력란을 막지 않고 wordLocked 플래그로만 제출을 막는다 (이미 true인 상태 유지 후 1초 뒤 해제)
+    setTimeout(()=>{wordLocked=false;},1000);
     renderExamInfo();
   }else{
     S.wordIdx++;
     renderCurrentWord();
     document.getElementById('w-feedback').textContent='';
     document.getElementById('w-feedback').className='feedback';
+    wordLocked=false;
   }
 }
 
@@ -1899,7 +1908,6 @@ function mgNextProblem(){
   const inp=document.getElementById('mg-answer-input');
   inp.value='';
   inp.className='mg-answer-input';
-  inp.disabled=false;
   document.getElementById('mg-feedback').textContent='';
   inp.focus();
   MG.lockInput=false;
@@ -1954,7 +1962,8 @@ function mgSubmitAnswer(){
     fb.style.color='var(--red)';
   }
 
-  inp.disabled=true;
+  // disabled나 blur를 쓰면 모바일에서 가상 키보드가 깜빡이며 화면이 출렁이므로
+  // 입력란과 포커스를 전혀 건드리지 않고 lockInput 플래그로만 중복 제출을 방지한다
 
   if(autoNext){
     setTimeout(()=>{
