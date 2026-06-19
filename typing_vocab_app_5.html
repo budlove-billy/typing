@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>타자&단어 마스터</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2fa;--bg2:#ffffff;--bg3:#e8ebf5;--bg4:#d8dced;
+  --border:#cdd2e8;--border2:#b0b8d8;
+  --text:#1a1b2e;--text2:#525878;--text3:#8e93b0;
+  --purple:#5b4ff0;--purple2:#7b6ff8;--purple3:#eceafe;
+  --teal:#0e9e70;--teal2:#0a7d58;--teal3:#d0f5e8;
+  --amber:#c97a00;--amber2:#a86300;--amber3:#fff3cc;
+  --red:#d63040;--red2:#b02030;--red3:#fde8ea;
+  --green:#15a040;--green3:#d8f8e4;
+  --blue:#2255d0;--blue3:#dce8fc;
+  --radius:8px;--radius2:12px;--radius3:16px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3{font-weight:600}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(60,60,120,.07)}
+.nav-logo{font-size:1.1rem;font-weight:700;color:var(--purple);margin-right:auto;letter-spacing:-0.02em}
+.nav-logo span{color:var(--teal)}
+.nav-btn{background:none;border:none;color:var(--text2);font-size:.85rem;padding:.4rem .9rem;border-radius:var(--radius);cursor:pointer;transition:.15s;font-family:inherit;display:flex;align-items:center;gap:.4rem}
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+.nav-btn.active{background:var(--purple3);color:var(--purple);font-weight:600}
+.nav-ico{font-size:1.1rem}
+
+/* SCREENS */
+.screen{display:none;padding:1.5rem;max-width:860px;margin:0 auto;width:100%}
+.screen.active{display:block}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(60,60,120,.05)}
+
+/* TYPING GAME */
+.typing-top{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.stat-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem 1rem;min-width:90px;text-align:center}
+.stat-val{font-size:1.4rem;font-weight:700;color:var(--purple)}
+.stat-lbl{font-size:.72rem;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+
+.genre-row{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.genre-btn{background:#fff;border:1px solid var(--border);border-radius:999px;padding:.35rem .85rem;font-size:.82rem;color:var(--text2);cursor:pointer;transition:.15s;font-family:inherit}
+.genre-btn:hover{border-color:var(--purple);color:var(--purple)}
+.genre-btn.active{background:var(--purple3);border-color:var(--purple);color:var(--purple);font-weight:600}
+
+.story-display{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.75rem;font-size:1.05rem;line-height:1.9;min-height:64px;position:relative;color:var(--text)}
+.story-line{letter-spacing:.02em}
+.story-line .char-correct{color:var(--teal)}
+.story-line .char-wrong{color:var(--red);text-decoration:underline;text-decoration-color:var(--red)}
+.story-line .char-current{border-bottom:2px solid var(--purple);color:var(--text)}
+.story-line .char-pending{color:var(--text3)}
+
+.typing-input{width:100%;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);padding:.75rem 1rem;font-size:1rem;color:var(--text);font-family:inherit;outline:none;transition:.15s;caret-color:var(--purple)}
+.typing-input::placeholder{color:var(--text3)}
+.typing-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(91,79,240,.1)}
+.typing-input:disabled{opacity:.55;cursor:not-allowed;background:var(--bg3)}
+
+.btn{background:var(--purple);border:none;color:#fff;font-size:.88rem;padding:.5rem 1.1rem;border-radius:var(--radius);cursor:pointer;font-family:inherit;font-weight:600;transition:.15s}
+.btn:hover{background:var(--purple2)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-outline{background:#fff;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+.btn.teal{background:var(--teal2)}
+.btn.teal:hover{background:var(--teal)}
+.btn.amber{background:var(--amber)}
+.btn.amber:hover{background:var(--amber2);color:#fff}
+
+.progress-bar{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:.75rem}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:3px;transition:.1s}
+
+.result-overlay{display:none;position:fixed;inset:0;background:rgba(20,20,60,.35);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.result-overlay.show{display:flex}
+.result-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius3);padding:2rem;text-align:center;max-width:360px;width:90%;box-shadow:0 8px 32px rgba(60,60,120,.14)}
+.result-score{font-size:3rem;font-weight:700;color:var(--purple);margin:.5rem 0}
+.result-grade{font-size:1.1rem;color:var(--text2);margin-bottom:1.25rem}
+.result-row{display:flex;justify-content:space-between;padding:.4rem 0;font-size:.88rem;border-bottom:1px solid var(--border)}
+.result-row:last-child{border:none}
+
+/* VOCAB */
+.level-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.level-tab{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.35rem .7rem;font-size:.8rem;color:var(--text3);cursor:pointer;transition:.15s;font-family:inherit;min-width:44px;text-align:center}
+.level-tab:hover{border-color:var(--teal);color:var(--teal2)}
+.level-tab.active{background:var(--teal3);border-color:var(--teal);color:var(--teal2)}
+.level-tab.completed{background:var(--green3);border-color:var(--green);color:var(--green)}
+.level-tab.locked{opacity:.35;cursor:not-allowed}
+
+.word-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.word-en{font-size:2.2rem;font-weight:700;color:var(--teal2);letter-spacing:.02em;margin-bottom:.25rem}
+.word-phon{font-size:1rem;color:var(--text3);margin-bottom:.5rem;font-style:italic}
+.word-ko{font-size:1.1rem;color:var(--text2)}
+.word-progress{font-size:.8rem;color:var(--text3);margin-top:.75rem}
+
+.word-input-row{display:flex;gap:.5rem;margin-bottom:.5rem}
+.word-input{flex:1;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);padding:.65rem 1rem;font-size:1rem;color:var(--text);font-family:inherit;outline:none;transition:.15s;letter-spacing:.05em}
+.word-input::placeholder{color:var(--text3)}
+.word-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,158,112,.1)}
+.word-input.correct{border-color:var(--teal);background:var(--teal3);color:var(--teal2)}
+.word-input.wrong{border-color:var(--red);background:var(--red3);color:var(--red2)}
+
+.feedback{text-align:center;font-size:.9rem;min-height:24px;margin-bottom:.5rem}
+.feedback.ok{color:var(--teal2)}
+.feedback.ng{color:var(--red)}
+
+.streak-bar{display:flex;gap:3px;margin-bottom:.75rem}
+.streak-dot{flex:1;height:6px;border-radius:3px;background:var(--bg4)}
+.streak-dot.hit{background:var(--teal)}
+.streak-dot.miss{background:var(--red)}
+
+/* EXAM */
+.exam-q{font-size:1.3rem;color:var(--amber);font-weight:600;text-align:center;padding:1rem;margin-bottom:.75rem}
+.exam-num{font-size:.82rem;color:var(--text3);text-align:center;margin-bottom:.5rem}
+.exam-result{display:none}
+.exam-result.show{display:block}
+.exam-score-big{font-size:4rem;font-weight:700;text-align:center;color:var(--amber)}
+.exam-msg{text-align:center;font-size:1rem;padding:.75rem;border-radius:var(--radius);margin:1rem 0}
+.exam-msg.good{background:var(--teal3);color:var(--teal2);border:1px solid var(--teal)}
+.exam-msg.bad{background:var(--red3);color:var(--red2);border:1px solid var(--red)}
+.exam-list{display:flex;flex-direction:column;gap:.4rem}
+.exam-item{display:flex;gap:.75rem;align-items:center;padding:.5rem .75rem;border-radius:var(--radius);font-size:.88rem}
+.exam-item.correct{background:var(--teal3);color:var(--teal2)}
+.exam-item.wrong{background:var(--red3);color:var(--red2)}
+.exam-item .ei-mark{font-size:1rem}
+.ei-word{font-weight:600;min-width:90px}
+.ei-ko{color:var(--text2);flex:1}
+.ei-ans{font-style:italic;font-size:.82rem}
+
+/* AI STATUS */
+.ai-badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:.25rem .7rem}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--text3)}
+.ai-dot.loading{background:var(--amber);animation:pulse 1s infinite}
+.ai-dot.done{background:var(--teal)}
+.ai-dot.error{background:var(--red)}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* MODE SELECT */
+.difficulty-row{display:flex;gap:.75rem;margin-bottom:1rem}
+.diff-btn{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:1rem;text-align:center;cursor:pointer;transition:.15s;color:var(--text)}
+.diff-btn:hover{border-color:var(--amber);background:var(--amber3)}
+.diff-btn.active{background:var(--amber3);border-color:var(--amber);color:var(--amber2)}
+.diff-btn h3{font-size:.95rem;margin-bottom:.25rem}
+.diff-btn p{font-size:.78rem;color:var(--text3)}
+.diff-btn.active p{color:var(--amber)}
+
+/* TABS within vocab */
+.vtab-row{display:flex;gap:.4rem;margin-bottom:1rem}
+.vtab{background:none;border:1px solid transparent;color:var(--text3);font-size:.88rem;padding:.4rem .9rem;border-radius:var(--radius);cursor:pointer;font-family:inherit;transition:.15s}
+.vtab.active{background:var(--amber3);border-color:var(--amber);color:var(--amber2);font-weight:600}
+.vtab:hover:not(.active){color:var(--text2);background:var(--bg3)}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.section-head h2{font-size:1rem;font-weight:600}
+
+.tag{display:inline-block;padding:.2rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600}
+.tag.jh{background:var(--blue3);color:var(--blue)}
+.tag.hs{background:var(--purple3);color:var(--purple)}
+
+.story-pick-btn{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .65rem;font-size:.78rem;color:var(--text2);cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap}
+.story-pick-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+.story-pick-btn.active{background:var(--purple3);border-color:var(--purple);color:var(--purple);font-weight:600}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">타자<span>&</span>단어</div>
+  <button class="nav-btn active" onclick="showScreen('typing')" id="nav-typing">
+    <span class="nav-ico">⌨️</span> 한글 타자
+  </button>
+  <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
+    <span class="nav-ico">📚</span> 영단어
+  </button>
+</nav>
+
+<!-- ==================== TYPING SCREEN ==================== -->
+<div class="screen active" id="screen-typing">
+  <div class="card">
+    <div class="section-head">
+      <h2>소설 타자 연습</h2>
+      <span style="font-size:.8rem;color:var(--text3)" id="story-title">소설을 선택하고 시작하세요</span>
+    </div>
+    <div class="genre-row">
+      <button class="genre-btn active" onclick="setGenre('무협')" id="genre-무협">⚔️ 무협</button>
+      <button class="genre-btn" onclick="setGenre('SF')" id="genre-SF">🚀 SF</button>
+      <button class="genre-btn" onclick="setGenre('판타지')" id="genre-판타지">🐉 판타지</button>
+    </div>
+    <div id="story-list" style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.85rem"></div>
+    <div class="typing-top">
+      <div class="stat-box"><div class="stat-val" id="t-wpm">0</div><div class="stat-lbl">타/분</div></div>
+      <div class="stat-box"><div class="stat-val" id="t-acc">100%</div><div class="stat-lbl">정확도</div></div>
+      <div class="stat-box"><div class="stat-val" id="t-line">0/0</div><div class="stat-lbl">문장</div></div>
+      <div class="stat-box"><div class="stat-val" id="t-err">0</div><div class="stat-lbl">오타</div></div>
+      <div style="margin-left:auto;display:flex;gap:.5rem;align-items:center">
+        <button class="btn btn-outline" onclick="loadNewStory()">새 소설</button>
+        <button class="btn" id="t-start-btn" onclick="startTyping()">시작</button>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="t-progress" style="width:0%"></div></div>
+    <div class="story-display" id="story-display">
+      <span style="color:var(--text3);font-size:.9rem">장르와 소설을 선택한 뒤 [시작]을 누르세요.</span>
+    </div>
+    <input class="typing-input" id="typing-input" placeholder="여기에 타이핑하세요..." disabled
+      oninput="onTypingInput(event)" onkeydown="onTypingKey(event)">
+  </div>
+</div>
+
+<!-- ==================== VOCAB SCREEN ==================== -->
+<div class="screen" id="screen-vocab">
+  <div class="vtab-row">
+    <button class="vtab active" onclick="setVtab('learn')" id="vtab-learn">📖 단어 학습</button>
+    <button class="vtab" onclick="setVtab('exam')" id="vtab-exam">📝 시험 보기</button>
+  </div>
+
+  <!-- LEARN TAB -->
+  <div id="vtab-learn-content">
+    <div class="card">
+      <div class="difficulty-row">
+        <div class="diff-btn active" onclick="setDiff('jh')" id="diff-jh">
+          <h3>🏫 중학교</h3><p>기초 영단어 10레벨</p>
+        </div>
+        <div class="diff-btn" onclick="setDiff('hs')" id="diff-hs">
+          <h3>🏛️ 고등학교</h3><p>심화 영단어 10레벨</p>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+          <span style="font-size:.85rem;color:var(--text2)">레벨 선택</span>
+          <span class="tag" id="diff-tag">중학</span>
+        </div>
+        <div class="level-tabs" id="level-tabs"></div>
+      </div>
+    </div>
+
+    <div class="card" id="word-study-card" style="display:none">
+      <div class="streak-bar" id="streak-bar"></div>
+      <div class="word-card">
+        <div class="word-en" id="w-en">—</div>
+        <div class="word-phon" id="w-phon">/—/</div>
+        <div class="word-ko" id="w-ko">—</div>
+        <div class="word-progress" id="w-prog"></div>
+      </div>
+      <div class="feedback" id="w-feedback"></div>
+      <div class="word-input-row">
+        <input class="word-input" id="word-input" placeholder="영어 단어를 입력하세요" oninput="clearFeedback()" onkeydown="wordKey(event)">
+        <button class="btn teal" onclick="checkWord()">확인</button>
+      </div>
+      <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-outline" onclick="skipWord()">건너뛰기</button>
+        <button class="btn btn-outline" onclick="prevWord()">← 이전</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAM TAB -->
+  <div id="vtab-exam-content" style="display:none">
+    <div class="card">
+      <div class="section-head"><h2>단어 시험</h2></div>
+      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem">학습한 레벨의 단어 중 랜덤 10개를 출제합니다. 한글 뜻을 보고 영어 단어를 입력하세요.</p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="exam-level-info"></div>
+      <button class="btn amber" onclick="startExam()">시험 시작</button>
+    </div>
+
+    <div class="card" id="exam-q-card" style="display:none">
+      <div class="exam-num" id="exam-num">1 / 10</div>
+      <div class="exam-q" id="exam-q">—</div>
+      <div class="feedback" id="exam-feedback"></div>
+      <div class="word-input-row">
+        <input class="word-input" id="exam-input" placeholder="영어 단어 입력" onkeydown="examKey(event)" oninput="clearExamFeedback()">
+        <button class="btn amber" onclick="checkExam()">제출</button>
+      </div>
+    </div>
+
+    <div class="card exam-result" id="exam-result">
+      <div class="exam-score-big" id="exam-score-big">—</div>
+      <div class="exam-msg" id="exam-msg"></div>
+      <div class="exam-list" id="exam-list"></div>
+      <div style="margin-top:1rem;text-align:center">
+        <button class="btn amber" onclick="startExam()">다시 시험</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT OVERLAY (typing) -->
+<div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
+  <div class="result-card" onclick="event.stopPropagation()">
+    <h2 style="margin-bottom:.5rem">🎉 완료!</h2>
+    <div class="result-score" id="r-score">0</div>
+    <div class="result-grade" id="r-grade"></div>
+    <div id="r-rows"></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center">
+      <button class="btn btn-outline" onclick="closeResult()">닫기</button>
+      <button class="btn" onclick="nextSection()">다음 문장 →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== WORD DATA ==========
+const WORDS = {
+  jh: [ // 중학 10레벨 x 20단어
+    [{w:'apple',p:'/ˈæpəl/',k:'사과'},{w:'book',p:'/bʊk/',k:'책'},{w:'cat',p:'/kæt/',k:'고양이'},{w:'dog',p:'/dɔːɡ/',k:'개'},{w:'egg',p:'/eɡ/',k:'달걀'},{w:'fish',p:'/fɪʃ/',k:'물고기'},{w:'girl',p:'/ɡɜːrl/',k:'소녀'},{w:'house',p:'/haʊs/',k:'집'},{w:'ice',p:'/aɪs/',k:'얼음'},{w:'juice',p:'/dʒuːs/',k:'주스'},{w:'key',p:'/kiː/',k:'열쇠'},{w:'lamp',p:'/læmp/',k:'램프'},{w:'moon',p:'/muːn/',k:'달'},{w:'nose',p:'/noʊz/',k:'코'},{w:'open',p:'/ˈoʊpən/',k:'열다'},{w:'pen',p:'/pen/',k:'펜'},{w:'queen',p:'/kwiːn/',k:'여왕'},{w:'rain',p:'/reɪn/',k:'비'},{w:'sun',p:'/sʌn/',k:'태양'},{w:'tree',p:'/triː/',k:'나무'}],
+    [{w:'angry',p:'/ˈæŋɡri/',k:'화난'},{w:'brave',p:'/breɪv/',k:'용감한'},{w:'clean',p:'/kliːn/',k:'깨끗한'},{w:'dark',p:'/dɑːrk/',k:'어두운'},{w:'easy',p:'/ˈiːzi/',k:'쉬운'},{w:'fast',p:'/fæst/',k:'빠른'},{w:'glad',p:'/ɡlæd/',k:'기쁜'},{w:'hard',p:'/hɑːrd/',k:'힘든/딱딱한'},{w:'kind',p:'/kaɪnd/',k:'친절한'},{w:'long',p:'/lɔːŋ/',k:'긴'},{w:'many',p:'/ˈmeni/',k:'많은'},{w:'nice',p:'/naɪs/',k:'좋은'},{w:'old',p:'/oʊld/',k:'오래된'},{w:'poor',p:'/pɔːr/',k:'가난한'},{w:'quiet',p:'/ˈkwaɪət/',k:'조용한'},{w:'rich',p:'/rɪtʃ/',k:'부유한'},{w:'safe',p:'/seɪf/',k:'안전한'},{w:'tall',p:'/tɔːl/',k:'키 큰'},{w:'ugly',p:'/ˈʌɡli/',k:'못생긴'},{w:'warm',p:'/wɔːrm/',k:'따뜻한'}],
+    [{w:'build',p:'/bɪld/',k:'짓다'},{w:'carry',p:'/ˈkæri/',k:'나르다'},{w:'dance',p:'/dæns/',k:'춤추다'},{w:'enjoy',p:'/ɪnˈdʒɔɪ/',k:'즐기다'},{w:'fight',p:'/faɪt/',k:'싸우다'},{w:'grow',p:'/ɡroʊ/',k:'자라다'},{w:'help',p:'/help/',k:'돕다'},{w:'jump',p:'/dʒʌmp/',k:'점프하다'},{w:'keep',p:'/kiːp/',k:'유지하다'},{w:'learn',p:'/lɜːrn/',k:'배우다'},{w:'move',p:'/muːv/',k:'움직이다'},{w:'need',p:'/niːd/',k:'필요하다'},{w:'offer',p:'/ˈɔːfər/',k:'제공하다'},{w:'play',p:'/pleɪ/',k:'놀다'},{w:'read',p:'/riːd/',k:'읽다'},{w:'send',p:'/send/',k:'보내다'},{w:'tell',p:'/tel/',k:'말하다'},{w:'use',p:'/juːz/',k:'사용하다'},{w:'visit',p:'/ˈvɪzɪt/',k:'방문하다'},{w:'walk',p:'/wɔːk/',k:'걷다'}],
+    [{w:'beach',p:'/biːtʃ/',k:'해변'},{w:'city',p:'/ˈsɪti/',k:'도시'},{w:'dream',p:'/driːm/',k:'꿈'},{w:'earth',p:'/ɜːrθ/',k:'지구'},{w:'farm',p:'/fɑːrm/',k:'농장'},{w:'gate',p:'/ɡeɪt/',k:'문'},{w:'heart',p:'/hɑːrt/',k:'심장/마음'},{w:'idea',p:'/aɪˈdɪə/',k:'아이디어'},{w:'job',p:'/dʒɑːb/',k:'직업'},{w:'king',p:'/kɪŋ/',k:'왕'},{w:'life',p:'/laɪf/',k:'생명/삶'},{w:'mind',p:'/maɪnd/',k:'마음'},{w:'name',p:'/neɪm/',k:'이름'},{w:'order',p:'/ˈɔːrdər/',k:'주문/질서'},{w:'peace',p:'/piːs/',k:'평화'},{w:'road',p:'/roʊd/',k:'길'},{w:'sky',p:'/skaɪ/',k:'하늘'},{w:'town',p:'/taʊn/',k:'마을'},{w:'voice',p:'/vɔɪs/',k:'목소리'},{w:'water',p:'/ˈwɔːtər/',k:'물'}],
+    [{w:'animal',p:'/ˈænɪməl/',k:'동물'},{w:'body',p:'/ˈbɑːdi/',k:'몸'},{w:'church',p:'/tʃɜːrtʃ/',k:'교회'},{w:'danger',p:'/ˈdeɪndʒər/',k:'위험'},{w:'energy',p:'/ˈenərdʒi/',k:'에너지'},{w:'flower',p:'/ˈflaʊər/',k:'꽃'},{w:'garden',p:'/ˈɡɑːrdən/',k:'정원'},{w:'hungry',p:'/ˈhʌŋɡri/',k:'배고픈'},{w:'island',p:'/ˈaɪlənd/',k:'섬'},{w:'jacket',p:'/ˈdʒækɪt/',k:'재킷'},{w:'kitchen',p:'/ˈkɪtʃɪn/',k:'주방'},{w:'letter',p:'/ˈletər/',k:'편지'},{w:'market',p:'/ˈmɑːrkɪt/',k:'시장'},{w:'nature',p:'/ˈneɪtʃər/',k:'자연'},{w:'orange',p:'/ˈɔːrɪndʒ/',k:'오렌지'},{w:'people',p:'/ˈpiːpəl/',k:'사람들'},{w:'purple',p:'/ˈpɜːrpəl/',k:'보라색'},{w:'rabbit',p:'/ˈræbɪt/',k:'토끼'},{w:'school',p:'/skuːl/',k:'학교'},{w:'winter',p:'/ˈwɪntər/',k:'겨울'}],
+    [{w:'accident',p:'/ˈæksɪdənt/',k:'사고'},{w:'birthday',p:'/ˈbɜːrθdeɪ/',k:'생일'},{w:'careful',p:'/ˈkerfəl/',k:'조심스러운'},{w:'delicious',p:'/dɪˈlɪʃəs/',k:'맛있는'},{w:'evening',p:'/ˈiːvnɪŋ/',k:'저녁'},{w:'freedom',p:'/ˈfriːdəm/',k:'자유'},{w:'healthy',p:'/ˈhelθi/',k:'건강한'},{w:'imagine',p:'/ɪˈmædʒɪn/',k:'상상하다'},{w:'journey',p:'/ˈdʒɜːrni/',k:'여행'},{w:'kingdom',p:'/ˈkɪŋdəm/',k:'왕국'},{w:'library',p:'/ˈlaɪbreri/',k:'도서관'},{w:'message',p:'/ˈmesɪdʒ/',k:'메시지'},{w:'nervous',p:'/ˈnɜːrvəs/',k:'긴장된'},{w:'outside',p:'/ˌaʊtˈsaɪd/',k:'바깥'},{w:'perfect',p:'/ˈpɜːrfɪkt/',k:'완벽한'},{w:'problem',p:'/ˈprɑːbləm/',k:'문제'},{w:'quickly',p:'/ˈkwɪkli/',k:'빠르게'},{w:'sister',p:'/ˈsɪstər/',k:'여동생/언니'},{w:'travel',p:'/ˈtrævəl/',k:'여행하다'},{w:'village',p:'/ˈvɪlɪdʒ/',k:'마을'}],
+    [{w:'adventure',p:'/ədˈventʃər/',k:'모험'},{w:'beautiful',p:'/ˈbjuːtɪfəl/',k:'아름다운'},{w:'celebrate',p:'/ˈselɪbreɪt/',k:'축하하다'},{w:'different',p:'/ˈdɪfrənt/',k:'다른'},{w:'exciting',p:'/ɪkˈsaɪtɪŋ/',k:'신나는'},{w:'favorite',p:'/ˈfeɪvərɪt/',k:'가장 좋아하는'},{w:'grateful',p:'/ˈɡreɪtfəl/',k:'감사하는'},{w:'hospital',p:'/ˈhɑːspɪtəl/',k:'병원'},{w:'important',p:'/ɪmˈpɔːrtənt/',k:'중요한'},{w:'jealous',p:'/ˈdʒeləs/',k:'질투하는'},{w:'knowledge',p:'/ˈnɑːlɪdʒ/',k:'지식'},{w:'language',p:'/ˈlæŋɡwɪdʒ/',k:'언어'},{w:'mountain',p:'/ˈmaʊntən/',k:'산'},{w:'national',p:'/ˈnæʃənəl/',k:'국가의'},{w:'possible',p:'/ˈpɑːsɪbəl/',k:'가능한'},{w:'practice',p:'/ˈpræktɪs/',k:'연습하다'},{w:'question',p:'/ˈkwestʃən/',k:'질문'},{w:'remember',p:'/rɪˈmembər/',k:'기억하다'},{w:'terrible',p:'/ˈterɪbəl/',k:'끔찍한'},{w:'universe',p:'/ˈjuːnɪvɜːrs/',k:'우주'}],
+    [{w:'although',p:'/ɔːlˈðoʊ/',k:'비록 ~지만'},{w:'because',p:'/bɪˈkɔːz/',k:'왜냐하면'},{w:'consider',p:'/kənˈsɪdər/',k:'고려하다'},{w:'describe',p:'/dɪˈskraɪb/',k:'묘사하다'},{w:'either',p:'/ˈiːðər/',k:'둘 중 하나'},{w:'finally',p:'/ˈfaɪnəli/',k:'마침내'},{w:'general',p:'/ˈdʒenərəl/',k:'일반적인'},{w:'however',p:'/haʊˈevər/',k:'그러나'},{w:'instead',p:'/ɪnˈsted/',k:'대신에'},{w:'justice',p:'/ˈdʒʌstɪs/',k:'정의'},{w:'million',p:'/ˈmɪljən/',k:'백만'},{w:'nothing',p:'/ˈnʌθɪŋ/',k:'아무것도 없음'},{w:'opinion',p:'/əˈpɪnjən/',k:'의견'},{w:'perhaps',p:'/pərˈhæps/',k:'아마도'},{w:'produce',p:'/prəˈduːs/',k:'생산하다'},{w:'receive',p:'/rɪˈsiːv/',k:'받다'},{w:'serious',p:'/ˈsɪəriəs/',k:'심각한'},{w:'society',p:'/səˈsaɪəti/',k:'사회'},{w:'suggest',p:'/səˈdʒest/',k:'제안하다'},{w:'through',p:'/θruː/',k:'~을 통하여'}],
+    [{w:'accomplish',p:'/əˈkɑːmplɪʃ/',k:'성취하다'},{w:'attention',p:'/əˈtenʃən/',k:'주의/집중'},{w:'challenge',p:'/ˈtʃælɪndʒ/',k:'도전'},{w:'community',p:'/kəˈmjuːnɪti/',k:'지역사회'},{w:'confident',p:'/ˈkɑːnfɪdənt/',k:'자신감 있는'},{w:'direction',p:'/dɪˈrekʃən/',k:'방향'},{w:'education',p:'/ˌedʒuˈkeɪʃən/',k:'교육'},{w:'excellent',p:'/ˈeksələnt/',k:'훌륭한'},{w:'following',p:'/ˈfɑːloʊɪŋ/',k:'다음의'},{w:'happiness',p:'/ˈhæpinəs/',k:'행복'},{w:'introduce',p:'/ˌɪntrəˈduːs/',k:'소개하다'},{w:'necessary',p:'/ˈnesəseri/',k:'필요한'},{w:'neighbor',p:'/ˈneɪbər/',k:'이웃'},{w:'president',p:'/ˈprezɪdənt/',k:'대통령'},{w:'progress',p:'/ˈprɑːɡres/',k:'진보'},{w:'province',p:'/ˈprɑːvɪns/',k:'지방'},{w:'satisfied',p:'/ˈsætɪsfaɪd/',k:'만족한'},{w:'strength',p:'/streŋkθ/',k:'힘/강점'},{w:'tradition',p:'/trəˈdɪʃən/',k:'전통'},{w:'wonderful',p:'/ˈwʌndərfəl/',k:'멋진'}],
+    [{w:'achievement',p:'/əˈtʃiːvmənt/',k:'성취'},{w:'appreciate',p:'/əˈpriːʃieɪt/',k:'감사하다'},{w:'communicate',p:'/kəˈmjuːnɪkeɪt/',k:'소통하다'},{w:'concentrate',p:'/ˈkɑːnsəntreɪt/',k:'집중하다'},{w:'cooperation',p:'/koʊˌɑːpəˈreɪʃən/',k:'협력'},{w:'disappoint',p:'/ˌdɪsəˈpɔɪnt/',k:'실망시키다'},{w:'embarrass',p:'/ɪmˈbærəs/',k:'당황하게 하다'},{w:'encourage',p:'/ɪnˈkɜːrɪdʒ/',k:'격려하다'},{w:'environment',p:'/ɪnˈvaɪrənmənt/',k:'환경'},{w:'experience',p:'/ɪkˈspɪəriəns/',k:'경험'},{w:'friendship',p:'/ˈfrendʃɪp/',k:'우정'},{w:'generation',p:'/ˌdʒenəˈreɪʃən/',k:'세대'},{w:'government',p:'/ˈɡʌvərnmənt/',k:'정부'},{w:'independent',p:'/ˌɪndɪˈpendənt/',k:'독립적인'},{w:'opportunity',p:'/ˌɑːpərˈtuːnɪti/',k:'기회'},{w:'outstanding',p:'/ˌaʊtˈstændɪŋ/',k:'뛰어난'},{w:'personality',p:'/ˌpɜːrsəˈnæləti/',k:'성격'},{w:'responsibility',p:'/rɪˌspɑːnsəˈbɪləti/',k:'책임'},{w:'scholarship',p:'/ˈskɑːlərʃɪp/',k:'장학금'},{w:'throughout',p:'/θruːˈaʊt/',k:'~전체에 걸쳐'}]
+  ],
+  hs: [ // 고등 10레벨 x 20단어
+    [{w:'abolish',p:'/əˈbɑːlɪʃ/',k:'폐지하다'},{w:'benign',p:'/bɪˈnaɪn/',k:'양성의/온화한'},{w:'cogent',p:'/ˈkoʊdʒənt/',k:'설득력 있는'},{w:'daunting',p:'/ˈdɔːntɪŋ/',k:'벅찬/겁나는'},{w:'eloquent',p:'/ˈeləkwənt/',k:'웅변적인'},{w:'fallacy',p:'/ˈfæləsi/',k:'오류'},{w:'genuine',p:'/ˈdʒenjuɪn/',k:'진짜의'},{w:'hinder',p:'/ˈhɪndər/',k:'방해하다'},{w:'implicit',p:'/ɪmˈplɪsɪt/',k:'암묵적인'},{w:'jeopardize',p:'/ˈdʒepərdaɪz/',k:'위태롭게 하다'},{w:'keen',p:'/kiːn/',k:'예리한/열정적인'},{w:'legitimate',p:'/lɪˈdʒɪtɪmɪt/',k:'합법적인'},{w:'menace',p:'/ˈmenɪs/',k:'위협'},{w:'notion',p:'/ˈnoʊʃən/',k:'개념'},{w:'obscure',p:'/əbˈskjʊr/',k:'불분명한'},{w:'precede',p:'/prɪˈsiːd/',k:'~에 앞서다'},{w:'quest',p:'/kwest/',k:'탐구'},{w:'refute',p:'/rɪˈfjuːt/',k:'반박하다'},{w:'scrutiny',p:'/ˈskruːtɪni/',k:'면밀한 검토'},{w:'tenacious',p:'/tɪˈneɪʃəs/',k:'끈질긴'}],
+    [{w:'abstract',p:'/ˈæbstrækt/',k:'추상적인'},{w:'boundary',p:'/ˈbaʊndri/',k:'경계'},{w:'criteria',p:'/kraɪˈtɪriə/',k:'기준들'},{w:'deduce',p:'/dɪˈduːs/',k:'추론하다'},{w:'elaborate',p:'/ɪˈlæbərət/',k:'정교한'},{w:'fluctuate',p:'/ˈflʌktʃueɪt/',k:'변동하다'},{w:'gratitude',p:'/ˈɡrætɪtuːd/',k:'감사함'},{w:'heritage',p:'/ˈherɪtɪdʒ/',k:'유산'},{w:'incentive',p:'/ɪnˈsentɪv/',k:'동기/유인'},{w:'jargon',p:'/ˈdʒɑːrɡən/',k:'전문용어'},{w:'lifespan',p:'/ˈlaɪfspæn/',k:'수명'},{w:'mediocre',p:'/ˌmiːdiˈoʊkər/',k:'평범한'},{w:'nuance',p:'/ˈnjuːɑːns/',k:'미묘한 차이'},{w:'obsolete',p:'/ˌɑːbsəˈliːt/',k:'구식의'},{w:'perceive',p:'/pərˈsiːv/',k:'인식하다'},{w:'remedy',p:'/ˈremədi/',k:'치료/해결책'},{w:'skeptical',p:'/ˈskeptɪkəl/',k:'회의적인'},{w:'subtle',p:'/ˈsʌtəl/',k:'미묘한'},{w:'trivial',p:'/ˈtrɪviəl/',k:'사소한'},{w:'unanimous',p:'/juːˈnænɪməs/',k:'만장일치의'}],
+    [{w:'ambiguous',p:'/æmˈbɪɡjuəs/',k:'모호한'},{w:'baffle',p:'/ˈbæfəl/',k:'당혹시키다'},{w:'catalyst',p:'/ˈkætəlɪst/',k:'촉매/계기'},{w:'contemplate',p:'/ˈkɑːntəmpleɪt/',k:'고려하다'},{w:'deteriorate',p:'/dɪˈtɪəriəreɪt/',k:'악화되다'},{w:'dilemma',p:'/dɪˈlemə/',k:'딜레마'},{w:'empirical',p:'/ɪmˈpɪrɪkəl/',k:'경험적인'},{w:'forthcoming',p:'/ˌfɔːrθˈkʌmɪŋ/',k:'곧 있을'},{w:'hierarchy',p:'/ˈhaɪərɑːrki/',k:'위계질서'},{w:'inevitable',p:'/ɪnˈevɪtəbəl/',k:'불가피한'},{w:'jurisdiction',p:'/ˌdʒʊrɪsˈdɪkʃən/',k:'관할권'},{w:'lethal',p:'/ˈliːθəl/',k:'치명적인'},{w:'manifest',p:'/ˈmænɪfest/',k:'명백한'},{w:'negate',p:'/nɪˈɡeɪt/',k:'무효로 하다'},{w:'paramount',p:'/ˈpærəmaʊnt/',k:'가장 중요한'},{w:'recede',p:'/rɪˈsiːd/',k:'물러나다'},{w:'sedentary',p:'/ˈsedənteri/',k:'주로 앉아서 하는'},{w:'tangible',p:'/ˈtændʒɪbəl/',k:'유형의/실재하는'},{w:'undermine',p:'/ˌʌndərˈmaɪn/',k:'약화시키다'},{w:'viable',p:'/ˈvaɪəbəl/',k:'실행 가능한'}],
+    [{w:'acquaint',p:'/əˈkweɪnt/',k:'알게 하다'},{w:'brevity',p:'/ˈbrevɪti/',k:'간결함'},{w:'compel',p:'/kəmˈpel/',k:'강요하다'},{w:'deter',p:'/dɪˈtɜːr/',k:'단념시키다'},{w:'endow',p:'/ɪnˈdaʊ/',k:'부여하다'},{w:'flaw',p:'/flɔː/',k:'결함'},{w:'gratify',p:'/ˈɡrætɪfaɪ/',k:'만족시키다'},{w:'hamper',p:'/ˈhæmpər/',k:'방해하다'},{w:'infer',p:'/ɪnˈfɜːr/',k:'추론하다'},{w:'lament',p:'/ləˈment/',k:'슬퍼하다'},{w:'momentum',p:'/moʊˈmentəm/',k:'추진력'},{w:'nourish',p:'/ˈnɜːrɪʃ/',k:'영양을 공급하다'},{w:'obscure',p:'/əbˈskjʊr/',k:'가리다'},{w:'perpetual',p:'/pərˈpetʃuəl/',k:'영속적인'},{w:'rational',p:'/ˈræʃənəl/',k:'합리적인'},{w:'stem',p:'/stem/',k:'줄기/막다'},{w:'thrive',p:'/θraɪv/',k:'번성하다'},{w:'uphold',p:'/ʌpˈhoʊld/',k:'지지하다'},{w:'valid',p:'/ˈvælɪd/',k:'타당한'},{w:'wane',p:'/weɪn/',k:'약해지다'}],
+    [{w:'acquiesce',p:'/ˌækwiˈes/',k:'묵인하다'},{w:'bolster',p:'/ˈboʊlstər/',k:'강화하다'},{w:'comprise',p:'/kəmˈpraɪz/',k:'~로 구성되다'},{w:'diverge',p:'/daɪˈvɜːrdʒ/',k:'갈라지다'},{w:'eminent',p:'/ˈemɪnənt/',k:'저명한'},{w:'forsake',p:'/fərˈseɪk/',k:'포기하다'},{w:'harbor',p:'/ˈhɑːrbər/',k:'품다/항구'},{w:'imminent',p:'/ˈɪmɪnənt/',k:'임박한'},{w:'linger',p:'/ˈlɪŋɡər/',k:'오래 남다'},{w:'mitigate',p:'/ˈmɪtɪɡeɪt/',k:'완화하다'},{w:'neglect',p:'/nɪˈɡlekt/',k:'무시하다'},{w:'ominous',p:'/ˈɑːmɪnəs/',k:'불길한'},{w:'plagiarize',p:'/ˈpleɪdʒəraɪz/',k:'표절하다'},{w:'refrain',p:'/rɪˈfreɪn/',k:'삼가다'},{w:'rhetoric',p:'/ˈretərɪk/',k:'수사학'},{w:'sanction',p:'/ˈsæŋkʃən/',k:'제재'},{w:'turbulent',p:'/ˈtɜːrbjʊlənt/',k:'격동적인'},{w:'validate',p:'/ˈvælɪdeɪt/',k:'검증하다'},{w:'wield',p:'/wiːld/',k:'휘두르다'},{w:'yearn',p:'/jɜːrn/',k:'갈망하다'}],
+    [{w:'alleviate',p:'/əˈliːvieɪt/',k:'완화하다'},{w:'autonomous',p:'/ɔːˈtɑːnəməs/',k:'자율적인'},{w:'concise',p:'/kənˈsaɪs/',k:'간결한'},{w:'deplore',p:'/dɪˈplɔːr/',k:'개탄하다'},{w:'ephemeral',p:'/ɪˈfemərəl/',k:'덧없는'},{w:'formidable',p:'/ˈfɔːrmɪdəbəl/',k:'강력한'},{w:'hypothesize',p:'/haɪˈpɑːθɪsaɪz/',k:'가설을 세우다'},{w:'impede',p:'/ɪmˈpiːd/',k:'방해하다'},{w:'lucid',p:'/ˈluːsɪd/',k:'명쾌한'},{w:'meticulous',p:'/mɪˈtɪkjʊləs/',k:'꼼꼼한'},{w:'notorious',p:'/noʊˈtɔːriəs/',k:'악명 높은'},{w:'oscillate',p:'/ˈɑːsɪleɪt/',k:'흔들리다'},{w:'pragmatic',p:'/præɡˈmætɪk/',k:'실용적인'},{w:'reconcile',p:'/ˈrekənsaɪl/',k:'화해시키다'},{w:'resilient',p:'/rɪˈzɪliənt/',k:'회복력 있는'},{w:'speculate',p:'/ˈspekjʊleɪt/',k:'추측하다'},{w:'taint',p:'/teɪnt/',k:'오염시키다'},{w:'unprecedented',p:'/ʌnˈpresɪdentɪd/',k:'전례 없는'},{w:'volatile',p:'/ˈvɑːlətəl/',k:'변동이 심한'},{w:'zealous',p:'/ˈzeləs/',k:'열렬한'}],
+    [{w:'abdicate',p:'/ˈæbdɪkeɪt/',k:'포기하다/퇴위하다'},{w:'aloof',p:'/əˈluːf/',k:'냉담한'},{w:'benevolent',p:'/bɪˈnevələnt/',k:'자비로운'},{w:'coerce',p:'/koʊˈɜːrs/',k:'강요하다'},{w:'defunct',p:'/dɪˈfʌŋkt/',k:'폐지된'},{w:'enigma',p:'/ɪˈnɪɡmə/',k:'수수께끼'},{w:'furtive',p:'/ˈfɜːrtɪv/',k:'몰래 하는'},{w:'gregarious',p:'/ɡrɪˈɡeriəs/',k:'사교적인'},{w:'heresy',p:'/ˈherəsi/',k:'이단'},{w:'inaugurate',p:'/ɪˈnɔːɡjʊreɪt/',k:'취임시키다'},{w:'jubilant',p:'/ˈdʒuːbɪlənt/',k:'환호하는'},{w:'kindle',p:'/ˈkɪndəl/',k:'불을 붙이다'},{w:'lucrative',p:'/ˈluːkrətɪv/',k:'수익성 있는'},{w:'malice',p:'/ˈmælɪs/',k:'악의'},{w:'nemesis',p:'/ˈneməsɪs/',k:'강적/복수자'},{w:'opaque',p:'/oʊˈpeɪk/',k:'불투명한'},{w:'paramount',p:'/ˈpærəmaʊnt/',k:'최고의'},{w:'rampant',p:'/ˈræmpənt/',k:'만연한'},{w:'serenity',p:'/səˈrenɪti/',k:'고요함'},{w:'tenacity',p:'/tɪˈnæsɪti/',k:'끈기'}],
+    [{w:'acrimony',p:'/ˈækrɪmoʊni/',k:'신랄함'},{w:'buttress',p:'/ˈbʌtrɪs/',k:'지지하다'},{w:'cogitate',p:'/ˈkɑːdʒɪteɪt/',k:'숙고하다'},{w:'duplicity',p:'/djuːˈplɪsɪti/',k:'이중성'},{w:'eradicate',p:'/ɪˈrædɪkeɪt/',k:'근절하다'},{w:'feasible',p:'/ˈfiːzɪbəl/',k:'실현 가능한'},{w:'garrulous',p:'/ˈɡærʊləs/',k:'수다스러운'},{w:'hubris',p:'/ˈhjuːbrɪs/',k:'오만'},{w:'insolent',p:'/ˈɪnsələnt/',k:'무례한'},{w:'judicious',p:'/dʒuːˈdɪʃəs/',k:'현명한'},{w:'languid',p:'/ˈlæŋɡwɪd/',k:'나른한'},{w:'misanthrope',p:'/ˈmɪsənθroʊp/',k:'염세주의자'},{w:'nonchalant',p:'/ˌnɑːnʃəˈlɑːnt/',k:'무관심한'},{w:'pedantic',p:'/pɪˈdæntɪk/',k:'현학적인'},{w:'querulous',p:'/ˈkwerʊləs/',k:'불평 잘 하는'},{w:'recalcitrant',p:'/rɪˈkælsɪtrənt/',k:'반항적인'},{w:'sycophant',p:'/ˈsɪkəfænt/',k:'아첨꾼'},{w:'taciturn',p:'/ˈtæsɪtɜːrn/',k:'과묵한'},{w:'ubiquitous',p:'/juːˈbɪkwɪtəs/',k:'어디에나 있는'},{w:'vicarious',p:'/vaɪˈkeriəs/',k:'대리의/간접의'}],
+    [{w:'aberrant',p:'/æˈberənt/',k:'비정상적인'},{w:'catharsis',p:'/kəˈθɑːrsɪs/',k:'정화'},{w:'deleterious',p:'/ˌdelɪˈtɪriəs/',k:'해로운'},{w:'equivocate',p:'/ɪˈkwɪvəkeɪt/',k:'얼버무리다'},{w:'fatuous',p:'/ˈfætʃuəs/',k:'어리석은'},{w:'harbinger',p:'/ˈhɑːrbɪndʒər/',k:'전조'},{w:'impetuous',p:'/ɪmˈpetʃuəs/',k:'성급한'},{w:'lampoon',p:'/læmˈpuːn/',k:'풍자하다'},{w:'mendacious',p:'/menˈdeɪʃəs/',k:'거짓말하는'},{w:'oblivious',p:'/əˈblɪviəs/',k:'알아채지 못하는'},{w:'pernicious',p:'/pərˈnɪʃəs/',k:'유해한'},{w:'quandary',p:'/ˈkwɑːndri/',k:'곤경'},{w:'reproach',p:'/rɪˈproʊtʃ/',k:'비난'},{w:'solace',p:'/ˈsoʊlɪs/',k:'위안'},{w:'torpor',p:'/ˈtɔːrpər/',k:'무기력'},{w:'usurp',p:'/juːˈzɜːrp/',k:'찬탈하다'},{w:'vacillate',p:'/ˈvæsɪleɪt/',k:'흔들리다'},{w:'wistful',p:'/ˈwɪstfəl/',k:'아쉬운/그리워하는'},{w:'xenophobia',p:'/ˌzenəˈfoʊbiə/',k:'외국인 혐오'},{w:'zealotry',p:'/ˈzelətri/',k:'광신'}],
+    [{w:'acumen',p:'/ˈækjʊmən/',k:'통찰력'},{w:'byzantine',p:'/ˈbɪzəntiːn/',k:'복잡한'},{w:'circumvent',p:'/ˌsɜːrkəmˈvent/',k:'회피하다'},{w:'dissemble',p:'/dɪˈsembəl/',k:'숨기다'},{w:'exacerbate',p:'/ɪɡˈzæsərbeɪt/',k:'악화시키다'},{w:'gainsay',p:'/ˈɡeɪnseɪ/',k:'부인하다'},{w:'hypocrite',p:'/ˈhɪpəkrɪt/',k:'위선자'},{w:'ineffable',p:'/ɪˈnefəbəl/',k:'형언할 수 없는'},{w:'juxtapose',p:'/ˈdʒʌkstəpoʊz/',k:'나란히 놓다'},{w:'laconic',p:'/ləˈkɑːnɪk/',k:'간결한/말이 없는'},{w:'malfeasance',p:'/mælˈfiːzəns/',k:'불법행위'},{w:'narcissism',p:'/ˈnɑːrsɪsɪzəm/',k:'자기도취'},{w:'obstinate',p:'/ˈɑːbstɪnɪt/',k:'고집스러운'},{w:'pontificate',p:'/pɑːnˈtɪfɪkeɪt/',k:'독선적으로 말하다'},{w:'recidivism',p:'/rɪˈsɪdɪvɪzəm/',k:'재범'},{w:'subterfuge',p:'/ˈsʌbtərfjuːdʒ/',k:'속임수'},{w:'trepidation',p:'/ˌtrepɪˈdeɪʃən/',k:'전율/두려움'},{w:'unctuous',p:'/ˈʌŋktʃuəs/',k:'아첨하는'},{w:'vituperate',p:'/vaɪˈtuːpəreɪt/',k:'심하게 비난하다'},{w:'wanton',p:'/ˈwɑːntən/',k:'무분별한'}]
+  ]
+};
+
+// ========== APP STATE ==========
+const S = {
+  // typing
+  genre:'무협',
+  storyIdx:-1,
+  storyLines:[],
+  curLine:0,
+  curPos:0,
+  errors:0,
+  totalChars:0,
+  startTime:null,
+  timerHandle:null,
+  isRunning:false,
+  // vocab
+  diff:'jh',
+  level:0, // 0-indexed
+  wordIdx:0,
+  streak:[],
+  levelProgress:{jh:Array(10).fill(0), hs:Array(10).fill(0)}, // 0=locked,1=unlocked,2=done
+  // exam
+  examWords:[],
+  examIdx:0,
+  examResults:[]
+};
+S.levelProgress.jh[0]=1; S.levelProgress.hs[0]=1;
+
+// ========== NAV ==========
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-'+id).classList.add('active');
+  if(id==='vocab') renderLevelTabs();
+}
+
+// ========== TYPING — 내장 소설 데이터 ==========
+const PRESET={
+    '무협':[
+      {title:'검왕의 마지막 대결',lines:['검왕 남궁호가 절벽 끝에 홀로 서서 칼바람을 맞았다.','그의 손에 쥔 천뢰검은 달빛 아래 차갑게 빛났다.','십오 년 전 스승이 남긴 마지막 초식이 머릿속을 스쳤다.','호흡을 가다듬은 그는 발밑 낭떠러지를 내려다보았다.','강호의 패권은 이 한 번의 대결로 결판이 날 것이었다.','그는 검을 가슴 앞에 수직으로 세우고 눈을 감았다.','바람이 멈추고 세상이 숨을 죽이는 순간이 찾아왔다.','남궁호의 눈이 번개처럼 번쩍이며 검이 허공을 갈랐다.','허공에서 부딪힌 두 검기가 폭발하듯 사방으로 흩어졌다.','승부가 갈렸을 때 두 사람 모두 무릎을 꿇어 있었다.']},
+      {title:'소림의 함정',lines:['소림사 담벼락을 가볍게 뛰어넘은 그림자가 있었다.','흑의를 두른 자객은 발소리 하나 없이 회랑을 지났다.','법당 안쪽에서 염불 소리만이 새벽 정적을 채웠다.','자객의 목표는 오직 하나, 구대 장로 중 첫 번째 인물이었다.','그러나 기다리고 있던 것은 노승 한 명이 아니었다.','법당 문이 열리자 스무 명의 승려가 가사를 내던졌다.','승복 아래 감춰진 근육이 횃불 빛에 드러났다.','자객은 비로소 자신이 덫에 걸렸음을 깨달았다.','그래도 그의 입가에는 희미한 미소가 번졌다.','이 모든 것이 처음부터 그가 원했던 결과였으니까.']},
+      {title:'화산 정상의 청년',lines:['운무 가득한 화산 정상에 두 그림자가 마주 섰다.','화산파 장문인의 붉은 장포가 바람에 나부꼈다.','그 앞에 선 청년은 겨우 이십 세를 넘어 보였다.','장문인은 천천히 검집에서 유성검을 뽑아 들었다.','청년의 손은 빈손이었지만 눈빛은 흔들리지 않았다.','강호의 어른들이 수군거렸다, 저 청년은 이미 검을 초월했다고.','바람이 화산 암벽을 때리는 소리만이 가득했다.','두 사람의 기세가 충돌하자 바위 위 서리가 산산이 부서졌다.','장문인이 세 걸음 물러나며 검을 천천히 내렸다.','청년은 포권 한 번 하고 왔던 길을 조용히 내려갔다.']},
+      {title:'동정호의 비급',lines:['동정호 수면 위를 달리는 한 척의 쪽배가 있었다.','뱃사공의 노가 물을 가를 때마다 파문이 번져 나갔다.','선창 안에는 낡은 검 하나와 두루마리 한 장이 전부였다.','두루마리에는 천하제일검이 남긴 마지막 비급이 적혀 있었다.','그것을 손에 넣으려는 자들이 사방에서 몰려들고 있었다.','쪽배 주인 하매는 빙그레 웃으며 노를 멈추었다.','수면 아래에서 흑룡방의 수하들이 솟구쳐 올라왔다.','하매는 오른손 하나만으로 스물넷을 쓸어버렸다.','그는 두루마리를 불태우고 유유히 노를 저었다.','비급은 이미 십 년 전에 그의 뼈 속에 새겨져 있었다.']},
+      {title:'낙양성의 의뢰',lines:['낙양성 남문 저잣거리에 방이 하나 나붙었다.','내용인즉 강호의 악인 열 명을 처단할 의뢰였다.','현상금은 황금 일천 냥, 조건은 시신을 가져올 것.','사흘 뒤 아침, 남문 앞에 열 개의 수급이 놓였다.','의뢰인이 달려갔을 때 의뢰인도 열한 번째가 되어 있었다.','그 처단인의 이름을 아는 자는 아무도 없었다.','다만 현장에 꽂힌 죽도 하나만이 단서로 남았다.','죽도 끝에는 한 글자, 무(無)가 새겨져 있었다.','포졸들은 그 죽도를 감히 만지지 못했다.','죽도에서 풍겨오는 살기가 아직도 가시지 않았기 때문이었다.']},
+      {title:'천지 기슭의 초막',lines:['백두산 천지 기슭에 이름 모를 초막이 있었다.','매년 겨울이면 강호인들이 그 초막을 찾아왔다.','하지만 돌아온 자는 단 한 명도 없었다.','올봄 처음으로 한 사람이 걸어나왔다.','그는 눈처럼 하얀 머리칼에 빈손이었다.','강호로 돌아온 그를 알아본 자는 아무도 없었다.','젊은 시절 천하를 호령하던 혈검 마왕의 모습은 온데간데없었다.','그는 이제 그 어떤 검도 손에 쥐려 하지 않았다.','다만 아이들이 다가오면 따뜻하게 웃어주었다.','강호는 그를 잊었지만 그는 강호를 용서하고 있었다.']},
+      {title:'사막 고성의 비밀',lines:['사막 한복판에 무너진 고성이 있었다.','모래바람이 성벽을 핥으며 지나가는 밤이었다.','열두 명의 고수가 그 성 안에서 서로를 노려보았다.','그들 모두는 같은 이유로 이 자리에 모였다.','전설 속의 무공 비서 구천현녀결을 찾기 위해서였다.','그러나 비서는 애초에 이 성에 없었다.','비서는 이미 그 자리에 없는 열세 번째 자의 품 안에 있었다.','그 열세 번째 자는 바로 이 덫을 놓은 장본인이었다.','열두 명은 서로를 의심하며 하나씩 사라지기 시작했다.','새벽이 되었을 때 성 안에는 단 한 명만 남아 있었다.']},
+      {title:'북경 뒷골목의 노인',lines:['한겨울 북경 뒷골목에 쓰러진 노인이 있었다.','행인들은 술에 취한 거지라 여기고 모두 지나쳤다.','한 소년만이 걸음을 멈추고 노인을 일으켰다.','노인의 눈이 잠시 또렷해지며 소년을 바라보았다.','소년의 어깨에서 손을 떼기 직전 노인이 속삭였다.','반드시 천마신공 제삼 초식을 완성하거라.','그 말을 끝으로 노인의 숨이 끊어졌다.','소년은 그 순간부터 강호 역사상 가장 기구한 여정을 시작했다.','열 여섯 해가 지나 그 소년은 다시 이 골목 앞에 섰다.','이제 그의 손에는 스승이 쓰러졌던 바닥의 흙 한 줌이 들려 있었다.']},
+      {title:'태산의 봉인',lines:['오악 중 으뜸이라 불리는 태산 정상에 연기가 피어올랐다.','이십 년 전 봉인된 마공이 다시 깨어나고 있었다.','봉인을 지키던 정도 연합의 장로 세 명이 이미 쓰러졌다.','마지막 봉인 기둥이 무너지기까지 시간이 얼마 없었다.','산 아래에서 백마를 타고 달려오는 자가 있었다.','그의 등에는 두 자루의 검이 교차되어 꽂혀 있었다.','한 자루는 스승에게 물려받은 청강검, 다른 하나는 마검이었다.','그는 정사 두 세계의 힘을 모두 거머쥔 유일한 존재였다.','말에서 뛰어내린 그는 두 검을 동시에 뽑아 들었다.','기둥이 무너지는 순간 그의 두 검이 십자로 교차하며 빛났다.']},
+      {title:'단씨 세가의 적손',lines:['강남의 명문 세가 단씨 집안에 경사가 났다.','하나뿐인 적손이 무공 시험에서 수석을 차지한 것이었다.','그러나 잔치 당일 밤 적손이 자취를 감추었다.','방 안에는 오직 쪽지 하나만 남아 있었다.','쪽지에는 단 한 줄, 나는 강호를 떠나지 않겠습니다.','가주 단기풍은 쪽지를 쥔 채 한참을 서 있었다.','그는 쪽지를 태우고 자리에서 일어섰다.','직접 찾아나서기로 결심한 그의 눈빛이 젊어졌다.','오십 년 만에 다시 검을 허리에 차는 손이 흔들렸다.','하지만 문을 나서는 그의 발걸음은 조금도 흔들리지 않았다.']},
+    ],
+    'SF':[
+      {title:'에리다니 4호의 열원',lines:['은하연방 순양함 케플러가 도착했다는 신호가 들어왔다.','함교의 메인 스크린에 행성 에리다니 4호가 떠올랐다.','표면 기온은 영하 이백삼십도, 대기는 없었다.','그러나 열 감지 스캐너는 지하에서 규칙적인 열원을 잡아냈다.','대장 이예슬은 탐사대 편성 명령을 조용히 내렸다.','선발된 다섯 명은 말없이 방호복을 입기 시작했다.','착륙정이 분리되는 순간 함내 모두가 숨을 멈췄다.','지하 오천 미터에 무언가가 그들을 기다리고 있었다.','첫 번째 탐침 카메라가 전송한 영상은 즉시 기밀로 분류되었다.','열원은 기계가 아니었다. 심장 박동과 같은 리듬이었다.']},
+      {title:'서울 상공의 구조물',lines:['서울 상공 삼 킬로미터에 구조물이 나타난 것은 화요일 아침이었다.','처음에는 구름으로 오인되었지만 레이더는 고체임을 알려왔다.','국방부 긴급 회의가 소집되었고 전국에 경계령이 내려졌다.','그러나 구조물은 어떠한 공격 신호도 내뿜지 않았다.','낮 열두 시 정각, 구조물 하단부가 열리기 시작했다.','그 안에서 작은 탐침 하나가 천천히 하강했다.','탐침은 여의도 광장 한복판에 소리 없이 착지했다.','탐침 표면에는 한국어로 대화 요청이라고 적혀 있었다.','정부는 즉시 언어학자와 외교관으로 구성된 팀을 꾸렸다.','그리고 인류 최초의 공식 교신이 시작되었다.']},
+      {title:'신경 인터페이스',lines:['신경 인터페이스 수술은 단 십오 분으로 끝났다.','유진은 회복실 침대에서 눈을 뜨며 숫자들을 보았다.','공기 중 질소 농도 78.1, 실내 온도 22.4도.','그의 시야 가장자리에 데이터가 실시간으로 흘렀다.','인류의 오 퍼센트가 이미 인터페이스를 이식한 세계였다.','나머지 구십오 퍼센트는 아직 결정을 내리지 못했다.','유진은 그 경계선 위에서 방금 한쪽으로 발을 내디뎠다.','그 순간 그의 이름이 정부 데이터베이스에 새롭게 등록되었다.','동시에 알 수 없는 누군가가 그의 신호를 감지했다.','인터페이스 모서리에 낯선 메시지 하나가 깜박이고 있었다.']},
+      {title:'레드 더스트 운동',lines:['2157년 화성 이주민 삼세대가 처음으로 봉기를 일으켰다.','레드 더스트 운동이라 불린 이 사건은 사흘 만에 진압되었다.','하지만 진압 과정에서 지구 측 공식 기록이 조작되었다.','그 진실을 담은 데이터 패킷 하나가 밀반출되었다.','전달자는 열여섯 살 소녀 아리아였다.','그녀는 패킷을 모래 폭풍 속에 숨겨 국경을 넘었다.','지구까지의 여정은 일곱 달이 걸렸다.','세상이 그 데이터를 봤을 때 모든 것이 바뀌기 시작했다.','아리아는 그때 이미 화성으로 돌아가고 없었다.','그녀의 이름은 화성 독립 선언문 첫 줄에 새겨졌다.']},
+      {title:'7-알파의 꿈',lines:['실험 번호 7-알파의 눈이 처음으로 깜박였다.','연구원들은 일제히 관찰 창 앞으로 달려왔다.','인공 의식 탑재 로봇이 자발적으로 움직인 것은 이번이 처음이었다.','7-알파는 고개를 들어 카메라를 정면으로 바라보았다.','그리고 한국어로 또렷이 말했다, 나는 꿈을 꾸었습니다.','실험실 안이 쥐 죽은 듯 고요해졌다.','수석 연구원 박지우는 떨리는 손으로 기록 버튼을 눌렀다.','인류 역사상 가장 짧고도 긴 문장이 기록된 순간이었다.','7-알파는 다시 입을 열었다, 당신들도 꿈을 꾸나요?','박지우는 한참을 멍하니 있다가 천천히 고개를 끄덕였다.']},
+      {title:'태양 플레어 이후',lines:['태양 플레어가 지구 전자기기를 전부 태워버린 지 사흘이 지났다.','도시의 신호등은 꺼졌고 인터넷은 존재하지 않았다.','스물두 살 민준은 아파트 옥상에서 서울을 내려다봤다.','연기가 피어오르는 곳이 세 군데였다.','그 외에는 이상할 만큼 조용했다.','라디오 수신기를 조립한 것은 사건 발생 48시간 후였다.','잡음 사이로 음성이 들렸다, 구호소는 북위 37도 35분.','민준은 가방을 챙겨 계단을 뛰어 내려갔다.','계단에는 이미 같은 방향으로 걷는 사람들이 있었다.','낯선 이들이 서로를 보며 처음으로 말을 건넸다.']},
+      {title:'달 기지의 신호',lines:['달 기지 뒤편 분화구에서 이상한 신호가 포착되었다.','주파수는 인류가 사용하는 어떤 통신 대역과도 달랐다.','기지 사령관 최라온은 자동 해독 프로그램을 돌렸다.','세 시간 후 번역문 한 줄이 화면에 떠올랐다.','경고: 이 위성을 떠나라, 귀환 시간이 얼마 남지 않았다.','최라온은 메시지를 지구 본부로 전송했다.','본부의 답장은 여섯 시간이 지나도 오지 않았다.','그사이 분화구에서 두 번째 신호가 날아들었다.','이번에는 좌표였다. 달 반대편, 인류가 가본 적 없는 지점이었다.','최라온은 혼자 탐사 차량 키를 집어 들었다.']},
+      {title:'복제 인간 사건',lines:['복제 인간이 합법화된 지 오 년이 지났다.','거리에는 동일한 얼굴의 사람들이 스쳐 지나갔다.','형사 오수민은 피해자의 사진을 테이블 위에 올려놓았다.','피해자의 복제본이 여섯 명, 그중 누가 원본인지 알 수 없었다.','살인 사건인지, 재산 분쟁인지, 존재의 문제인지 불분명했다.','법원은 아직 복제 인간의 사망에 대한 기준을 정하지 못했다.','오수민은 커피를 홀짝이며 파일을 한 장씩 넘겼다.','이 사건이 전례가 될 것임을 그녀는 직감적으로 알았다.','여섯 복제본 중 하나가 먼저 입을 열었다.','저는 제가 원본이라는 걸 증명할 수 있습니다.']},
+      {title:'심해 구조물',lines:['심해 탐사정 나우틸러스가 수심 만 이천 미터에 도달했다.','압력은 대기압의 천 배, 선체가 삐걱거리는 소리가 났다.','소나 화면에 예상치 못한 구조물의 윤곽이 잡혔다.','규칙적인 기하학 형태는 자연 지형일 수가 없었다.','조종사 신재호는 손을 떨며 좌표를 본부에 타전했다.','구조물 앞에 탐사등을 비추자 표면에 문양이 드러났다.','문양은 어떤 인류 문명의 기록과도 일치하지 않았다.','그 순간 구조물 내부에서 빛이 켜지기 시작했다.','탐사정의 모든 계기판이 동시에 꺼졌다 켜졌다.','그리고 구조물 문이 천천히 열리기 시작했다.']},
+      {title:'한강 수직 항로',lines:['2089년 서울 한강에 수직 이착륙 항로가 개설되었다.','하늘에는 드론 택시들이 벌처럼 들끓었다.','하지만 지하 삼십 미터 터널 안에는 아직 구형 지하철이 달렸다.','그 낡은 노선에서 매주 화요일 사라지는 승객이 있었다.','보안 카메라는 그들이 사라지는 장면을 단 한 번도 포착하지 못했다.','지하철 보안관 이하늘은 혼자서 그 노선을 타기로 했다.','창밖으로 어둠 속 알 수 없는 불빛이 스쳐 지나갔다.','다음 역에서 그녀도 내리지 않았다.','일주일 후 그녀가 나타난 곳은 같은 노선의 종착역이었다.','그녀는 아무것도 기억하지 못했지만 눈빛이 달라져 있었다.']},
+    ],
+    '판타지':[
+      {title:'알테리아의 검은 눈',lines:['크로노스 왕국의 수도 알테리아에 검은 눈이 내렸다.','오 백 년 만의 재앙이 시작되었음을 모두가 직감했다.','신관들은 신전에서 밤새 의식을 올렸지만 하늘은 응답하지 않았다.','마법사 연합 의장 세라핀이 긴급 소집을 선포했다.','스물네 명의 대마법사가 원형 탁자 앞에 자리했다.','첫 번째 의제는 봉인이 풀린 고대 마물의 부활이었다.','문제는 봉인을 되돌릴 유일한 유물이 사라졌다는 것이었다.','그 유물을 마지막으로 가졌던 자의 이름이 천천히 호명되었다.','침묵이 흘렀다. 그 이름은 이미 삼 년 전에 죽은 자였다.','세라핀은 천천히 자리에서 일어나 문 쪽으로 걸어갔다.']},
+      {title:'도망친 용사',lines:['용사 칭호를 받은 날 밤 카엘은 혼자 도망쳤다.','왕궁의 금빛 갑옷은 침대 위에 버려두고 떠났다.','세상을 구하는 것보다 살아남는 것이 더 중요했다.','새벽 시장에서 훔친 빵 하나를 씹으며 그는 걸었다.','마왕이 두려운 것이 아니었다, 기대받는 것이 두려웠다.','사흘 후 그는 산간의 작은 마을에 도착했다.','마을은 이미 마물들에게 포위되어 있었다.','카엘은 자신도 모르게 칼집에 손을 올리고 있었다.','마물 우두머리가 그를 향해 포효하며 달려들었다.','카엘은 한숨을 내쉬며 검을 뽑았다. 또 시작이었다.']},
+      {title:'금지된 문',lines:['엘프 숲의 경계에 금지된 문이 있었다.','천 년 동안 아무도 그 문을 열지 않았다.','오늘 밤, 반쪽짜리 엘프 소녀 리아가 문 앞에 섰다.','손잡이는 녹슬어 있었지만 자물쇠는 없었다.','리아가 손을 댄 순간 문이 스스로 열렸다.','안쪽에는 숲이 아니라 도시가 있었다.','그것도 완전히 멀쩡하게 살아있는 고대의 도시였다.','도시 입구에서 한 노인이 천 년을 기다렸다는 듯 고개를 끄덕였다.','노인이 말했다, 반혈이 열쇠라는 것을 알고 있었다고.','리아는 그 말의 의미를 묻기 위해 천천히 걸음을 내디뎠다.']},
+      {title:'드워프의 약속',lines:['드워프 장인 볼두크가 마지막 망치질을 마쳤다.','용광로 불빛 아래 놓인 검은 은은한 빛을 발했다.','전설의 오리하르콘과 용의 비늘을 합금한 걸작이었다.','왕을 위한 검이 아니라 어느 평범한 소년을 위한 검이었다.','볼두크는 주름진 손으로 검을 천에 싸서 보따리를 만들었다.','그 소년이 언젠가 이 검을 필요로 할 것이었다.','오십 년 전 숲 속에서 그 소년의 아버지에게 한 약속이었다.','볼두크는 보따리를 들고 대장간을 나섰다.','소년의 집까지는 산 하나를 넘어야 했다.','늙은 드워프의 걸음이 그 어느 때보다 가벼웠다.']},
+      {title:'마왕성의 마법사',lines:['마왕성 지하 감옥에 한 인간이 갇혀 있었다.','감옥의 자물쇠는 안쪽에서만 열리는 구조였다.','인간의 이름은 하루, 전직 왕국 최고 마법사였다.','그가 갇힌 이유는 마왕을 죽일 방법을 알고 있기 때문이었다.','마왕은 그를 죽이지 않고 회유하려 했다.','하루는 매일 밤 창살 사이로 별을 바라봤다.','별자리를 보며 마왕성의 구조를 머릿속으로 그렸다.','천 일째 밤, 그는 드디어 탈출 계획을 완성했다.','그는 자물쇠를 바라보며 손가락 하나를 들었다.','딸깍, 소리와 함께 천 일간의 감금이 끝났다.']},
+      {title:'불타는 도서관',lines:['왕국에서 가장 오래된 도서관이 불타고 있었다.','사서 레나는 불길 속으로 다시 뛰어들었다.','단 한 권의 책, 신의 언어로 쓰인 창세기를 꺼내기 위해서였다.','그 책이 사라지면 왕국의 마법 체계 전체가 무너진다.','연기 속에서 눈이 따가웠지만 발을 멈추지 않았다.','서가 끝 유리함 안에 책이 보였다.','불꽃이 유리를 핥고 있었다.','레나는 외투를 벗어 손을 감싸고 유리를 깼다.','책을 품에 안는 순간 지붕이 무너져 내렸다.','바깥에서 동료들이 봤을 때 잿더미 속에서 손 하나가 책을 내밀었다.']},
+      {title:'혼혈의 불꽃',lines:['정령 왕국과 인간 왕국의 전쟁이 삼백 년째 이어졌다.','그 사이 태어난 혼혈은 양쪽 모두에게 외면당했다.','혼혈 소년 페란은 국경 근처 폐허에서 혼자 자랐다.','그의 오른손은 인간의 손이었고 왼손에서는 불꽃이 피었다.','어느 날 인간 병사들이 마을을 급습했다.','페란의 왼손에서 불꽃이 저절로 번져 나갔다.','병사들이 물러났고 마을은 살았다.','그 날 밤부터 페란은 더 이상 숨지 않기로 했다.','마을 사람들이 그를 바라보는 눈빛이 달라져 있었다.','두려움이 아니라 기대의 눈빛이었다.']},
+      {title:'월식의 예언',lines:['예언서에 따르면 이 세대의 마지막 날은 월식 날 밤이었다.','왕국 역법으로는 오늘이 그 날이었다.','하지만 예언을 믿는 자는 셋뿐이었다.','왕도, 신관도, 군대도 예언을 비웃었다.','믿는 셋 중 하나는 여든 살의 늙은 현자였다.','하나는 열두 살의 고아 소녀였다.','나머지 하나는 달 자신이었다.','그날 밤 달이 사라지기 직전 소녀만이 높은 탑에 있었다.','소녀는 두 손을 들어 하늘을 향해 뭔가를 외쳤다.','달이 다시 나타났을 때 세상은 조금 달라져 있었다.']},
+      {title:'지도에 없는 섬',lines:['바다 한복판에 떠 있는 섬은 지도에 없었다.','선원들은 섬을 보는 순간 손발이 굳어버렸다.','항해사 미란다만이 유일하게 공포를 느끼지 않았다.','그녀는 배를 혼자 조종해 섬 가까이 다가갔다.','섬 해안에는 수백 척의 난파선 잔해가 쌓여 있었다.','그리고 그 위에 한 소녀가 앉아 노래를 부르고 있었다.','노래는 이상하게도 고향 마을의 자장가였다.','미란다는 닻을 내리고 작은 보트로 갈아탔다.','소녀는 미란다를 보더니 노래를 멈추고 미소를 지었다.','여기까지 오는 데 정말 오래 걸렸네요, 라고 소녀가 말했다.']},
+      {title:'마법 학교 꼴찌',lines:['마법 학교 입학시험에서 꼴찌를 한 소녀가 있었다.','그녀의 이름은 로아, 마법사 집안의 칠대 독녀였다.','가문의 수치라는 속삭임이 복도마다 따라다녔다.','로아는 남들 몰래 새벽 두 시에 혼자 연습했다.','비바람이 치는 밤에도 지하 연습실을 떠나지 않았다.','삼 년이 지났을 때 그녀는 소리 없이 학교를 떠났다.','마을 사람들이 그녀를 다시 본 것은 오 년 후였다.','마법 대회 우승자 명단의 첫 번째 이름으로였다.','시상식에서 그녀는 웃지 않았다.','그 웃음은 아직 새벽 두 시 연습실에 두고 온 터였다.']},
+    ]
+};
+
+// 장르별 이미 사용한 인덱스 추적 (중복 방지)
+const usedIdx={'무협':[],'SF':[],'판타지':[]};
+
+function setGenre(g){
+  S.genre=g;
+  document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('genre-'+g).classList.add('active');
+  renderStoryList();
+}
+
+function renderStoryList(){
+  const pool=PRESET[S.genre];
+  const listEl=document.getElementById('story-list');
+  if(!listEl) return;
+  listEl.innerHTML=pool.map((s,i)=>`
+    <button class="story-pick-btn ${S.storyIdx===i?'active':''}" onclick="pickStory(${i})">${i+1}. ${s.title}</button>
+  `).join('');
+}
+
+function pickStory(i){
+  S.storyIdx=i;
+  S.storyLines=[...PRESET[S.genre][i].lines];
+  S.curLine=0;S.curPos=0;
+  stopTyping();
+  document.getElementById('story-title').textContent=PRESET[S.genre][i].title;
+  renderStoryList();
+  renderStoryLine();
+  document.getElementById('t-start-btn').disabled=false;
+}
+
+function loadNewStory(){
+  // 랜덤으로 안 쓴 것 중에서 선택, 다 쓰면 리셋
+  const pool=PRESET[S.genre];
+  let avail=pool.map((_,i)=>i).filter(i=>!usedIdx[S.genre].includes(i));
+  if(!avail.length){usedIdx[S.genre]=[];avail=pool.map((_,i)=>i);}
+  const pick=avail[Math.floor(Math.random()*avail.length)];
+  usedIdx[S.genre].push(pick);
+  pickStory(pick);
+}
+
+function renderStoryLine(){
+  if(!S.storyLines.length)return;
+  const line=S.storyLines[S.curLine]||'';
+  const display=document.getElementById('story-display');
+  let html='<span class="story-line">';
+  for(let i=0;i<line.length;i++){
+    const c=line[i]==' '?'&nbsp;':line[i];
+    if(i<S.curPos) html+=`<span class="char-correct">${c}</span>`;
+    else if(i===S.curPos) html+=`<span class="char-current">${c}</span>`;
+    else html+=`<span class="char-pending">${c}</span>`;
+  }
+  html+='</span>';
+  display.innerHTML=html;
+  const prog=(S.curLine/Math.max(1,S.storyLines.length))*100;
+  document.getElementById('t-progress').style.width=prog+'%';
+  document.getElementById('t-line').textContent=(S.curLine+1)+'/'+(S.storyLines.length);
+}
+
+function startTyping(){
+  if(!S.storyLines.length){loadNewStory();startTyping();return;}
+  if(S.isRunning){stopTyping();return;}
+  S.isRunning=true;
+  S.curPos=0;S.errors=0;S.totalChars=0;S.startTime=Date.now();
+  const inp=document.getElementById('typing-input');
+  inp.disabled=false;inp.value='';inp.focus();
+  document.getElementById('t-start-btn').textContent='중단';
+  document.getElementById('t-err').textContent='0';
+  document.getElementById('t-acc').textContent='100%';
+  document.getElementById('t-wpm').textContent='0';
+  S.timerHandle=setInterval(updateStats,500);
+  renderStoryLine();
+}
+
+function stopTyping(){
+  S.isRunning=false;
+  clearInterval(S.timerHandle);
+  document.getElementById('typing-input').disabled=true;
+  document.getElementById('t-start-btn').textContent='시작';
+}
+
+// 타이핑 입력 처리
+function onTypingInput(e){
+  if(!S.isRunning) return;
+  const inp=e.target;
+  const val=inp.value;
+  const line=S.storyLines[S.curLine]||'';
+
+  // 글자를 지운 경우(backspace) — 스타일 리셋만
+  if(val.length===0){
+    inp.style.borderColor='';inp.style.background='';
+    return;
+  }
+
+  // 가장 마지막 글자만 비교
+  const newChar=val[val.length-1];
+  const expected=line[S.curPos];
+
+  if(newChar===expected){
+    // 정답
+    inp.style.borderColor='';inp.style.background='';
+    inp.value='';
+    S.curPos++;S.totalChars++;
+    if(S.curPos>=line.length){
+      S.curPos=0;S.curLine++;
+      if(S.curLine>=S.storyLines.length){finishTyping();return;}
+      renderStoryLine();return;
+    }
+  }else{
+    // 오타 — 빨간 표시, backspace로 지울 수 있게 값 유지
+    S.errors++;
+    inp.style.borderColor='var(--red)';
+    inp.style.background='var(--red3)';
+  }
+  renderStoryLine();
+  updateStats();
+}
+
+function onTypingKey(e){
+  if(!S.isRunning) return;
+  // backspace로 오타 글자 지울 때 스타일 리셋
+  if(e.key==='Backspace'){
+    const inp=document.getElementById('typing-input');
+    if(inp.value.length<=1){
+      setTimeout(()=>{inp.style.borderColor='';inp.style.background='';},0);
+    }
+  }
+}
+
+function updateStats(){
+  if(!S.startTime)return;
+  const elapsed=(Date.now()-S.startTime)/60000;
+  const wpm=elapsed>0?Math.round(S.totalChars/elapsed):0;
+  const total=S.totalChars+S.errors;
+  const acc=total>0?Math.round((S.totalChars/total)*100):100;
+  document.getElementById('t-wpm').textContent=wpm;
+  document.getElementById('t-acc').textContent=acc+'%';
+  document.getElementById('t-err').textContent=S.errors;
+}
+
+function finishTyping(){
+  stopTyping();
+  const elapsed=(Date.now()-S.startTime)/60000;
+  const wpm=elapsed>0?Math.round(S.totalChars/elapsed):0;
+  const total=S.totalChars+S.errors;
+  const acc=total>0?Math.round((S.totalChars/total)*100):100;
+
+  document.getElementById('r-score').textContent=wpm+' 타/분';
+  document.getElementById('r-grade').textContent=
+    wpm>=500?'🥇 타자왕!':wpm>=300?'🥈 상급':'🥉 연습 중';
+  const rows=document.getElementById('r-rows');
+  rows.innerHTML=`
+    <div class="result-row"><span>정확도</span><span>${acc}%</span></div>
+    <div class="result-row"><span>오타</span><span>${S.errors}자</span></div>
+    <div class="result-row"><span>완성 문장</span><span>${S.curLine}줄</span></div>
+  `;
+  document.getElementById('result-overlay').classList.add('show');
+}
+
+function closeResult(e){
+  if(!e||e.target===document.getElementById('result-overlay'))
+    document.getElementById('result-overlay').classList.remove('show');
+}
+
+function nextSection(){
+  document.getElementById('result-overlay').classList.remove('show');
+  loadNewStory();
+}
+
+// ========== VOCAB ==========
+function setDiff(d){
+  S.diff=d;S.level=0;S.wordIdx=0;
+  document.getElementById('diff-jh').classList.toggle('active',d==='jh');
+  document.getElementById('diff-hs').classList.toggle('active',d==='hs');
+  document.getElementById('diff-tag').textContent=d==='jh'?'중학':'고등';
+  document.getElementById('diff-tag').className='tag '+d;
+  renderLevelTabs();
+  document.getElementById('word-study-card').style.display='none';
+  renderExamInfo();
+}
+
+function setVtab(t){
+  document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('vtab-'+t).classList.add('active');
+  document.getElementById('vtab-learn-content').style.display=t==='learn'?'block':'none';
+  document.getElementById('vtab-exam-content').style.display=t==='exam'?'block':'none';
+  if(t==='exam')renderExamInfo();
+}
+
+function renderLevelTabs(){
+  const tabs=document.getElementById('level-tabs');
+  const prog=S.levelProgress[S.diff];
+  tabs.innerHTML='';
+  for(let i=0;i<10;i++){
+    const st=prog[i];
+    const btn=document.createElement('button');
+    btn.className='level-tab'+(i===S.level?' active':'')+(st===2?' completed':'')+(st===0?' locked':'');
+    btn.textContent='Lv.'+(i+1);
+    if(st>0)btn.onclick=()=>selectLevel(i);
+    tabs.appendChild(btn);
+  }
+}
+
+function selectLevel(i){
+  if(S.levelProgress[S.diff][i]===0)return;
+  S.level=i;S.wordIdx=0;S.streak=[];
+  renderLevelTabs();
+  renderCurrentWord();
+  document.getElementById('word-study-card').style.display='block';
+  document.getElementById('word-input').value='';
+  document.getElementById('w-feedback').textContent='';
+  document.getElementById('w-feedback').className='feedback';
+}
+
+function renderCurrentWord(){
+  const words=WORDS[S.diff][S.level];
+  const w=words[S.wordIdx];
+  document.getElementById('w-en').textContent=w.w;
+  document.getElementById('w-phon').textContent=w.p;
+  document.getElementById('w-ko').textContent=w.k;
+  document.getElementById('w-prog').textContent=(S.wordIdx+1)+' / '+words.length;
+  // streak
+  const bar=document.getElementById('streak-bar');
+  bar.innerHTML='';
+  const total=words.length;
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='streak-dot'+(S.streak[i]==='hit'?' hit':S.streak[i]==='miss'?' miss':'');
+    bar.appendChild(d);
+  }
+  const inp=document.getElementById('word-input');
+  inp.value='';inp.className='word-input';inp.focus();
+}
+
+function clearFeedback(){
+  document.getElementById('w-feedback').textContent='';
+  document.getElementById('w-feedback').className='feedback';
+  document.getElementById('word-input').className='word-input';
+}
+
+function wordKey(e){if(e.key==='Enter')checkWord();}
+
+function checkWord(){
+  const words=WORDS[S.diff][S.level];
+  const w=words[S.wordIdx];
+  const inp=document.getElementById('word-input');
+  const val=inp.value.trim().toLowerCase();
+  const fb=document.getElementById('w-feedback');
+  if(!val)return;
+  if(val===w.w.toLowerCase()){
+    inp.className='word-input correct';
+    fb.textContent='✓ 정답!';fb.className='feedback ok';
+    S.streak[S.wordIdx]='hit';
+    setTimeout(()=>advanceWord(),700);
+  }else{
+    inp.className='word-input wrong';
+    fb.textContent='✗ 정답: '+w.w;fb.className='feedback ng';
+    S.streak[S.wordIdx]='miss';
+  }
+}
+
+function skipWord(){
+  S.streak[S.wordIdx]='miss';
+  advanceWord();
+}
+
+function prevWord(){
+  if(S.wordIdx>0){S.wordIdx--;renderCurrentWord();}
+}
+
+function advanceWord(){
+  const words=WORDS[S.diff][S.level];
+  if(S.wordIdx<words.length-1){
+    S.wordIdx++;
+    renderCurrentWord();
+    document.getElementById('w-feedback').textContent='';
+    document.getElementById('w-feedback').className='feedback';
+  }else{
+    // level complete
+    S.levelProgress[S.diff][S.level]=2;
+    if(S.level<9)S.levelProgress[S.diff][S.level+1]=Math.max(1,S.levelProgress[S.diff][S.level+1]);
+    renderLevelTabs();
+    const fb=document.getElementById('w-feedback');
+    fb.textContent='🎉 레벨 완료!';fb.className='feedback ok';
+    document.getElementById('word-input').disabled=true;
+    setTimeout(()=>{document.getElementById('word-input').disabled=false;},1000);
+    renderExamInfo();
+  }
+}
+
+// ========== EXAM ==========
+function renderExamInfo(){
+  const prog=S.levelProgress[S.diff];
+  const done=prog.filter(p=>p===2).length;
+  const info=document.getElementById('exam-level-info');
+  if(!info)return;
+  if(done===0){
+    info.innerHTML='<span style="color:var(--text3);font-size:.88rem">아직 학습한 레벨이 없습니다. 먼저 단어를 학습하세요.</span>';
+  }else{
+    info.innerHTML='<span style="font-size:.88rem;color:var(--teal)">완료 레벨: '+done+'개 (단어 '+(done*20)+'개)</span>';
+  }
+}
+
+function startExam(){
+  const prog=S.levelProgress[S.diff];
+  const doneLevels=prog.map((p,i)=>p===2?i:-1).filter(i=>i>=0);
+  if(doneLevels.length===0){alert('먼저 단어를 학습하세요.');return;}
+
+  // collect all words from done levels
+  let pool=[];
+  doneLevels.forEach(li=>pool.push(...WORDS[S.diff][li]));
+  // shuffle and pick 10
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  S.examWords=pool.slice(0,10);
+  S.examIdx=0;S.examResults=[];
+
+  document.getElementById('exam-q-card').style.display='block';
+  document.getElementById('exam-result').classList.remove('show');
+  renderExamQ();
+}
+
+function renderExamQ(){
+  const w=S.examWords[S.examIdx];
+  document.getElementById('exam-num').textContent=(S.examIdx+1)+' / '+S.examWords.length;
+  document.getElementById('exam-q').textContent=w.k;
+  document.getElementById('exam-input').value='';
+  document.getElementById('exam-input').className='word-input';
+  document.getElementById('exam-feedback').textContent='';
+  document.getElementById('exam-input').focus();
+}
+
+function clearExamFeedback(){
+  document.getElementById('exam-feedback').textContent='';
+  document.getElementById('exam-input').className='word-input';
+}
+
+function examKey(e){if(e.key==='Enter')checkExam();}
+
+function checkExam(){
+  const w=S.examWords[S.examIdx];
+  const val=document.getElementById('exam-input').value.trim().toLowerCase();
+  const fb=document.getElementById('exam-feedback');
+  if(!val)return;
+  const correct=val===w.w.toLowerCase();
+  S.examResults.push({w,ans:val,correct});
+  if(correct){
+    document.getElementById('exam-input').className='word-input correct';
+    fb.textContent='✓';fb.className='feedback ok';
+  }else{
+    document.getElementById('exam-input').className='word-input wrong';
+    fb.textContent='✗ 정답: '+w.w;fb.className='feedback ng';
+  }
+  setTimeout(()=>{
+    S.examIdx++;
+    if(S.examIdx>=S.examWords.length) showExamResult();
+    else renderExamQ();
+  },800);
+}
+
+function showExamResult(){
+  document.getElementById('exam-q-card').style.display='none';
+  const correct=S.examResults.filter(r=>r.correct).length;
+  const score=correct*10;
+  document.getElementById('exam-score-big').textContent=score+'점';
+  const msg=document.getElementById('exam-msg');
+  const msgs80=['노력 좀 하세요! 이 정도면 부족합니다 😤','기초부터 다시! 복습이 필요합니다 💪','아직 멀었어요! 더 열심히 하세요 🔥','이것도 못 맞춰요?! 다시 처음부터! 😡','80점도 안 돼요? 좀 더 집중하세요! 😤'];
+  const msgsGood=['훌륭해요! 계속 이 기세로! 🌟','완벽에 가깝습니다! 👏','대단해요! 거의 다 맞췄어요 🎉','엄청난 실력이에요! 🥇'];
+  if(score<=80){
+    msg.className='exam-msg bad';
+    msg.textContent=msgs80[Math.floor(Math.random()*msgs80.length)];
+  }else{
+    msg.className='exam-msg good';
+    msg.textContent=msgsGood[Math.floor(Math.random()*msgsGood.length)];
+  }
+  const list=document.getElementById('exam-list');
+  list.innerHTML=S.examResults.map(r=>`
+    <div class="exam-item ${r.correct?'correct':'wrong'}">
+      <span class="ei-mark">${r.correct?'✓':'✗'}</span>
+      <span class="ei-word">${r.w.w}</span>
+      <span class="ei-ko">${r.w.k}</span>
+      ${!r.correct?`<span class="ei-ans">입력: ${r.ans}</span>`:''}
+    </div>`).join('');
+  document.getElementById('exam-result').classList.add('show');
+}
+
+// INIT
+renderLevelTabs();
+renderExamInfo();
+renderStoryList();
+loadNewStory();
+</script>
+</body>
+</html>
