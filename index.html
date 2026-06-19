@@ -22,13 +22,27 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui
 h1,h2,h3{font-weight:600}
 
 /* NAV */
-nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(60,60,120,.07)}
-.nav-logo{font-size:1.1rem;font-weight:700;color:var(--purple);margin-right:auto;letter-spacing:-0.02em}
+nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(60,60,120,.07)}
+.nav-logo{font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0}
 .nav-logo span{color:var(--teal)}
-.nav-btn{background:none;border:none;color:var(--text2);font-size:.85rem;padding:.4rem .9rem;border-radius:var(--radius);cursor:pointer;transition:.15s;font-family:inherit;display:flex;align-items:center;gap:.4rem}
+.nav-menu{display:flex;align-items:center;gap:.3rem;overflow-x:auto;overflow-y:hidden;flex:1;padding:0 1rem 0 0;scrollbar-width:none;-ms-overflow-style:none;height:100%}
+.nav-menu::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:none;color:var(--text2);font-size:.85rem;padding:.4rem .8rem;border-radius:var(--radius);cursor:pointer;transition:.15s;font-family:inherit;display:flex;align-items:center;gap:.4rem;white-space:nowrap;flex-shrink:0}
 .nav-btn:hover{background:var(--bg3);color:var(--text)}
 .nav-btn.active{background:var(--purple3);color:var(--purple);font-weight:600}
-.nav-ico{font-size:1.1rem}
+.nav-ico{font-size:1.1rem;flex-shrink:0}
+
+@media (max-width:640px){
+  nav{height:50px}
+  .nav-logo{font-size:.95rem;padding:0 .6rem 0 .9rem}
+  .nav-btn{font-size:.78rem;padding:.35rem .6rem;gap:.3rem}
+  .nav-ico{font-size:1rem}
+  .nav-btn .nav-label{display:none}
+}
+@media (max-width:420px){
+  .nav-logo{font-size:.85rem}
+  .nav-logo span{display:none}
+}
 
 /* SCREENS */
 .screen{display:none;padding:1.5rem;max-width:860px;margin:0 auto;width:100%}
@@ -251,22 +265,24 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
 <body>
 
 <nav>
-  <div class="nav-logo">말랑말랑 두뇌<span>체조</span></div>
-  <button class="nav-btn active" onclick="showScreen('typing')" id="nav-typing">
-    <span class="nav-ico">⌨️</span> 한글 타자
-  </button>
-  <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
-    <span class="nav-ico">📚</span> 영단어
-  </button>
-  <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
-    <span class="nav-ico">🧠</span> IQ 테스트
-  </button>
-  <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
-    <span class="nav-ico">🔢</span> 스도쿠
-  </button>
-  <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
-    <span class="nav-ico">➗</span> 암산 게임
-  </button>
+  <div class="nav-logo">말랑말랑<span> 두뇌체조</span></div>
+  <div class="nav-menu">
+    <button class="nav-btn active" onclick="showScreen('typing')" id="nav-typing">
+      <span class="nav-ico">⌨️</span><span class="nav-label">한글 타자</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
+      <span class="nav-ico">📚</span><span class="nav-label">영단어</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
+      <span class="nav-ico">🧠</span><span class="nav-label">IQ 테스트</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
+      <span class="nav-ico">🔢</span><span class="nav-label">스도쿠</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
+      <span class="nav-ico">➗</span><span class="nav-label">암산 게임</span>
+    </button>
+  </div>
 </nav>
 
 <!-- ==================== TYPING SCREEN ==================== -->
