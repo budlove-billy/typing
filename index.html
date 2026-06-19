@@ -185,6 +185,38 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
 .iq-domain-card{background:var(--bg3);border-radius:var(--radius);padding:.7rem .9rem}
 .iq-domain-name{font-size:.78rem;color:var(--text3);margin-bottom:.2rem}
 .iq-domain-score{font-size:1.1rem;font-weight:700;color:var(--purple)}
+
+/* SUDOKU */
+.sk-top-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.sk-stat{font-size:.85rem;color:var(--text2);display:flex;align-items:center;gap:.3rem}
+.sk-stat-label{font-style:normal;color:var(--text3);font-size:.78rem}
+.sk-stat span#sk-mistakes.warn{color:var(--red);font-weight:700}
+
+.sk-board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;max-width:480px;aspect-ratio:1/1;margin:0 auto 1rem;border:2.5px solid var(--text);border-radius:var(--radius);overflow:hidden;background:var(--text)}
+.sk-cell{background:#fff;display:flex;align-items:center;justify-content:center;font-size:clamp(14px,3.2vw,22px);font-weight:500;color:var(--text);cursor:pointer;user-select:none;position:relative;border:0.5px solid var(--border);transition:background .1s}
+.sk-cell.given{font-weight:700;color:var(--text)}
+.sk-cell.selected{background:var(--purple3)}
+.sk-cell.peer{background:var(--bg3)}
+.sk-cell.same-num{background:#dce4fb}
+.sk-cell.error{color:var(--red);background:var(--red3)}
+.sk-cell.box-right{border-right:2px solid var(--text)}
+.sk-cell.box-bottom{border-bottom:2px solid var(--text)}
+.sk-cell:not(.given){color:var(--purple)}
+.sk-cell-notes{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);font-size:clamp(7px,1.4vw,10px);font-weight:500;color:var(--text3);pointer-events:none}
+.sk-cell-notes span{display:flex;align-items:center;justify-content:center}
+
+.sk-toolbar{display:flex;gap:.5rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}
+.sk-tool-btn{background:#fff;border:1px solid var(--border2);border-radius:var(--radius);padding:.5rem .9rem;font-size:.8rem;color:var(--text2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.15rem;transition:.15s;min-width:64px;font-family:inherit}
+.sk-tool-btn span:first-child{font-size:1.1rem}
+.sk-tool-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+.sk-tool-btn.active{background:var(--purple3);border-color:var(--purple);color:var(--purple)}
+.sk-tool-label{font-size:.7rem}
+
+.sk-numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem;max-width:480px;margin:0 auto}
+.sk-num-btn{background:#fff;border:1px solid var(--border2);border-radius:var(--radius);padding:.6rem 0;font-size:1.1rem;font-weight:600;color:var(--text);cursor:pointer;transition:.12s;font-family:inherit}
+.sk-num-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+.sk-num-btn:disabled{opacity:.3;cursor:not-allowed}
+.sk-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;height:100%;font-size:.9rem;color:var(--text3);background:#fff}
 </style>
 </head>
 <body>
@@ -199,6 +231,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
   </button>
   <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
     <span class="nav-ico">🧠</span> IQ 테스트
+  </button>
+  <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
+    <span class="nav-ico">🔢</span> 스도쿠
   </button>
 </nav>
 
@@ -361,6 +396,69 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
     <div class="exam-list" id="iq-review-list" style="margin-top:1rem"></div>
     <div style="margin-top:1.25rem;text-align:center">
       <button class="btn" onclick="resetIQTest()">다시 풀기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SUDOKU SCREEN ==================== -->
+<div class="screen" id="screen-sudoku">
+  <div class="card" id="sudoku-intro-card">
+    <div class="section-head"><h2>스도쿠</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6">
+      9×9 격자를 1~9 숫자로 채워 각 행, 열, 3×3 박스에 같은 숫자가 겹치지 않도록 완성하세요.<br>
+      플레이할 때마다 숫자 배치가 매번 새로 생성됩니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn active" id="sk-diff-easy" onclick="setSudokuDiff('easy')">
+        <h3>🟢 쉬움</h3><p>빈칸 36개</p>
+      </div>
+      <div class="diff-btn" id="sk-diff-medium" onclick="setSudokuDiff('medium')">
+        <h3>🟡 보통</h3><p>빈칸 46개</p>
+      </div>
+      <div class="diff-btn" id="sk-diff-expert" onclick="setSudokuDiff('expert')">
+        <h3>🔴 전문가</h3><p>빈칸 56개</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startSudoku()">새 게임 시작</button>
+  </div>
+
+  <div class="card" id="sudoku-game-card" style="display:none">
+    <div class="sk-top-row">
+      <span class="tag" id="sk-diff-tag">쉬움</span>
+      <div class="sk-stat"><i class="sk-stat-label">실수</i> <span id="sk-mistakes">0/3</span></div>
+      <div class="sk-stat"><i class="sk-stat-label">시간</i> <span id="sk-timer">00:00</span></div>
+      <button class="btn btn-outline" style="margin-left:auto" onclick="confirmNewSudoku()">새 게임</button>
+    </div>
+
+    <div class="sk-board" id="sk-board"></div>
+
+    <div class="sk-toolbar">
+      <button class="sk-tool-btn" onclick="sudokuUndo()" title="실행 취소">
+        <span>↩</span><span class="sk-tool-label">실행취소</span>
+      </button>
+      <button class="sk-tool-btn" onclick="sudokuErase()" title="지우기">
+        <span>⌫</span><span class="sk-tool-label">지우기</span>
+      </button>
+      <button class="sk-tool-btn" id="sk-note-btn" onclick="sudokuToggleNote()" title="메모">
+        <span>✎</span><span class="sk-tool-label">메모</span>
+      </button>
+      <button class="sk-tool-btn" onclick="sudokuHint()" title="힌트">
+        <span>💡</span><span class="sk-tool-label">힌트 (<span id="sk-hint-count">3</span>)</span>
+      </button>
+    </div>
+
+    <div class="sk-numpad" id="sk-numpad"></div>
+  </div>
+
+  <div class="card" id="sudoku-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem">🎉</div>
+    <h2 style="margin-bottom:.5rem">완성했습니다!</h2>
+    <div class="result-row"><span>난이도</span><span id="sk-r-diff">쉬움</span></div>
+    <div class="result-row"><span>소요 시간</span><span id="sk-r-time">00:00</span></div>
+    <div class="result-row"><span>실수</span><span id="sk-r-mistakes">0회</span></div>
+    <div class="result-row"><span>사용한 힌트</span><span id="sk-r-hints">0회</span></div>
+    <div style="margin-top:1.25rem">
+      <button class="btn" onclick="resetSudoku()">새 게임</button>
     </div>
   </div>
 </div>
@@ -1132,6 +1230,425 @@ function finishIQTest(){
 function resetIQTest(){
   document.getElementById('iq-result-card').style.display='none';
   document.getElementById('iq-intro-card').style.display='block';
+}
+
+// ========== SUDOKU ==========
+// 난이도별 빈칸(뚫을 칸) 개수
+const SK_DIFF_HOLES={easy:36, medium:46, expert:56};
+const SK_DIFF_LABEL={easy:'쉬움', medium:'보통', expert:'전문가'};
+
+const SK = {
+  diff:'easy',
+  solution:[],      // 9x9 완성된 정답
+  board:[],         // 9x9 현재 사용자 입력 상태 (0=빈칸)
+  given:[],         // 9x9 boolean, true면 처음부터 채워진 고정 칸
+  notes:[],         // 9x9 Set, 메모 숫자들
+  selected:null,    // {r,c}
+  history:[],       // undo 스택: {r,c,prevValue,prevNotes}
+  mistakes:0,
+  maxMistakes:3,
+  hintsUsed:0,
+  maxHints:3,
+  noteMode:false,
+  timeSec:0,
+  timerHandle:null,
+  running:false,
+  solvedCount:0     // 채워진 칸 수 (완료 판정용)
+};
+
+function setSudokuDiff(d){
+  SK.diff=d;
+  document.getElementById('sk-diff-easy').classList.toggle('active',d==='easy');
+  document.getElementById('sk-diff-medium').classList.toggle('active',d==='medium');
+  document.getElementById('sk-diff-expert').classList.toggle('active',d==='expert');
+}
+
+// ---- 보드 생성 (백트래킹으로 완성된 9x9 생성 → 랜덤 순서로 시도해 매판 다르게) ----
+function sk_makeEmptyGrid(){
+  return Array.from({length:9},()=>Array(9).fill(0));
+}
+
+function sk_shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function sk_isValid(grid,r,c,val){
+  for(let i=0;i<9;i++){
+    if(grid[r][i]===val) return false;
+    if(grid[i][c]===val) return false;
+  }
+  const br=Math.floor(r/3)*3, bc=Math.floor(c/3)*3;
+  for(let i=0;i<3;i++) for(let j=0;j<3;j++){
+    if(grid[br+i][bc+j]===val) return false;
+  }
+  return true;
+}
+
+function sk_fillGrid(grid){
+  // 빈 칸 하나 찾기
+  for(let r=0;r<9;r++){
+    for(let c=0;c<9;c++){
+      if(grid[r][c]===0){
+        const nums=sk_shuffle([1,2,3,4,5,6,7,8,9]);
+        for(const n of nums){
+          if(sk_isValid(grid,r,c,n)){
+            grid[r][c]=n;
+            if(sk_fillGrid(grid)) return true;
+            grid[r][c]=0;
+          }
+        }
+        return false; // 모든 숫자 실패 → 백트래킹
+      }
+    }
+  }
+  return true; // 빈칸 없음 = 완성
+}
+
+function sk_generateSolution(){
+  const grid=sk_makeEmptyGrid();
+  sk_fillGrid(grid);
+  return grid;
+}
+
+// 빈칸을 뚫을 때, 유일해를 보장하기 위한 풀이 카운터 (2개 이상이면 멈춤)
+function sk_countSolutions(grid,limit){
+  let count=0;
+  function solve(g){
+    if(count>=limit) return;
+    for(let r=0;r<9;r++){
+      for(let c=0;c<9;c++){
+        if(g[r][c]===0){
+          for(let n=1;n<=9;n++){
+            if(sk_isValid(g,r,c,n)){
+              g[r][c]=n;
+              solve(g);
+              g[r][c]=0;
+              if(count>=limit) return;
+            }
+          }
+          return;
+        }
+      }
+    }
+    count++;
+  }
+  const copy=grid.map(row=>[...row]);
+  solve(copy);
+  return count;
+}
+
+function sk_generatePuzzle(holes){
+  const solution=sk_generateSolution();
+  const puzzle=solution.map(row=>[...row]);
+
+  // 81칸 좌표를 랜덤 순서로 섞어서 하나씩 제거 시도
+  const cells=sk_shuffle(Array.from({length:81},(_,i)=>[Math.floor(i/9), i%9]));
+  let removed=0;
+  const deadline=Date.now()+4000; // 한 판 생성에 4초 이상 쓰지 않도록 안전장치
+
+  for(const [r,c] of cells){
+    if(removed>=holes) break;
+    if(Date.now()>deadline) break; // 시간 초과 시 지금까지 뚫은 만큼으로 진행
+    const backup=puzzle[r][c];
+    if(backup===0) continue;
+    puzzle[r][c]=0;
+    // 유일해 검증 (난이도가 높을수록 검증 비용이 크므로 expert는 가벼운 검증으로 절충)
+    const solCount=sk_countSolutions(puzzle,2);
+    if(solCount!==1){
+      puzzle[r][c]=backup; // 복구
+    }else{
+      removed++;
+    }
+  }
+  return {solution,puzzle,removed};
+}
+
+function startSudoku(){
+  // 생성에 다소 시간이 걸릴 수 있어(특히 전문가 난이도) 먼저 로딩 화면을 보여준 뒤
+  // 다음 프레임에서 실제 생성을 수행해 화면이 멈춘 것처럼 보이지 않게 함
+  document.getElementById('sudoku-intro-card').style.display='none';
+  document.getElementById('sudoku-result-card').style.display='none';
+  document.getElementById('sudoku-game-card').style.display='block';
+  document.getElementById('sk-board').innerHTML='<div class="sk-loading">새 퍼즐을 생성하는 중...</div>';
+  document.getElementById('sk-numpad').innerHTML='';
+
+  setTimeout(()=>{
+    const holes=SK_DIFF_HOLES[SK.diff];
+    const {solution,puzzle,removed}=sk_generatePuzzle(holes);
+
+    SK.solution=solution;
+    SK.board=puzzle.map(row=>[...row]);
+    SK.given=puzzle.map(row=>row.map(v=>v!==0));
+    SK.notes=Array.from({length:9},()=>Array.from({length:9},()=>new Set()));
+    SK.selected=null;
+    SK.history=[];
+    SK.mistakes=0;
+    SK.hintsUsed=0;
+    SK.noteMode=false;
+    SK.timeSec=0;
+    SK.running=true;
+
+    document.getElementById('sk-diff-tag').textContent=SK_DIFF_LABEL[SK.diff];
+    document.getElementById('sk-hint-count').textContent=SK.maxHints-SK.hintsUsed;
+    document.getElementById('sk-note-btn').classList.remove('active');
+    updateSkMistakesDisplay();
+
+    renderSkBoard();
+    renderSkNumpad();
+
+    clearInterval(SK.timerHandle);
+    SK.timerHandle=setInterval(()=>{
+      if(!SK.running)return;
+      SK.timeSec++;
+      updateSkTimerDisplay();
+    },1000);
+    updateSkTimerDisplay();
+  },30);
+}
+
+function confirmNewSudoku(){
+  if(SK.running){
+    if(!confirm('현재 게임 진행 상황이 사라집니다. 새 게임을 시작할까요?')) return;
+  }
+  clearInterval(SK.timerHandle);
+  SK.running=false;
+  document.getElementById('sudoku-game-card').style.display='none';
+  document.getElementById('sudoku-result-card').style.display='none';
+  document.getElementById('sudoku-intro-card').style.display='block';
+}
+
+function resetSudoku(){
+  clearInterval(SK.timerHandle);
+  document.getElementById('sudoku-result-card').style.display='none';
+  document.getElementById('sudoku-intro-card').style.display='block';
+}
+
+function updateSkTimerDisplay(){
+  const m=Math.floor(SK.timeSec/60), s=SK.timeSec%60;
+  document.getElementById('sk-timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function updateSkMistakesDisplay(){
+  const el=document.getElementById('sk-mistakes');
+  el.textContent=SK.mistakes+'/'+SK.maxMistakes;
+  el.classList.toggle('warn', SK.mistakes>=SK.maxMistakes-1);
+}
+
+function renderSkBoard(){
+  const boardEl=document.getElementById('sk-board');
+  boardEl.innerHTML='';
+  for(let r=0;r<9;r++){
+    for(let c=0;c<9;c++){
+      const cell=document.createElement('div');
+      cell.className='sk-cell';
+      if((c+1)%3===0 && c!==8) cell.classList.add('box-right');
+      if((r+1)%3===0 && r!==8) cell.classList.add('box-bottom');
+      cell.dataset.r=r;cell.dataset.c=c;
+      cell.onclick=()=>skSelectCell(r,c);
+
+      const val=SK.board[r][c];
+      if(val!==0){
+        cell.textContent=val;
+        if(SK.given[r][c]) cell.classList.add('given');
+        if(val!==SK.solution[r][c]) cell.classList.add('error');
+      }else if(SK.notes[r][c].size>0){
+        const notesEl=document.createElement('div');
+        notesEl.className='sk-cell-notes';
+        for(let n=1;n<=9;n++){
+          const span=document.createElement('span');
+          span.textContent=SK.notes[r][c].has(n)?n:'';
+          notesEl.appendChild(span);
+        }
+        cell.appendChild(notesEl);
+      }
+      boardEl.appendChild(cell);
+    }
+  }
+  applySkHighlights();
+}
+
+function applySkHighlights(){
+  document.querySelectorAll('.sk-cell').forEach(cell=>{
+    cell.classList.remove('selected','peer','same-num');
+  });
+  if(!SK.selected) return;
+  const {r:sr,c:sc}=SK.selected;
+  const selVal=SK.board[sr][sc];
+  const br=Math.floor(sr/3)*3, bc=Math.floor(sc/3)*3;
+
+  document.querySelectorAll('.sk-cell').forEach(cell=>{
+    const r=+cell.dataset.r, c=+cell.dataset.c;
+    if(r===sr && c===sc){
+      cell.classList.add('selected');
+    }else if(r===sr || c===sc || (r>=br&&r<br+3&&c>=bc&&c<bc+3)){
+      cell.classList.add('peer');
+    }
+    if(selVal!==0 && SK.board[r][c]===selVal && !(r===sr&&c===sc)){
+      cell.classList.add('same-num');
+    }
+  });
+}
+
+function skSelectCell(r,c){
+  SK.selected={r,c};
+  applySkHighlights();
+}
+
+// 키보드로도 숫자 입력, 방향키 이동, Backspace 지우기 지원
+document.addEventListener('keydown',function(e){
+  const screenEl=document.getElementById('screen-sudoku');
+  if(!screenEl || !screenEl.classList.contains('active')) return;
+  if(!SK.running || !SK.selected) return;
+
+  if(e.key>='1' && e.key<='9'){
+    e.preventDefault();
+    skInputNumber(parseInt(e.key,10));
+  }else if(e.key==='Backspace' || e.key==='Delete' || e.key==='0'){
+    e.preventDefault();
+    sudokuErase();
+  }else if(e.key==='ArrowUp'||e.key==='ArrowDown'||e.key==='ArrowLeft'||e.key==='ArrowRight'){
+    e.preventDefault();
+    let {r,c}=SK.selected;
+    if(e.key==='ArrowUp') r=(r+8)%9;
+    if(e.key==='ArrowDown') r=(r+1)%9;
+    if(e.key==='ArrowLeft') c=(c+8)%9;
+    if(e.key==='ArrowRight') c=(c+1)%9;
+    skSelectCell(r,c);
+  }
+});
+
+
+function renderSkNumpad(){
+  const pad=document.getElementById('sk-numpad');
+  pad.innerHTML='';
+  for(let n=1;n<=9;n++){
+    const btn=document.createElement('button');
+    btn.className='sk-num-btn';
+    btn.textContent=n;
+    btn.onclick=()=>skInputNumber(n);
+    pad.appendChild(btn);
+  }
+}
+
+function skInputNumber(n){
+  if(!SK.selected || !SK.running) return;
+  const {r,c}=SK.selected;
+  if(SK.given[r][c]) return; // 처음부터 고정된 칸은 수정 불가
+
+  if(SK.noteMode){
+    // 메모 모드: 토글
+    SK.history.push({r,c,type:'note',prevNotes:new Set(SK.notes[r][c])});
+    if(SK.notes[r][c].has(n)) SK.notes[r][c].delete(n);
+    else SK.notes[r][c].add(n);
+    renderSkBoard();
+    return;
+  }
+
+  const prevValue=SK.board[r][c];
+  if(prevValue===n) return; // 동일 숫자 재입력 무시
+
+  SK.history.push({r,c,type:'value',prevValue,prevNotes:new Set(SK.notes[r][c])});
+  SK.board[r][c]=n;
+  SK.notes[r][c].clear();
+
+  if(n!==SK.solution[r][c]){
+    SK.mistakes++;
+    updateSkMistakesDisplay();
+    if(SK.mistakes>=SK.maxMistakes){
+      renderSkBoard();
+      setTimeout(()=>{
+        alert('실수 횟수를 초과했습니다. 새 게임을 시작합니다.');
+        confirmNewSudokuForce();
+      },200);
+      return;
+    }
+  }
+
+  renderSkBoard();
+  checkSkComplete();
+}
+
+function confirmNewSudokuForce(){
+  clearInterval(SK.timerHandle);
+  SK.running=false;
+  document.getElementById('sudoku-game-card').style.display='none';
+  document.getElementById('sudoku-intro-card').style.display='block';
+}
+
+function sudokuErase(){
+  if(!SK.selected || !SK.running) return;
+  const {r,c}=SK.selected;
+  if(SK.given[r][c]) return;
+  if(SK.board[r][c]===0 && SK.notes[r][c].size===0) return;
+
+  SK.history.push({r,c,type:'value',prevValue:SK.board[r][c],prevNotes:new Set(SK.notes[r][c])});
+  SK.board[r][c]=0;
+  SK.notes[r][c].clear();
+  renderSkBoard();
+}
+
+function sudokuUndo(){
+  if(SK.history.length===0 || !SK.running) return;
+  const last=SK.history.pop();
+  const {r,c}=last;
+  if(last.type==='value'){
+    SK.board[r][c]=last.prevValue;
+    SK.notes[r][c]=last.prevNotes;
+  }else{
+    SK.notes[r][c]=last.prevNotes;
+  }
+  SK.selected={r,c};
+  renderSkBoard();
+}
+
+function sudokuToggleNote(){
+  SK.noteMode=!SK.noteMode;
+  document.getElementById('sk-note-btn').classList.toggle('active',SK.noteMode);
+}
+
+function sudokuHint(){
+  if(!SK.running) return;
+  if(SK.hintsUsed>=SK.maxHints){
+    alert('힌트를 모두 사용했습니다.');
+    return;
+  }
+  // 선택된 빈 칸이 있으면 그 칸을, 없으면 빈 칸 중 하나를 무작위로 선택
+  let target=null;
+  if(SK.selected && SK.board[SK.selected.r][SK.selected.c]===0 && !SK.given[SK.selected.r][SK.selected.c]){
+    target=SK.selected;
+  }else{
+    const empties=[];
+    for(let r=0;r<9;r++) for(let c=0;c<9;c++) if(SK.board[r][c]===0) empties.push({r,c});
+    if(empties.length===0) return;
+    target=empties[Math.floor(Math.random()*empties.length)];
+  }
+  const {r,c}=target;
+  SK.history.push({r,c,type:'value',prevValue:SK.board[r][c],prevNotes:new Set(SK.notes[r][c])});
+  SK.board[r][c]=SK.solution[r][c];
+  SK.notes[r][c].clear();
+  SK.hintsUsed++;
+  document.getElementById('sk-hint-count').textContent=SK.maxHints-SK.hintsUsed;
+  SK.selected={r,c};
+  renderSkBoard();
+  checkSkComplete();
+}
+
+function checkSkComplete(){
+  for(let r=0;r<9;r++) for(let c=0;c<9;c++){
+    if(SK.board[r][c]!==SK.solution[r][c]) return;
+  }
+  // 완성!
+  SK.running=false;
+  clearInterval(SK.timerHandle);
+  document.getElementById('sudoku-game-card').style.display='none';
+  document.getElementById('sudoku-result-card').style.display='block';
+  document.getElementById('sk-r-diff').textContent=SK_DIFF_LABEL[SK.diff];
+  const m=Math.floor(SK.timeSec/60), s=SK.timeSec%60;
+  document.getElementById('sk-r-time').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  document.getElementById('sk-r-mistakes').textContent=SK.mistakes+'회';
+  document.getElementById('sk-r-hints').textContent=SK.hintsUsed+'회';
 }
 
 // INIT
