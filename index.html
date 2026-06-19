@@ -217,6 +217,35 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
 .sk-num-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
 .sk-num-btn:disabled{opacity:.3;cursor:not-allowed}
 .sk-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;height:100%;font-size:.9rem;color:var(--text3);background:#fff}
+
+/* MATH GAME */
+.mg-top-stats{display:flex;align-items:center;justify-content:center;gap:1.5rem;background:var(--bg3);border-radius:var(--radius2);padding:1.1rem 1.5rem;margin-bottom:1.25rem}
+.mg-stat-box{text-align:center;flex:1}
+.mg-stat-label{font-size:.75rem;color:var(--text3);letter-spacing:.06em;margin-bottom:.3rem}
+.mg-stat-value{font-size:2rem;font-weight:700;color:var(--text)}
+.mg-stat-divider{width:1px;height:42px;background:var(--border2)}
+
+.mg-timer{display:inline-block;background:linear-gradient(135deg,#f0506a,#f06ab0);color:#fff;font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;padding:.5rem 1.6rem;border-radius:var(--radius2);letter-spacing:.03em;box-shadow:0 4px 14px rgba(240,80,110,.3)}
+.mg-timer.warn{background:linear-gradient(135deg,#d61f3c,#e64a4a);animation:mgPulse .6s infinite}
+@keyframes mgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+.mg-board{background:var(--bg3);border-radius:var(--radius2);padding:1.5rem;border:1px solid var(--border)}
+.mg-toggle-row{display:flex;justify-content:flex-end;align-items:center;gap:.5rem;margin-bottom:1rem}
+.mg-switch{position:relative;display:inline-block;width:38px;height:21px;flex-shrink:0}
+.mg-switch input{opacity:0;width:0;height:0}
+.mg-switch-slider{position:absolute;cursor:pointer;inset:0;background:var(--border2);border-radius:999px;transition:.2s}
+.mg-switch-slider::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.mg-switch input:checked + .mg-switch-slider{background:var(--purple)}
+.mg-switch input:checked + .mg-switch-slider::before{transform:translateX(17px)}
+
+.mg-problem-row{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 0}
+.mg-expr{font-size:clamp(2rem,6vw,3rem);font-weight:700;color:var(--text);letter-spacing:.02em;white-space:nowrap}
+.mg-answer-input{width:160px;font-size:clamp(1.6rem,5vw,2.2rem);font-weight:700;text-align:center;background:#fff;border:2px solid var(--border2);border-radius:var(--radius);padding:.4rem .5rem;color:var(--purple);font-family:inherit;outline:none;transition:.15s}
+.mg-answer-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(91,79,240,.12)}
+.mg-answer-input.correct{border-color:var(--teal);background:var(--teal3);color:var(--teal2)}
+.mg-answer-input.wrong{border-color:var(--red);background:var(--red3);color:var(--red2)}
+
+.mg-feedback{text-align:center;font-size:.9rem;min-height:22px;color:var(--text3)}
 </style>
 </head>
 <body>
@@ -234,6 +263,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
   </button>
   <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
     <span class="nav-ico">🔢</span> 스도쿠
+  </button>
+  <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
+    <span class="nav-ico">➗</span> 암산 게임
   </button>
 </nav>
 
@@ -459,6 +491,82 @@ nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem;displ
     <div class="result-row"><span>사용한 힌트</span><span id="sk-r-hints">0회</span></div>
     <div style="margin-top:1.25rem">
       <button class="btn" onclick="resetSudoku()">새 게임</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MATH GAME SCREEN ==================== -->
+<div class="screen" id="screen-math">
+  <div class="card" id="math-intro-card">
+    <div class="section-head"><h2>암산 게임</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6">
+      덧셈·뺄셈·곱셈·나눗셈 문제를 제한 시간 안에 최대한 많이 풀어보세요.<br>
+      정답을 맞히면 다음 문제로 자동으로 넘어가고, 시간이 다 되면 게임이 종료됩니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn active" id="mg-diff-beginner" onclick="setMathDiff('beginner')">
+        <h3>🌱 초보</h3><p>한 자리수 +, −<br>60초</p>
+      </div>
+      <div class="diff-btn" id="mg-diff-advanced" onclick="setMathDiff('advanced')">
+        <h3>⚡ 고수</h3><p>두 자리수 +, −, ×<br>60초</p>
+      </div>
+      <div class="diff-btn" id="mg-diff-expert" onclick="setMathDiff('expert')">
+        <h3>🔥 전문가</h3><p>세 자리수 사칙연산<br>60초</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startMathGame()">게임 시작</button>
+  </div>
+
+  <div class="card" id="math-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box">
+        <div class="mg-stat-label">SCORE</div>
+        <div class="mg-stat-value" id="mg-score">0</div>
+      </div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box">
+        <div class="mg-stat-label">HIGH SCORE</div>
+        <div class="mg-stat-value" id="mg-highscore">0</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:1rem">
+      <div class="mg-timer" id="mg-timer">01:00</div>
+    </div>
+
+    <div class="mg-board">
+      <div class="mg-toggle-row">
+        <span style="font-size:.82rem;color:var(--text2)">자동 다음 문제</span>
+        <label class="mg-switch">
+          <input type="checkbox" id="mg-auto-next" checked>
+          <span class="mg-switch-slider"></span>
+        </label>
+      </div>
+      <div class="mg-problem-row">
+        <div class="mg-expr" id="mg-expr">0 + 0 =</div>
+        <input class="mg-answer-input" id="mg-answer-input" type="text" inputmode="numeric" autocomplete="off"
+          oninput="mgOnInput(event)" onkeydown="mgOnKey(event)">
+      </div>
+      <div class="mg-feedback" id="mg-feedback"></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveMathGame()">나가기</button>
+      <button class="btn btn-outline" onclick="confirmRestartMathGame()">다시 시작</button>
+    </div>
+  </div>
+
+  <div class="card" id="math-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="mg-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="mg-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="mg-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem">최종 점수</div>
+    <div class="result-row"><span>난이도</span><span id="mg-r-diff">초보</span></div>
+    <div class="result-row"><span>정답</span><span id="mg-r-correct">0개</span></div>
+    <div class="result-row"><span>오답</span><span id="mg-r-wrong">0개</span></div>
+    <div class="result-row"><span>최고 점수</span><span id="mg-r-highscore">0</span></div>
+    <div style="margin-top:1.25rem">
+      <button class="btn" onclick="resetMathGame()">새 게임</button>
     </div>
   </div>
 </div>
@@ -1649,6 +1757,238 @@ function checkSkComplete(){
   document.getElementById('sk-r-time').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   document.getElementById('sk-r-mistakes').textContent=SK.mistakes+'회';
   document.getElementById('sk-r-hints').textContent=SK.hintsUsed+'회';
+}
+
+// ========== MATH GAME (암산 게임) ==========
+const MG_DIFF_LABEL={beginner:'초보', advanced:'고수', expert:'전문가'};
+const MG_TIME_LIMIT=60; // 모든 난이도 60초
+
+const MG = {
+  diff:'beginner',
+  score:0,
+  highScore:{beginner:0, advanced:0, expert:0}, // 세션 중에만 유지되는 난이도별 최고점
+  correctCount:0,
+  wrongCount:0,
+  timeLeft:MG_TIME_LIMIT,
+  timerHandle:null,
+  running:false,
+  currentProblem:null, // {a,b,op,answer,text}
+  lockInput:false
+};
+
+function setMathDiff(d){
+  MG.diff=d;
+  document.getElementById('mg-diff-beginner').classList.toggle('active', d==='beginner');
+  document.getElementById('mg-diff-advanced').classList.toggle('active', d==='advanced');
+  document.getElementById('mg-diff-expert').classList.toggle('active', d==='expert');
+}
+
+function mg_randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+// 난이도별 문제 생성기
+function mg_generateProblem(diff){
+  let a,b,op,answer,text;
+  const ops=['+','-','×','÷'];
+
+  if(diff==='beginner'){
+    // 한 자리수 +, - 만, 결과는 항상 0 이상
+    op = Math.random()<0.5 ? '+' : '-';
+    if(op==='+'){
+      a=mg_randInt(1,9); b=mg_randInt(1,9);
+      answer=a+b;
+    }else{
+      a=mg_randInt(1,9); b=mg_randInt(1,a); // a>=b 보장 -> 결과 0 이상
+      answer=a-b;
+    }
+  }else if(diff==='advanced'){
+    // 두 자리수 +, -, × (곱셈은 두자리×한자리로 난이도 조절)
+    op = ops[mg_randInt(0,2)]; // +, -, × 중 하나
+    if(op==='+'){
+      a=mg_randInt(10,99); b=mg_randInt(10,99);
+      answer=a+b;
+    }else if(op==='-'){
+      a=mg_randInt(10,99); b=mg_randInt(10,a);
+      answer=a-b;
+    }else{ // ×
+      a=mg_randInt(10,99); b=mg_randInt(2,9);
+      answer=a*b;
+    }
+  }else{ // expert
+    // 세 자리수 사칙연산, 나눗셈은 나누어떨어지게 생성
+    op = ops[mg_randInt(0,3)];
+    if(op==='+'){
+      a=mg_randInt(100,999); b=mg_randInt(100,999);
+      answer=a+b;
+    }else if(op==='-'){
+      a=mg_randInt(100,999); b=mg_randInt(100,a);
+      answer=a-b;
+    }else if(op==='×'){
+      a=mg_randInt(10,99); b=mg_randInt(10,99);
+      answer=a*b;
+    }else{ // ÷  (나누어 떨어지도록 몫과 나누는수를 먼저 정함)
+      b=mg_randInt(2,20);
+      const q=mg_randInt(10,99);
+      a=b*q;
+      answer=q;
+    }
+  }
+  text=`${a} ${op} ${b} =`;
+  return {a,b,op,answer,text};
+}
+
+function startMathGame(){
+  MG.score=0;
+  MG.correctCount=0;
+  MG.wrongCount=0;
+  MG.timeLeft=MG_TIME_LIMIT;
+  MG.running=true;
+  MG.lockInput=false;
+
+  document.getElementById('math-intro-card').style.display='none';
+  document.getElementById('math-result-card').style.display='none';
+  document.getElementById('math-game-card').style.display='block';
+
+  document.getElementById('mg-score').textContent='0';
+  document.getElementById('mg-highscore').textContent=MG.highScore[MG.diff];
+  document.getElementById('mg-feedback').textContent='';
+  updateMgTimerDisplay();
+
+  mgNextProblem();
+
+  clearInterval(MG.timerHandle);
+  MG.timerHandle=setInterval(()=>{
+    if(!MG.running) return;
+    MG.timeLeft--;
+    updateMgTimerDisplay();
+    if(MG.timeLeft<=0){
+      MG.timeLeft=0;
+      updateMgTimerDisplay();
+      finishMathGame();
+    }
+  },1000);
+
+  setTimeout(()=>document.getElementById('mg-answer-input').focus(),50);
+}
+
+function updateMgTimerDisplay(){
+  const m=Math.floor(MG.timeLeft/60), s=MG.timeLeft%60;
+  const el=document.getElementById('mg-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', MG.timeLeft<=10);
+}
+
+function mgNextProblem(){
+  MG.currentProblem=mg_generateProblem(MG.diff);
+  document.getElementById('mg-expr').textContent=MG.currentProblem.text;
+  const inp=document.getElementById('mg-answer-input');
+  inp.value='';
+  inp.className='mg-answer-input';
+  inp.disabled=false;
+  document.getElementById('mg-feedback').textContent='';
+  inp.focus();
+  MG.lockInput=false;
+}
+
+function mgOnInput(){
+  // 입력 중에는 색상 초기화만
+  const inp=document.getElementById('mg-answer-input');
+  if(inp.classList.contains('wrong')||inp.classList.contains('correct')){
+    inp.className='mg-answer-input';
+  }
+}
+
+function mgOnKey(e){
+  if(e.key!=='Enter') return;
+  if(!MG.lockInput){
+    mgSubmitAnswer();
+  }else{
+    // 이미 채점된 상태에서 Enter -> 다음 문제로 (자동 다음 문제 꺼져있을 때 사용)
+    if(MG.running) mgNextProblem();
+  }
+}
+
+function mgSubmitAnswer(){
+  if(!MG.running || MG.lockInput) return;
+  const inp=document.getElementById('mg-answer-input');
+  const val=inp.value.trim();
+  if(val==='') return;
+
+  const userAnswer=Number(val);
+  const isCorrect = !isNaN(userAnswer) && userAnswer===MG.currentProblem.answer;
+  const autoNext=document.getElementById('mg-auto-next').checked;
+
+  MG.lockInput=true;
+  const fb=document.getElementById('mg-feedback');
+
+  if(isCorrect){
+    MG.score++;
+    MG.correctCount++;
+    inp.className='mg-answer-input correct';
+    fb.textContent='정답입니다! 🎉';
+    fb.style.color='var(--teal2)';
+    document.getElementById('mg-score').textContent=MG.score;
+    if(MG.score > MG.highScore[MG.diff]){
+      MG.highScore[MG.diff]=MG.score;
+      document.getElementById('mg-highscore').textContent=MG.highScore[MG.diff];
+    }
+  }else{
+    MG.wrongCount++;
+    inp.className='mg-answer-input wrong';
+    fb.textContent=`오답입니다. 정답은 ${MG.currentProblem.answer}`;
+    fb.style.color='var(--red)';
+  }
+
+  inp.disabled=true;
+
+  if(autoNext){
+    setTimeout(()=>{
+      if(MG.running) mgNextProblem();
+    }, isCorrect?400:900);
+  }else{
+    fb.textContent += '  (Enter ↵ 를 눌러 다음 문제)';
+  }
+}
+
+function leaveMathGame(){
+  if(MG.running){
+    if(!confirm('게임 진행 상황이 사라집니다. 나가시겠습니까?')) return;
+  }
+  clearInterval(MG.timerHandle);
+  MG.running=false;
+  document.getElementById('math-game-card').style.display='none';
+  document.getElementById('math-result-card').style.display='none';
+  document.getElementById('math-intro-card').style.display='block';
+}
+
+function confirmRestartMathGame(){
+  if(!confirm('현재 게임을 종료하고 다시 시작할까요?')) return;
+  clearInterval(MG.timerHandle);
+  startMathGame();
+}
+
+function finishMathGame(){
+  MG.running=false;
+  clearInterval(MG.timerHandle);
+
+  document.getElementById('math-game-card').style.display='none';
+  document.getElementById('math-result-card').style.display='block';
+
+  const total=MG.correctCount+MG.wrongCount;
+  const isNewHigh = MG.score===MG.highScore[MG.diff] && MG.score>0;
+
+  document.getElementById('mg-result-emoji').textContent = isNewHigh ? '🏆' : '⏰';
+  document.getElementById('mg-result-title').textContent = isNewHigh ? '신기록 달성!' : '타임 오버!';
+  document.getElementById('mg-result-score').textContent=MG.score;
+  document.getElementById('mg-r-diff').textContent=MG_DIFF_LABEL[MG.diff];
+  document.getElementById('mg-r-correct').textContent=MG.correctCount+'개';
+  document.getElementById('mg-r-wrong').textContent=MG.wrongCount+'개';
+  document.getElementById('mg-r-highscore').textContent=MG.highScore[MG.diff];
+}
+
+function resetMathGame(){
+  clearInterval(MG.timerHandle);
+  document.getElementById('math-result-card').style.display='none';
+  document.getElementById('math-intro-card').style.display='block';
 }
 
 // INIT
