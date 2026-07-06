@@ -326,6 +326,20 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .bt-rec-box{background:var(--teal3);border:1px solid var(--teal);border-radius:var(--radius2);padding:1rem;margin-bottom:1rem}
 .bt-rec-label{font-size:.78rem;color:var(--teal2);margin-bottom:.35rem}
 .bt-rec-game{font-size:1.1rem;font-weight:700;color:var(--teal2);margin-bottom:.6rem}
+/* ===== Home / dashboard ===== */
+.home-hero{text-align:center;background:linear-gradient(135deg,#5b4ff0,#0e9e70);color:#fff;border:none}
+.home-greeting{font-size:1.35rem;font-weight:800;margin-bottom:.3rem}
+.home-sub{font-size:.85rem;opacity:.9;margin-bottom:1rem}
+.home-streak{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,0.18);border-radius:999px;padding:.4rem 1rem;font-size:.95rem}
+.home-streak b{font-size:1.15rem}
+.home-streak-fire{font-size:1.1rem}
+.home-section-title{font-size:.9rem;font-weight:700;color:var(--text2);margin:.25rem .25rem .75rem}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
+.home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1rem .5rem;cursor:pointer;transition:.14s;font-family:inherit;box-shadow:0 1px 4px rgba(60,60,120,.05)}
+.home-card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(91,79,240,.15)}
+.home-card-emoji{font-size:2rem;line-height:1}
+.home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
+.home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
 </style>
 </head>
 <body>
@@ -333,7 +347,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <nav>
   <div class="nav-logo">말랑말랑<span> 두뇌체조</span></div>
   <div class="nav-menu">
-    <button class="nav-btn active" onclick="showScreen('typing')" id="nav-typing">
+    <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+      <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.home">홈</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('typing')" id="nav-typing">
       <span class="nav-ico">⌨️</span><span class="nav-label" data-i18n="nav.typing">한글 타자</span>
     </button>
     <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
@@ -352,7 +369,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <span class="nav-ico">⚡</span><span class="nav-label" data-i18n="nav.flash">순간기억</span>
     </button>
     <button class="nav-btn" onclick="showScreen('count')" id="nav-count">
-      <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
+      <span class="nav-ico">👥</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
     </button>
     <button class="nav-btn" onclick="showScreen('stroop')" id="nav-stroop">
       <span class="nav-ico">🎨</span><span class="nav-label" data-i18n="nav.stroop">색깔 맞추기</span>
@@ -373,8 +390,19 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </nav>
 
+<!-- ==================== HOME / DASHBOARD ==================== -->
+<div class="screen active" id="screen-home">
+  <div class="card home-hero">
+    <div class="home-greeting" data-i18n="home.greeting">오늘도 두뇌 체조 한 판!</div>
+    <div class="home-sub" data-i18n="home.sub">매일 조금씩, 뇌가 말랑말랑해집니다.</div>
+    <div class="home-streak"><span class="home-streak-fire">🔥</span> <b id="home-streak-n">1</b><span data-i18n="home.streakUnit">일 연속 방문</span></div>
+  </div>
+  <div class="home-section-title" data-i18n="home.allGames">전체 트레이닝</div>
+  <div class="home-grid" id="home-grid"></div>
+</div>
+
 <!-- ==================== TYPING SCREEN ==================== -->
-<div class="screen active" id="screen-typing">
+<div class="screen" id="screen-typing">
   <div class="card">
     <div class="section-head">
       <h2 data-i18n="typing.title">소설 타자 연습</h2>
@@ -1172,6 +1200,11 @@ const I18N = {
   "trail.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 
   "nav.braintype": {ko:"두뇌 유형", en:"Brain Type", th:"ประเภทสมอง"},
+  "nav.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
+  "home.greeting": {ko:"오늘도 두뇌 체조 한 판!", en:"Time for today's brain workout!", th:"ได้เวลาบริหารสมองวันนี้!"},
+  "home.sub": {ko:"매일 조금씩, 뇌가 말랑말랑해집니다.", en:"A little each day keeps your brain sharp.", th:"ทำทุกวันทีละนิด สมองก็เฉียบคม"},
+  "home.streakUnit": {ko:"일 연속 방문", en:" day streak", th:" วันติดต่อกัน"},
+  "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},
   "braintype.title": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
   "braintype.intro": {ko:"6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.", en:"Discover your brain type in 6 questions!<br>We'll also recommend the training that fits you.", th:"ค้นหาประเภทสมองของคุณใน 6 คำถาม!<br>พร้อมแนะนำการฝึกที่เหมาะกับคุณ"},
   "braintype.start": {ko:"테스트 시작", en:"Start Test", th:"เริ่มทดสอบ"},
@@ -1276,6 +1309,8 @@ function refreshDynamicTexts(){
   if(typeof hcUpdateBestLine === 'function') hcUpdateBestLine();
   if(typeof stUpdateBestLine === 'function') stUpdateBestLine();
   if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
+  if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
+     document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
   if(typeof BT !== 'undefined'){
     if(document.getElementById('bt-quiz-card') && document.getElementById('bt-quiz-card').style.display!=='none'){
@@ -1350,6 +1385,7 @@ function showScreen(id){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+id).classList.add('active');
   if(id==='vocab') renderLevelTabs();
+  if(id==='home' && typeof renderHome==='function') renderHome();
 }
 
 // ========== TYPING — 내장 소설 데이터 ==========
@@ -3375,12 +3411,59 @@ function gameShare(game){
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
 }
 
+// ========== 홈 / 대시보드 ==========
+const HOME_GAMES=[
+  {id:'typing', emoji:'⌨️', key:'nav.typing'},
+  {id:'vocab',  emoji:'📚', key:'nav.vocab'},
+  {id:'iq',     emoji:'🧠', key:'nav.iq'},
+  {id:'sudoku', emoji:'🔢', key:'nav.sudoku'},
+  {id:'math',   emoji:'➗', key:'nav.math'},
+  {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best'},
+  {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best'},
+  {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best'},
+  {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best'},
+  {id:'braintype', emoji:'🔮', key:'nav.braintype'},
+];
+function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+// 연속 출석 갱신 (하루 1회 카운트)
+function homeVisit(){
+  let v=null;
+  try{ v=JSON.parse(localStorage.getItem('brain.visit')||'null'); }catch(e){ v=null; }
+  const today=bt_today();
+  if(!v || typeof v!=='object'){ v={last:today, streak:1, total:1}; }
+  else if(v.last!==today){
+    v.streak = (v.last===bt_yesterday()) ? ((v.streak||0)+1) : 1;
+    v.total=(v.total||0)+1; v.last=today;
+  }
+  try{ localStorage.setItem('brain.visit', JSON.stringify(v)); }catch(e){}
+  return v;
+}
+function renderHome(){
+  const v=homeVisit();
+  const nEl=document.getElementById('home-streak-n'); if(nEl) nEl.textContent=v.streak;
+  const grid=document.getElementById('home-grid'); if(!grid) return;
+  grid.innerHTML='';
+  HOME_GAMES.forEach(g=>{
+    const card=document.createElement('button');
+    card.className='home-card'; card.onclick=()=>showScreen(g.id);
+    let best='';
+    if(g.best){
+      const b=bt_loadBest(g.best);
+      const mx=Math.max(b.easy.all, b.normal.all, b.hard.all);
+      if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>';
+    }
+    card.innerHTML=best+'<div class="home-card-emoji">'+g.emoji+'</div><div class="home-card-name">'+t(g.key)+'</div>';
+    grid.appendChild(card);
+  });
+}
+
 // INIT
 applyLanguage();
 renderLevelTabs();
 renderExamInfo();
 renderStoryList();
 loadNewStory();
+renderHome();
 </script>
 </body>
 </html>
