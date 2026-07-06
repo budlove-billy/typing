@@ -37,13 +37,19 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-06 추가): 도형 회전(rotate)** → **새 공간지각 축(home.grpSpace)**. 두 글자도형 비교, 오른쪽이
   회전만이면 '같다'/거울상이면 '다르다'. CSS transform rotate+scaleX(-1). 각도 0° 제외. `RT` 객체. `brain.rotate.best`.
   주의: 상태객체 `RT`(회전)와 trail의 `TR`(순서잇기)는 다름. rotate DOM id는 `rt2-*`/`rot-*`.
-- **공유카드 일반화(2026-07-06)**: `makeShareCard({emoji,title,subtitle,lines,desc,note,from,to})` + `shareOrDownload()`.
-  점수게임(flash/count/nback/stroop/trail/switch/rotate) 결과에 `gameShare('<id>')` 버튼. braintype도 이 헬퍼로 통일.
-- **홈/대시보드(2026-07-06)**: `#screen-home` 기본 랜딩. `HOME_GAMES`(grp별) 그리드 + 최고기록 뱃지.
-  히어로에 통계 3종(연속/방문일/보유기록) + **오늘의 추천**(날짜기반 회전, `homePickGo`). 연속 출석 `homeVisit()`/`brain.visit`.
-  nav는 아이콘+라벨 세로 칩(모바일도 라벨 표시). 모바일 @media 640/360.
-- 게임/콘텐츠 **총 13종**. 축: 계산·타이핑·논리 / 기억(순간·인원·엔백) / 주의·속도 / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
-- 다음 후보(미구현): 카드 짝 맞추기(시각기억), 반응 속도(Go/No-Go).
+- **신규(2026-07-06 추가): 카드 짝 맞추기(cards)** → **기억 축**(시각기억). 뒤집힌 카드 짝 맞추기, 판 클리어 시 쌍+1.
+  60초, combo, `shuffleArr` 재사용, 덱=각 그림 2장. `CM` 객체(timer+flipT). `brain.cards.best`.
+- **신규(2026-07-06 추가): 반응 속도(react)** → **주의·속도 축**(Go/No-Go, 반응억제). 초록에 빠르게 탭/빨강 참기.
+  **시행 기반(60초 아님)**, `performance.now()`로 RT 측정, 점수=빠를수록↑(하한20)/No-Go 참기 +120, 반칙 combo리셋.
+  결과에 평균 RT 표시. `RC` 객체(waitT/nogoT/fbT 3타이머, state머신 waiting/go/nogo/resolved). `brain.react.best`.
+- **공유카드 일반화(2026-07-06)**: `makeShareCard(...)` + `shareOrDownload()`. 점수게임 9종 `gameShare('<id>')`
+  (flash/count/nback/cards/stroop/trail/react/switch/rotate). braintype도 이 헬퍼로 통일.
+- **홈/대시보드(2026-07-06)**: `#screen-home` 기본 랜딩. `HOME_GAMES`(grp별, 15항목) 그리드 + 최고기록 뱃지.
+  히어로 통계 3종 + **오늘의 추천**(날짜기반, `homePickGo`). 연속 출석 `homeVisit()`/`brain.visit`.
+  nav는 아이콘+라벨 세로 칩(모바일도 라벨). 모바일 @media 640/360.
+- 게임/콘텐츠 **총 15종**(플레이 게임 14 + 두뇌유형 테스트). 화면 16(홈 포함).
+  축: 계산·타이핑·논리 / 기억(순간·인원·엔백·카드) / 주의·속도(스트룹·순서·반응) / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
+- 다음 후보: 사운드/햅틱, 주간 통계·목표, 유형별 상세 결과 확장.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 조사 자료

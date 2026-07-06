@@ -429,6 +429,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .cm-card.done{background:var(--teal3);border:1.5px solid var(--teal);cursor:default}
 .cm-card:active:not(.done){transform:scale(.95)}
 @media (max-width:640px){ .cm-board{gap:.4rem;max-width:340px} }
+/* ===== Reaction (반응 속도) ===== */
+.rc-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;height:220px;border-radius:var(--radius3);cursor:pointer;user-select:none;font-weight:800;color:#fff;font-size:1.6rem;transition:background .08s;text-align:center;padding:1rem;-webkit-tap-highlight-color:transparent}
+.rc-box.idle{background:var(--bg4);color:var(--text2)}
+.rc-box.waiting{background:linear-gradient(135deg,#7b8bb0,#556089)}
+.rc-box.go{background:linear-gradient(135deg,#15a040,#0e9e70)}
+.rc-box.nogo{background:linear-gradient(135deg,#e0344b,#b02030)}
+.rc-box.good{background:linear-gradient(135deg,#2255d0,#5b4ff0)}
+.rc-box.bad{background:linear-gradient(135deg,#c97a00,#a86300)}
+.rc-box-sub{font-size:1rem;font-weight:600;opacity:.92}
 </style>
 </head>
 <body>
@@ -456,6 +465,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('trail')" id="nav-trail">
       <span class="nav-ico">🔗</span><span class="nav-label" data-i18n="nav.trail">순서 잇기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('react')" id="nav-react">
+      <span class="nav-ico">⏱️</span><span class="nav-label" data-i18n="nav.react">반응 속도</span>
     </button>
     <button class="nav-btn" onclick="showScreen('switch')" id="nav-switch">
       <span class="nav-ico">🔀</span><span class="nav-label" data-i18n="nav.switch">규칙 바꾸기</span>
@@ -1270,6 +1282,59 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== REACTION SCREEN (반응 속도 / Go-No-Go) ==================== -->
+<div class="screen" id="screen-react">
+  <div class="card" id="react-intro-card">
+    <div class="section-head"><h2 data-i18n="react.title">반응 속도</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="react.intro">
+      화면이 <b>초록색이 되는 순간 최대한 빨리</b> 누르세요. 빠를수록 고득점!<br>
+      단, <b>빨간색이 나오면 누르지 말고 참아야</b> 합니다. 성급하면 반칙! (반응 억제 훈련)
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="rc-diff-easy" onclick="setReactDiff('easy')">
+        <h3>🌱 <span data-i18n="react.easy">쉬움</span></h3><p data-i18n="react.easyDesc">10회 · 방해 적음</p>
+      </div>
+      <div class="diff-btn active" id="rc-diff-normal" onclick="setReactDiff('normal')">
+        <h3>⚡ <span data-i18n="react.normal">보통</span></h3><p data-i18n="react.normalDesc">12회 · 기본</p>
+      </div>
+      <div class="diff-btn" id="rc-diff-hard" onclick="setReactDiff('hard')">
+        <h3>🔥 <span data-i18n="react.hard">어려움</span></h3><p data-i18n="react.hardDesc">14회 · 방해 많음</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startReact()" data-i18n="react.startGame">게임 시작</button>
+    <div class="best-line" id="rc-intro-best"></div>
+  </div>
+
+  <div class="card" id="react-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="react.score">SCORE</div><div class="mg-stat-value" id="rc-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="react.combo">COMBO</div><div class="mg-stat-value" id="rc-combo">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="react.trials">TRIAL</div><div class="mg-stat-value" id="rc-progress">0/12</div></div>
+    </div>
+    <div class="rc-box idle" id="rc-box" onclick="rcTap()">
+      <span id="rc-box-main" data-i18n="react.tapToStart">시작하면 준비하세요</span>
+      <span class="rc-box-sub" id="rc-box-sub"></span>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveReact()" data-i18n="react.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="react-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="rc-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="rc-result-title">완료!</h2>
+    <div class="iq-result-score" id="rc-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="react.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="react.difficulty">난이도</span><span id="rc-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="react.avgRt">평균 반응</span><span id="rc-r-avg">- ms</span></div>
+    <div class="result-row"><span data-i18n="react.maxCombo">최고 콤보</span><span id="rc-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="react.best">최고 기록</span><span id="rc-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetReact()" data-i18n="react.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('react')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1659,6 +1724,37 @@ const I18N = {
   "cards.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "cards.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
   "cards.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "nav.react": {ko:"반응 속도", en:"Reaction", th:"ความไว"},
+  "react.title": {ko:"반응 속도", en:"Reaction Speed", th:"ความไวในการตอบสนอง"},
+  "react.intro": {ko:"화면이 <b>초록색이 되는 순간 최대한 빨리</b> 누르세요. 빠를수록 고득점!<br>단, <b>빨간색이 나오면 누르지 말고 참아야</b> 합니다. 성급하면 반칙! (반응 억제 훈련)", en:"Tap <b>as fast as you can the moment it turns green</b>. Faster = higher score!<br>But <b>if it turns red, do NOT tap</b> — hold back. Jumping the gun is a foul! (response inhibition)", th:"แตะ <b>ให้เร็วที่สุดทันทีที่เป็นสีเขียว</b> ยิ่งเร็วยิ่งได้คะแนน!<br>แต่ <b>ถ้าเป็นสีแดง อย่าแตะ</b> ต้องอดใจ ใจร้อนถือว่าฟาวล์! (ฝึกยับยั้งการตอบสนอง)"},
+  "react.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "react.easyDesc": {ko:"10회 · 방해 적음", en:"10 · few traps", th:"10 · กับดักน้อย"},
+  "react.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "react.normalDesc": {ko:"12회 · 기본", en:"12 · standard", th:"12 · มาตรฐาน"},
+  "react.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "react.hardDesc": {ko:"14회 · 방해 많음", en:"14 · many traps", th:"14 · กับดักมาก"},
+  "react.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "react.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "react.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "react.trials": {ko:"TRIAL", en:"TRIAL", th:"รอบ"},
+  "react.tapToStart": {ko:"시작하면 준비하세요", en:"Get ready to react", th:"เตรียมพร้อม"},
+  "react.wait": {ko:"준비…", en:"Wait…", th:"รอ…"},
+  "react.go": {ko:"👆 지금 탭!", en:"👆 TAP NOW!", th:"👆 แตะเลย!"},
+  "react.nogo": {ko:"✋ 멈춰!", en:"✋ STOP!", th:"✋ หยุด!"},
+  "react.foulEarly": {ko:"너무 빨라요! ⛔", en:"Too early! ⛔", th:"เร็วไป! ⛔"},
+  "react.foulNogo": {ko:"참았어야죠! ⛔", en:"Should've held! ⛔", th:"ต้องอดใจสิ! ⛔"},
+  "react.goodNogo": {ko:"잘 참았어요! 👍", en:"Nice hold! 👍", th:"อดใจได้ดี! 👍"},
+  "react.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "react.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "react.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "react.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "react.avgRt": {ko:"평균 반응", en:"Avg reaction", th:"เฉลี่ยตอบสนอง"},
+  "react.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "react.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "react.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "react.done": {ko:"완료!", en:"Done!", th:"เสร็จ!"},
+  "react.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 };
 
 // ========== I18N CORE ==========
@@ -1754,6 +1850,7 @@ function refreshDynamicTexts(){
   if(typeof nbUpdateBestLine === 'function') nbUpdateBestLine();
   if(typeof rtUpdateBestLine === 'function') rtUpdateBestLine();
   if(typeof cmUpdateBestLine === 'function') cmUpdateBestLine();
+  if(typeof rcUpdateBestLine === 'function') rcUpdateBestLine();
   if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
      document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
@@ -3854,6 +3951,7 @@ function gameShare(game){
   else if(game==='nback') o={emoji:'🔡', title:t('nback.title'),  from:'#5b4ff0', to:'#2255d0', lines:[t('nback.score')+'  '+NB.score, t('nback.correct')+'  '+NB.hits]};
   else if(game==='rotate')o={emoji:'🔄', title:t('rotate.title'), from:'#0e9e70', to:'#7b4ff0', lines:[t('rotate.score')+'  '+RT.score, t('rotate.correct')+'  '+RT.correct]};
   else if(game==='cards') o={emoji:'🃏', title:t('cards.title'),  from:'#5b4ff0', to:'#0e9e70', lines:[t('cards.score')+'  '+CM.score, t('cards.clearedBoards')+'  '+CM.boards]};
+  else if(game==='react') o={emoji:'⏱️', title:t('react.title'),  from:'#15a040', to:'#2255d0', lines:[t('react.score')+'  '+RC.score, t('react.avgRt')+'  '+(RC.rtCount?Math.round(RC.rtSum/RC.rtCount)+'ms':'-')]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -3868,6 +3966,7 @@ const HOME_GAMES=[
   {id:'cards',  emoji:'🃏', key:'nav.cards',  best:'brain.cards.best',  grp:'home.grpMemory'},
   {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
+  {id:'react',  emoji:'⏱️', key:'nav.react',  best:'brain.react.best',  grp:'home.grpAttention'},
   {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
   {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'home.grpSpace'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'home.grpCalc'},
@@ -4329,6 +4428,109 @@ function resetCards(){
   document.getElementById('cards-game-card').style.display='none';
   document.getElementById('cards-intro-card').style.display='block';
   cmUpdateBestLine();
+}
+
+// ========== 반응 속도 (Reaction / Go-No-Go) ==========
+const RC_CFG={ easy:{trials:10,noGoP:0.15,win:1200}, normal:{trials:12,noGoP:0.25,win:1100}, hard:{trials:14,noGoP:0.35,win:1000} };
+const RC = {
+  diff:'normal', total:12, done:0, score:0, combo:0, maxCombo:0,
+  rtSum:0, rtCount:0, state:'idle', goAt:0,
+  waitT:null, nogoT:null, fbT:null, running:false,
+  best:bt_loadBest('brain.react.best')
+};
+function _rcNow(){ return (window.performance && performance.now) ? performance.now() : Date.now(); }
+function RC_DIFF_LABEL(d){ return d==='easy'?t('react.easy'):d==='normal'?t('react.normal'):t('react.hard'); }
+function rcUpdateBestLine(){ const el=document.getElementById('rc-intro-best'); if(el) el.textContent=bt_bestLineText(RC.best, RC.diff); }
+function setReactDiff(d){
+  RC.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('rc-diff-'+k).classList.toggle('active',k===d));
+  rcUpdateBestLine();
+}
+function rcClearTimers(){ clearTimeout(RC.waitT); clearTimeout(RC.nogoT); clearTimeout(RC.fbT); }
+function rcSetBox(cls,main,sub){
+  document.getElementById('rc-box').className='rc-box '+cls;
+  document.getElementById('rc-box-main').textContent=main;
+  document.getElementById('rc-box-sub').textContent=sub||'';
+}
+function rcUpdateStats(){
+  document.getElementById('rc-score').textContent=RC.score;
+  document.getElementById('rc-combo').textContent=RC.combo;
+  document.getElementById('rc-progress').textContent=RC.done+'/'+RC.total;
+}
+function startReact(){
+  const cfg=RC_CFG[RC.diff];
+  RC.total=cfg.trials; RC.done=0; RC.score=0; RC.combo=0; RC.maxCombo=0; RC.rtSum=0; RC.rtCount=0; RC.running=true; RC.state='idle';
+  document.getElementById('react-intro-card').style.display='none';
+  document.getElementById('react-result-card').style.display='none';
+  document.getElementById('react-game-card').style.display='block';
+  rcUpdateStats(); rcNextTrial();
+}
+function rcNextTrial(){
+  if(!RC.running) return;
+  if(RC.done>=RC.total){ finishReact(); return; }
+  RC.state='waiting';
+  rcSetBox('waiting', t('react.wait'), '');
+  const delay=1000 + Math.random()*1800;
+  RC.waitT=setTimeout(rcSignal, delay);
+}
+function rcSignal(){
+  if(!RC.running) return;
+  const cfg=RC_CFG[RC.diff];
+  if(Math.random()<cfg.noGoP){
+    RC.state='nogo'; rcSetBox('nogo', t('react.nogo'), '');
+    RC.nogoT=setTimeout(rcSurviveNoGo, cfg.win);
+  }else{
+    RC.state='go'; rcSetBox('go', t('react.go'), ''); RC.goAt=_rcNow();
+  }
+}
+function rcSurviveNoGo(){
+  if(!RC.running) return;
+  RC.state='resolved';
+  RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=120; RC.done++;
+  rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+120'); rcSchedNext();
+}
+function rcTap(){
+  if(!RC.running) return;
+  if(RC.state==='go'){
+    const rt=Math.round(_rcNow()-RC.goAt);
+    RC.state='resolved'; RC.rtSum+=rt; RC.rtCount++;
+    RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo);
+    const pts=Math.max(20, Math.round(500 - rt*0.5)); RC.score+=pts; RC.done++;
+    rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
+  }else if(RC.state==='waiting'){
+    clearTimeout(RC.waitT);
+    RC.state='resolved'; RC.combo=0; RC.done++;
+    rcUpdateStats(); rcSetBox('bad', t('react.foulEarly'), ''); rcSchedNext();
+  }else if(RC.state==='nogo'){
+    clearTimeout(RC.nogoT);
+    RC.state='resolved'; RC.combo=0; RC.done++;
+    rcUpdateStats(); rcSetBox('bad', t('react.foulNogo'), ''); rcSchedNext();
+  }
+}
+function rcSchedNext(){ RC.fbT=setTimeout(rcNextTrial, 850); }
+function finishReact(){
+  rcClearTimers(); RC.running=false;
+  const newRec=bt_recordScore(RC.best, RC.diff, RC.score); bt_saveBest('brain.react.best', RC.best);
+  document.getElementById('react-game-card').style.display='none';
+  document.getElementById('react-result-card').style.display='block';
+  document.getElementById('rc-result-emoji').textContent=newRec?'🏆':'⏱️';
+  document.getElementById('rc-result-title').textContent=newRec?t('react.newRecord'):t('react.done');
+  document.getElementById('rc-result-score').textContent=RC.score;
+  document.getElementById('rc-r-diff').textContent=RC_DIFF_LABEL(RC.diff);
+  document.getElementById('rc-r-avg').textContent=RC.rtCount ? (Math.round(RC.rtSum/RC.rtCount)+' ms') : '- ms';
+  document.getElementById('rc-r-combo').textContent=RC.maxCombo;
+  document.getElementById('rc-r-best').textContent=RC.best[RC.diff].all;
+}
+function leaveReact(){
+  if(RC.running && !confirm(t('react.confirmLeave'))) return;
+  rcClearTimers(); RC.running=false; resetReact();
+}
+function resetReact(){
+  rcClearTimers(); RC.running=false;
+  document.getElementById('react-result-card').style.display='none';
+  document.getElementById('react-game-card').style.display='none';
+  document.getElementById('react-intro-card').style.display='block';
+  rcUpdateBestLine();
 }
 
 // INIT
