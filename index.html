@@ -276,6 +276,31 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .lang-select{font-size:.72rem;padding:.3rem .35rem}
   .lang-select-wrap{padding:0 .5rem 0 .25rem}
 }
+/* ===== Memory games (순간기억 / 인원수 세기) ===== */
+.gm-status{text-align:center;font-size:1rem;font-weight:600;color:var(--purple);margin-bottom:1rem;min-height:1.4em}
+.gm-status.good{color:var(--teal2)}
+.gm-status.bad{color:var(--red)}
+.best-line{text-align:center;font-size:.8rem;color:var(--text3);margin-top:.75rem;min-height:1.1em}
+/* flash memory board */
+.fm-board{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;width:100%;max-width:380px;margin:0 auto}
+.fm-cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius);font-size:clamp(1rem,4.5vw,1.5rem);font-weight:700;color:var(--purple);user-select:none;transition:.12s}
+.fm-cell.empty{background:#fff;cursor:pointer}
+.fm-cell.empty:hover{border-color:var(--purple);background:var(--purple3)}
+.fm-cell.shown{background:var(--purple);color:#fff;border-color:var(--purple)}
+.fm-cell.done{background:var(--teal3);color:var(--teal2);border-color:var(--teal);cursor:default}
+.fm-cell.reveal{background:var(--amber3);color:var(--amber2);border-color:var(--amber)}
+/* head count stage */
+.hc-stage{position:relative;height:180px;background:linear-gradient(180deg,#eaf1ff,#dfe8fb);border:1px solid var(--border);border-radius:var(--radius2);overflow:hidden;margin-bottom:1rem}
+.hc-house{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:5rem;z-index:2;filter:drop-shadow(0 3px 4px rgba(0,0,0,.12))}
+.hc-person{position:absolute;top:52%;transform:translateY(-50%);font-size:2.4rem;z-index:1;transition:left 1s linear,opacity .35s ease}
+.hc-question{text-align:center}
+.hc-q-text{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.9rem}
+.hc-options{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;max-width:360px;margin:0 auto}
+.hc-opt{padding:.9rem 0;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);font-size:1.4rem;font-weight:700;color:var(--purple);cursor:pointer;transition:.12s;font-family:inherit}
+.hc-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
+.hc-opt.correct{background:var(--teal3);border-color:var(--teal);color:var(--teal2)}
+.hc-opt.wrong{background:var(--red3);border-color:var(--red);color:var(--red2)}
+.hc-opt:disabled{cursor:default}
 </style>
 </head>
 <body>
@@ -297,6 +322,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
       <span class="nav-ico">➗</span><span class="nav-label" data-i18n="nav.math">암산 게임</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('flash')" id="nav-flash">
+      <span class="nav-ico">⚡</span><span class="nav-label" data-i18n="nav.flash">순간기억</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('count')" id="nav-count">
+      <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
     </button>
   </div>
   <div class="lang-select-wrap">
@@ -611,6 +642,110 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== FLASH MEMORY SCREEN (순간기억) ==================== -->
+<div class="screen" id="screen-flash">
+  <div class="card" id="flash-intro-card">
+    <div class="section-head"><h2 data-i18n="flash.title">순간기억</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="flash.intro">
+      숫자 1부터 차례로 격자에 잠깐 나타났다 사라집니다.<br>
+      사라진 뒤 <b>작은 수부터 순서대로</b> 칸을 눌러 기억을 되살려보세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="fm-diff-easy" onclick="setFlashDiff('easy')">
+        <h3>🌱 <span data-i18n="flash.easy">쉬움</span></h3><p data-i18n="flash.easyDesc">숫자 3개부터<br>천천히</p>
+      </div>
+      <div class="diff-btn active" id="fm-diff-normal" onclick="setFlashDiff('normal')">
+        <h3>⚡ <span data-i18n="flash.normal">보통</span></h3><p data-i18n="flash.normalDesc">숫자 4개부터<br>기본 속도</p>
+      </div>
+      <div class="diff-btn" id="fm-diff-hard" onclick="setFlashDiff('hard')">
+        <h3>🔥 <span data-i18n="flash.hard">어려움</span></h3><p data-i18n="flash.hardDesc">숫자 5개부터<br>빠르게</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startFlash()" data-i18n="flash.startGame">게임 시작</button>
+    <div class="best-line" id="fm-intro-best"></div>
+  </div>
+
+  <div class="card" id="flash-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flash.score">SCORE</div><div class="mg-stat-value" id="fm-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flash.life">LIFE</div><div class="mg-stat-value" id="fm-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flash.level">LEVEL</div><div class="mg-stat-value" id="fm-level">4</div></div>
+    </div>
+    <div class="gm-status" id="fm-status" data-i18n="flash.memorize">기억하세요!</div>
+    <div class="fm-board" id="fm-board"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveFlash()" data-i18n="flash.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="flash-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="fm-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="fm-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="fm-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="flash.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="flash.difficulty">난이도</span><span id="fm-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="flash.maxLevel">도달 최고 레벨</span><span id="fm-r-level">0</span></div>
+    <div class="result-row"><span data-i18n="flash.best">최고 기록</span><span id="fm-r-best">0</span></div>
+    <div style="margin-top:1.25rem"><button class="btn" onclick="resetFlash()" data-i18n="flash.newGame">새 게임</button></div>
+  </div>
+</div>
+
+<!-- ==================== HEAD COUNT SCREEN (인원수 세기) ==================== -->
+<div class="screen" id="screen-count">
+  <div class="card" id="count-intro-card">
+    <div class="section-head"><h2 data-i18n="count.title">인원수 세기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="count.intro">
+      사람들이 집에 들어가고 나옵니다. <b>집에 들어간 사람은 보이지 않아요.</b><br>
+      다 지나간 뒤 <b>지금 집 안에 몇 명</b> 있는지 맞혀보세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="hc-diff-easy" onclick="setCountDiff('easy')">
+        <h3>🌱 <span data-i18n="count.easy">쉬움</span></h3><p data-i18n="count.easyDesc">적게·천천히</p>
+      </div>
+      <div class="diff-btn active" id="hc-diff-normal" onclick="setCountDiff('normal')">
+        <h3>⚡ <span data-i18n="count.normal">보통</span></h3><p data-i18n="count.normalDesc">보통 속도</p>
+      </div>
+      <div class="diff-btn" id="hc-diff-hard" onclick="setCountDiff('hard')">
+        <h3>🔥 <span data-i18n="count.hard">어려움</span></h3><p data-i18n="count.hardDesc">많이·빠르게</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startCount()" data-i18n="count.startGame">게임 시작</button>
+    <div class="best-line" id="hc-intro-best"></div>
+  </div>
+
+  <div class="card" id="count-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="count.score">SCORE</div><div class="mg-stat-value" id="hc-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="count.life">LIFE</div><div class="mg-stat-value" id="hc-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="count.streak">STREAK</div><div class="mg-stat-value" id="hc-streak">0</div></div>
+    </div>
+    <div class="gm-status" id="hc-status" data-i18n="count.watch">잘 보세요!</div>
+    <div class="hc-stage" id="hc-stage"><div class="hc-house">🏠</div></div>
+    <div class="hc-question" id="hc-question" style="display:none">
+      <div class="hc-q-text" data-i18n="count.question">지금 집 안에 몇 명?</div>
+      <div class="hc-options" id="hc-options"></div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveCount()" data-i18n="count.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="count-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="hc-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="hc-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="hc-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="count.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="count.difficulty">난이도</span><span id="hc-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="count.maxStreak">최고 연속</span><span id="hc-r-streak">0</span></div>
+    <div class="result-row"><span data-i18n="count.best">최고 기록</span><span id="hc-r-best">0</span></div>
+    <div style="margin-top:1.25rem"><button class="btn" onclick="resetCount()" data-i18n="count.newGame">새 게임</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -750,6 +885,63 @@ const I18N = {
   "math.confirmLeave": {ko:"게임 진행 상황이 사라집니다. 나가시겠습니까?", en:"Your progress will be lost. Do you want to leave?", th:"ความคืบหน้าจะหายไป ต้องการออกหรือไม่?"},
   "math.confirmRestart": {ko:"현재 게임을 종료하고 다시 시작할까요?", en:"End the current game and restart?", th:"ต้องการจบเกมปัจจุบันแล้วเริ่มใหม่หรือไม่?"},
   "math.itemsCount": {ko:"개", en:"", th:" ข้อ"},
+
+  "nav.flash": {ko:"순간기억", en:"Flash Memory", th:"ความจำฉับพลัน"},
+  "nav.count": {ko:"인원수 세기", en:"Head Count", th:"นับจำนวนคน"},
+
+  "flash.title": {ko:"순간기억", en:"Flash Memory", th:"ความจำฉับพลัน"},
+  "flash.intro": {ko:"숫자 1부터 차례로 격자에 잠깐 나타났다 사라집니다.<br>사라진 뒤 <b>작은 수부터 순서대로</b> 칸을 눌러 기억을 되살려보세요.", en:"Numbers appear briefly on the grid in order.<br>After they vanish, tap the tiles <b>in ascending order</b> from memory.", th:"ตัวเลขจะปรากฏบนตารางชั่วครู่ตามลำดับ<br>เมื่อหายไป ให้แตะช่อง <b>จากน้อยไปมาก</b> ตามที่จำได้"},
+  "flash.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "flash.easyDesc": {ko:"숫자 3개부터<br>천천히", en:"From 3 numbers<br>slow", th:"เริ่ม 3 ตัว<br>ช้า"},
+  "flash.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "flash.normalDesc": {ko:"숫자 4개부터<br>기본 속도", en:"From 4 numbers<br>normal speed", th:"เริ่ม 4 ตัว<br>ปกติ"},
+  "flash.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "flash.hardDesc": {ko:"숫자 5개부터<br>빠르게", en:"From 5 numbers<br>fast", th:"เริ่ม 5 ตัว<br>เร็ว"},
+  "flash.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "flash.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "flash.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"},
+  "flash.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "flash.memorize": {ko:"기억하세요!", en:"Memorize!", th:"จำให้ดี!"},
+  "flash.tapOrder": {ko:"작은 수부터 순서대로 누르세요!", en:"Tap in ascending order!", th:"แตะจากน้อยไปมาก!"},
+  "flash.cleared": {ko:"클리어! 🎉", en:"Cleared! 🎉", th:"ผ่าน! 🎉"},
+  "flash.missed": {ko:"아쉬워요! 순서가 틀렸어요", en:"Wrong order!", th:"ลำดับผิด!"},
+  "flash.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "flash.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "flash.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "flash.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "flash.maxLevel": {ko:"도달 최고 레벨", en:"Best Level Reached", th:"เลเวลสูงสุด"},
+  "flash.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "flash.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "flash.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"},
+  "flash.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "count.title": {ko:"인원수 세기", en:"Head Count", th:"นับจำนวนคน"},
+  "count.intro": {ko:"사람들이 집에 들어가고 나옵니다. <b>집에 들어간 사람은 보이지 않아요.</b><br>다 지나간 뒤 <b>지금 집 안에 몇 명</b> 있는지 맞혀보세요.", en:"People walk in and out of the house. <b>Those inside are hidden.</b><br>Afterwards, guess <b>how many are inside</b> now.", th:"ผู้คนเดินเข้าและออกจากบ้าน <b>คนที่อยู่ในบ้านจะมองไม่เห็น</b><br>เมื่อจบแล้ว ทายว่า <b>ตอนนี้มีกี่คนในบ้าน</b>"},
+  "count.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "count.easyDesc": {ko:"적게·천천히", en:"Few · slow", th:"น้อย·ช้า"},
+  "count.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "count.normalDesc": {ko:"보통 속도", en:"Normal speed", th:"ความเร็วปกติ"},
+  "count.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "count.hardDesc": {ko:"많이·빠르게", en:"Many · fast", th:"มาก·เร็ว"},
+  "count.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "count.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "count.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"},
+  "count.streak": {ko:"STREAK", en:"STREAK", th:"ต่อเนื่อง"},
+  "count.watch": {ko:"잘 보세요!", en:"Watch carefully!", th:"ดูให้ดี!"},
+  "count.question": {ko:"지금 집 안에 몇 명?", en:"How many are inside now?", th:"ตอนนี้มีกี่คนในบ้าน?"},
+  "count.correctMsg": {ko:"정답이에요! 🎉", en:"Correct! 🎉", th:"ถูกต้อง! 🎉"},
+  "count.wrongMsg": {ko:"땡! 정답은", en:"Wrong! Answer:", th:"ผิด! คำตอบคือ"},
+  "count.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "count.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "count.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "count.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "count.maxStreak": {ko:"최고 연속", en:"Best Streak", th:"ต่อเนื่องสูงสุด"},
+  "count.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "count.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "count.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"},
+  "count.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+  "count.people": {ko:"명", en:"", th:" คน"},
+  "count.bestFmt": {ko:"오늘 최고 {d} · 전체 최고 {a}", en:"Today {d} · All-time {a}", th:"วันนี้ {d} · ตลอดกาล {a}"},
 };
 
 // ========== I18N CORE ==========
@@ -836,6 +1028,9 @@ function refreshDynamicTexts(){
      IQS.questions && IQS.questions.length){
     if(typeof finishIQTest === 'function') finishIQTest();
   }
+  // 기억 게임 인트로의 최고기록 안내문(동적 문자열)도 언어에 맞게 갱신
+  if(typeof fmUpdateBestLine === 'function') fmUpdateBestLine();
+  if(typeof hcUpdateBestLine === 'function') hcUpdateBestLine();
 }
 
 
@@ -2272,6 +2467,272 @@ function resetMathGame(){
   clearInterval(MG.timerHandle);
   document.getElementById('math-result-card').style.display='none';
   document.getElementById('math-intro-card').style.display='block';
+}
+
+// ========== MEMORY GAMES — shared localStorage best (순간기억 / 인원수 세기) ==========
+function bt_today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function bt_loadBest(key){
+  const empty={easy:{all:0,day:0,date:''},normal:{all:0,day:0,date:''},hard:{all:0,day:0,date:''}};
+  try{
+    const raw=localStorage.getItem(key);
+    if(!raw) return empty;
+    const o=JSON.parse(raw);
+    ['easy','normal','hard'].forEach(d=>{ if(!o[d]) o[d]={all:0,day:0,date:''}; });
+    return o;
+  }catch(e){ return empty; }
+}
+function bt_saveBest(key,obj){ try{ localStorage.setItem(key,JSON.stringify(obj)); }catch(e){} }
+function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기록(전체)이면 true
+  const today=bt_today(), b=best[diff];
+  if(b.date!==today){ b.date=today; b.day=0; }
+  let newAll=false;
+  if(score>b.all){ b.all=score; newAll=true; }
+  if(score>b.day){ b.day=score; }
+  return newAll;
+}
+function bt_bestLineText(best,diff){
+  const today=bt_today(), b=best[diff];
+  const day=(b.date===today)?b.day:0;
+  return t('count.bestFmt').replace('{d}',day).replace('{a}',b.all);
+}
+
+// ========== 순간기억 (Flash Memory) ==========
+const FM_GRID=25; // 5x5
+const FM_START={easy:3, normal:4, hard:5};
+const FM_SPEED={easy:1.3, normal:1.0, hard:0.75};
+const FM = {
+  diff:'normal', n:4, score:0, lives:3, maxLevel:0,
+  order:[], expect:1, phase:'idle',
+  best:bt_loadBest('brain.flash.best'), timer:null
+};
+function FM_DIFF_LABEL(d){ return d==='easy'?t('flash.easy'):d==='normal'?t('flash.normal'):t('flash.hard'); }
+function fmUpdateBestLine(){ const el=document.getElementById('fm-intro-best'); if(el) el.textContent=bt_bestLineText(FM.best, FM.diff); }
+function setFlashDiff(d){
+  FM.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('fm-diff-'+k).classList.toggle('active',k===d));
+  fmUpdateBestLine();
+}
+function fmRevealMs(n){ return Math.round(Math.max(700, 2200 - n*120) * FM_SPEED[FM.diff]); }
+function startFlash(){
+  FM.n=FM_START[FM.diff]; FM.score=0; FM.lives=3; FM.maxLevel=0; FM.phase='idle';
+  document.getElementById('flash-intro-card').style.display='none';
+  document.getElementById('flash-result-card').style.display='none';
+  document.getElementById('flash-game-card').style.display='block';
+  fmUpdateStats(); fmNewRound();
+}
+function fmUpdateStats(){
+  document.getElementById('fm-score').textContent=FM.score;
+  document.getElementById('fm-level').textContent=FM.n;
+  document.getElementById('fm-life').textContent='♥'.repeat(FM.lives)+'♡'.repeat(3-FM.lives);
+}
+function fmSetStatus(key,cls){
+  const el=document.getElementById('fm-status');
+  el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):'');
+}
+function fmNewRound(){
+  FM.phase='show'; FM.expect=1;
+  const idx=[...Array(FM_GRID).keys()];
+  for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  FM.order=idx.slice(0,FM.n); // order[k] = 숫자 (k+1)이 놓인 셀 인덱스
+  const board=document.getElementById('fm-board'); board.innerHTML='';
+  const cellDiv=[];
+  for(let i=0;i<FM_GRID;i++){ const c=document.createElement('div'); c.className='fm-cell'; c.id='fm-cell-'+i; board.appendChild(c); cellDiv.push(c); }
+  FM.order.forEach((cellIdx,k)=>{ const c=cellDiv[cellIdx]; c.textContent=(k+1); c.classList.add('shown'); });
+  fmSetStatus('flash.memorize'); fmUpdateStats();
+  clearTimeout(FM.timer); FM.timer=setTimeout(fmHide, fmRevealMs(FM.n));
+}
+function fmHide(){
+  FM.phase='input';
+  FM.order.forEach(cellIdx=>{
+    const c=document.getElementById('fm-cell-'+cellIdx);
+    c.textContent=''; c.classList.remove('shown'); c.classList.add('empty');
+    c.onclick=()=>fmTapCell(cellIdx);
+  });
+  fmSetStatus('flash.tapOrder');
+}
+function fmTapCell(cellIdx){
+  if(FM.phase!=='input') return;
+  const c=document.getElementById('fm-cell-'+cellIdx);
+  if(cellIdx===FM.order[FM.expect-1]){
+    c.textContent=FM.expect; c.classList.remove('empty'); c.classList.add('done'); c.onclick=null;
+    FM.expect++;
+    if(FM.expect>FM.n) fmClear();
+  }else{ fmFail(); }
+}
+function fmClear(){
+  FM.phase='idle';
+  FM.score+=FM.n; FM.maxLevel=Math.max(FM.maxLevel, FM.n);
+  FM.n=Math.min(FM.n+1, FM_GRID);
+  fmSetStatus('flash.cleared','good'); fmUpdateStats();
+  clearTimeout(FM.timer); FM.timer=setTimeout(fmNewRound, 900);
+}
+function fmFail(){
+  FM.phase='idle'; FM.lives--;
+  FM.order.forEach((cellIdx,k)=>{ // 못 누른 정답 잠깐 공개
+    if(k+1>=FM.expect){ const c=document.getElementById('fm-cell-'+cellIdx); c.textContent=k+1; c.classList.remove('empty'); c.classList.add('reveal'); c.onclick=null; }
+  });
+  fmSetStatus('flash.missed','bad');
+  FM.n=Math.max(FM.n-1, 3); fmUpdateStats();
+  clearTimeout(FM.timer);
+  FM.timer=setTimeout(FM.lives<=0?finishFlash:fmNewRound, 1200);
+}
+function finishFlash(){
+  clearTimeout(FM.timer); FM.phase='over';
+  const newRec=bt_recordScore(FM.best, FM.diff, FM.score); bt_saveBest('brain.flash.best', FM.best);
+  document.getElementById('flash-game-card').style.display='none';
+  document.getElementById('flash-result-card').style.display='block';
+  document.getElementById('fm-result-emoji').textContent=newRec?'🏆':'🎮';
+  document.getElementById('fm-result-title').textContent=newRec?t('flash.newRecord'):t('flash.gameOver');
+  document.getElementById('fm-result-score').textContent=FM.score;
+  document.getElementById('fm-r-diff').textContent=FM_DIFF_LABEL(FM.diff);
+  document.getElementById('fm-r-level').textContent=FM.maxLevel;
+  document.getElementById('fm-r-best').textContent=FM.best[FM.diff].all;
+}
+function leaveFlash(){
+  if(FM.phase!=='over' && !confirm(t('flash.confirmLeave'))) return;
+  clearTimeout(FM.timer); resetFlash();
+}
+function resetFlash(){
+  clearTimeout(FM.timer); FM.phase='idle';
+  document.getElementById('flash-result-card').style.display='none';
+  document.getElementById('flash-game-card').style.display='none';
+  document.getElementById('flash-intro-card').style.display='block';
+  fmUpdateBestLine();
+}
+
+// ========== 인원수 세기 (Head Count) ==========
+const HC_CFG={
+  easy:  {events:[3,4], gap:900, kMax:1, pts:10},
+  normal:{events:[5,6], gap:700, kMax:2, pts:15},
+  hard:  {events:[7,9], gap:500, kMax:3, pts:22}
+};
+const HC = {
+  diff:'normal', score:0, lives:3, streak:0, maxStreak:0,
+  inside:0, answer:0, playing:false,
+  best:bt_loadBest('brain.count.best'), timers:[]
+};
+function HC_DIFF_LABEL(d){ return d==='easy'?t('count.easy'):d==='normal'?t('count.normal'):t('count.hard'); }
+function hcUpdateBestLine(){ const el=document.getElementById('hc-intro-best'); if(el) el.textContent=bt_bestLineText(HC.best, HC.diff); }
+function setCountDiff(d){
+  HC.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('hc-diff-'+k).classList.toggle('active',k===d));
+  hcUpdateBestLine();
+}
+function hc_randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function hcClearTimers(){ HC.timers.forEach(clearTimeout); HC.timers=[]; }
+function startCount(){
+  HC.score=0; HC.lives=3; HC.streak=0; HC.maxStreak=0;
+  document.getElementById('count-intro-card').style.display='none';
+  document.getElementById('count-result-card').style.display='none';
+  document.getElementById('count-game-card').style.display='block';
+  hcUpdateStats(); hcRound();
+}
+function hcUpdateStats(){
+  document.getElementById('hc-score').textContent=HC.score;
+  document.getElementById('hc-streak').textContent=HC.streak;
+  document.getElementById('hc-life').textContent='♥'.repeat(HC.lives)+'♡'.repeat(3-HC.lives);
+}
+function hcSetStatus(key,cls,literal){
+  const el=document.getElementById('hc-status');
+  el.textContent=literal||t(key); el.className='gm-status'+(cls?(' '+cls):'');
+}
+function hcBuildSequence(){ // inside가 음수가 되지 않도록 입/출 생성
+  const cfg=HC_CFG[HC.diff];
+  const n=hc_randInt(cfg.events[0], cfg.events[1]);
+  let inside=0; const seq=[];
+  for(let i=0;i<n;i++){
+    let enter;
+    if(inside===0) enter=true;
+    else if(i===n-1) enter=Math.random()<0.4;
+    else enter=Math.random()<0.6;
+    let k;
+    if(enter){ k=hc_randInt(1,cfg.kMax); inside+=k; }
+    else { k=hc_randInt(1,Math.min(cfg.kMax,inside)); inside-=k; }
+    seq.push({enter,k});
+  }
+  HC.inside=inside; HC.answer=inside;
+  return {seq, gap:cfg.gap};
+}
+function hcRound(){
+  HC.playing=true; hcClearTimers();
+  document.getElementById('hc-question').style.display='none';
+  const stage=document.getElementById('hc-stage');
+  stage.querySelectorAll('.hc-person').forEach(p=>p.remove());
+  hcSetStatus('count.watch'); hcUpdateStats();
+  const {seq, gap}=hcBuildSequence();
+  let t0=400;
+  seq.forEach(ev=>{ HC.timers.push(setTimeout(()=>hcPlayEvent(ev), t0)); t0 += gap + ev.k*120; });
+  HC.timers.push(setTimeout(hcAskQuestion, t0+400));
+}
+function hcPlayEvent(ev){
+  const stage=document.getElementById('hc-stage');
+  for(let i=0;i<ev.k;i++){
+    const p=document.createElement('div');
+    p.className='hc-person'; p.textContent = ev.enter ? '🧍' : '🚶';
+    p.style.top=(42+i*6)+'%';
+    if(ev.enter){
+      p.style.left='-12%'; p.style.opacity='1'; stage.appendChild(p);
+      requestAnimationFrame(()=>{ p.style.left='42%'; });
+      setTimeout(()=>{ p.style.opacity='0'; }, 950);
+      setTimeout(()=>p.remove(), 1500);
+    }else{
+      p.style.left='42%'; p.style.opacity='0'; stage.appendChild(p);
+      requestAnimationFrame(()=>{ p.style.opacity='1'; p.style.left='108%'; });
+      setTimeout(()=>p.remove(), 1500);
+    }
+  }
+}
+function hcAskQuestion(){
+  HC.playing=false; hcSetStatus('count.question');
+  const opts=document.getElementById('hc-options'); opts.innerHTML='';
+  const set=new Set([HC.answer]); let guard=0;
+  while(set.size<4 && guard<60){ guard++; const cand=HC.answer + hc_randInt(-3,3); if(cand>=0) set.add(cand); }
+  let fill=HC.answer+1; while(set.size<4){ set.add(fill++); } // 안전 채움
+  const arr=[...set];
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  arr.forEach(v=>{ const b=document.createElement('button'); b.className='hc-opt'; b.textContent=v; b.onclick=()=>hcAnswer(v,b); opts.appendChild(b); });
+  document.getElementById('hc-question').style.display='block';
+}
+function hcAnswer(v, btn){
+  const btns=document.querySelectorAll('#hc-options .hc-opt');
+  btns.forEach(b=>b.disabled=true);
+  if(v===HC.answer){
+    btn.classList.add('correct');
+    const cfg=HC_CFG[HC.diff];
+    HC.streak++; HC.maxStreak=Math.max(HC.maxStreak, HC.streak);
+    HC.score += cfg.pts + (HC.streak-1)*2;
+    hcSetStatus('count.correctMsg','good');
+  }else{
+    btn.classList.add('wrong');
+    btns.forEach(b=>{ if(Number(b.textContent)===HC.answer) b.classList.add('correct'); });
+    HC.lives--; HC.streak=0;
+    hcSetStatus(null,'bad', t('count.wrongMsg')+' '+HC.answer+t('count.people'));
+  }
+  hcUpdateStats(); hcClearTimers();
+  HC.timers.push(setTimeout(HC.lives<=0?finishCount:hcRound, 1500));
+}
+function finishCount(){
+  hcClearTimers(); HC.playing=false;
+  const newRec=bt_recordScore(HC.best, HC.diff, HC.score); bt_saveBest('brain.count.best', HC.best);
+  document.getElementById('count-game-card').style.display='none';
+  document.getElementById('count-result-card').style.display='block';
+  document.getElementById('hc-result-emoji').textContent=newRec?'🏆':'🎮';
+  document.getElementById('hc-result-title').textContent=newRec?t('count.newRecord'):t('count.gameOver');
+  document.getElementById('hc-result-score').textContent=HC.score;
+  document.getElementById('hc-r-diff').textContent=HC_DIFF_LABEL(HC.diff);
+  document.getElementById('hc-r-streak').textContent=HC.maxStreak;
+  document.getElementById('hc-r-best').textContent=HC.best[HC.diff].all;
+}
+function leaveCount(){
+  if(!confirm(t('count.confirmLeave'))) return;
+  hcClearTimers(); resetCount();
+}
+function resetCount(){
+  hcClearTimers(); HC.playing=false;
+  document.getElementById('count-result-card').style.display='none';
+  document.getElementById('count-game-card').style.display='none';
+  document.getElementById('count-intro-card').style.display='block';
+  hcUpdateBestLine();
 }
 
 // INIT

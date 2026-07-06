@@ -59,6 +59,10 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-06 — 기억 축 게임 2종 추가: **순간기억(flash)**, **인원수 세기(count)**.
+  `index.html`/`brain_app.html`에 nav·screen·CSS·i18n(ko/en/th)·JS 통합.
+  적응형 난이도 + `localStorage` 최고기록. 설계: `기억축-게임-스펙.md`.
+
 <!-- PORTS_BEGIN -->
 ## Service
 
@@ -229,3 +233,5 @@ A newly enabled plugin loads on your **NEXT message** (plugins attach when a tur
 Installing NEW plugins from a marketplace runs code and is admin-only (the Plugins page) —
 this tool only toggles plugins already in the library.
 <!-- PLUGINS_TOOL_END -->
+
+See WORKSPACE.md for related bots in this workspace.
