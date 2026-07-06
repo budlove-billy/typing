@@ -722,7 +722,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="flash.difficulty">난이도</span><span id="fm-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="flash.maxLevel">도달 최고 레벨</span><span id="fm-r-level">0</span></div>
     <div class="result-row"><span data-i18n="flash.best">최고 기록</span><span id="fm-r-best">0</span></div>
-    <div style="margin-top:1.25rem"><button class="btn" onclick="resetFlash()" data-i18n="flash.newGame">새 게임</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFlash()" data-i18n="flash.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('flash')" data-i18n="share.button">📷 결과 공유</button></div>
   </div>
 </div>
 
@@ -776,7 +776,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="count.difficulty">난이도</span><span id="hc-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="count.maxStreak">최고 연속</span><span id="hc-r-streak">0</span></div>
     <div class="result-row"><span data-i18n="count.best">최고 기록</span><span id="hc-r-best">0</span></div>
-    <div style="margin-top:1.25rem"><button class="btn" onclick="resetCount()" data-i18n="count.newGame">새 게임</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCount()" data-i18n="count.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('count')" data-i18n="share.button">📷 결과 공유</button></div>
   </div>
 </div>
 
@@ -827,7 +827,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="stroop.correct">정답</span><span id="st-r-correct">0</span></div>
     <div class="result-row"><span data-i18n="stroop.maxCombo">최고 콤보</span><span id="st-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="stroop.best">최고 기록</span><span id="st-r-best">0</span></div>
-    <div style="margin-top:1.25rem"><button class="btn" onclick="resetStroop()" data-i18n="stroop.newGame">새 게임</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetStroop()" data-i18n="stroop.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('stroop')" data-i18n="share.button">📷 결과 공유</button></div>
   </div>
 </div>
 
@@ -877,7 +877,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="trail.difficulty">난이도</span><span id="tr-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="trail.clearedBoards">지운 판</span><span id="tr-r-boards">0</span></div>
     <div class="result-row"><span data-i18n="trail.best">최고 기록</span><span id="tr-r-best">0</span></div>
-    <div style="margin-top:1.25rem"><button class="btn" onclick="resetTrail()" data-i18n="trail.newGame">새 게임</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetTrail()" data-i18n="trail.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('trail')" data-i18n="share.button">📷 결과 공유</button></div>
   </div>
 </div>
 
@@ -907,7 +907,6 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="bt-type-name" id="bt-name"></div>
     <div class="bt-type-desc" id="bt-desc"></div>
     <img class="bt-share-img" id="bt-share-img" alt="">
-    <canvas id="bt-canvas" width="600" height="800" style="display:none"></canvas>
     <div class="bt-rec-box">
       <div class="bt-rec-label" data-i18n="braintype.recommend">추천 트레이닝</div>
       <div class="bt-rec-game" id="bt-rec-game"></div>
@@ -1183,6 +1182,9 @@ const I18N = {
   "braintype.retry": {ko:"다시 테스트", en:"Retake", th:"ทำใหม่"},
   "braintype.saveImg": {ko:"📷 결과 이미지 저장/공유", en:"📷 Save / Share image", th:"📷 บันทึก / แชร์รูป"},
   "braintype.cardTag": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
+
+  "share.button": {ko:"📷 결과 공유", en:"📷 Share result", th:"📷 แชร์ผล"},
+  "share.myScore": {ko:"나의 기록 🏆", en:"My score 🏆", th:"คะแนนของฉัน 🏆"},
 };
 
 // ========== I18N CORE ==========
@@ -3285,7 +3287,9 @@ function btShowResult(key){
   document.getElementById('bt-desc').textContent=btL(ty.desc);
   document.getElementById('bt-rec-game').textContent=t('nav.'+ty.rec);
   document.getElementById('bt-rec-btn').onclick=()=>showScreen(ty.rec);
-  btDrawCard(ty);
+  _btCard=makeShareCard({emoji:ty.emoji, title:btL(ty.name), subtitle:t('braintype.cardTag'),
+    desc:btL(ty.desc), note:'👉 '+t('braintype.recommend')+': '+t('nav.'+ty.rec)});
+  document.getElementById('bt-share-img').src=_btCard.toDataURL('image/png');
 }
 function leaveBrainType(){ resetBrainType(); }
 function resetBrainType(){
@@ -3294,7 +3298,7 @@ function resetBrainType(){
   document.getElementById('bt-intro-card').style.display='block';
 }
 
-// ---- 공유카드 (canvas) ----
+// ---- 공유카드 (canvas) — 전 게임 공용 ----
 function btRoundRect(g,x,y,w,h,r){
   g.beginPath();
   g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
@@ -3310,48 +3314,65 @@ function btWrapText(g,text,cx,y,maxW,lh){
   if(line) g.fillText(line,cx,yy);
   return yy;
 }
-function btDrawCard(ty){
-  const c=document.getElementById('bt-canvas'); const W=c.width, H=c.height;
-  const g=c.getContext('2d');
+// 공용 카드 생성: {emoji, title, subtitle, lines[], desc, note, from, to} → canvas
+function makeShareCard(o){
+  const c=document.createElement('canvas'); c.width=600; c.height=800;
+  const W=c.width, H=c.height, g=c.getContext('2d');
   const grad=g.createLinearGradient(0,0,W,H);
-  grad.addColorStop(0,'#5b4ff0'); grad.addColorStop(1,'#0e9e70');
+  grad.addColorStop(0,o.from||'#5b4ff0'); grad.addColorStop(1,o.to||'#0e9e70');
   g.fillStyle=grad; g.fillRect(0,0,W,H);
   g.fillStyle='rgba(255,255,255,0.12)'; btRoundRect(g,40,40,W-80,H-80,28); g.fill();
   g.textAlign='center';
-  g.fillStyle='rgba(255,255,255,0.95)';
-  g.font='700 30px sans-serif'; g.fillText('말랑말랑 두뇌체조', W/2, 118);
-  g.font='400 20px sans-serif'; g.fillStyle='rgba(255,255,255,0.8)'; g.fillText(t('braintype.cardTag'), W/2, 152);
-  g.font='150px sans-serif'; g.fillText(ty.emoji, W/2, 380);
-  g.fillStyle='#fff'; g.font='800 48px sans-serif'; g.fillText(btL(ty.name), W/2, 470);
-  g.fillStyle='rgba(255,255,255,0.92)'; g.font='400 26px sans-serif';
-  btWrapText(g, btL(ty.desc), W/2, 528, W-170, 38);
-  g.fillStyle='rgba(255,255,255,0.85)'; g.font='500 22px sans-serif';
-  g.fillText('👉 '+t('braintype.recommend')+': '+t('nav.'+ty.rec), W/2, H-120);
-  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif';
-  g.fillText('mallang-brain', W/2, H-70);
-  // 미리보기 이미지
-  const img=document.getElementById('bt-share-img');
-  img.src=c.toDataURL('image/png');
+  g.fillStyle='rgba(255,255,255,0.95)'; g.font='700 30px sans-serif'; g.fillText('말랑말랑 두뇌체조', W/2, 116);
+  if(o.subtitle){ g.font='400 20px sans-serif'; g.fillStyle='rgba(255,255,255,0.8)'; g.fillText(o.subtitle, W/2, 150); }
+  g.fillStyle='#fff'; g.font='150px sans-serif'; g.fillText(o.emoji, W/2, 378);
+  g.font='800 46px sans-serif'; g.fillText(o.title, W/2, 468);
+  let y=534;
+  if(o.lines && o.lines.length){
+    g.font='600 32px sans-serif'; g.fillStyle='#fff';
+    o.lines.forEach(ln=>{ g.fillText(ln, W/2, y); y+=48; });
+  }
+  if(o.desc){
+    g.font='400 26px sans-serif'; g.fillStyle='rgba(255,255,255,0.92)';
+    y=btWrapText(g, o.desc, W/2, y, W-170, 38)+16;
+  }
+  if(o.note){ g.fillStyle='rgba(255,255,255,0.85)'; g.font='500 22px sans-serif'; g.fillText(o.note, W/2, H-120); }
+  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif'; g.fillText('mallang-brain', W/2, H-70);
+  return c;
 }
-function btShare(){
-  const c=document.getElementById('bt-canvas');
+// 공용 공유/다운로드
+function shareOrDownload(canvas, filename, shareText){
   const done=(blob)=>{
-    if(!blob){ return; }
-    const file=new File([blob],'brain-type.png',{type:'image/png'});
-    const shareText=(BT.result?btL(BT_TYPES[BT.result].name):'')+' · '+t('braintype.title');
+    if(!blob) return;
+    const file=new File([blob],filename,{type:'image/png'});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file], title:t('braintype.title'), text:shareText}).catch(()=>{});
+      navigator.share({files:[file], title:'말랑말랑 두뇌체조', text:shareText}).catch(()=>{});
       return;
     }
     const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='brain-type.png';
+    const a=document.createElement('a'); a.href=url; a.download=filename;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
-  if(c.toBlob) c.toBlob(done,'image/png');
-  else { // 아주 오래된 브라우저 폴백: dataURL 다운로드
-    const a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='brain-type.png'; a.click();
-  }
+  if(canvas.toBlob) canvas.toBlob(done,'image/png');
+  else { const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download=filename; a.click(); }
+}
+let _btCard=null; // 두뇌 유형 결과 카드(미리보기+공유 공용)
+function btShare(){
+  if(_btCard) shareOrDownload(_btCard, 'brain-type.png',
+    (BT.result?btL(BT_TYPES[BT.result].name):'')+' · '+t('braintype.title'));
+}
+// 게임 결과 공유 — 각 게임 상태에서 카드 생성
+function gameShare(game){
+  let o;
+  if(game==='flash')      o={emoji:'⚡', title:t('flash.title'),  from:'#5b4ff0', to:'#7b6ff8', lines:[t('flash.score')+'  '+FM.score, t('flash.maxLevel')+'  '+FM.maxLevel]};
+  else if(game==='count') o={emoji:'🏠', title:t('count.title'),  from:'#2255d0', to:'#0e9e70', lines:[t('count.score')+'  '+HC.score, t('count.maxStreak')+'  '+HC.maxStreak]};
+  else if(game==='stroop')o={emoji:'🎨', title:t('stroop.title'), from:'#e0344b', to:'#7b4ff0', lines:[t('stroop.score')+'  '+ST.score, t('stroop.maxCombo')+'  '+ST.maxCombo]};
+  else if(game==='trail') o={emoji:'🔗', title:t('trail.title'),  from:'#0e9e70', to:'#5b4ff0', lines:[t('trail.score')+'  '+TR.score, t('trail.clearedBoards')+'  '+TR.boards]};
+  else return;
+  o.subtitle=t('share.myScore');
+  const c=makeShareCard(o);
+  shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
 }
 
 // INIT
