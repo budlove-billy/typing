@@ -29,8 +29,17 @@ _Write important context, decisions, and lessons here so future sessions can pic
   - 각 유형이 앱 내 게임 추천으로 연결(math/vocab/flash/stroop/trail/iq) → 테스트→플레이 유입 루프.
   - **canvas 공유카드**(600×800): `btDrawCard`→미리보기, `btShare`→Web Share(files)/PNG 다운로드 폴백.
   - 문항/유형은 `BT_QUESTIONS`/`BT_TYPES`에 {ko,en,th} 인라인(IQ 방식), `btL()`로 언어 선택.
-- 다음 후보(미구현): 공유카드를 스트룹·기억·IQ 점수에도 확장(btDrawCard 일반화), 유연성 축(전환과제).
-- 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**.
+- **신규(2026-07-06 추가): 규칙 바꾸기(switch)** → **유연성 축**(인지 전환/set-shifting).
+  - 규칙(홀짝 ↔ 5보다 크기)이 확률로 전환, 지금 규칙에 맞게 판단. 60초 타임어택, combo, 오답 −2초. `SW` 객체.
+  - 숫자는 5 제외(SW_NUMS). localStorage `brain.switch.best`.
+- **공유카드 일반화(2026-07-06)**: `makeShareCard({emoji,title,subtitle,lines,desc,note,from,to})` + `shareOrDownload()`.
+  4개 점수게임(flash/count/stroop/trail) + switch 결과에 `gameShare('<id>')` 버튼. braintype도 이 헬퍼로 통일.
+- **홈/대시보드(2026-07-06)**: `#screen-home`이 기본 랜딩(active). `HOME_GAMES` 매니페스트로 전체 바로가기 그리드,
+  카드에 최고기록 뱃지. **연속 출석** `homeVisit()` → localStorage `brain.visit`{last,streak,total}, 어제 방문=+1/공백=리셋.
+  `showScreen('home')`·INIT·언어전환 시 `renderHome()`. 인원수 세기 nav 아이콘은 🏠→👥(홈과 구분).
+- 게임/콘텐츠 **총 11종**. 축: 계산·타이핑·논리 / 기억 / 주의·속도 / 유연성 / 바이럴 + 홈 허브.
+- 다음 후보(미구현): 유형별 상세 결과 문구 확장, 주간 통계·목표, 사운드/햅틱.
+- 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 조사 자료
 - NDS 두뇌 트레이닝 웹구현 판정 요약은 `기억축-게임-스펙.md` §4에 통합(핵심: 음성/카메라 전제 게임은

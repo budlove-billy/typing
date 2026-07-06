@@ -340,6 +340,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-card-emoji{font-size:2rem;line-height:1}
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
+/* ===== Rule switch (규칙 바꾸기) ===== */
+.sw-rule{display:inline-block;font-size:1.05rem;font-weight:700;padding:.45rem 1.2rem;border-radius:999px;margin-bottom:1rem;transition:.18s}
+.sw-rule.parity{background:var(--purple3);color:var(--purple)}
+.sw-rule.mag{background:var(--teal3);color:var(--teal2)}
+.sw-num{font-size:clamp(3.5rem,18vw,6rem);font-weight:800;color:var(--text);line-height:1;margin-bottom:1.5rem;font-variant-numeric:tabular-nums}
+.sw-options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;max-width:420px;margin:0 auto}
+.sw-opt{padding:1.3rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.1rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
+.sw-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
+.sw-opt:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -379,6 +388,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('braintype')" id="nav-braintype">
       <span class="nav-ico">🔮</span><span class="nav-label" data-i18n="nav.braintype">두뇌 유형</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('switch')" id="nav-switch">
+      <span class="nav-ico">🔀</span><span class="nav-label" data-i18n="nav.switch">규칙 바꾸기</span>
     </button>
   </div>
   <div class="lang-select-wrap">
@@ -947,6 +959,63 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== RULE SWITCH SCREEN (규칙 바꾸기) ==================== -->
+<div class="screen" id="screen-switch">
+  <div class="card" id="switch-intro-card">
+    <div class="section-head"><h2 data-i18n="switch.title">규칙 바꾸기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="switch.intro">
+      규칙이 <b>계속 바뀝니다.</b> 위에 표시된 <b>지금 규칙</b>에 맞게 숫자를 판단하세요.<br>
+      🔢 홀·짝 규칙과 📏 크기(5 기준) 규칙이 번갈아 나옵니다. 60초 안에 최대한 많이!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="sw-diff-easy" onclick="setSwitchDiff('easy')">
+        <h3>🌱 <span data-i18n="switch.easy">쉬움</span></h3><p data-i18n="switch.easyDesc">규칙 전환 적음</p>
+      </div>
+      <div class="diff-btn active" id="sw-diff-normal" onclick="setSwitchDiff('normal')">
+        <h3>⚡ <span data-i18n="switch.normal">보통</span></h3><p data-i18n="switch.normalDesc">기본 전환</p>
+      </div>
+      <div class="diff-btn" id="sw-diff-hard" onclick="setSwitchDiff('hard')">
+        <h3>🔥 <span data-i18n="switch.hard">어려움</span></h3><p data-i18n="switch.hardDesc">규칙 자주 전환</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startSwitch()" data-i18n="switch.startGame">게임 시작</button>
+    <div class="best-line" id="sw-intro-best"></div>
+  </div>
+
+  <div class="card" id="switch-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="switch.score">SCORE</div><div class="mg-stat-value" id="sw-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="switch.combo">COMBO</div><div class="mg-stat-value" id="sw-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="sw-timer">01:00</div></div>
+    <div class="gm-status" id="sw-guide" data-i18n="switch.guide">지금 규칙에 맞게 답하세요</div>
+    <div style="text-align:center">
+      <div class="sw-rule" id="sw-rule"></div>
+      <div class="sw-num" id="sw-num">7</div>
+    </div>
+    <div class="sw-options">
+      <button class="sw-opt" id="sw-opt-a" onclick="swAnswer(this)"></button>
+      <button class="sw-opt" id="sw-opt-b" onclick="swAnswer(this)"></button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveSwitch()" data-i18n="switch.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="switch-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="sw-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="sw-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="sw-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="switch.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="switch.difficulty">난이도</span><span id="sw-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="switch.correct">정답</span><span id="sw-r-correct">0</span></div>
+    <div class="result-row"><span data-i18n="switch.maxCombo">최고 콤보</span><span id="sw-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="switch.best">최고 기록</span><span id="sw-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSwitch()" data-i18n="switch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('switch')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1218,6 +1287,36 @@ const I18N = {
 
   "share.button": {ko:"📷 결과 공유", en:"📷 Share result", th:"📷 แชร์ผล"},
   "share.myScore": {ko:"나의 기록 🏆", en:"My score 🏆", th:"คะแนนของฉัน 🏆"},
+
+  "nav.switch": {ko:"규칙 바꾸기", en:"Rule Switch", th:"สลับกฎ"},
+  "switch.title": {ko:"규칙 바꾸기", en:"Rule Switch", th:"สลับกฎ"},
+  "switch.intro": {ko:"규칙이 <b>계속 바뀝니다.</b> 위에 표시된 <b>지금 규칙</b>에 맞게 숫자를 판단하세요.<br>🔢 홀·짝 규칙과 📏 크기(5 기준) 규칙이 번갈아 나옵니다. 60초 안에 최대한 많이!", en:"The rule <b>keeps changing.</b> Judge the number by the <b>current rule</b> shown above.<br>🔢 Odd/Even and 📏 Bigger/Smaller-than-5 rules alternate. Score as much as you can in 60s!", th:"กฎ <b>เปลี่ยนตลอดเวลา</b> ตัดสินตัวเลขตาม <b>กฎปัจจุบัน</b> ที่แสดงด้านบน<br>🔢 คี่/คู่ และ 📏 มาก/น้อยกว่า 5 สลับกัน ทำคะแนนให้ได้มากที่สุดใน 60 วินาที!"},
+  "switch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "switch.easyDesc": {ko:"규칙 전환 적음", en:"Few switches", th:"สลับน้อย"},
+  "switch.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "switch.normalDesc": {ko:"기본 전환", en:"Standard", th:"มาตรฐาน"},
+  "switch.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "switch.hardDesc": {ko:"규칙 자주 전환", en:"Frequent switches", th:"สลับบ่อย"},
+  "switch.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "switch.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "switch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "switch.guide": {ko:"지금 규칙에 맞게 답하세요", en:"Answer by the current rule", th:"ตอบตามกฎปัจจุบัน"},
+  "switch.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "switch.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "switch.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "switch.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "switch.correct": {ko:"정답", en:"Correct", th:"ถูก"},
+  "switch.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "switch.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "switch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "switch.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "switch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+  "switch.ruleParity": {ko:"홀수 / 짝수", en:"Odd / Even", th:"คี่ / คู่"},
+  "switch.ruleMag": {ko:"5보다 작다 / 크다", en:"Less / More than 5", th:"น้อย / มากกว่า 5"},
+  "switch.odd": {ko:"홀수", en:"Odd", th:"คี่"},
+  "switch.even": {ko:"짝수", en:"Even", th:"คู่"},
+  "switch.low": {ko:"5보다 작다", en:"Less than 5", th:"น้อยกว่า 5"},
+  "switch.high": {ko:"5보다 크다", en:"More than 5", th:"มากกว่า 5"},
 };
 
 // ========== I18N CORE ==========
@@ -1309,6 +1408,7 @@ function refreshDynamicTexts(){
   if(typeof hcUpdateBestLine === 'function') hcUpdateBestLine();
   if(typeof stUpdateBestLine === 'function') stUpdateBestLine();
   if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
+  if(typeof swUpdateBestLine === 'function') swUpdateBestLine();
   if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
      document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
@@ -3405,6 +3505,7 @@ function gameShare(game){
   else if(game==='count') o={emoji:'🏠', title:t('count.title'),  from:'#2255d0', to:'#0e9e70', lines:[t('count.score')+'  '+HC.score, t('count.maxStreak')+'  '+HC.maxStreak]};
   else if(game==='stroop')o={emoji:'🎨', title:t('stroop.title'), from:'#e0344b', to:'#7b4ff0', lines:[t('stroop.score')+'  '+ST.score, t('stroop.maxCombo')+'  '+ST.maxCombo]};
   else if(game==='trail') o={emoji:'🔗', title:t('trail.title'),  from:'#0e9e70', to:'#5b4ff0', lines:[t('trail.score')+'  '+TR.score, t('trail.clearedBoards')+'  '+TR.boards]};
+  else if(game==='switch')o={emoji:'🔀', title:t('switch.title'), from:'#7b4ff0', to:'#0e9e70', lines:[t('switch.score')+'  '+SW.score, t('switch.maxCombo')+'  '+SW.maxCombo]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -3422,6 +3523,7 @@ const HOME_GAMES=[
   {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best'},
   {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best'},
+  {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best'},
   {id:'braintype', emoji:'🔮', key:'nav.braintype'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -3455,6 +3557,104 @@ function renderHome(){
     card.innerHTML=best+'<div class="home-card-emoji">'+g.emoji+'</div><div class="home-card-name">'+t(g.key)+'</div>';
     grid.appendChild(card);
   });
+}
+
+// ========== 규칙 바꾸기 (Rule Switch / 과제 전환) ==========
+const SW_CFG={ easy:{switchP:0.3}, normal:{switchP:0.45}, hard:{switchP:0.6} };
+const SW_TIME=60;
+const SW_NUMS=[1,2,3,4,6,7,8,9]; // 5 제외(크기 규칙 애매 방지)
+const SW = {
+  diff:'normal', score:0, combo:0, maxCombo:0, correct:0,
+  timeLeft:SW_TIME, timer:null, running:false,
+  rule:'parity', num:0, answer:null,
+  best:bt_loadBest('brain.switch.best')
+};
+function SW_DIFF_LABEL(d){ return d==='easy'?t('switch.easy'):d==='normal'?t('switch.normal'):t('switch.hard'); }
+function swUpdateBestLine(){ const el=document.getElementById('sw-intro-best'); if(el) el.textContent=bt_bestLineText(SW.best, SW.diff); }
+function setSwitchDiff(d){
+  SW.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('sw-diff-'+k).classList.toggle('active',k===d));
+  swUpdateBestLine();
+}
+function startSwitch(){
+  SW.score=0; SW.combo=0; SW.maxCombo=0; SW.correct=0; SW.timeLeft=SW_TIME; SW.running=true;
+  SW.rule = Math.random()<0.5 ? 'parity' : 'magnitude';
+  document.getElementById('switch-intro-card').style.display='none';
+  document.getElementById('switch-result-card').style.display='none';
+  document.getElementById('switch-game-card').style.display='block';
+  swUpdateStats(); updateSwTimerDisplay(); swNextTrial(true);
+  clearInterval(SW.timer);
+  SW.timer=setInterval(swTick,1000);
+}
+function swTick(){
+  if(!SW.running) return;
+  SW.timeLeft--; updateSwTimerDisplay();
+  if(SW.timeLeft<=0){ SW.timeLeft=0; updateSwTimerDisplay(); finishSwitch(); }
+}
+function updateSwTimerDisplay(){
+  const m=Math.floor(SW.timeLeft/60), s=SW.timeLeft%60;
+  const el=document.getElementById('sw-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', SW.timeLeft<=10);
+}
+function swUpdateStats(){
+  document.getElementById('sw-score').textContent=SW.score;
+  document.getElementById('sw-combo').textContent=SW.combo;
+}
+function swNextTrial(first){
+  if(!first && Math.random() < SW_CFG[SW.diff].switchP){
+    SW.rule = (SW.rule==='parity') ? 'magnitude' : 'parity';
+  }
+  SW.num = SW_NUMS[Math.floor(Math.random()*SW_NUMS.length)];
+  SW.answer = (SW.rule==='parity') ? (SW.num%2===0?'even':'odd') : (SW.num<5?'low':'high');
+  document.getElementById('sw-num').textContent=SW.num;
+  const banner=document.getElementById('sw-rule');
+  const bA=document.getElementById('sw-opt-a'), bB=document.getElementById('sw-opt-b');
+  if(SW.rule==='parity'){
+    banner.textContent='🔢 '+t('switch.ruleParity'); banner.className='sw-rule parity';
+    bA.textContent=t('switch.odd');  bA.dataset.k='odd';
+    bB.textContent=t('switch.even'); bB.dataset.k='even';
+  }else{
+    banner.textContent='📏 '+t('switch.ruleMag'); banner.className='sw-rule mag';
+    bA.textContent=t('switch.low');  bA.dataset.k='low';
+    bB.textContent=t('switch.high'); bB.dataset.k='high';
+  }
+}
+function swAnswer(btn){
+  if(!SW.running) return;
+  if(btn.dataset.k===SW.answer){
+    SW.correct++; SW.combo++; SW.maxCombo=Math.max(SW.maxCombo,SW.combo);
+    SW.score += 10 + (SW.combo-1)*2;
+  }else{
+    SW.combo=0; SW.timeLeft=Math.max(0, SW.timeLeft-2); updateSwTimerDisplay();
+    btn.classList.add('flash-wrong'); setTimeout(()=>btn.classList.remove('flash-wrong'),250);
+  }
+  swUpdateStats();
+  if(SW.running && SW.timeLeft>0) swNextTrial(false);
+}
+function finishSwitch(){
+  clearInterval(SW.timer); SW.running=false;
+  const newRec=bt_recordScore(SW.best, SW.diff, SW.score); bt_saveBest('brain.switch.best', SW.best);
+  document.getElementById('switch-game-card').style.display='none';
+  document.getElementById('switch-result-card').style.display='block';
+  document.getElementById('sw-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('sw-result-title').textContent=newRec?t('switch.newRecord'):t('switch.timeOver');
+  document.getElementById('sw-result-score').textContent=SW.score;
+  document.getElementById('sw-r-diff').textContent=SW_DIFF_LABEL(SW.diff);
+  document.getElementById('sw-r-correct').textContent=SW.correct;
+  document.getElementById('sw-r-combo').textContent=SW.maxCombo;
+  document.getElementById('sw-r-best').textContent=SW.best[SW.diff].all;
+}
+function leaveSwitch(){
+  if(SW.running && !confirm(t('switch.confirmLeave'))) return;
+  clearInterval(SW.timer); SW.running=false; resetSwitch();
+}
+function resetSwitch(){
+  clearInterval(SW.timer); SW.running=false;
+  document.getElementById('switch-result-card').style.display='none';
+  document.getElementById('switch-game-card').style.display='none';
+  document.getElementById('switch-intro-card').style.display='block';
+  swUpdateBestLine();
 }
 
 // INIT

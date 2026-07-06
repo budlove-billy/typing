@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-06 — 유연성 축 게임 **규칙 바꾸기(switch)** 추가(홀짝↔크기 규칙 전환, 과제 전환/set-shifting).
+- 2026-07-06 — **홈/대시보드** 기본 랜딩 추가(전체 바로가기 그리드 + 연속 출석 streak).
+- 2026-07-06 — **공유카드 일반화**: `makeShareCard`/`shareOrDownload`로 5개 게임 결과에 공유 버튼. 설계: `유연성-게임-스펙.md`.
 - 2026-07-06 — 바이럴 축 추가: **두뇌 유형 테스트(braintype)** + **canvas 결과 공유카드**.
   6문항→6유형(각 유형이 앱 내 게임 추천으로 연결), Web Share/PNG 다운로드. 설계: `바이럴-게임-스펙.md`.
 - 2026-07-06 — 주의·속도 축 게임 2종 추가: **색깔 맞추기/스트룹(stroop)**, **순서 잇기/Trail(trail)**.
