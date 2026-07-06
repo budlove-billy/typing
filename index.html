@@ -301,6 +301,19 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .hc-opt.correct{background:var(--teal3);border-color:var(--teal);color:var(--teal2)}
 .hc-opt.wrong{background:var(--red3);border-color:var(--red);color:var(--red2)}
 .hc-opt:disabled{cursor:default}
+/* ===== Attention/speed games (색깔 맞추기 / 순서 잇기) ===== */
+.st-word-wrap{text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:2rem 1rem;margin-bottom:1.25rem}
+.st-word{font-size:clamp(2.6rem,12vw,4.5rem);font-weight:800;letter-spacing:.02em;user-select:none}
+.st-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:420px;margin:0 auto}
+.st-opt{padding:1rem 0;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;color:#fff;cursor:pointer;transition:transform .08s,filter .12s;font-family:inherit;text-shadow:0 1px 2px rgba(0,0,0,.28)}
+.st-opt:hover:not(:disabled){filter:brightness(1.08)}
+.st-opt:active:not(:disabled){transform:scale(.95)}
+.st-opt.flash-wrong{outline:3px solid var(--red);outline-offset:2px}
+.tr-board{position:relative;width:100%;max-width:460px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
+.tr-node{position:absolute;width:13%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--purple);border-radius:50%;color:var(--purple);font-weight:700;font-size:clamp(.85rem,3.4vw,1.2rem);cursor:pointer;user-select:none;transition:background .12s,border-color .12s;transform:translate(-50%,-50%)}
+.tr-node:hover{background:var(--purple3)}
+.tr-node.done{background:var(--teal);border-color:var(--teal);color:#fff;cursor:default}
+.tr-node.wrong{animation:mgPulse .3s 2}
 </style>
 </head>
 <body>
@@ -328,6 +341,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('count')" id="nav-count">
       <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('stroop')" id="nav-stroop">
+      <span class="nav-ico">🎨</span><span class="nav-label" data-i18n="nav.stroop">색깔 맞추기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('trail')" id="nav-trail">
+      <span class="nav-ico">🔗</span><span class="nav-label" data-i18n="nav.trail">순서 잇기</span>
     </button>
   </div>
   <div class="lang-select-wrap">
@@ -746,6 +765,107 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== STROOP SCREEN (색깔 맞추기) ==================== -->
+<div class="screen" id="screen-stroop">
+  <div class="card" id="stroop-intro-card">
+    <div class="section-head"><h2 data-i18n="stroop.title">색깔 맞추기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="stroop.intro">
+      화면에 나오는 <b>글자의 색</b>과 같은 색 버튼을 누르세요.<br>
+      글자가 <b>뜻하는 색이 아니라 칠해진 색</b>을 골라야 합니다. 60초 안에 최대한 많이!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="st-diff-easy" onclick="setStroopDiff('easy')">
+        <h3>🌱 <span data-i18n="stroop.easy">쉬움</span></h3><p data-i18n="stroop.easyDesc">4색·부조화 적음</p>
+      </div>
+      <div class="diff-btn active" id="st-diff-normal" onclick="setStroopDiff('normal')">
+        <h3>⚡ <span data-i18n="stroop.normal">보통</span></h3><p data-i18n="stroop.normalDesc">5색·기본</p>
+      </div>
+      <div class="diff-btn" id="st-diff-hard" onclick="setStroopDiff('hard')">
+        <h3>🔥 <span data-i18n="stroop.hard">어려움</span></h3><p data-i18n="stroop.hardDesc">6색·부조화 많음</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startStroop()" data-i18n="stroop.startGame">게임 시작</button>
+    <div class="best-line" id="st-intro-best"></div>
+  </div>
+
+  <div class="card" id="stroop-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="stroop.score">SCORE</div><div class="mg-stat-value" id="st-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="stroop.combo">COMBO</div><div class="mg-stat-value" id="st-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="st-timer">01:00</div></div>
+    <div class="gm-status" id="st-status" data-i18n="stroop.pickColor">글자의 색을 고르세요</div>
+    <div class="st-word-wrap"><span class="st-word" id="st-word">빨강</span></div>
+    <div class="st-options" id="st-options"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveStroop()" data-i18n="stroop.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="stroop-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="st-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="st-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="st-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="stroop.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="stroop.difficulty">난이도</span><span id="st-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="stroop.correct">정답</span><span id="st-r-correct">0</span></div>
+    <div class="result-row"><span data-i18n="stroop.maxCombo">최고 콤보</span><span id="st-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="stroop.best">최고 기록</span><span id="st-r-best">0</span></div>
+    <div style="margin-top:1.25rem"><button class="btn" onclick="resetStroop()" data-i18n="stroop.newGame">새 게임</button></div>
+  </div>
+</div>
+
+<!-- ==================== TRAIL SCREEN (순서 잇기) ==================== -->
+<div class="screen" id="screen-trail">
+  <div class="card" id="trail-intro-card">
+    <div class="section-head"><h2 data-i18n="trail.title">순서 잇기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="trail.intro">
+      흩어진 숫자를 <b>1부터 순서대로</b> 빠르게 누르세요.<br>
+      판을 다 지우면 다음 판은 숫자가 하나 더 많아집니다. 60초 동안 몇 판이나?
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="tr-diff-easy" onclick="setTrailDiff('easy')">
+        <h3>🌱 <span data-i18n="trail.easy">쉬움</span></h3><p data-i18n="trail.easyDesc">5개부터</p>
+      </div>
+      <div class="diff-btn active" id="tr-diff-normal" onclick="setTrailDiff('normal')">
+        <h3>⚡ <span data-i18n="trail.normal">보통</span></h3><p data-i18n="trail.normalDesc">7개부터</p>
+      </div>
+      <div class="diff-btn" id="tr-diff-hard" onclick="setTrailDiff('hard')">
+        <h3>🔥 <span data-i18n="trail.hard">어려움</span></h3><p data-i18n="trail.hardDesc">10개부터</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startTrail()" data-i18n="trail.startGame">게임 시작</button>
+    <div class="best-line" id="tr-intro-best"></div>
+  </div>
+
+  <div class="card" id="trail-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trail.score">SCORE</div><div class="mg-stat-value" id="tr-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trail.boards">BOARDS</div><div class="mg-stat-value" id="tr-boards">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trail.next">NEXT</div><div class="mg-stat-value" id="tr-next">1</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="tr-timer">01:00</div></div>
+    <div class="tr-board" id="tr-board"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveTrail()" data-i18n="trail.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="trail-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="tr-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="tr-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="tr-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="trail.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="trail.difficulty">난이도</span><span id="tr-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="trail.clearedBoards">지운 판</span><span id="tr-r-boards">0</span></div>
+    <div class="result-row"><span data-i18n="trail.best">최고 기록</span><span id="tr-r-best">0</span></div>
+    <div style="margin-top:1.25rem"><button class="btn" onclick="resetTrail()" data-i18n="trail.newGame">새 게임</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -942,6 +1062,61 @@ const I18N = {
   "count.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
   "count.people": {ko:"명", en:"", th:" คน"},
   "count.bestFmt": {ko:"오늘 최고 {d} · 전체 최고 {a}", en:"Today {d} · All-time {a}", th:"วันนี้ {d} · ตลอดกาล {a}"},
+
+  "nav.stroop": {ko:"색깔 맞추기", en:"Color Match", th:"จับคู่สี"},
+  "nav.trail": {ko:"순서 잇기", en:"Number Trail", th:"เชื่อมตัวเลข"},
+
+  "color.red": {ko:"빨강", en:"RED", th:"แดง"},
+  "color.blue": {ko:"파랑", en:"BLUE", th:"น้ำเงิน"},
+  "color.green": {ko:"초록", en:"GREEN", th:"เขียว"},
+  "color.yellow": {ko:"노랑", en:"YELLOW", th:"เหลือง"},
+  "color.purple": {ko:"보라", en:"PURPLE", th:"ม่วง"},
+  "color.orange": {ko:"주황", en:"ORANGE", th:"ส้ม"},
+
+  "stroop.title": {ko:"색깔 맞추기", en:"Color Match", th:"จับคู่สี"},
+  "stroop.intro": {ko:"화면에 나오는 <b>글자의 색</b>과 같은 색 버튼을 누르세요.<br>글자가 <b>뜻하는 색이 아니라 칠해진 색</b>을 골라야 합니다. 60초 안에 최대한 많이!", en:"Tap the button matching the <b>ink color</b> of the word.<br>Choose the color it's <b>painted in, not what it says</b>. Score as much as you can in 60s!", th:"แตะปุ่มที่ตรงกับ <b>สีของตัวอักษร</b><br>เลือก <b>สีที่ถูกระบายไว้ ไม่ใช่ความหมาย</b> ทำคะแนนให้ได้มากที่สุดใน 60 วินาที!"},
+  "stroop.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "stroop.easyDesc": {ko:"4색·부조화 적음", en:"4 colors · low clash", th:"4 สี·ขัดกันน้อย"},
+  "stroop.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "stroop.normalDesc": {ko:"5색·기본", en:"5 colors · standard", th:"5 สี·มาตรฐาน"},
+  "stroop.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "stroop.hardDesc": {ko:"6색·부조화 많음", en:"6 colors · high clash", th:"6 สี·ขัดกันมาก"},
+  "stroop.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "stroop.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "stroop.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "stroop.pickColor": {ko:"글자의 색을 고르세요", en:"Pick the ink color", th:"เลือกสีตัวอักษร"},
+  "stroop.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "stroop.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "stroop.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "stroop.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "stroop.correct": {ko:"정답", en:"Correct", th:"ถูก"},
+  "stroop.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "stroop.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "stroop.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "stroop.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "stroop.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "trail.title": {ko:"순서 잇기", en:"Number Trail", th:"เชื่อมตัวเลข"},
+  "trail.intro": {ko:"흩어진 숫자를 <b>1부터 순서대로</b> 빠르게 누르세요.<br>판을 다 지우면 다음 판은 숫자가 하나 더 많아집니다. 60초 동안 몇 판이나?", en:"Tap the scattered numbers <b>in order from 1</b> as fast as you can.<br>Clear a board and the next one has one more number. How many boards in 60s?", th:"แตะตัวเลขที่กระจายอยู่ <b>ตามลำดับจาก 1</b> ให้เร็วที่สุด<br>เคลียร์กระดานแล้วกระดานถัดไปจะมีเลขเพิ่มอีกหนึ่ง ทำได้กี่กระดานใน 60 วินาที?"},
+  "trail.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "trail.easyDesc": {ko:"5개부터", en:"From 5", th:"เริ่ม 5"},
+  "trail.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "trail.normalDesc": {ko:"7개부터", en:"From 7", th:"เริ่ม 7"},
+  "trail.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "trail.hardDesc": {ko:"10개부터", en:"From 10", th:"เริ่ม 10"},
+  "trail.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "trail.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "trail.boards": {ko:"BOARDS", en:"BOARDS", th:"กระดาน"},
+  "trail.next": {ko:"NEXT", en:"NEXT", th:"ถัดไป"},
+  "trail.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "trail.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "trail.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "trail.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "trail.clearedBoards": {ko:"지운 판", en:"Boards Cleared", th:"กระดานที่เคลียร์"},
+  "trail.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "trail.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "trail.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "trail.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 };
 
 // ========== I18N CORE ==========
@@ -1031,6 +1206,8 @@ function refreshDynamicTexts(){
   // 기억 게임 인트로의 최고기록 안내문(동적 문자열)도 언어에 맞게 갱신
   if(typeof fmUpdateBestLine === 'function') fmUpdateBestLine();
   if(typeof hcUpdateBestLine === 'function') hcUpdateBestLine();
+  if(typeof stUpdateBestLine === 'function') stUpdateBestLine();
+  if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
 }
 
 
@@ -2733,6 +2910,214 @@ function resetCount(){
   document.getElementById('count-game-card').style.display='none';
   document.getElementById('count-intro-card').style.display='block';
   hcUpdateBestLine();
+}
+
+// ========== 색깔 맞추기 (Stroop) ==========
+const ST_COLORS=[
+  {key:'red',hex:'#e0344b'},{key:'blue',hex:'#2f6bff'},{key:'green',hex:'#17a34a'},
+  {key:'yellow',hex:'#e0a500'},{key:'purple',hex:'#7b4ff0'},{key:'orange',hex:'#f07a1f'}
+];
+const ST_CFG={ easy:{colors:4,incong:0.5}, normal:{colors:5,incong:0.7}, hard:{colors:6,incong:0.85} };
+const ST_TIME=60;
+const ST = {
+  diff:'normal', score:0, combo:0, maxCombo:0, correct:0,
+  timeLeft:ST_TIME, timer:null, running:false, inkKey:null, palette:[],
+  best:bt_loadBest('brain.stroop.best')
+};
+function ST_DIFF_LABEL(d){ return d==='easy'?t('stroop.easy'):d==='normal'?t('stroop.normal'):t('stroop.hard'); }
+function stUpdateBestLine(){ const el=document.getElementById('st-intro-best'); if(el) el.textContent=bt_bestLineText(ST.best, ST.diff); }
+function setStroopDiff(d){
+  ST.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('st-diff-'+k).classList.toggle('active',k===d));
+  stUpdateBestLine();
+}
+function startStroop(){
+  ST.score=0; ST.combo=0; ST.maxCombo=0; ST.correct=0; ST.timeLeft=ST_TIME; ST.running=true;
+  ST.palette=ST_COLORS.slice(0, ST_CFG[ST.diff].colors);
+  document.getElementById('stroop-intro-card').style.display='none';
+  document.getElementById('stroop-result-card').style.display='none';
+  document.getElementById('stroop-game-card').style.display='block';
+  // 옵션 버튼은 게임 내내 고정(색 집합) — 한 번만 생성
+  const opts=document.getElementById('st-options'); opts.innerHTML='';
+  ST.palette.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='st-opt'; b.style.background=c.hex; b.textContent=t('color.'+c.key);
+    b.onclick=()=>stAnswer(c.key,b);
+    opts.appendChild(b);
+  });
+  stUpdateStats(); updateStTimerDisplay(); stNextTrial();
+  clearInterval(ST.timer);
+  ST.timer=setInterval(stTick,1000);
+}
+function stTick(){
+  if(!ST.running) return;
+  ST.timeLeft--; updateStTimerDisplay();
+  if(ST.timeLeft<=0){ ST.timeLeft=0; updateStTimerDisplay(); finishStroop(); }
+}
+function updateStTimerDisplay(){
+  const m=Math.floor(ST.timeLeft/60), s=ST.timeLeft%60;
+  const el=document.getElementById('st-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', ST.timeLeft<=10);
+}
+function stUpdateStats(){
+  document.getElementById('st-score').textContent=ST.score;
+  document.getElementById('st-combo').textContent=ST.combo;
+}
+function stNextTrial(){
+  const pal=ST.palette;
+  const ink=pal[Math.floor(Math.random()*pal.length)];
+  ST.inkKey=ink.key;
+  let wordKey;
+  if(Math.random() < ST_CFG[ST.diff].incong){ // 부조화: 글자 뜻 != 잉크색
+    const others=pal.filter(c=>c.key!==ink.key);
+    wordKey=others[Math.floor(Math.random()*others.length)].key;
+  }else{ wordKey=ink.key; }
+  const w=document.getElementById('st-word');
+  w.textContent=t('color.'+wordKey);
+  w.style.color=ink.hex;
+}
+function stAnswer(key, btn){
+  if(!ST.running) return;
+  if(key===ST.inkKey){
+    ST.correct++; ST.combo++; ST.maxCombo=Math.max(ST.maxCombo,ST.combo);
+    ST.score += 10 + (ST.combo-1)*2;
+  }else{
+    ST.combo=0;
+    ST.timeLeft=Math.max(0, ST.timeLeft-2); // 오답 시간 페널티
+    updateStTimerDisplay();
+    btn.classList.add('flash-wrong');
+    setTimeout(()=>btn.classList.remove('flash-wrong'),250);
+  }
+  stUpdateStats();
+  if(ST.running && ST.timeLeft>0) stNextTrial();
+}
+function finishStroop(){
+  clearInterval(ST.timer); ST.running=false;
+  const newRec=bt_recordScore(ST.best, ST.diff, ST.score); bt_saveBest('brain.stroop.best', ST.best);
+  document.getElementById('stroop-game-card').style.display='none';
+  document.getElementById('stroop-result-card').style.display='block';
+  document.getElementById('st-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('st-result-title').textContent=newRec?t('stroop.newRecord'):t('stroop.timeOver');
+  document.getElementById('st-result-score').textContent=ST.score;
+  document.getElementById('st-r-diff').textContent=ST_DIFF_LABEL(ST.diff);
+  document.getElementById('st-r-correct').textContent=ST.correct;
+  document.getElementById('st-r-combo').textContent=ST.maxCombo;
+  document.getElementById('st-r-best').textContent=ST.best[ST.diff].all;
+}
+function leaveStroop(){
+  if(ST.running && !confirm(t('stroop.confirmLeave'))) return;
+  clearInterval(ST.timer); ST.running=false; resetStroop();
+}
+function resetStroop(){
+  clearInterval(ST.timer); ST.running=false;
+  document.getElementById('stroop-result-card').style.display='none';
+  document.getElementById('stroop-game-card').style.display='none';
+  document.getElementById('stroop-intro-card').style.display='block';
+  stUpdateBestLine();
+}
+
+// ========== 순서 잇기 (Number Trail) ==========
+const TR_START={easy:5, normal:7, hard:10};
+const TR_TIME=60;
+const TR = {
+  diff:'normal', score:0, boards:0, n:7, next:1,
+  timeLeft:TR_TIME, timer:null, running:false,
+  best:bt_loadBest('brain.trail.best')
+};
+function TR_DIFF_LABEL(d){ return d==='easy'?t('trail.easy'):d==='normal'?t('trail.normal'):t('trail.hard'); }
+function trUpdateBestLine(){ const el=document.getElementById('tr-intro-best'); if(el) el.textContent=bt_bestLineText(TR.best, TR.diff); }
+function setTrailDiff(d){
+  TR.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('tr-diff-'+k).classList.toggle('active',k===d));
+  trUpdateBestLine();
+}
+function startTrail(){
+  TR.n=TR_START[TR.diff]; TR.score=0; TR.boards=0; TR.timeLeft=TR_TIME; TR.running=true;
+  document.getElementById('trail-intro-card').style.display='none';
+  document.getElementById('trail-result-card').style.display='none';
+  document.getElementById('trail-game-card').style.display='block';
+  trUpdateStats(); updateTrTimerDisplay(); trNewBoard();
+  clearInterval(TR.timer);
+  TR.timer=setInterval(trTick,1000);
+}
+function trTick(){
+  if(!TR.running) return;
+  TR.timeLeft--; updateTrTimerDisplay();
+  if(TR.timeLeft<=0){ TR.timeLeft=0; updateTrTimerDisplay(); finishTrail(); }
+}
+function updateTrTimerDisplay(){
+  const m=Math.floor(TR.timeLeft/60), s=TR.timeLeft%60;
+  const el=document.getElementById('tr-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', TR.timeLeft<=10);
+}
+function trUpdateStats(){
+  document.getElementById('tr-score').textContent=TR.score;
+  document.getElementById('tr-boards').textContent=TR.boards;
+  document.getElementById('tr-next').textContent=TR.next;
+}
+function trGenPositions(n){
+  const cols=Math.ceil(Math.sqrt(n)), rows=Math.ceil(n/cols);
+  const cells=[];
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push({r,c});
+  for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cells[i],cells[j]]=[cells[j],cells[i]]; }
+  return cells.slice(0,n).map(cell=>{
+    let x=(cell.c+0.5)/cols*100 + (Math.random()-0.5)*(100/cols*0.35);
+    let y=(cell.r+0.5)/rows*100 + (Math.random()-0.5)*(100/rows*0.35);
+    return { x:Math.min(92,Math.max(8,x)), y:Math.min(92,Math.max(8,y)) };
+  });
+}
+function trNewBoard(){
+  TR.next=1;
+  const board=document.getElementById('tr-board'); board.innerHTML='';
+  const pos=trGenPositions(TR.n);
+  for(let i=0;i<TR.n;i++){
+    const num=i+1;
+    const node=document.createElement('div');
+    node.className='tr-node'; node.textContent=num;
+    node.style.left=pos[i].x+'%'; node.style.top=pos[i].y+'%';
+    node.onclick=()=>trTapNode(num,node);
+    board.appendChild(node);
+  }
+  trUpdateStats();
+}
+function trTapNode(num,node){
+  if(!TR.running) return;
+  if(num===TR.next){
+    node.classList.add('done'); node.onclick=null; TR.next++;
+    if(TR.next>TR.n){ // 판 클리어
+      TR.boards++; TR.score+=TR.n; TR.n++;
+      trUpdateStats();
+      setTimeout(()=>{ if(TR.running) trNewBoard(); }, 350);
+    }else{ trUpdateStats(); }
+  }else{
+    node.classList.remove('wrong'); void node.offsetWidth; node.classList.add('wrong');
+    TR.timeLeft=Math.max(0, TR.timeLeft-2); updateTrTimerDisplay(); // 오답 페널티
+  }
+}
+function finishTrail(){
+  clearInterval(TR.timer); TR.running=false;
+  const newRec=bt_recordScore(TR.best, TR.diff, TR.score); bt_saveBest('brain.trail.best', TR.best);
+  document.getElementById('trail-game-card').style.display='none';
+  document.getElementById('trail-result-card').style.display='block';
+  document.getElementById('tr-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('tr-result-title').textContent=newRec?t('trail.newRecord'):t('trail.timeOver');
+  document.getElementById('tr-result-score').textContent=TR.score;
+  document.getElementById('tr-r-diff').textContent=TR_DIFF_LABEL(TR.diff);
+  document.getElementById('tr-r-boards').textContent=TR.boards;
+  document.getElementById('tr-r-best').textContent=TR.best[TR.diff].all;
+}
+function leaveTrail(){
+  if(TR.running && !confirm(t('trail.confirmLeave'))) return;
+  clearInterval(TR.timer); TR.running=false; resetTrail();
+}
+function resetTrail(){
+  clearInterval(TR.timer); TR.running=false;
+  document.getElementById('trail-result-card').style.display='none';
+  document.getElementById('trail-game-card').style.display='none';
+  document.getElementById('trail-intro-card').style.display='block';
+  trUpdateBestLine();
 }
 
 // INIT

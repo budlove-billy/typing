@@ -20,9 +20,12 @@ _Write important context, decisions, and lessons here so future sessions can pic
   - 인원수 세기: 집에 입/출(들어가면 숨김) 애니메이션 후 "몇 명?" 4지선다. streak 점수, lives 3. `HC` 객체.
   - 둘 다 **localStorage** 최고기록 영속화: 키 `brain.flash.best` / `brain.count.best`,
     스키마 `{easy|normal|hard:{all,day,date}}`. 헬퍼 `bt_*`. "오늘 최고 · 전체 최고" 표시(데일리 재방문 훅).
-- 다음 후보(미구현): 주의·속도 축(스트룹=색버튼, 순서연결=미로), 바이럴(MBTI+공유카드).
-- 결과 **공유카드**(canvas→이미지)는 스펙에만 있고 미구현 — 두 게임 공용 `renderShareCard` 훅 지점.
-- 설계 상세: **`기억축-게임-스펙.md`**.
+- **신규(2026-07-06 추가): 색깔 맞추기/스트룹(stroop), 순서 잇기/Trail(trail)** → **주의·속도 축**을 채움.
+  - 스트룹: 색이름 글자를 다른 잉크색으로 표시 → 잉크색 버튼 탭. 60초 타임어택, combo, 부조화확률 난이도. `ST` 객체.
+  - 순서 잇기: 흩어진 1..N 순서대로 탭, 판 클리어마다 N+1. 60초 최다 판. `TR` 객체.
+  - 오답 페널티 = 시간 −2초. localStorage: `brain.stroop.best` / `brain.trail.best`.
+- 다음 후보(미구현): 바이럴 축(MBTI+공유카드), 유연성(전환과제). 결과 공유카드(canvas)는 전 게임 공용 훅으로 미구현.
+- 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**.
 
 ## 조사 자료
 - NDS 두뇌 트레이닝 웹구현 판정 요약은 `기억축-게임-스펙.md` §4에 통합(핵심: 음성/카메라 전제 게임은

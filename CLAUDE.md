@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-06 — 주의·속도 축 게임 2종 추가: **색깔 맞추기/스트룹(stroop)**, **순서 잇기/Trail(trail)**.
+  60초 타임어택 + 오답 시간 페널티 + `localStorage` 최고기록. i18n에 색이름(`color.*`) 추가.
+  설계: `주의속도-게임-스펙.md`.
 - 2026-07-06 — 기억 축 게임 2종 추가: **순간기억(flash)**, **인원수 세기(count)**.
   `index.html`/`brain_app.html`에 nav·screen·CSS·i18n(ko/en/th)·JS 통합.
   적응형 난이도 + `localStorage` 최고기록. 설계: `기억축-게임-스펙.md`.
