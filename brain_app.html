@@ -18,7 +18,7 @@
   --blue:#2255d0;--blue3:#dce8fc;
   --radius:8px;--radius2:12px;--radius3:16px;
 }
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
 h1,h2,h3{font-weight:600}
 
 /* NAV */
@@ -340,6 +340,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-card-emoji{font-size:2rem;line-height:1}
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
+.home-grp{font-size:.82rem;font-weight:700;color:var(--text2);margin:1.1rem .25rem .6rem}
+.home-grp:first-child{margin-top:.25rem}
 /* ===== Rule switch (규칙 바꾸기) ===== */
 .sw-rule{display:inline-block;font-size:1.05rem;font-weight:700;padding:.45rem 1.2rem;border-radius:999px;margin-bottom:1rem;transition:.18s}
 .sw-rule.parity{background:var(--purple3);color:var(--purple)}
@@ -349,6 +351,42 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .sw-opt{padding:1.3rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.1rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
 .sw-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
 .sw-opt:active{transform:scale(.97)}
+/* ===== 모바일 최적화 (phone) ===== */
+@media (max-width:640px){
+  .screen{padding:.8rem}
+  .card{padding:1rem .85rem}
+  .section-head h2{font-size:.95rem}
+  .mg-top-stats{gap:.5rem;padding:.8rem .5rem;margin-bottom:1rem}
+  .mg-stat-value{font-size:1.55rem}
+  .mg-stat-divider{height:34px}
+  .mg-timer{font-size:1.45rem;padding:.4rem 1.1rem}
+  .difficulty-row{gap:.45rem}
+  .diff-btn{padding:.7rem .35rem}
+  .diff-btn h3{font-size:.82rem}
+  .diff-btn p{font-size:.68rem}
+  .home-hero{padding:1.1rem .9rem}
+  .home-greeting{font-size:1.15rem}
+  .home-sub{font-size:.8rem}
+  .home-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem}
+  .home-card{padding:.85rem .4rem}
+  .home-card-emoji{font-size:1.8rem}
+  .home-card-name{font-size:.76rem}
+  .fm-board{gap:.4rem}
+  .st-word-wrap{padding:1.5rem .75rem}
+  .st-opt{padding:.85rem 0;font-size:.92rem}
+  .sw-opt{padding:1.05rem .35rem;font-size:1rem}
+  .sw-num{font-size:clamp(3rem,20vw,4.5rem);margin-bottom:1rem}
+  .tr-node{width:15%;font-size:clamp(.8rem,4.2vw,1.1rem)}
+  .hc-stage{height:150px}
+  .hc-house{font-size:4rem}
+  .hc-person{font-size:2rem}
+  .hc-opt{padding:.75rem 0;font-size:1.2rem}
+  .bt-opt{padding:.8rem .9rem;font-size:.9rem}
+}
+@media (max-width:360px){
+  .home-grid{grid-template-columns:repeat(3,1fr)}
+  .nav-btn{padding:.35rem .5rem}
+}
 </style>
 </head>
 <body>
@@ -358,21 +396,6 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="nav-menu">
     <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
       <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.home">홈</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('typing')" id="nav-typing">
-      <span class="nav-ico">⌨️</span><span class="nav-label" data-i18n="nav.typing">한글 타자</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
-      <span class="nav-ico">📚</span><span class="nav-label" data-i18n="nav.vocab">영단어</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
-      <span class="nav-ico">🧠</span><span class="nav-label" data-i18n="nav.iq">IQ 테스트</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
-      <span class="nav-ico">🔢</span><span class="nav-label" data-i18n="nav.sudoku">스도쿠</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
-      <span class="nav-ico">➗</span><span class="nav-label" data-i18n="nav.math">암산 게임</span>
     </button>
     <button class="nav-btn" onclick="showScreen('flash')" id="nav-flash">
       <span class="nav-ico">⚡</span><span class="nav-label" data-i18n="nav.flash">순간기억</span>
@@ -386,11 +409,26 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <button class="nav-btn" onclick="showScreen('trail')" id="nav-trail">
       <span class="nav-ico">🔗</span><span class="nav-label" data-i18n="nav.trail">순서 잇기</span>
     </button>
-    <button class="nav-btn" onclick="showScreen('braintype')" id="nav-braintype">
-      <span class="nav-ico">🔮</span><span class="nav-label" data-i18n="nav.braintype">두뇌 유형</span>
-    </button>
     <button class="nav-btn" onclick="showScreen('switch')" id="nav-switch">
       <span class="nav-ico">🔀</span><span class="nav-label" data-i18n="nav.switch">규칙 바꾸기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
+      <span class="nav-ico">➗</span><span class="nav-label" data-i18n="nav.math">암산 게임</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
+      <span class="nav-ico">🧠</span><span class="nav-label" data-i18n="nav.iq">IQ 테스트</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
+      <span class="nav-ico">🔢</span><span class="nav-label" data-i18n="nav.sudoku">스도쿠</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
+      <span class="nav-ico">📚</span><span class="nav-label" data-i18n="nav.vocab">영단어</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('typing')" id="nav-typing">
+      <span class="nav-ico">⌨️</span><span class="nav-label" data-i18n="nav.typing">한글 타자</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('braintype')" id="nav-braintype">
+      <span class="nav-ico">🔮</span><span class="nav-label" data-i18n="nav.braintype">두뇌 유형</span>
     </button>
   </div>
   <div class="lang-select-wrap">
@@ -410,7 +448,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="home-streak"><span class="home-streak-fire">🔥</span> <b id="home-streak-n">1</b><span data-i18n="home.streakUnit">일 연속 방문</span></div>
   </div>
   <div class="home-section-title" data-i18n="home.allGames">전체 트레이닝</div>
-  <div class="home-grid" id="home-grid"></div>
+  <div id="home-body"></div>
 </div>
 
 <!-- ==================== TYPING SCREEN ==================== -->
@@ -1274,6 +1312,13 @@ const I18N = {
   "home.sub": {ko:"매일 조금씩, 뇌가 말랑말랑해집니다.", en:"A little each day keeps your brain sharp.", th:"ทำทุกวันทีละนิด สมองก็เฉียบคม"},
   "home.streakUnit": {ko:"일 연속 방문", en:" day streak", th:" วันติดต่อกัน"},
   "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},
+  "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
+  "home.grpAttention": {ko:"🎯 주의·속도", en:"🎯 Attention & Speed", th:"🎯 สมาธิ·ความเร็ว"},
+  "home.grpFlex": {ko:"🔀 유연성", en:"🔀 Flexibility", th:"🔀 ความยืดหยุ่น"},
+  "home.grpCalc": {ko:"➗ 계산", en:"➗ Calculation", th:"➗ การคำนวณ"},
+  "home.grpLogic": {ko:"🧩 논리·추론", en:"🧩 Logic", th:"🧩 ตรรกะ"},
+  "home.grpLang": {ko:"📚 언어", en:"📚 Language", th:"📚 ภาษา"},
+  "home.grpTest": {ko:"🔮 테스트", en:"🔮 Test", th:"🔮 แบบทดสอบ"},
   "braintype.title": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
   "braintype.intro": {ko:"6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.", en:"Discover your brain type in 6 questions!<br>We'll also recommend the training that fits you.", th:"ค้นหาประเภทสมองของคุณใน 6 คำถาม!<br>พร้อมแนะนำการฝึกที่เหมาะกับคุณ"},
   "braintype.start": {ko:"테스트 시작", en:"Start Test", th:"เริ่มทดสอบ"},
@@ -3514,17 +3559,17 @@ function gameShare(game){
 
 // ========== 홈 / 대시보드 ==========
 const HOME_GAMES=[
-  {id:'typing', emoji:'⌨️', key:'nav.typing'},
-  {id:'vocab',  emoji:'📚', key:'nav.vocab'},
-  {id:'iq',     emoji:'🧠', key:'nav.iq'},
-  {id:'sudoku', emoji:'🔢', key:'nav.sudoku'},
-  {id:'math',   emoji:'➗', key:'nav.math'},
-  {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best'},
-  {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best'},
-  {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best'},
-  {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best'},
-  {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best'},
-  {id:'braintype', emoji:'🔮', key:'nav.braintype'},
+  {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'home.grpMemory'},
+  {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best',  grp:'home.grpMemory'},
+  {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
+  {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
+  {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
+  {id:'math',   emoji:'➗', key:'nav.math',   grp:'home.grpCalc'},
+  {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'home.grpLogic'},
+  {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'home.grpLogic'},
+  {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'home.grpLang'},
+  {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'home.grpLang'},
+  {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'home.grpTest'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
@@ -3543,9 +3588,17 @@ function homeVisit(){
 function renderHome(){
   const v=homeVisit();
   const nEl=document.getElementById('home-streak-n'); if(nEl) nEl.textContent=v.streak;
-  const grid=document.getElementById('home-grid'); if(!grid) return;
-  grid.innerHTML='';
+  const body=document.getElementById('home-body'); if(!body) return;
+  body.innerHTML='';
+  let curGrp=null, grid=null;
   HOME_GAMES.forEach(g=>{
+    if(g.grp!==curGrp){
+      curGrp=g.grp;
+      const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(g.grp);
+      body.appendChild(h);
+      grid=document.createElement('div'); grid.className='home-grid';
+      body.appendChild(grid);
+    }
     const card=document.createElement('button');
     card.className='home-card'; card.onclick=()=>showScreen(g.id);
     let best='';
