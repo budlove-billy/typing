@@ -314,6 +314,18 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .tr-node:hover{background:var(--purple3)}
 .tr-node.done{background:var(--teal);border-color:var(--teal);color:#fff;cursor:default}
 .tr-node.wrong{animation:mgPulse .3s 2}
+/* ===== Brain type test (두뇌 유형 · 공유카드) ===== */
+.bt-progress{font-size:.8rem;color:var(--text3);text-align:center;margin-bottom:.5rem}
+.bt-question{font-size:1.15rem;font-weight:700;text-align:center;color:var(--text);margin-bottom:1.25rem;line-height:1.5}
+.bt-opt{display:block;width:100%;text-align:left;padding:.9rem 1.1rem;margin-bottom:.6rem;background:#fff;border:1.5px solid var(--border2);border-radius:var(--radius);font-size:.95rem;color:var(--text);cursor:pointer;transition:.12s;font-family:inherit}
+.bt-opt:hover{border-color:var(--purple);background:var(--purple3);color:var(--purple)}
+.bt-type-emoji{font-size:4.5rem;margin-bottom:.25rem;line-height:1}
+.bt-type-name{font-size:1.6rem;font-weight:800;color:var(--purple);margin-bottom:.4rem}
+.bt-type-desc{font-size:.95rem;color:var(--text2);line-height:1.6;margin-bottom:1.25rem}
+.bt-share-img{max-width:280px;width:100%;border-radius:var(--radius2);box-shadow:0 4px 16px rgba(0,0,0,.15);margin:0 auto 1rem;display:block}
+.bt-rec-box{background:var(--teal3);border:1px solid var(--teal);border-radius:var(--radius2);padding:1rem;margin-bottom:1rem}
+.bt-rec-label{font-size:.78rem;color:var(--teal2);margin-bottom:.35rem}
+.bt-rec-game{font-size:1.1rem;font-weight:700;color:var(--teal2);margin-bottom:.6rem}
 </style>
 </head>
 <body>
@@ -347,6 +359,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('trail')" id="nav-trail">
       <span class="nav-ico">🔗</span><span class="nav-label" data-i18n="nav.trail">순서 잇기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('braintype')" id="nav-braintype">
+      <span class="nav-ico">🔮</span><span class="nav-label" data-i18n="nav.braintype">두뇌 유형</span>
     </button>
   </div>
   <div class="lang-select-wrap">
@@ -866,6 +881,45 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<div class="screen" id="screen-braintype">
+  <div class="card" id="bt-intro-card">
+    <div class="section-head"><h2 data-i18n="braintype.title">두뇌 유형 테스트</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="braintype.intro">
+      6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.
+    </p>
+    <button class="btn" onclick="startBrainType()" data-i18n="braintype.start">테스트 시작</button>
+  </div>
+
+  <div class="card" id="bt-quiz-card" style="display:none">
+    <div class="progress-bar"><div class="progress-fill" id="bt-progress-fill" style="width:0%"></div></div>
+    <div class="bt-progress" id="bt-progress">1 / 6</div>
+    <div class="bt-question" id="bt-question"></div>
+    <div id="bt-options"></div>
+    <div style="display:flex;justify-content:center;margin-top:.5rem">
+      <button class="btn btn-outline" onclick="leaveBrainType()" data-i18n="braintype.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="bt-result-card" style="display:none;text-align:center">
+    <div class="bt-type-emoji" id="bt-emoji">🧠</div>
+    <div style="font-size:.85rem;color:var(--text3)" data-i18n="braintype.resultTitle">당신의 두뇌 유형은</div>
+    <div class="bt-type-name" id="bt-name"></div>
+    <div class="bt-type-desc" id="bt-desc"></div>
+    <img class="bt-share-img" id="bt-share-img" alt="">
+    <canvas id="bt-canvas" width="600" height="800" style="display:none"></canvas>
+    <div class="bt-rec-box">
+      <div class="bt-rec-label" data-i18n="braintype.recommend">추천 트레이닝</div>
+      <div class="bt-rec-game" id="bt-rec-game"></div>
+      <button class="btn teal" id="bt-rec-btn" data-i18n="braintype.playRec">바로 하러가기 →</button>
+    </div>
+    <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn" onclick="btShare()" data-i18n="braintype.saveImg">📷 결과 이미지 저장/공유</button>
+      <button class="btn btn-outline" onclick="resetBrainType()" data-i18n="braintype.retry">다시 테스트</button>
+    </div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1117,6 +1171,18 @@ const I18N = {
   "trail.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "trail.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
   "trail.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "nav.braintype": {ko:"두뇌 유형", en:"Brain Type", th:"ประเภทสมอง"},
+  "braintype.title": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
+  "braintype.intro": {ko:"6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.", en:"Discover your brain type in 6 questions!<br>We'll also recommend the training that fits you.", th:"ค้นหาประเภทสมองของคุณใน 6 คำถาม!<br>พร้อมแนะนำการฝึกที่เหมาะกับคุณ"},
+  "braintype.start": {ko:"테스트 시작", en:"Start Test", th:"เริ่มทดสอบ"},
+  "braintype.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "braintype.resultTitle": {ko:"당신의 두뇌 유형은", en:"Your brain type is", th:"ประเภทสมองของคุณคือ"},
+  "braintype.recommend": {ko:"추천 트레이닝", en:"Recommended training", th:"การฝึกที่แนะนำ"},
+  "braintype.playRec": {ko:"바로 하러가기 →", en:"Play now →", th:"เล่นเลย →"},
+  "braintype.retry": {ko:"다시 테스트", en:"Retake", th:"ทำใหม่"},
+  "braintype.saveImg": {ko:"📷 결과 이미지 저장/공유", en:"📷 Save / Share image", th:"📷 บันทึก / แชร์รูป"},
+  "braintype.cardTag": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
 };
 
 // ========== I18N CORE ==========
@@ -1208,6 +1274,15 @@ function refreshDynamicTexts(){
   if(typeof hcUpdateBestLine === 'function') hcUpdateBestLine();
   if(typeof stUpdateBestLine === 'function') stUpdateBestLine();
   if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
+  // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
+  if(typeof BT !== 'undefined'){
+    if(document.getElementById('bt-quiz-card') && document.getElementById('bt-quiz-card').style.display!=='none'){
+      if(typeof btRenderQuestion==='function') btRenderQuestion();
+    }
+    if(BT.result && document.getElementById('bt-result-card') && document.getElementById('bt-result-card').style.display!=='none'){
+      if(typeof btShowResult==='function') btShowResult(BT.result);
+    }
+  }
 }
 
 
@@ -3118,6 +3193,165 @@ function resetTrail(){
   document.getElementById('trail-game-card').style.display='none';
   document.getElementById('trail-intro-card').style.display='block';
   trUpdateBestLine();
+}
+
+// ========== 두뇌 유형 테스트 (Brain Type Test) + 공유카드 ==========
+function btL(o){ return o[CURRENT_LANG] || o.ko; }
+// 6 유형 — 각 유형은 앱 내 게임 추천으로 연결(크로스 프로모션)
+const BT_TYPES={
+  calc:  {emoji:'🧮', rec:'math',   name:{ko:'계산가형',en:'The Calculator',th:'สายคำนวณ'},     desc:{ko:'숫자와 논리에 강한 냉철한 두뇌',en:'A sharp mind, strong with numbers and logic',th:'สมองเฉียบคมด้านตัวเลขและตรรกะ'}},
+  word:  {emoji:'📚', rec:'vocab',  name:{ko:'언어가형',en:'The Wordsmith',th:'สายภาษา'},       desc:{ko:'말과 글을 자유자재로 다루는 두뇌',en:'A brain that masters words and language',th:'สมองที่เชี่ยวชาญด้านคำและภาษา'}},
+  memory:{emoji:'🧠', rec:'flash',  name:{ko:'기억가형',en:'The Memory Master',th:'สายความจำ'}, desc:{ko:'한번 본 것은 놓치지 않는 기억의 달인',en:'A master who never forgets what they see',th:'ปรมาจารย์ที่ไม่ลืมสิ่งที่เห็น'}},
+  focus: {emoji:'🎯', rec:'stroop', name:{ko:'집중가형',en:'The Focuser',th:'สายสมาธิ'},        desc:{ko:'흔들림 없는 강력한 집중력의 소유자',en:'The owner of unshakable concentration',th:'เจ้าของสมาธิที่ไม่หวั่นไหว'}},
+  quick: {emoji:'⚡', rec:'trail',  name:{ko:'순발가형',en:'The Sprinter',th:'สายไว'},          desc:{ko:'빠른 눈과 손을 가진 순발력의 화신',en:'Lightning-fast eyes and hands',th:'สายตาและมือที่ว่องไวปานสายฟ้า'}},
+  logic: {emoji:'🧩', rec:'iq',     name:{ko:'추리가형',en:'The Thinker',th:'สายตรรกะ'},        desc:{ko:'복잡한 패턴을 꿰뚫는 논리의 대가',en:'A logic master who sees through patterns',th:'ปรมาจารย์ตรรกะที่มองทะลุรูปแบบ'}},
+};
+const BT_ORDER=['calc','word','memory','focus','quick','logic']; // 동점 시 우선순위
+const BT_QUESTIONS=[
+  { q:{ko:'주말에 자유 시간이 생기면?',en:'A free weekend — what do you do?',th:'มีเวลาว่างสุดสัปดาห์ ทำอะไร?'}, opts:[
+    {t:'calc',   label:{ko:'숫자·가계부를 정리한다',en:'Organize numbers and budgets',th:'จัดการตัวเลขและบัญชี'}},
+    {t:'word',   label:{ko:'책이나 글을 읽는다',en:'Read a book or articles',th:'อ่านหนังสือหรือบทความ'}},
+    {t:'memory', label:{ko:'사진을 보며 추억을 회상한다',en:'Reminisce over old photos',th:'ดูรูปเก่ารำลึกความหลัง'}},
+    {t:'quick',  label:{ko:'몸을 쓰는 게임·운동을 한다',en:'Play active games or sports',th:'เล่นเกมหรือกีฬาที่ได้ขยับ'}} ]},
+  { q:{ko:'새 전자기기를 사면 먼저?',en:'New gadget — first thing you do?',th:'ได้อุปกรณ์ใหม่ ทำอะไรก่อน?'}, opts:[
+    {t:'logic',  label:{ko:'사양을 꼼꼼히 비교한다',en:'Compare the specs carefully',th:'เทียบสเปกอย่างละเอียด'}},
+    {t:'focus',  label:{ko:'하나씩 눌러보며 익힌다',en:'Learn by trying each button',th:'ลองกดทีละปุ่มเพื่อเรียนรู้'}},
+    {t:'word',   label:{ko:'사용 후기를 정독한다',en:'Read the reviews thoroughly',th:'อ่านรีวิวอย่างละเอียด'}},
+    {t:'calc',   label:{ko:'가격 대비 성능을 계산한다',en:'Calculate price vs performance',th:'คำนวณราคาต่อประสิทธิภาพ'}} ]},
+  { q:{ko:'보드게임을 고른다면?',en:'Picking a board game?',th:'เลือกบอร์ดเกมแบบไหน?'}, opts:[
+    {t:'logic',  label:{ko:'전략·추리 게임',en:'Strategy & deduction',th:'เกมกลยุทธ์และไขปริศนา'}},
+    {t:'memory', label:{ko:'기억력 게임',en:'Memory game',th:'เกมความจำ'}},
+    {t:'quick',  label:{ko:'순발력 반응 게임',en:'Fast-reaction game',th:'เกมตอบสนองไว'}},
+    {t:'word',   label:{ko:'단어·낱말 게임',en:'Word game',th:'เกมคำศัพท์'}} ]},
+  { q:{ko:'낯선 길을 찾을 때 나는?',en:'Finding an unfamiliar place?',th:'หาทางที่ไม่คุ้นเคย?'}, opts:[
+    {t:'memory', label:{ko:'한번 간 길은 기억한다',en:'I remember roads I have taken',th:'จำเส้นทางที่เคยไป'}},
+    {t:'logic',  label:{ko:'지도로 방향을 추론한다',en:'Deduce direction from a map',th:'อนุมานทิศจากแผนที่'}},
+    {t:'focus',  label:{ko:'표지판을 놓치지 않는다',en:'I never miss a sign',th:'ไม่พลาดป้ายบอกทาง'}},
+    {t:'quick',  label:{ko:'일단 빠르게 가보며 찾는다',en:'I just go fast and find it',th:'รีบไปแล้วค่อยหา'}} ]},
+  { q:{ko:'내가 가장 자신 있는 것은?',en:'What are you most confident in?',th:'คุณมั่นใจในอะไรมากที่สุด?'}, opts:[
+    {t:'calc',   label:{ko:'계산·수치 문제',en:'Math and numbers',th:'โจทย์คำนวณและตัวเลข'}},
+    {t:'word',   label:{ko:'글쓰기·암기',en:'Writing and memorizing',th:'การเขียนและท่องจำ'}},
+    {t:'focus',  label:{ko:'오래 집중하기',en:'Long concentration',th:'มีสมาธิได้นาน'}},
+    {t:'logic',  label:{ko:'어려운 문제 풀기',en:'Solving hard puzzles',th:'แก้โจทย์ยาก'}} ]},
+  { q:{ko:'사람들이 나를 이렇게 불러요',en:'People describe me as...',th:'คนอื่นบอกว่าฉัน...'}, opts:[
+    {t:'quick',  label:{ko:'"눈치·손이 빠르다"',en:'"Quick and sharp"',th:'"ไวและเฉียบ"'}},
+    {t:'memory', label:{ko:'"기억력이 좋다"',en:'"Great memory"',th:'"ความจำดี"'}},
+    {t:'focus',  label:{ko:'"집중력이 대단하다"',en:'"Amazing focus"',th:'"สมาธิเยี่ยม"'}},
+    {t:'calc',   label:{ko:'"암산을 잘한다"',en:'"Good at mental math"',th:'"คิดเลขในใจเก่ง"'}} ]},
+];
+const BT = { idx:0, counts:{}, result:null };
+
+function startBrainType(){
+  BT.idx=0; BT.result=null;
+  BT.counts={}; BT_ORDER.forEach(k=>BT.counts[k]=0);
+  document.getElementById('bt-intro-card').style.display='none';
+  document.getElementById('bt-result-card').style.display='none';
+  document.getElementById('bt-quiz-card').style.display='block';
+  btRenderQuestion();
+}
+function btRenderQuestion(){
+  const total=BT_QUESTIONS.length, cur=BT_QUESTIONS[BT.idx];
+  document.getElementById('bt-progress').textContent=(BT.idx+1)+' / '+total;
+  document.getElementById('bt-progress-fill').style.width=Math.round(BT.idx/total*100)+'%';
+  document.getElementById('bt-question').textContent=btL(cur.q);
+  const box=document.getElementById('bt-options'); box.innerHTML='';
+  cur.opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='bt-opt'; b.textContent=btL(o.label);
+    b.onclick=()=>btChoose(o.t);
+    box.appendChild(b);
+  });
+}
+function btChoose(typeKey){
+  BT.counts[typeKey]=(BT.counts[typeKey]||0)+1;
+  BT.idx++;
+  if(BT.idx>=BT_QUESTIONS.length) btFinish();
+  else btRenderQuestion();
+}
+function btFinish(){
+  // argmax, 동점은 BT_ORDER 우선순위
+  let best=BT_ORDER[0];
+  BT_ORDER.forEach(k=>{ if(BT.counts[k] > BT.counts[best]) best=k; });
+  BT.result=best;
+  document.getElementById('bt-progress-fill').style.width='100%';
+  document.getElementById('bt-quiz-card').style.display='none';
+  document.getElementById('bt-result-card').style.display='block';
+  btShowResult(best);
+}
+function btShowResult(key){
+  const ty=BT_TYPES[key];
+  document.getElementById('bt-emoji').textContent=ty.emoji;
+  document.getElementById('bt-name').textContent=btL(ty.name);
+  document.getElementById('bt-desc').textContent=btL(ty.desc);
+  document.getElementById('bt-rec-game').textContent=t('nav.'+ty.rec);
+  document.getElementById('bt-rec-btn').onclick=()=>showScreen(ty.rec);
+  btDrawCard(ty);
+}
+function leaveBrainType(){ resetBrainType(); }
+function resetBrainType(){
+  document.getElementById('bt-result-card').style.display='none';
+  document.getElementById('bt-quiz-card').style.display='none';
+  document.getElementById('bt-intro-card').style.display='block';
+}
+
+// ---- 공유카드 (canvas) ----
+function btRoundRect(g,x,y,w,h,r){
+  g.beginPath();
+  g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
+  g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
+}
+function btWrapText(g,text,cx,y,maxW,lh){
+  const words=String(text).split(' '); let line='', yy=y;
+  for(const w of words){
+    const test=line?line+' '+w:w;
+    if(g.measureText(test).width>maxW && line){ g.fillText(line,cx,yy); line=w; yy+=lh; }
+    else line=test;
+  }
+  if(line) g.fillText(line,cx,yy);
+  return yy;
+}
+function btDrawCard(ty){
+  const c=document.getElementById('bt-canvas'); const W=c.width, H=c.height;
+  const g=c.getContext('2d');
+  const grad=g.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0,'#5b4ff0'); grad.addColorStop(1,'#0e9e70');
+  g.fillStyle=grad; g.fillRect(0,0,W,H);
+  g.fillStyle='rgba(255,255,255,0.12)'; btRoundRect(g,40,40,W-80,H-80,28); g.fill();
+  g.textAlign='center';
+  g.fillStyle='rgba(255,255,255,0.95)';
+  g.font='700 30px sans-serif'; g.fillText('말랑말랑 두뇌체조', W/2, 118);
+  g.font='400 20px sans-serif'; g.fillStyle='rgba(255,255,255,0.8)'; g.fillText(t('braintype.cardTag'), W/2, 152);
+  g.font='150px sans-serif'; g.fillText(ty.emoji, W/2, 380);
+  g.fillStyle='#fff'; g.font='800 48px sans-serif'; g.fillText(btL(ty.name), W/2, 470);
+  g.fillStyle='rgba(255,255,255,0.92)'; g.font='400 26px sans-serif';
+  btWrapText(g, btL(ty.desc), W/2, 528, W-170, 38);
+  g.fillStyle='rgba(255,255,255,0.85)'; g.font='500 22px sans-serif';
+  g.fillText('👉 '+t('braintype.recommend')+': '+t('nav.'+ty.rec), W/2, H-120);
+  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif';
+  g.fillText('mallang-brain', W/2, H-70);
+  // 미리보기 이미지
+  const img=document.getElementById('bt-share-img');
+  img.src=c.toDataURL('image/png');
+}
+function btShare(){
+  const c=document.getElementById('bt-canvas');
+  const done=(blob)=>{
+    if(!blob){ return; }
+    const file=new File([blob],'brain-type.png',{type:'image/png'});
+    const shareText=(BT.result?btL(BT_TYPES[BT.result].name):'')+' · '+t('braintype.title');
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file], title:t('braintype.title'), text:shareText}).catch(()=>{});
+      return;
+    }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='brain-type.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+  if(c.toBlob) c.toBlob(done,'image/png');
+  else { // 아주 오래된 브라우저 폴백: dataURL 다운로드
+    const a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='brain-type.png'; a.click();
+  }
 }
 
 // INIT
