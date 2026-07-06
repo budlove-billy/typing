@@ -1,0 +1,44 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"D:\\claude\\brain\\.claudecrab\\hooks\\session-start.cmd\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"D:\\claude\\brain\\.claudecrab\\hooks\\pre-compact.cmd\""
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"D:\\claude\\brain\\.claudecrab\\hooks\\post-compact.cmd\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"D:\\claude\\brain\\.claudecrab\\hooks\\session-end.cmd\""
+          }
+        ]
+      }
+    ]
+  }
+}
