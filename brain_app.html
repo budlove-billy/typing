@@ -404,6 +404,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .home-grid{grid-template-columns:repeat(3,1fr)}
   .nav-btn{padding:.35rem .5rem}
 }
+/* ===== N-back (엔백) ===== */
+.nb-stim{display:flex;align-items:center;justify-content:center;height:150px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);font-size:clamp(4rem,22vw,6.5rem);font-weight:800;color:var(--purple);margin-bottom:1.25rem;user-select:none;transition:.1s}
+.nb-stim.hit{background:var(--teal3);border-color:var(--teal);color:var(--teal2)}
+.nb-stim.miss{background:var(--red3);border-color:var(--red);color:var(--red2)}
+.nb-match-btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:1.1rem;font-size:1.2rem;font-weight:800;border:none;border-radius:var(--radius2);background:var(--purple);color:#fff;cursor:pointer;transition:transform .08s,filter .12s;font-family:inherit}
+.nb-match-btn:hover{filter:brightness(1.08)}
+.nb-match-btn:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -419,6 +426,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('count')" id="nav-count">
       <span class="nav-ico">👥</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('nback')" id="nav-nback">
+      <span class="nav-ico">🔡</span><span class="nav-label" data-i18n="nav.nback">엔백</span>
     </button>
     <button class="nav-btn" onclick="showScreen('stroop')" id="nav-stroop">
       <span class="nav-ico">🎨</span><span class="nav-label" data-i18n="nav.stroop">색깔 맞추기</span>
@@ -1076,6 +1086,57 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== N-BACK SCREEN (엔백) ==================== -->
+<div class="screen" id="screen-nback">
+  <div class="card" id="nback-intro-card">
+    <div class="section-head"><h2 data-i18n="nback.title">엔백</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="nback.intro">
+      글자가 하나씩 지나갑니다. <b>N칸 전에 나왔던 글자와 같으면</b> [일치]를 누르세요.<br>
+      머릿속으로 최근 글자들을 계속 갱신해야 하는 <b>작업기억</b> 훈련입니다. 60초 도전!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="nb-diff-easy" onclick="setNbackDiff('easy')">
+        <h3>🌱 <span data-i18n="nback.easy">쉬움</span></h3><p data-i18n="nback.easyDesc">1칸 전 (1-back)</p>
+      </div>
+      <div class="diff-btn active" id="nb-diff-normal" onclick="setNbackDiff('normal')">
+        <h3>⚡ <span data-i18n="nback.normal">보통</span></h3><p data-i18n="nback.normalDesc">2칸 전 (2-back)</p>
+      </div>
+      <div class="diff-btn" id="nb-diff-hard" onclick="setNbackDiff('hard')">
+        <h3>🔥 <span data-i18n="nback.hard">어려움</span></h3><p data-i18n="nback.hardDesc">3칸 전 (3-back)</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startNback()" data-i18n="nback.startGame">게임 시작</button>
+    <div class="best-line" id="nb-intro-best"></div>
+  </div>
+
+  <div class="card" id="nback-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="nback.score">SCORE</div><div class="mg-stat-value" id="nb-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="nback.combo">COMBO</div><div class="mg-stat-value" id="nb-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="nb-timer">01:00</div></div>
+    <div class="gm-status" id="nb-guide">2칸 전 글자와 같으면 [일치]!</div>
+    <div class="nb-stim" id="nb-stim">A</div>
+    <button class="nb-match-btn" onclick="nbPress()" data-i18n="nback.match">일치!</button>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveNback()" data-i18n="nback.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="nback-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="nb-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="nb-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="nb-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="nback.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="nback.difficulty">난이도</span><span id="nb-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="nback.correct">적중</span><span id="nb-r-correct">0</span></div>
+    <div class="result-row"><span data-i18n="nback.maxCombo">최고 콤보</span><span id="nb-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="nback.best">최고 기록</span><span id="nb-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetNback()" data-i18n="nback.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('nback')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1389,6 +1450,31 @@ const I18N = {
   "switch.even": {ko:"짝수", en:"Even", th:"คู่"},
   "switch.low": {ko:"5보다 작다", en:"Less than 5", th:"น้อยกว่า 5"},
   "switch.high": {ko:"5보다 크다", en:"More than 5", th:"มากกว่า 5"},
+
+  "nav.nback": {ko:"엔백", en:"N-Back", th:"เอ็นแบ็ก"},
+  "nback.title": {ko:"엔백 (N-back)", en:"N-Back", th:"เอ็นแบ็ก (N-back)"},
+  "nback.intro": {ko:"글자가 하나씩 지나갑니다. <b>N칸 전에 나왔던 글자와 같으면</b> [일치]를 누르세요.<br>머릿속으로 최근 글자들을 계속 갱신해야 하는 <b>작업기억</b> 훈련입니다. 60초 도전!", en:"Letters pass one by one. Tap [Match] when the letter is the same as <b>N steps back</b>.<br>A <b>working-memory</b> workout where you keep updating recent letters. 60-second challenge!", th:"ตัวอักษรจะผ่านไปทีละตัว แตะ [ตรง] เมื่อตัวอักษรเหมือนกับ <b>N ก้าวก่อนหน้า</b><br>ฝึก <b>ความจำใช้งาน</b> ที่ต้องอัปเดตตัวอักษรล่าสุดตลอด ท้าทาย 60 วินาที!"},
+  "nback.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "nback.easyDesc": {ko:"1칸 전 (1-back)", en:"1 back", th:"1 ก้าว"},
+  "nback.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "nback.normalDesc": {ko:"2칸 전 (2-back)", en:"2 back", th:"2 ก้าว"},
+  "nback.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "nback.hardDesc": {ko:"3칸 전 (3-back)", en:"3 back", th:"3 ก้าว"},
+  "nback.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "nback.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "nback.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "nback.guide": {ko:"{n}칸 전 글자와 같으면 [일치]!", en:"Tap [Match] if same as {n} back!", th:"แตะ [ตรง] ถ้าเหมือน {n} ก้าวก่อน!"},
+  "nback.match": {ko:"일치!", en:"Match!", th:"ตรง!"},
+  "nback.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "nback.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "nback.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "nback.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "nback.correct": {ko:"적중", en:"Hits", th:"ตรง"},
+  "nback.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "nback.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "nback.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nback.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "nback.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 };
 
 // ========== I18N CORE ==========
@@ -1481,6 +1567,7 @@ function refreshDynamicTexts(){
   if(typeof stUpdateBestLine === 'function') stUpdateBestLine();
   if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
   if(typeof swUpdateBestLine === 'function') swUpdateBestLine();
+  if(typeof nbUpdateBestLine === 'function') nbUpdateBestLine();
   if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
      document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
@@ -3578,6 +3665,7 @@ function gameShare(game){
   else if(game==='stroop')o={emoji:'🎨', title:t('stroop.title'), from:'#e0344b', to:'#7b4ff0', lines:[t('stroop.score')+'  '+ST.score, t('stroop.maxCombo')+'  '+ST.maxCombo]};
   else if(game==='trail') o={emoji:'🔗', title:t('trail.title'),  from:'#0e9e70', to:'#5b4ff0', lines:[t('trail.score')+'  '+TR.score, t('trail.clearedBoards')+'  '+TR.boards]};
   else if(game==='switch')o={emoji:'🔀', title:t('switch.title'), from:'#7b4ff0', to:'#0e9e70', lines:[t('switch.score')+'  '+SW.score, t('switch.maxCombo')+'  '+SW.maxCombo]};
+  else if(game==='nback') o={emoji:'🔡', title:t('nback.title'),  from:'#5b4ff0', to:'#2255d0', lines:[t('nback.score')+'  '+NB.score, t('nback.correct')+'  '+NB.hits]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -3588,6 +3676,7 @@ function gameShare(game){
 const HOME_GAMES=[
   {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'home.grpMemory'},
   {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best',  grp:'home.grpMemory'},
+  {id:'nback',  emoji:'🔡', key:'nav.nback',  best:'brain.nback.best',  grp:'home.grpMemory'},
   {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
   {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
@@ -3752,6 +3841,109 @@ function resetSwitch(){
   document.getElementById('switch-game-card').style.display='none';
   document.getElementById('switch-intro-card').style.display='block';
   swUpdateBestLine();
+}
+
+// ========== 엔백 (N-back / 작업기억) ==========
+const NB_N={easy:1, normal:2, hard:3};
+const NB_INT={easy:2600, normal:2300, hard:2000}; // 글자 노출 간격(ms)
+const NB_LETTERS=['A','C','E','G','K','M','R','T'];
+const NB = {
+  diff:'normal', n:2, seq:[], isMatch:false, pressed:false,
+  score:0, combo:0, maxCombo:0, hits:0,
+  timeLeft:60, timer:null, step:null, running:false,
+  best:bt_loadBest('brain.nback.best')
+};
+function NB_DIFF_LABEL(d){ return d==='easy'?t('nback.easy'):d==='normal'?t('nback.normal'):t('nback.hard'); }
+function nbUpdateBestLine(){ const el=document.getElementById('nb-intro-best'); if(el) el.textContent=bt_bestLineText(NB.best, NB.diff); }
+function setNbackDiff(d){
+  NB.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('nb-diff-'+k).classList.toggle('active',k===d));
+  nbUpdateBestLine();
+}
+function startNback(){
+  NB.n=NB_N[NB.diff]; NB.seq=[]; NB.isMatch=false; NB.pressed=false;
+  NB.score=0; NB.combo=0; NB.maxCombo=0; NB.hits=0; NB.timeLeft=60; NB.running=true;
+  document.getElementById('nback-intro-card').style.display='none';
+  document.getElementById('nback-result-card').style.display='none';
+  document.getElementById('nback-game-card').style.display='block';
+  document.getElementById('nb-guide').textContent=t('nback.guide').replace('{n}',NB.n);
+  nbUpdateStats(); updateNbTimer();
+  clearInterval(NB.timer); clearInterval(NB.step);
+  nbAdvance();
+  NB.timer=setInterval(nbTick,1000);
+  NB.step=setInterval(nbAdvance, NB_INT[NB.diff]);
+}
+function nbTick(){
+  if(!NB.running) return;
+  NB.timeLeft--; updateNbTimer();
+  if(NB.timeLeft<=0){ NB.timeLeft=0; updateNbTimer(); finishNback(); }
+}
+function updateNbTimer(){
+  const m=Math.floor(NB.timeLeft/60), s=NB.timeLeft%60;
+  const el=document.getElementById('nb-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', NB.timeLeft<=10);
+}
+function nbUpdateStats(){
+  document.getElementById('nb-score').textContent=NB.score;
+  document.getElementById('nb-combo').textContent=NB.combo;
+}
+function nbAdvance(){
+  if(!NB.running) return;
+  // 직전 글자가 일치였는데 안 눌렀으면 놓침(콤보 리셋)
+  if(NB.seq.length>0 && NB.isMatch && !NB.pressed){ NB.combo=0; nbUpdateStats(); }
+  const L=NB.seq.length;
+  let letter;
+  const wantMatch = (L>=NB.n) && (Math.random()<0.3);
+  if(wantMatch){ letter=NB.seq[L-NB.n]; }
+  else{
+    do{ letter=NB_LETTERS[Math.floor(Math.random()*NB_LETTERS.length)]; }
+    while(L>=NB.n && letter===NB.seq[L-NB.n]); // 우연한 일치 방지
+  }
+  NB.seq.push(letter);
+  const i=NB.seq.length-1;
+  NB.isMatch = (i>=NB.n) && (NB.seq[i]===NB.seq[i-NB.n]);
+  NB.pressed=false;
+  const el=document.getElementById('nb-stim');
+  el.className='nb-stim'; el.textContent=letter;
+}
+function nbPress(){
+  if(!NB.running || NB.pressed) return;
+  NB.pressed=true;
+  const el=document.getElementById('nb-stim');
+  if(NB.isMatch){
+    NB.hits++; NB.combo++; NB.maxCombo=Math.max(NB.maxCombo,NB.combo);
+    NB.score += 10 + (NB.combo-1)*2;
+    el.classList.add('hit');
+  }else{
+    NB.combo=0; NB.timeLeft=Math.max(0, NB.timeLeft-2); updateNbTimer();
+    el.classList.add('miss');
+  }
+  nbUpdateStats();
+}
+function finishNback(){
+  clearInterval(NB.timer); clearInterval(NB.step); NB.running=false;
+  const newRec=bt_recordScore(NB.best, NB.diff, NB.score); bt_saveBest('brain.nback.best', NB.best);
+  document.getElementById('nback-game-card').style.display='none';
+  document.getElementById('nback-result-card').style.display='block';
+  document.getElementById('nb-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('nb-result-title').textContent=newRec?t('nback.newRecord'):t('nback.timeOver');
+  document.getElementById('nb-result-score').textContent=NB.score;
+  document.getElementById('nb-r-diff').textContent=NB_DIFF_LABEL(NB.diff);
+  document.getElementById('nb-r-correct').textContent=NB.hits;
+  document.getElementById('nb-r-combo').textContent=NB.maxCombo;
+  document.getElementById('nb-r-best').textContent=NB.best[NB.diff].all;
+}
+function leaveNback(){
+  if(NB.running && !confirm(t('nback.confirmLeave'))) return;
+  clearInterval(NB.timer); clearInterval(NB.step); NB.running=false; resetNback();
+}
+function resetNback(){
+  clearInterval(NB.timer); clearInterval(NB.step); NB.running=false;
+  document.getElementById('nback-result-card').style.display='none';
+  document.getElementById('nback-game-card').style.display='none';
+  document.getElementById('nback-intro-card').style.display='block';
+  nbUpdateBestLine();
 }
 
 // INIT
