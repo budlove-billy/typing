@@ -59,6 +59,7 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-06 — 공간지각 축 신설 **도형 회전(rotate)** + 작업기억 **엔백(nback)** 게임 추가. 게임 13종.
 - 2026-07-06 — 유연성 축 게임 **규칙 바꾸기(switch)** 추가(홀짝↔크기 규칙 전환, 과제 전환/set-shifting).
 - 2026-07-06 — **홈/대시보드** 기본 랜딩 추가(전체 바로가기 그리드 + 연속 출석 streak).
 - 2026-07-06 — **공유카드 일반화**: `makeShareCard`/`shareOrDownload`로 5개 게임 결과에 공유 버튼. 설계: `유연성-게임-스펙.md`.

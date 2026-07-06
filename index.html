@@ -411,6 +411,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .nb-match-btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:1.1rem;font-size:1.2rem;font-weight:800;border:none;border-radius:var(--radius2);background:var(--purple);color:#fff;cursor:pointer;transition:transform .08s,filter .12s;font-family:inherit}
 .nb-match-btn:hover{filter:brightness(1.08)}
 .nb-match-btn:active{transform:scale(.97)}
+/* ===== Mental rotation (도형 회전) ===== */
+.rot-stage{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:1.25rem}
+.rot-box{width:120px;height:120px;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2)}
+.rot-glyph{font-size:5rem;font-weight:800;color:var(--purple);font-family:Arial,Helvetica,sans-serif;line-height:1;display:inline-block}
+.rot-vs{font-size:1.1rem;color:var(--text3);font-weight:700}
+.rot-options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;max-width:440px;margin:0 auto}
+.rot-opt{padding:1.15rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.05rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
+.rot-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
+.rot-opt:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -438,6 +447,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('switch')" id="nav-switch">
       <span class="nav-ico">🔀</span><span class="nav-label" data-i18n="nav.switch">규칙 바꾸기</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('rotate')" id="nav-rotate">
+      <span class="nav-ico">🔄</span><span class="nav-label" data-i18n="nav.rotate">도형 회전</span>
     </button>
     <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
       <span class="nav-ico">➗</span><span class="nav-label" data-i18n="nav.math">암산 게임</span>
@@ -1137,6 +1149,64 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== MENTAL ROTATION SCREEN (도형 회전) ==================== -->
+<div class="screen" id="screen-rotate">
+  <div class="card" id="rotate-intro-card">
+    <div class="section-head"><h2 data-i18n="rotate.title">도형 회전</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rotate.intro">
+      두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>
+      아무리 돌려도 안 겹치는 <b>거울상이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="rt-diff-easy" onclick="setRotateDiff('easy')">
+        <h3>🌱 <span data-i18n="rotate.easy">쉬움</span></h3><p data-i18n="rotate.easyDesc">직각 회전만</p>
+      </div>
+      <div class="diff-btn active" id="rt-diff-normal" onclick="setRotateDiff('normal')">
+        <h3>⚡ <span data-i18n="rotate.normal">보통</span></h3><p data-i18n="rotate.normalDesc">45° 단위</p>
+      </div>
+      <div class="diff-btn" id="rt-diff-hard" onclick="setRotateDiff('hard')">
+        <h3>🔥 <span data-i18n="rotate.hard">어려움</span></h3><p data-i18n="rotate.hardDesc">30° 단위</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startRotate()" data-i18n="rotate.startGame">게임 시작</button>
+    <div class="best-line" id="rt2-intro-best"></div>
+  </div>
+
+  <div class="card" id="rotate-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rotate.score">SCORE</div><div class="mg-stat-value" id="rt2-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rotate.combo">COMBO</div><div class="mg-stat-value" id="rt2-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="rt2-timer">01:00</div></div>
+    <div class="gm-status" id="rt2-status" data-i18n="rotate.guide">같은 도형일까요, 거울상일까요?</div>
+    <div class="rot-stage">
+      <div class="rot-box"><span class="rot-glyph" id="rot-left">F</span></div>
+      <div class="rot-vs">vs</div>
+      <div class="rot-box"><span class="rot-glyph" id="rot-right">F</span></div>
+    </div>
+    <div class="rot-options">
+      <button class="rot-opt" id="rot-opt-same" onclick="rtAnswer('same',this)" data-i18n="rotate.same">같다 (회전)</button>
+      <button class="rot-opt" id="rot-opt-diff" onclick="rtAnswer('diff',this)" data-i18n="rotate.diff">다르다 (거울상)</button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveRotate()" data-i18n="rotate.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="rotate-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="rt2-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="rt2-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="rt2-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="rotate.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="rotate.difficulty">난이도</span><span id="rt2-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="rotate.correct">정답</span><span id="rt2-r-correct">0</span></div>
+    <div class="result-row"><span data-i18n="rotate.maxCombo">최고 콤보</span><span id="rt2-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="rotate.best">최고 기록</span><span id="rt2-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetRotate()" data-i18n="rotate.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('rotate')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1475,6 +1545,33 @@ const I18N = {
   "nback.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nback.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
   "nback.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "nav.rotate": {ko:"도형 회전", en:"Rotation", th:"หมุนภาพ"},
+  "home.grpSpace": {ko:"🧭 공간지각", en:"🧭 Spatial", th:"🧭 มิติสัมพันธ์"},
+  "rotate.title": {ko:"도형 회전", en:"Mental Rotation", th:"หมุนภาพในใจ"},
+  "rotate.intro": {ko:"두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>아무리 돌려도 안 겹치는 <b>거울상이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!", en:"Compare the two letter-shapes. If the right one <b>matches the left by rotation only</b>, tap [Same];<br>if it's a <b>mirror image</b> that never lines up, tap [Different]. A <b>spatial</b> workout of rotating in your head!", th:"เปรียบเทียบตัวอักษรสองรูป ถ้าด้านขวา <b>หมุนแล้วตรงกับด้านซ้าย</b> แตะ [เหมือน]<br>ถ้าเป็น <b>ภาพกระจก</b> ที่หมุนยังไงก็ไม่ตรง แตะ [ต่าง] ฝึก <b>มิติสัมพันธ์</b> ด้วยการหมุนในใจ!"},
+  "rotate.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "rotate.easyDesc": {ko:"직각 회전만", en:"Right angles", th:"มุมฉากเท่านั้น"},
+  "rotate.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "rotate.normalDesc": {ko:"45° 단위", en:"45° steps", th:"ทีละ 45°"},
+  "rotate.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "rotate.hardDesc": {ko:"30° 단위", en:"30° steps", th:"ทีละ 30°"},
+  "rotate.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "rotate.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "rotate.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "rotate.guide": {ko:"같은 도형일까요, 거울상일까요?", en:"Same shape, or a mirror image?", th:"รูปเดียวกัน หรือภาพกระจก?"},
+  "rotate.same": {ko:"같다 (회전)", en:"Same (rotation)", th:"เหมือน (หมุน)"},
+  "rotate.diff": {ko:"다르다 (거울상)", en:"Different (mirror)", th:"ต่าง (กระจก)"},
+  "rotate.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "rotate.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "rotate.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "rotate.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "rotate.correct": {ko:"정답", en:"Correct", th:"ถูก"},
+  "rotate.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "rotate.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "rotate.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "rotate.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "rotate.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 };
 
 // ========== I18N CORE ==========
@@ -1568,6 +1665,7 @@ function refreshDynamicTexts(){
   if(typeof trUpdateBestLine === 'function') trUpdateBestLine();
   if(typeof swUpdateBestLine === 'function') swUpdateBestLine();
   if(typeof nbUpdateBestLine === 'function') nbUpdateBestLine();
+  if(typeof rtUpdateBestLine === 'function') rtUpdateBestLine();
   if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
      document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
@@ -3666,6 +3764,7 @@ function gameShare(game){
   else if(game==='trail') o={emoji:'🔗', title:t('trail.title'),  from:'#0e9e70', to:'#5b4ff0', lines:[t('trail.score')+'  '+TR.score, t('trail.clearedBoards')+'  '+TR.boards]};
   else if(game==='switch')o={emoji:'🔀', title:t('switch.title'), from:'#7b4ff0', to:'#0e9e70', lines:[t('switch.score')+'  '+SW.score, t('switch.maxCombo')+'  '+SW.maxCombo]};
   else if(game==='nback') o={emoji:'🔡', title:t('nback.title'),  from:'#5b4ff0', to:'#2255d0', lines:[t('nback.score')+'  '+NB.score, t('nback.correct')+'  '+NB.hits]};
+  else if(game==='rotate')o={emoji:'🔄', title:t('rotate.title'), from:'#0e9e70', to:'#7b4ff0', lines:[t('rotate.score')+'  '+RT.score, t('rotate.correct')+'  '+RT.correct]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -3680,6 +3779,7 @@ const HOME_GAMES=[
   {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
   {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
+  {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'home.grpSpace'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'home.grpCalc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'home.grpLogic'},
   {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'home.grpLogic'},
@@ -3944,6 +4044,94 @@ function resetNback(){
   document.getElementById('nback-game-card').style.display='none';
   document.getElementById('nback-intro-card').style.display='block';
   nbUpdateBestLine();
+}
+
+// ========== 도형 회전 (Mental Rotation / 공간지각) ==========
+const RT_GLYPHS=['F','G','J','L','P','R','Q'];
+const RT_ANGLES={ easy:[90,180,270], normal:[45,90,135,180,225,270,315], hard:[30,60,90,120,150,180,210,240,270,300,330] };
+const RT = {
+  diff:'normal', score:0, combo:0, maxCombo:0, correct:0,
+  timeLeft:60, timer:null, running:false, answer:null,
+  best:bt_loadBest('brain.rotate.best')
+};
+function RT_DIFF_LABEL(d){ return d==='easy'?t('rotate.easy'):d==='normal'?t('rotate.normal'):t('rotate.hard'); }
+function rtUpdateBestLine(){ const el=document.getElementById('rt2-intro-best'); if(el) el.textContent=bt_bestLineText(RT.best, RT.diff); }
+function setRotateDiff(d){
+  RT.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('rt-diff-'+k).classList.toggle('active',k===d));
+  rtUpdateBestLine();
+}
+function startRotate(){
+  RT.score=0; RT.combo=0; RT.maxCombo=0; RT.correct=0; RT.timeLeft=60; RT.running=true;
+  document.getElementById('rotate-intro-card').style.display='none';
+  document.getElementById('rotate-result-card').style.display='none';
+  document.getElementById('rotate-game-card').style.display='block';
+  rtUpdateStats(); updateRtTimer(); rtNextTrial();
+  clearInterval(RT.timer);
+  RT.timer=setInterval(rtTick,1000);
+}
+function rtTick(){
+  if(!RT.running) return;
+  RT.timeLeft--; updateRtTimer();
+  if(RT.timeLeft<=0){ RT.timeLeft=0; updateRtTimer(); finishRotate(); }
+}
+function updateRtTimer(){
+  const m=Math.floor(RT.timeLeft/60), s=RT.timeLeft%60;
+  const el=document.getElementById('rt2-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', RT.timeLeft<=10);
+}
+function rtUpdateStats(){
+  document.getElementById('rt2-score').textContent=RT.score;
+  document.getElementById('rt2-combo').textContent=RT.combo;
+}
+function rtNextTrial(){
+  const g=RT_GLYPHS[Math.floor(Math.random()*RT_GLYPHS.length)];
+  const pool=RT_ANGLES[RT.diff];
+  const ang=pool[Math.floor(Math.random()*pool.length)];
+  const mirror=Math.random()<0.5;
+  RT.answer = mirror ? 'diff' : 'same';
+  const left=document.getElementById('rot-left'), right=document.getElementById('rot-right');
+  left.textContent=g; left.style.transform='none';
+  right.textContent=g; right.style.transform='rotate('+ang+'deg)'+(mirror?' scaleX(-1)':'');
+  document.getElementById('rot-opt-same').classList.remove('flash-wrong');
+  document.getElementById('rot-opt-diff').classList.remove('flash-wrong');
+}
+function rtAnswer(ans, btn){
+  if(!RT.running) return;
+  if(ans===RT.answer){
+    RT.correct++; RT.combo++; RT.maxCombo=Math.max(RT.maxCombo,RT.combo);
+    RT.score += 10 + (RT.combo-1)*2;
+  }else{
+    RT.combo=0; RT.timeLeft=Math.max(0, RT.timeLeft-2); updateRtTimer();
+    btn.classList.add('flash-wrong'); setTimeout(()=>btn.classList.remove('flash-wrong'),250);
+  }
+  rtUpdateStats();
+  if(RT.running && RT.timeLeft>0) rtNextTrial();
+}
+function finishRotate(){
+  clearInterval(RT.timer); RT.running=false;
+  const newRec=bt_recordScore(RT.best, RT.diff, RT.score); bt_saveBest('brain.rotate.best', RT.best);
+  document.getElementById('rotate-game-card').style.display='none';
+  document.getElementById('rotate-result-card').style.display='block';
+  document.getElementById('rt2-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('rt2-result-title').textContent=newRec?t('rotate.newRecord'):t('rotate.timeOver');
+  document.getElementById('rt2-result-score').textContent=RT.score;
+  document.getElementById('rt2-r-diff').textContent=RT_DIFF_LABEL(RT.diff);
+  document.getElementById('rt2-r-correct').textContent=RT.correct;
+  document.getElementById('rt2-r-combo').textContent=RT.maxCombo;
+  document.getElementById('rt2-r-best').textContent=RT.best[RT.diff].all;
+}
+function leaveRotate(){
+  if(RT.running && !confirm(t('rotate.confirmLeave'))) return;
+  clearInterval(RT.timer); RT.running=false; resetRotate();
+}
+function resetRotate(){
+  clearInterval(RT.timer); RT.running=false;
+  document.getElementById('rotate-result-card').style.display='none';
+  document.getElementById('rotate-game-card').style.display='none';
+  document.getElementById('rotate-intro-card').style.display='block';
+  rtUpdateBestLine();
 }
 
 // INIT

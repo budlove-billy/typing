@@ -32,13 +32,18 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-06 추가): 규칙 바꾸기(switch)** → **유연성 축**(인지 전환/set-shifting).
   - 규칙(홀짝 ↔ 5보다 크기)이 확률로 전환, 지금 규칙에 맞게 판단. 60초 타임어택, combo, 오답 −2초. `SW` 객체.
   - 숫자는 5 제외(SW_NUMS). localStorage `brain.switch.best`.
+- **신규(2026-07-06 추가): 엔백(nback)** → **기억 축**(작업기억 업데이트). 글자 서열에서 N칸 전과 같으면 [일치].
+  60초, 난이도=N(1/2/3)+속도, 일치율 0.30·우연일치 방지. `NB` 객체(timer+step 2개 인터벌). `brain.nback.best`.
+- **신규(2026-07-06 추가): 도형 회전(rotate)** → **새 공간지각 축(home.grpSpace)**. 두 글자도형 비교, 오른쪽이
+  회전만이면 '같다'/거울상이면 '다르다'. CSS transform rotate+scaleX(-1). 각도 0° 제외. `RT` 객체. `brain.rotate.best`.
+  주의: 상태객체 `RT`(회전)와 trail의 `TR`(순서잇기)는 다름. rotate DOM id는 `rt2-*`/`rot-*`.
 - **공유카드 일반화(2026-07-06)**: `makeShareCard({emoji,title,subtitle,lines,desc,note,from,to})` + `shareOrDownload()`.
-  4개 점수게임(flash/count/stroop/trail) + switch 결과에 `gameShare('<id>')` 버튼. braintype도 이 헬퍼로 통일.
-- **홈/대시보드(2026-07-06)**: `#screen-home`이 기본 랜딩(active). `HOME_GAMES` 매니페스트로 전체 바로가기 그리드,
-  카드에 최고기록 뱃지. **연속 출석** `homeVisit()` → localStorage `brain.visit`{last,streak,total}, 어제 방문=+1/공백=리셋.
-  `showScreen('home')`·INIT·언어전환 시 `renderHome()`. 인원수 세기 nav 아이콘은 🏠→👥(홈과 구분).
-- 게임/콘텐츠 **총 11종**. 축: 계산·타이핑·논리 / 기억 / 주의·속도 / 유연성 / 바이럴 + 홈 허브.
-- 다음 후보(미구현): 유형별 상세 결과 문구 확장, 주간 통계·목표, 사운드/햅틱.
+  점수게임(flash/count/nback/stroop/trail/switch/rotate) 결과에 `gameShare('<id>')` 버튼. braintype도 이 헬퍼로 통일.
+- **홈/대시보드(2026-07-06)**: `#screen-home` 기본 랜딩. `HOME_GAMES`(grp별) 그리드 + 최고기록 뱃지.
+  히어로에 통계 3종(연속/방문일/보유기록) + **오늘의 추천**(날짜기반 회전, `homePickGo`). 연속 출석 `homeVisit()`/`brain.visit`.
+  nav는 아이콘+라벨 세로 칩(모바일도 라벨 표시). 모바일 @media 640/360.
+- 게임/콘텐츠 **총 13종**. 축: 계산·타이핑·논리 / 기억(순간·인원·엔백) / 주의·속도 / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
+- 다음 후보(미구현): 카드 짝 맞추기(시각기억), 반응 속도(Go/No-Go).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 조사 자료
