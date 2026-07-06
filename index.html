@@ -420,6 +420,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rot-opt{padding:1.15rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.05rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
 .rot-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
 .rot-opt:active{transform:scale(.97)}
+/* ===== Card match (카드 짝 맞추기) ===== */
+.cm-board{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;width:100%;max-width:400px;margin:0 auto}
+.cm-card{aspect-ratio:3/4;border:none;border-radius:var(--radius);cursor:pointer;font-size:clamp(1.4rem,7vw,2.2rem);display:flex;align-items:center;justify-content:center;font-family:inherit;transition:transform .12s,background .12s;padding:0}
+.cm-card.back{background:linear-gradient(135deg,#5b4ff0,#7b6ff8);color:transparent}
+.cm-card.back::after{content:"?";color:rgba(255,255,255,.7);font-weight:800}
+.cm-card.up{background:#fff;border:1.5px solid var(--purple)}
+.cm-card.done{background:var(--teal3);border:1.5px solid var(--teal);cursor:default}
+.cm-card:active:not(.done){transform:scale(.95)}
+@media (max-width:640px){ .cm-board{gap:.4rem;max-width:340px} }
 </style>
 </head>
 <body>
@@ -438,6 +447,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </button>
     <button class="nav-btn" onclick="showScreen('nback')" id="nav-nback">
       <span class="nav-ico">🔡</span><span class="nav-label" data-i18n="nav.nback">엔백</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('cards')" id="nav-cards">
+      <span class="nav-ico">🃏</span><span class="nav-label" data-i18n="nav.cards">카드 짝</span>
     </button>
     <button class="nav-btn" onclick="showScreen('stroop')" id="nav-stroop">
       <span class="nav-ico">🎨</span><span class="nav-label" data-i18n="nav.stroop">색깔 맞추기</span>
@@ -1207,6 +1219,57 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== CARD MATCH SCREEN (카드 짝 맞추기) ==================== -->
+<div class="screen" id="screen-cards">
+  <div class="card" id="cards-intro-card">
+    <div class="section-head"><h2 data-i18n="cards.title">카드 짝 맞추기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="cards.intro">
+      뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>
+      한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 60초 안에 몇 쌍이나?
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="cm-diff-easy" onclick="setCardsDiff('easy')">
+        <h3>🌱 <span data-i18n="cards.easy">쉬움</span></h3><p data-i18n="cards.easyDesc">4쌍부터</p>
+      </div>
+      <div class="diff-btn active" id="cm-diff-normal" onclick="setCardsDiff('normal')">
+        <h3>⚡ <span data-i18n="cards.normal">보통</span></h3><p data-i18n="cards.normalDesc">6쌍부터</p>
+      </div>
+      <div class="diff-btn" id="cm-diff-hard" onclick="setCardsDiff('hard')">
+        <h3>🔥 <span data-i18n="cards.hard">어려움</span></h3><p data-i18n="cards.hardDesc">8쌍부터</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startCards()" data-i18n="cards.startGame">게임 시작</button>
+    <div class="best-line" id="cm-intro-best"></div>
+  </div>
+
+  <div class="card" id="cards-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="cards.score">SCORE</div><div class="mg-stat-value" id="cm-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="cards.combo">COMBO</div><div class="mg-stat-value" id="cm-combo">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="cards.boards">BOARDS</div><div class="mg-stat-value" id="cm-boards">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="cm-timer">01:00</div></div>
+    <div class="cm-board" id="cm-board"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveCards()" data-i18n="cards.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="cards-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="cm-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="cm-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="cm-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="cards.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="cards.difficulty">난이도</span><span id="cm-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="cards.clearedBoards">지운 판</span><span id="cm-r-boards">0</span></div>
+    <div class="result-row"><span data-i18n="cards.maxCombo">최고 콤보</span><span id="cm-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="cards.best">최고 기록</span><span id="cm-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCards()" data-i18n="cards.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('cards')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1572,6 +1635,30 @@ const I18N = {
   "rotate.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "rotate.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
   "rotate.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "nav.cards": {ko:"카드 짝", en:"Card Match", th:"จับคู่การ์ด"},
+  "cards.title": {ko:"카드 짝 맞추기", en:"Card Match", th:"จับคู่การ์ด"},
+  "cards.intro": {ko:"뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 60초 안에 몇 쌍이나?", en:"Flip two cards at a time to <b>find matching pictures.</b><br>Clear a board and the next has more cards. How many pairs in 60s?", th:"เปิดการ์ดทีละสองใบเพื่อ <b>หาภาพที่เหมือนกัน</b><br>เคลียร์กระดานแล้วกระดานถัดไปจะมีการ์ดมากขึ้น จับคู่ได้กี่คู่ใน 60 วินาที?"},
+  "cards.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "cards.easyDesc": {ko:"4쌍부터", en:"From 4 pairs", th:"เริ่ม 4 คู่"},
+  "cards.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "cards.normalDesc": {ko:"6쌍부터", en:"From 6 pairs", th:"เริ่ม 6 คู่"},
+  "cards.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "cards.hardDesc": {ko:"8쌍부터", en:"From 8 pairs", th:"เริ่ม 8 คู่"},
+  "cards.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "cards.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "cards.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "cards.boards": {ko:"BOARDS", en:"BOARDS", th:"กระดาน"},
+  "cards.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "cards.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "cards.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "cards.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "cards.clearedBoards": {ko:"지운 판", en:"Boards Cleared", th:"กระดานที่เคลียร์"},
+  "cards.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "cards.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "cards.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "cards.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "cards.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 };
 
 // ========== I18N CORE ==========
@@ -1666,6 +1753,7 @@ function refreshDynamicTexts(){
   if(typeof swUpdateBestLine === 'function') swUpdateBestLine();
   if(typeof nbUpdateBestLine === 'function') nbUpdateBestLine();
   if(typeof rtUpdateBestLine === 'function') rtUpdateBestLine();
+  if(typeof cmUpdateBestLine === 'function') cmUpdateBestLine();
   if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
      document.getElementById('screen-home').classList.contains('active')) renderHome();
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
@@ -3765,6 +3853,7 @@ function gameShare(game){
   else if(game==='switch')o={emoji:'🔀', title:t('switch.title'), from:'#7b4ff0', to:'#0e9e70', lines:[t('switch.score')+'  '+SW.score, t('switch.maxCombo')+'  '+SW.maxCombo]};
   else if(game==='nback') o={emoji:'🔡', title:t('nback.title'),  from:'#5b4ff0', to:'#2255d0', lines:[t('nback.score')+'  '+NB.score, t('nback.correct')+'  '+NB.hits]};
   else if(game==='rotate')o={emoji:'🔄', title:t('rotate.title'), from:'#0e9e70', to:'#7b4ff0', lines:[t('rotate.score')+'  '+RT.score, t('rotate.correct')+'  '+RT.correct]};
+  else if(game==='cards') o={emoji:'🃏', title:t('cards.title'),  from:'#5b4ff0', to:'#0e9e70', lines:[t('cards.score')+'  '+CM.score, t('cards.clearedBoards')+'  '+CM.boards]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -3776,6 +3865,7 @@ const HOME_GAMES=[
   {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'home.grpMemory'},
   {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best',  grp:'home.grpMemory'},
   {id:'nback',  emoji:'🔡', key:'nav.nback',  best:'brain.nback.best',  grp:'home.grpMemory'},
+  {id:'cards',  emoji:'🃏', key:'nav.cards',  best:'brain.cards.best',  grp:'home.grpMemory'},
   {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
   {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
@@ -4132,6 +4222,113 @@ function resetRotate(){
   document.getElementById('rotate-game-card').style.display='none';
   document.getElementById('rotate-intro-card').style.display='block';
   rtUpdateBestLine();
+}
+
+// ========== 카드 짝 맞추기 (Card Match / 시각기억) ==========
+const CM_PAIRS={easy:4, normal:6, hard:8};
+const CM_EMOJIS=['🍎','🍌','🍇','🍒','🍑','🍉','🥝','🍍','🥑','🍊','🫐','🥥','🍓','🍈'];
+const CM = {
+  diff:'normal', pairs:6, score:0, combo:0, maxCombo:0, boards:0,
+  matched:0, first:null, lock:false, deck:[],
+  timeLeft:60, timer:null, flipT:null, running:false,
+  best:bt_loadBest('brain.cards.best')
+};
+function CM_DIFF_LABEL(d){ return d==='easy'?t('cards.easy'):d==='normal'?t('cards.normal'):t('cards.hard'); }
+function cmUpdateBestLine(){ const el=document.getElementById('cm-intro-best'); if(el) el.textContent=bt_bestLineText(CM.best, CM.diff); }
+function setCardsDiff(d){
+  CM.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('cm-diff-'+k).classList.toggle('active',k===d));
+  cmUpdateBestLine();
+}
+function startCards(){
+  CM.pairs=CM_PAIRS[CM.diff]; CM.score=0; CM.combo=0; CM.maxCombo=0; CM.boards=0; CM.timeLeft=60; CM.running=true;
+  document.getElementById('cards-intro-card').style.display='none';
+  document.getElementById('cards-result-card').style.display='none';
+  document.getElementById('cards-game-card').style.display='block';
+  cmUpdateStats(); updateCmTimer(); cmNewBoard();
+  clearInterval(CM.timer);
+  CM.timer=setInterval(cmTick,1000);
+}
+function cmTick(){
+  if(!CM.running) return;
+  CM.timeLeft--; updateCmTimer();
+  if(CM.timeLeft<=0){ CM.timeLeft=0; updateCmTimer(); finishCards(); }
+}
+function updateCmTimer(){
+  const m=Math.floor(CM.timeLeft/60), s=CM.timeLeft%60;
+  const el=document.getElementById('cm-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', CM.timeLeft<=10);
+}
+function cmUpdateStats(){
+  document.getElementById('cm-score').textContent=CM.score;
+  document.getElementById('cm-combo').textContent=CM.combo;
+  document.getElementById('cm-boards').textContent=CM.boards;
+}
+function cmNewBoard(){
+  CM.matched=0; CM.first=null; CM.lock=false;
+  const emojis=shuffleArr(CM_EMOJIS.slice()).slice(0,CM.pairs);
+  let deck=[]; emojis.forEach(e=>{ deck.push(e); deck.push(e); });
+  CM.deck=shuffleArr(deck);
+  const board=document.getElementById('cm-board'); board.innerHTML='';
+  CM.deck.forEach((e,i)=>{
+    const b=document.createElement('button');
+    b.className='cm-card back'; b.dataset.i=i;
+    b.onclick=()=>cmFlip(i,b);
+    board.appendChild(b);
+  });
+}
+function cmFlip(i,b){
+  if(!CM.running || CM.lock) return;
+  if(b.classList.contains('up') || b.classList.contains('done')) return;
+  b.classList.remove('back'); b.classList.add('up'); b.textContent=CM.deck[i];
+  if(CM.first===null){ CM.first={i,b}; return; }
+  const f=CM.first; CM.first=null;
+  if(f.i===i) return; // 안전장치
+  if(CM.deck[f.i]===CM.deck[i]){
+    f.b.classList.remove('up'); f.b.classList.add('done');
+    b.classList.remove('up'); b.classList.add('done');
+    CM.combo++; CM.maxCombo=Math.max(CM.maxCombo,CM.combo);
+    CM.score += 10 + (CM.combo-1)*2; CM.matched++;
+    cmUpdateStats();
+    if(CM.matched>=CM.pairs){ // 판 클리어
+      CM.boards++; CM.score += 20; CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
+      cmUpdateStats(); CM.lock=true;
+      CM.flipT=setTimeout(()=>{ if(CM.running) cmNewBoard(); }, 550);
+    }
+  }else{
+    CM.combo=0; cmUpdateStats(); CM.lock=true;
+    const fb=f.b;
+    CM.flipT=setTimeout(()=>{
+      fb.classList.remove('up'); fb.classList.add('back'); fb.textContent='';
+      b.classList.remove('up'); b.classList.add('back'); b.textContent='';
+      CM.lock=false;
+    }, 700);
+  }
+}
+function finishCards(){
+  clearInterval(CM.timer); clearTimeout(CM.flipT); CM.running=false;
+  const newRec=bt_recordScore(CM.best, CM.diff, CM.score); bt_saveBest('brain.cards.best', CM.best);
+  document.getElementById('cards-game-card').style.display='none';
+  document.getElementById('cards-result-card').style.display='block';
+  document.getElementById('cm-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('cm-result-title').textContent=newRec?t('cards.newRecord'):t('cards.timeOver');
+  document.getElementById('cm-result-score').textContent=CM.score;
+  document.getElementById('cm-r-diff').textContent=CM_DIFF_LABEL(CM.diff);
+  document.getElementById('cm-r-boards').textContent=CM.boards;
+  document.getElementById('cm-r-combo').textContent=CM.maxCombo;
+  document.getElementById('cm-r-best').textContent=CM.best[CM.diff].all;
+}
+function leaveCards(){
+  if(CM.running && !confirm(t('cards.confirmLeave'))) return;
+  clearInterval(CM.timer); clearTimeout(CM.flipT); CM.running=false; resetCards();
+}
+function resetCards(){
+  clearInterval(CM.timer); clearTimeout(CM.flipT); CM.running=false;
+  document.getElementById('cards-result-card').style.display='none';
+  document.getElementById('cards-game-card').style.display='none';
+  document.getElementById('cards-intro-card').style.display='block';
+  cmUpdateBestLine();
 }
 
 // INIT
