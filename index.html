@@ -7,15 +7,15 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f0f2fa;--bg2:#ffffff;--bg3:#e8ebf5;--bg4:#d8dced;
-  --border:#cdd2e8;--border2:#b0b8d8;
-  --text:#1a1b2e;--text2:#525878;--text3:#8e93b0;
-  --purple:#5b4ff0;--purple2:#7b6ff8;--purple3:#eceafe;
-  --teal:#0e9e70;--teal2:#0a7d58;--teal3:#d0f5e8;
-  --amber:#c97a00;--amber2:#a86300;--amber3:#fff3cc;
-  --red:#d63040;--red2:#b02030;--red3:#fde8ea;
-  --green:#15a040;--green3:#d8f8e4;
-  --blue:#2255d0;--blue3:#dce8fc;
+  --bg:#f5f7fb;--bg2:#ffffff;--bg3:#eef1f7;--bg4:#e2e7f0;
+  --border:#e4e9f2;--border2:#cdd5e5;
+  --text:#182235;--text2:#5a6683;--text3:#94a0b8;
+  --purple:#4f7cff;--purple2:#6e92ff;--purple3:#e9f0ff;
+  --teal:#21a67a;--teal2:#178a63;--teal3:#daf3ea;
+  --amber:#c7891f;--amber2:#9c6912;--amber3:#fbf0d8;
+  --red:#e0475a;--red2:#c0384a;--red3:#fce9ec;
+  --green:#21a67a;--green3:#daf3ea;
+  --blue:#4f7cff;--blue3:#e9f0ff;
   --radius:8px;--radius2:12px;--radius3:16px;
 }
 body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
@@ -55,7 +55,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .screen.active{display:block}
 
 /* CARDS */
-.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(60,60,120,.05)}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 1px 2px rgba(24,34,53,.04)}
 
 /* TYPING GAME */
 .typing-top{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -328,7 +328,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .bt-rec-label{font-size:.78rem;color:var(--teal2);margin-bottom:.35rem}
 .bt-rec-game{font-size:1.1rem;font-weight:700;color:var(--teal2);margin-bottom:.6rem}
 /* ===== Home / dashboard ===== */
-.home-hero{text-align:center;background:linear-gradient(135deg,#5b4ff0,#0e9e70);color:#fff;border:none}
+.home-hero{text-align:center;background:linear-gradient(135deg,#4f7cff,#6e92ff);color:#fff;border:none}
 .home-greeting{font-size:1.35rem;font-weight:800;margin-bottom:.3rem}
 .home-sub{font-size:.85rem;opacity:.9;margin-bottom:1rem}
 .home-streak{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,0.18);border-radius:999px;padding:.4rem 1rem;font-size:.95rem}
@@ -338,8 +338,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-stat{flex:1;max-width:120px;background:rgba(255,255,255,0.16);border-radius:var(--radius2);padding:.6rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.1rem}
 .home-stat b{font-size:1.5rem;font-weight:800;line-height:1}
 .home-stat span{font-size:.72rem;opacity:.9}
-.home-mission{border:1px solid var(--purple);background:linear-gradient(120deg,#eceafe,#fff)}
-.home-mission.done{background:linear-gradient(120deg,#d0f5e8,#fff);border-color:var(--teal)}
+.home-mission{border:1px solid var(--purple);background:linear-gradient(120deg,#e9f0ff,#fff)}
+.home-mission.done{background:linear-gradient(120deg,#daf3ea,#fff);border-color:var(--teal)}
 .hm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.15rem}
 .hm-label{font-size:.92rem;font-weight:800;color:var(--purple)}
 .home-mission.done .hm-label{color:var(--teal2)}
@@ -356,10 +356,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .hm-cta:disabled{background:var(--teal);cursor:default}
 .home-section-title{font-size:.9rem;font-weight:700;color:var(--text2);margin:.25rem .25rem .75rem}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
-.home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1rem .5rem;cursor:pointer;transition:.14s;font-family:inherit;box-shadow:0 1px 4px rgba(60,60,120,.05)}
-.home-card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(91,79,240,.15)}
+.home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1rem .5rem;cursor:pointer;transition:.14s;font-family:inherit;box-shadow:0 1px 2px rgba(24,34,53,.04)}
+.home-card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(79,124,255,.14)}
 .home-card-emoji{font-size:2rem;line-height:1}
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
+.home-card-cat{font-size:.66rem;color:var(--text3);font-weight:500}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
 .home-grp{font-size:.82rem;font-weight:700;color:var(--text2);margin:1.1rem .25rem .6rem}
 .home-grp:first-child{margin-top:.25rem}
@@ -432,7 +433,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 /* ===== Card match (카드 짝 맞추기) ===== */
 .cm-board{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;width:100%;max-width:400px;margin:0 auto}
 .cm-card{aspect-ratio:3/4;border:none;border-radius:var(--radius);cursor:pointer;font-size:clamp(1.4rem,7vw,2.2rem);display:flex;align-items:center;justify-content:center;font-family:inherit;transition:transform .12s,background .12s;padding:0}
-.cm-card.back{background:linear-gradient(135deg,#5b4ff0,#7b6ff8);color:transparent}
+.cm-card.back{background:linear-gradient(135deg,#4f7cff,#6e92ff);color:transparent}
 .cm-card.back::after{content:"?";color:rgba(255,255,255,.7);font-weight:800}
 .cm-card.up{background:#fff;border:1.5px solid var(--purple)}
 .cm-card.done{background:var(--teal3);border:1.5px solid var(--teal);cursor:default}
@@ -444,7 +445,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rc-box.waiting{background:linear-gradient(135deg,#7b8bb0,#556089)}
 .rc-box.go{background:linear-gradient(135deg,#15a040,#0e9e70)}
 .rc-box.nogo{background:linear-gradient(135deg,#e0344b,#b02030)}
-.rc-box.good{background:linear-gradient(135deg,#2255d0,#5b4ff0)}
+.rc-box.good{background:linear-gradient(135deg,#4f7cff,#2255d0)}
 .rc-box.bad{background:linear-gradient(135deg,#c97a00,#a86300)}
 .rc-box-sub{font-size:1rem;font-weight:600;opacity:.92}
 </style>
@@ -1620,6 +1621,14 @@ const I18N = {
   "mission.done": {ko:"오늘의 미션 완료! 🎉", en:"Mission complete! 🎉", th:"ภารกิจสำเร็จ! 🎉"},
   "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
+  "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
+  "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
+  "cat.speed": {ko:"순발력", en:"Speed", th:"ความไว"},
+  "cat.space": {ko:"공간감각", en:"Spatial", th:"มิติสัมพันธ์"},
+  "cat.calc": {ko:"계산감각", en:"Numbers", th:"การคำนวณ"},
+  "cat.logic": {ko:"논리력", en:"Logic", th:"ตรรกะ"},
+  "cat.lang": {ko:"언어감각", en:"Language", th:"ภาษา"},
+  "cat.fun": {ko:"재미", en:"Fun", th:"ความสนุก"},
   "home.grpAttention": {ko:"🎯 주의·속도", en:"🎯 Attention & Speed", th:"🎯 สมาธิ·ความเร็ว"},
   "home.grpFlex": {ko:"🔀 유연성", en:"🔀 Flexibility", th:"🔀 ความยืดหยุ่น"},
   "home.grpCalc": {ko:"➗ 계산", en:"➗ Calculation", th:"➗ การคำนวณ"},
@@ -3927,7 +3936,7 @@ function makeShareCard(o){
   const c=document.createElement('canvas'); c.width=600; c.height=800;
   const W=c.width, H=c.height, g=c.getContext('2d');
   const grad=g.createLinearGradient(0,0,W,H);
-  grad.addColorStop(0,o.from||'#5b4ff0'); grad.addColorStop(1,o.to||'#0e9e70');
+  grad.addColorStop(0,o.from||'#4f7cff'); grad.addColorStop(1,o.to||'#21a67a');
   g.fillStyle=grad; g.fillRect(0,0,W,H);
   g.fillStyle='rgba(255,255,255,0.12)'; btRoundRect(g,40,40,W-80,H-80,28); g.fill();
   g.textAlign='center';
@@ -3990,21 +3999,21 @@ function gameShare(game){
 
 // ========== 홈 / 대시보드 ==========
 const HOME_GAMES=[
-  {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'home.grpMemory'},
-  {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best',  grp:'home.grpMemory'},
-  {id:'nback',  emoji:'🔡', key:'nav.nback',  best:'brain.nback.best',  grp:'home.grpMemory'},
-  {id:'cards',  emoji:'🃏', key:'nav.cards',  best:'brain.cards.best',  grp:'home.grpMemory'},
-  {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'home.grpAttention'},
-  {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'home.grpAttention'},
-  {id:'react',  emoji:'⏱️', key:'nav.react',  best:'brain.react.best',  grp:'home.grpAttention'},
-  {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'home.grpFlex'},
-  {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'home.grpSpace'},
-  {id:'math',   emoji:'➗', key:'nav.math',   grp:'home.grpCalc'},
-  {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'home.grpLogic'},
-  {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'home.grpLogic'},
-  {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'home.grpLang'},
-  {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'home.grpLang'},
-  {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'home.grpTest'},
+  {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'cat.memory'},
+  {id:'count',  emoji:'👥', key:'nav.count',  best:'brain.count.best',  grp:'cat.memory'},
+  {id:'nback',  emoji:'🔡', key:'nav.nback',  best:'brain.nback.best',  grp:'cat.memory'},
+  {id:'cards',  emoji:'🃏', key:'nav.cards',  best:'brain.cards.best',  grp:'cat.memory'},
+  {id:'stroop', emoji:'🎨', key:'nav.stroop', best:'brain.stroop.best', grp:'cat.focus'},
+  {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'cat.focus'},
+  {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'cat.speed'},
+  {id:'react',  emoji:'⏱️', key:'nav.react',  best:'brain.react.best',  grp:'cat.speed'},
+  {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'cat.space'},
+  {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
+  {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
+  {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'cat.logic'},
+  {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'cat.lang'},
+  {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
+  {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'cat.fun'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
@@ -4040,6 +4049,14 @@ function missionMark(id){
   if(!m.done.includes(id)){ m.done.push(id); missionSave(m); }
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
+// 통일 게임 카드(홈·게임화면 공용): 이모지 / 이름 / 카테고리 / 🏆기록
+function gameCardHTML(g){
+  let best='';
+  if(g.best){ const b=bt_loadBest(g.best); const mx=Math.max(b.easy.all,b.normal.all,b.hard.all); if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>'; }
+  return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
+    '<div class="home-card-name">'+t(g.key)+'</div>'+
+    '<div class="home-card-cat">'+t(g.grp)+'</div>';
+}
 function missionStart(){
   const set=missionToday(), m=missionLoad();
   const next=set.find(id=>!m.done.includes(id));
@@ -4091,13 +4108,7 @@ function renderHome(){
     }
     const card=document.createElement('button');
     card.className='home-card'; card.onclick=()=>showScreen(g.id);
-    let best='';
-    if(g.best){
-      const b=bt_loadBest(g.best);
-      const mx=Math.max(b.easy.all, b.normal.all, b.hard.all);
-      if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>';
-    }
-    card.innerHTML=best+'<div class="home-card-emoji">'+g.emoji+'</div><div class="home-card-name">'+t(g.key)+'</div>';
+    card.innerHTML=gameCardHTML(g);
     grid.appendChild(card);
   });
 }
