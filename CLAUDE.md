@@ -59,6 +59,7 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-06 — **오늘의 미션(Daily Workout)** 추가: 매일 축 섞은 3게임 자동 선정+진행체크. 재미/휴식 톤(FTC 회피).
 - 2026-07-06 — 시각기억 **카드 짝 맞추기(cards)** + 반응억제 **반응 속도/Go-No-Go(react)** 추가. 게임 15종.
 - 2026-07-06 — 공간지각 축 신설 **도형 회전(rotate)** + 작업기억 **엔백(nback)** 게임 추가. 게임 13종.
 - 2026-07-06 — 유연성 축 게임 **규칙 바꾸기(switch)** 추가(홀짝↔크기 규칙 전환, 과제 전환/set-shifting).
@@ -245,3 +246,78 @@ this tool only toggles plugins already in the library.
 <!-- PLUGINS_TOOL_END -->
 
 See WORKSPACE.md for related bots in this workspace.
+
+<!-- MDBOX_MULTIMODAL_BEGIN -->
+## Generating & delivering files (images, video, audio, documents)
+
+Generate images/video/audio by emitting a **`__media__` directive** (the platform
+intercepts it and runs generation for you — details below). Do NOT look for or run a
+local `mdbox`/`kone` binary for generation; generation is a directive, not a command.
+Produce any other file (PDF, HTML, Excel/Word/PPT, CSV, ZIP, …) with your normal tools.
+
+### Where to save — ALWAYS `./generated_images/`
+Save EVERY file you want the user to see or download into `./generated_images/`
+(run `mkdir -p generated_images` first). Only this folder is publicly served for
+this project — files written anywhere else are NOT reachable from chat.
+
+### How to deliver — paste the REAL public URL
+For a file at `generated_images/<name>.<ext>`, its public URL is exactly
+`/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
+correctly in web and Telegram/Discord:
+- Image → `![<alt>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.png)` — shows inline
+- Video → `[<title>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
+- Audio → `[<title>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.mp3)` — web embeds an audio player
+- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
+
+Always give the user the link for anything you produce — never just say "saved to
+generated_images/" without the URL.
+
+### Generating an image/video/audio — ALWAYS use the __media__ directive
+To generate ANY image/video/audio, you MUST emit a `__media__` directive — do NOT
+run `mdbox gen` for generation (it blocks your whole turn until the file is done).
+Emit the directive on its own line and finish your reply right away — the system
+submits it, shows a live progress card, and delivers the result into the chat
+automatically. You do NOT run a command, wait, or paste a URL for it.
+
+```
+{"__media__": {"kind": "image", "model": "nano-banana-pro", "prompt": "a red fox in snow, cinematic"}}
+```
+
+- `kind`: image | video | audio. `prompt`: required. `model`: a current model name — good
+  defaults: image `nano-banana-pro`, video `sora-2`, audio `elevenlabs`; run `mdbox models`
+  or `mdbox guide` for the full list if that CLI is available (it may not be — the directive
+  works regardless, the platform validates the model).
+- For GPT-style images, use the explicit task variant **`gpt-image-2-t2i`** (text-to-image)
+  or `gpt-image-2-i2i` (image-to-image) — they finish in ~40s. **Avoid the bare `gpt-image-2`
+  alias**: it is queue-bound on the gateway and often takes many minutes (can hit the
+  generation timeout and fail). Same rule for any model: prefer a specific `-t2i`/`-i2i`
+  variant over a bare family name.
+- Image-to-image / image-to-video: put the reference image's **local path** straight
+  into `params.metadata.image` — a file you saved under `generated_images/`, or an
+  image the user attached (its path is in the `[Available files]` context). The
+  platform uploads it for you, so you do NOT run `mdbox upload` and do NOT need a URL.
+  `{"__media__": {"kind":"image","model":"nano-banana","prompt":"make it a watercolor","params":{"metadata":{"image":"generated_images/photo.png"}}}}`
+  Multiple references: `"image": ["generated_images/a.png","generated_images/b.png"]`.
+  An https URL also works as-is. (Good i2i models: `nano-banana`, `gpt-image-2-i2i`.)
+- Emit the directive ONCE per file; don't also run `mdbox gen` for the same thing.
+
+Use the synchronous `mdbox gen` below ONLY when you need the generated file IN THIS
+SAME TURN (e.g. generate an image, then immediately feed it into a video).
+
+### mdbox multimodal
+You can generate and process media (image / video / audio / music) with the
+`mdbox` CLI — text-to-image/video, image-to-image/video, cutout (background
+removal), and image/video upscaling are all supported.
+
+**Run `mdbox guide` for the full reference.** For GENERATION, use the `__media__`
+directive above — NOT `mdbox gen`. The `mdbox` CLI here is for: `mdbox models`
+(list current models), `mdbox upload <file>` (local file → the https URL that
+reference inputs require), and `mdbox guide`. `mdbox gen --model <model> --prompt
+"<text>" -o generated_images/<name>.png` runs a SYNCHRONOUS (blocking) generation —
+use it ONLY for the same-turn chained case noted above, never for a plain request.
+
+Project conventions: always save outputs under `generated_images/` in the
+project working directory, use descriptive filenames, and after saving tell the
+user the relative path so they can preview/download it in the file browser.
+<!-- MDBOX_MULTIMODAL_END -->
+

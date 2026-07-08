@@ -338,13 +338,22 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-stat{flex:1;max-width:120px;background:rgba(255,255,255,0.16);border-radius:var(--radius2);padding:.6rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.1rem}
 .home-stat b{font-size:1.5rem;font-weight:800;line-height:1}
 .home-stat span{font-size:.72rem;opacity:.9}
-.home-pick{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--purple);background:linear-gradient(120deg,#eceafe,#fff);font-family:inherit;transition:.15s;padding:1rem 1.25rem}
-.home-pick:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(91,79,240,.18)}
-.home-pick-l{font-size:.78rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
-.home-pick-main{display:flex;align-items:center;gap:.7rem}
-.home-pick-emoji{font-size:2.4rem;line-height:1}
-.home-pick-name{font-size:1.3rem;font-weight:800;color:var(--text)}
-.home-pick-go{margin-top:.5rem;font-size:.85rem;font-weight:700;color:var(--teal2)}
+.home-mission{border:1px solid var(--purple);background:linear-gradient(120deg,#eceafe,#fff)}
+.home-mission.done{background:linear-gradient(120deg,#d0f5e8,#fff);border-color:var(--teal)}
+.hm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.15rem}
+.hm-label{font-size:.92rem;font-weight:800;color:var(--purple)}
+.home-mission.done .hm-label{color:var(--teal2)}
+.hm-prog{font-size:.85rem;font-weight:700;color:var(--text2)}
+.hm-sub{font-size:.76rem;color:var(--text3);margin-bottom:.8rem}
+.hm-games{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.85rem}
+.hm-chip{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.7rem .3rem;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;font-family:inherit;transition:.12s}
+.hm-chip:hover{border-color:var(--purple);background:var(--purple3)}
+.hm-chip.done{border-color:var(--teal);background:var(--teal3)}
+.hm-chip-emoji{font-size:1.7rem;line-height:1}
+.hm-chip-name{font-size:.72rem;font-weight:600;color:var(--text);text-align:center;line-height:1.15}
+.hm-cta{width:100%;padding:.8rem;border:none;border-radius:var(--radius);background:var(--purple);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.12s}
+.hm-cta:hover:not(:disabled){background:var(--purple2)}
+.hm-cta:disabled{background:var(--teal);cursor:default}
 .home-section-title{font-size:.9rem;font-weight:700;color:var(--text2);margin:.25rem .25rem .75rem}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
 .home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1rem .5rem;cursor:pointer;transition:.14s;font-family:inherit;box-shadow:0 1px 4px rgba(60,60,120,.05)}
@@ -381,9 +390,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .home-sub{font-size:.8rem}
   .home-stat b{font-size:1.3rem}
   .home-stat span{font-size:.66rem}
-  .home-pick{padding:.9rem 1rem}
-  .home-pick-emoji{font-size:2.1rem}
-  .home-pick-name{font-size:1.15rem}
+  .hm-chip-emoji{font-size:1.5rem}
+  .hm-chip-name{font-size:.66rem}
+  .hm-label{font-size:.86rem}
   .home-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem}
   .home-card{padding:.85rem .4rem}
   .home-card-emoji{font-size:1.8rem}
@@ -514,7 +523,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="home-stat"><b id="home-rec-n">0</b><span data-i18n="home.statRecords">보유 기록</span></div>
     </div>
   </div>
-  <button class="card home-pick" id="home-pick" onclick="homePickGo()"></button>
+  <div class="card home-mission" id="home-mission">
+    <div class="hm-top">
+      <span class="hm-label" data-i18n="mission.label">🎯 오늘의 미션</span>
+      <span class="hm-prog" id="hm-prog">0 / 3</span>
+    </div>
+    <div class="hm-sub" data-i18n="mission.sub">머리 식힐 겸, 딱 3판만 가볍게</div>
+    <div class="hm-games" id="hm-games"></div>
+    <button class="hm-cta" id="hm-cta" onclick="missionStart()" data-i18n="mission.cta">가볍게 시작하기 →</button>
+  </div>
   <div class="home-section-title" data-i18n="home.allGames">전체 트레이닝</div>
   <div id="home-body"></div>
 </div>
@@ -1597,6 +1614,10 @@ const I18N = {
   "home.statRecords": {ko:"보유 기록", en:"records", th:"สถิติ"},
   "home.todayPick": {ko:"✨ 오늘의 추천", en:"✨ Today's Pick", th:"✨ แนะนำวันนี้"},
   "home.startNow": {ko:"지금 시작 →", en:"Start now →", th:"เริ่มเลย →"},
+  "mission.label": {ko:"🎯 오늘의 미션", en:"🎯 Today's Mission", th:"🎯 ภารกิจวันนี้"},
+  "mission.sub": {ko:"머리 식힐 겸, 딱 3판만 가볍게", en:"Just 3 quick games to unwind", th:"เล่นเบา ๆ แค่ 3 เกมพักสมอง"},
+  "mission.cta": {ko:"가볍게 시작하기 →", en:"Start easy →", th:"เริ่มแบบสบาย ๆ →"},
+  "mission.done": {ko:"오늘의 미션 완료! 🎉", en:"Mission complete! 🎉", th:"ภารกิจสำเร็จ! 🎉"},
   "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "home.grpAttention": {ko:"🎯 주의·속도", en:"🎯 Attention & Speed", th:"🎯 สมาธิ·ความเร็ว"},
@@ -3411,6 +3432,7 @@ function fmFail(){
 function finishFlash(){
   clearTimeout(FM.timer); FM.phase='over';
   const newRec=bt_recordScore(FM.best, FM.diff, FM.score); bt_saveBest('brain.flash.best', FM.best);
+  missionMark('flash');
   document.getElementById('flash-game-card').style.display='none';
   document.getElementById('flash-result-card').style.display='block';
   document.getElementById('fm-result-emoji').textContent=newRec?'🏆':'🎮';
@@ -3551,6 +3573,7 @@ function hcAnswer(v, btn){
 function finishCount(){
   hcClearTimers(); HC.playing=false;
   const newRec=bt_recordScore(HC.best, HC.diff, HC.score); bt_saveBest('brain.count.best', HC.best);
+  missionMark('count');
   document.getElementById('count-game-card').style.display='none';
   document.getElementById('count-result-card').style.display='block';
   document.getElementById('hc-result-emoji').textContent=newRec?'🏆':'🎮';
@@ -3655,6 +3678,7 @@ function stAnswer(key, btn){
 function finishStroop(){
   clearInterval(ST.timer); ST.running=false;
   const newRec=bt_recordScore(ST.best, ST.diff, ST.score); bt_saveBest('brain.stroop.best', ST.best);
+  missionMark('stroop');
   document.getElementById('stroop-game-card').style.display='none';
   document.getElementById('stroop-result-card').style.display='block';
   document.getElementById('st-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -3759,6 +3783,7 @@ function trTapNode(num,node){
 function finishTrail(){
   clearInterval(TR.timer); TR.running=false;
   const newRec=bt_recordScore(TR.best, TR.diff, TR.score); bt_saveBest('brain.trail.best', TR.best);
+  missionMark('trail');
   document.getElementById('trail-game-card').style.display='none';
   document.getElementById('trail-result-card').style.display='block';
   document.getElementById('tr-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -3995,8 +4020,54 @@ function homeVisit(){
   try{ localStorage.setItem('brain.visit', JSON.stringify(v)); }catch(e){}
   return v;
 }
-let _homePick=null;
-function homePickGo(){ if(_homePick) showScreen(_homePick); }
+// ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
+const MISSION_A=['flash','count','nback','cards'];   // 기억
+const MISSION_B=['stroop','trail','react'];          // 주의·속도
+const MISSION_C=['switch','rotate'];                 // 유연성·공간
+function missionToday(){
+  const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
+  return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
+}
+function missionLoad(){
+  try{ const o=JSON.parse(localStorage.getItem('brain.mission')||'null'); if(o && o.date===bt_today() && Array.isArray(o.done)) return o; }catch(e){}
+  return { date:bt_today(), done:[] };
+}
+function missionSave(o){ try{ localStorage.setItem('brain.mission', JSON.stringify(o)); }catch(e){} }
+// 게임 완료 시 각 finish에서 호출 — 오늘의 미션 게임이면 체크
+function missionMark(id){
+  if(!missionToday().includes(id)) return;
+  const m=missionLoad();
+  if(!m.done.includes(id)){ m.done.push(id); missionSave(m); }
+}
+function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
+function missionStart(){
+  const set=missionToday(), m=missionLoad();
+  const next=set.find(id=>!m.done.includes(id));
+  if(next) showScreen(next);
+}
+function renderMission(){
+  const set=missionToday(), m=missionLoad();
+  const doneCount=set.filter(id=>m.done.includes(id)).length;
+  const allDone=doneCount>=set.length;
+  const prog=document.getElementById('hm-prog'); if(prog) prog.textContent=doneCount+' / '+set.length;
+  const wrap=document.getElementById('hm-games');
+  if(wrap){
+    wrap.innerHTML='';
+    set.forEach(id=>{
+      const meta=gameMeta(id), isDone=m.done.includes(id);
+      const chip=document.createElement('button');
+      chip.className='hm-chip'+(isDone?' done':'');
+      chip.onclick=()=>showScreen(id);
+      chip.innerHTML='<span class="hm-chip-emoji">'+(isDone?'✅':meta.emoji)+'</span>'+
+        '<span class="hm-chip-name">'+t(meta.key)+'</span>';
+      wrap.appendChild(chip);
+    });
+  }
+  const card=document.getElementById('home-mission');
+  const cta=document.getElementById('hm-cta');
+  if(card) card.classList.toggle('done', allDone);
+  if(cta){ cta.textContent = allDone ? t('mission.done') : t('mission.cta'); cta.disabled = allDone; }
+}
 function renderHome(){
   const v=homeVisit();
   const nEl=document.getElementById('home-streak-n'); if(nEl) nEl.textContent=v.streak;
@@ -4005,15 +4076,7 @@ function renderHome(){
   let rec=0;
   HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
   const rEl=document.getElementById('home-rec-n'); if(rEl) rEl.textContent=rec;
-  // 오늘의 추천(날짜 기준 고정 회전)
-  const pool=HOME_GAMES.filter(g=>g.id!=='braintype');
-  const d=new Date(); const idx=(d.getFullYear()*372 + d.getMonth()*31 + d.getDate()) % pool.length;
-  const pick=pool[idx]; _homePick=pick.id;
-  const pk=document.getElementById('home-pick');
-  if(pk) pk.innerHTML='<div class="home-pick-l">'+t('home.todayPick')+'</div>'+
-    '<div class="home-pick-main"><span class="home-pick-emoji">'+pick.emoji+'</span>'+
-    '<span class="home-pick-name">'+t(pick.key)+'</span></div>'+
-    '<div class="home-pick-go">'+t('home.startNow')+'</div>';
+  renderMission();
   // 그룹별 그리드
   const body=document.getElementById('home-body'); if(!body) return;
   body.innerHTML='';
@@ -4115,6 +4178,7 @@ function swAnswer(btn){
 function finishSwitch(){
   clearInterval(SW.timer); SW.running=false;
   const newRec=bt_recordScore(SW.best, SW.diff, SW.score); bt_saveBest('brain.switch.best', SW.best);
+  missionMark('switch');
   document.getElementById('switch-game-card').style.display='none';
   document.getElementById('switch-result-card').style.display='block';
   document.getElementById('sw-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -4218,6 +4282,7 @@ function nbPress(){
 function finishNback(){
   clearInterval(NB.timer); clearInterval(NB.step); NB.running=false;
   const newRec=bt_recordScore(NB.best, NB.diff, NB.score); bt_saveBest('brain.nback.best', NB.best);
+  missionMark('nback');
   document.getElementById('nback-game-card').style.display='none';
   document.getElementById('nback-result-card').style.display='block';
   document.getElementById('nb-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -4306,6 +4371,7 @@ function rtAnswer(ans, btn){
 function finishRotate(){
   clearInterval(RT.timer); RT.running=false;
   const newRec=bt_recordScore(RT.best, RT.diff, RT.score); bt_saveBest('brain.rotate.best', RT.best);
+  missionMark('rotate');
   document.getElementById('rotate-game-card').style.display='none';
   document.getElementById('rotate-result-card').style.display='block';
   document.getElementById('rt2-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -4413,6 +4479,7 @@ function cmFlip(i,b){
 function finishCards(){
   clearInterval(CM.timer); clearTimeout(CM.flipT); CM.running=false;
   const newRec=bt_recordScore(CM.best, CM.diff, CM.score); bt_saveBest('brain.cards.best', CM.best);
+  missionMark('cards');
   document.getElementById('cards-game-card').style.display='none';
   document.getElementById('cards-result-card').style.display='block';
   document.getElementById('cm-result-emoji').textContent=newRec?'🏆':'⏰';
@@ -4516,6 +4583,7 @@ function rcSchedNext(){ RC.fbT=setTimeout(rcNextTrial, 850); }
 function finishReact(){
   rcClearTimers(); RC.running=false;
   const newRec=bt_recordScore(RC.best, RC.diff, RC.score); bt_saveBest('brain.react.best', RC.best);
+  missionMark('react');
   document.getElementById('react-game-card').style.display='none';
   document.getElementById('react-result-card').style.display='block';
   document.getElementById('rc-result-emoji').textContent=newRec?'🏆':'⏱️';

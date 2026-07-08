@@ -45,8 +45,12 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **공유카드 일반화(2026-07-06)**: `makeShareCard(...)` + `shareOrDownload()`. 점수게임 9종 `gameShare('<id>')`
   (flash/count/nback/cards/stroop/trail/react/switch/rotate). braintype도 이 헬퍼로 통일.
 - **홈/대시보드(2026-07-06)**: `#screen-home` 기본 랜딩. `HOME_GAMES`(grp별, 15항목) 그리드 + 최고기록 뱃지.
-  히어로 통계 3종 + **오늘의 추천**(날짜기반, `homePickGo`). 연속 출석 `homeVisit()`/`brain.visit`.
+  히어로 통계 3종 + **오늘의 미션(Daily Workout)**. 연속 출석 `homeVisit()`/`brain.visit`.
   nav는 아이콘+라벨 세로 칩(모바일도 라벨). 모바일 @media 640/360.
+- **오늘의 미션(2026-07-06, Lumosity Daily Workout 참고)**: 매일 축 섞은 3게임을 날짜 시드로 선정
+  (`missionToday()` = 기억A/주의·속도B/유연·공간C 풀에서 1개씩). 홈 미션카드(3칩+진행 n/3), 각 게임 `finishXXX`가
+  `missionMark(id)` 호출→localStorage `brain.mission`{date,done} 체크. 3개 완료 시 카드 완료상태.
+  톤: **재미/휴식**("머리 식힐 겸 3판") — FTC 교훈대로 효능 단정 없음.
 - 게임/콘텐츠 **총 15종**(플레이 게임 14 + 두뇌유형 테스트). 화면 16(홈 포함).
   축: 계산·타이핑·논리 / 기억(순간·인원·엔백·카드) / 주의·속도(스트룹·순서·반응) / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
 - 다음 후보: 사운드/햅틱, 주간 통계·목표, 유형별 상세 결과 확장.
