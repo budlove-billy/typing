@@ -18,11 +18,11 @@
   --blue:#4f7cff;--blue3:#e9f0ff;
   --radius:8px;--radius2:12px;--radius3:16px;
 }
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px}
 h1,h2,h3{font-weight:600}
 
 /* NAV */
-nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(60,60,120,.07)}
+nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
 .nav-logo{font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0}
 .nav-logo span{color:var(--teal)}
 .nav-menu{display:flex;align-items:center;gap:.25rem;overflow-x:auto;overflow-y:hidden;flex:1;padding:0 1rem 0 0;scrollbar-width:none;-ms-overflow-style:none;height:100%}
@@ -448,62 +448,52 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rc-box.good{background:linear-gradient(135deg,#4f7cff,#2255d0)}
 .rc-box.bad{background:linear-gradient(135deg,#c97a00,#a86300)}
 .rc-box-sub{font-size:1rem;font-weight:600;opacity:.92}
+/* ===== Phase2: 하단 탭바 · 홈 개편 · 기록 ===== */
+.tabbar{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -1px 6px rgba(24,34,53,.05)}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text3);transition:.12s;padding:0}
+.tab-btn.active{color:var(--purple)}
+.tab-ico{font-size:1.4rem;line-height:1;filter:grayscale(.4);opacity:.75}
+.tab-btn.active .tab-ico{filter:none;opacity:1}
+.tab-label{font-size:.7rem;font-weight:700}
+/* 홈 */
+.home-hi{font-size:1.3rem;font-weight:800;color:var(--text);margin:.25rem .25rem 1rem}
+.home-feature{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--purple);background:linear-gradient(120deg,#e9f0ff,#fff);font-family:inherit;transition:.15s}
+.home-feature:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(79,124,255,.16)}
+.hf-label{font-size:.78rem;font-weight:700;color:var(--purple);margin-bottom:.6rem}
+.hf-main{display:flex;align-items:center;gap:.85rem;margin-bottom:.9rem}
+.hf-emoji{font-size:3rem;line-height:1}
+.hf-name{font-size:1.35rem;font-weight:800;color:var(--text);line-height:1.15}
+.hf-cat{font-size:.8rem;color:var(--text2);margin-top:.15rem}
+.hf-cta{display:inline-block;background:var(--purple);color:#fff;font-size:.9rem;font-weight:700;padding:.6rem 1.2rem;border-radius:var(--radius)}
+/* 오늘의 목표 */
+.home-goals{padding-top:1rem;padding-bottom:1rem}
+.hg-title{font-size:.85rem;font-weight:700;color:var(--text2);margin-bottom:.7rem}
+.hg-row{display:flex;gap:.5rem}
+.hg-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;background:var(--bg3);border-radius:var(--radius);padding:.6rem .3rem}
+.hg-item b{font-size:1.3rem;font-weight:800;color:var(--purple)}
+.hg-item span{font-size:.68rem;color:var(--text3);text-align:center}
+/* 게임 모음 카테고리 칩 */
+.home-cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.home-cat{background:#fff;border:1px solid var(--border2);border-radius:999px;padding:.5rem 1rem;font-size:.85rem;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}
+.home-cat:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+/* 내 기록 */
+.rec-row{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.7rem .9rem;margin-bottom:.5rem}
+.rec-game{flex:1;font-size:.92rem;font-weight:600;color:var(--text)}
+.rec-cat{font-size:.72rem;color:var(--text3)}
+.rec-best{font-size:.9rem;font-weight:800;color:var(--amber2);min-width:60px;text-align:right}
+@media (max-width:640px){
+  .home-hi{font-size:1.15rem}
+  .hf-emoji{font-size:2.6rem}
+  .hf-name{font-size:1.2rem}
+  .hg-item b{font-size:1.15rem}
+  .tab-ico{font-size:1.3rem}
+}
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-logo">말랑말랑<span> 두뇌체조</span></div>
-  <div class="nav-menu">
-    <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
-      <span class="nav-ico">🏠</span><span class="nav-label" data-i18n="nav.home">홈</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('flash')" id="nav-flash">
-      <span class="nav-ico">⚡</span><span class="nav-label" data-i18n="nav.flash">순간기억</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('count')" id="nav-count">
-      <span class="nav-ico">👥</span><span class="nav-label" data-i18n="nav.count">인원수 세기</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('nback')" id="nav-nback">
-      <span class="nav-ico">🔡</span><span class="nav-label" data-i18n="nav.nback">엔백</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('cards')" id="nav-cards">
-      <span class="nav-ico">🃏</span><span class="nav-label" data-i18n="nav.cards">카드 짝</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('stroop')" id="nav-stroop">
-      <span class="nav-ico">🎨</span><span class="nav-label" data-i18n="nav.stroop">색깔 맞추기</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('trail')" id="nav-trail">
-      <span class="nav-ico">🔗</span><span class="nav-label" data-i18n="nav.trail">순서 잇기</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('react')" id="nav-react">
-      <span class="nav-ico">⏱️</span><span class="nav-label" data-i18n="nav.react">반응 속도</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('switch')" id="nav-switch">
-      <span class="nav-ico">🔀</span><span class="nav-label" data-i18n="nav.switch">규칙 바꾸기</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('rotate')" id="nav-rotate">
-      <span class="nav-ico">🔄</span><span class="nav-label" data-i18n="nav.rotate">도형 회전</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('math')" id="nav-math">
-      <span class="nav-ico">➗</span><span class="nav-label" data-i18n="nav.math">암산 게임</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('iq')" id="nav-iq">
-      <span class="nav-ico">🧠</span><span class="nav-label" data-i18n="nav.iq">IQ 테스트</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('sudoku')" id="nav-sudoku">
-      <span class="nav-ico">🔢</span><span class="nav-label" data-i18n="nav.sudoku">스도쿠</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('vocab')" id="nav-vocab">
-      <span class="nav-ico">📚</span><span class="nav-label" data-i18n="nav.vocab">영단어</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('typing')" id="nav-typing">
-      <span class="nav-ico">⌨️</span><span class="nav-label" data-i18n="nav.typing">한글 타자</span>
-    </button>
-    <button class="nav-btn" onclick="showScreen('braintype')" id="nav-braintype">
-      <span class="nav-ico">🔮</span><span class="nav-label" data-i18n="nav.braintype">두뇌 유형</span>
-    </button>
-  </div>
   <div class="lang-select-wrap">
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
       <option value="ko">🇰🇷 한국어</option>
@@ -515,26 +505,41 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 
 <!-- ==================== HOME / DASHBOARD ==================== -->
 <div class="screen active" id="screen-home">
-  <div class="card home-hero">
-    <div class="home-greeting" data-i18n="home.greeting">오늘도 두뇌 체조 한 판!</div>
-    <div class="home-sub" data-i18n="home.sub">매일 조금씩, 뇌가 말랑말랑해집니다.</div>
-    <div class="home-stats">
-      <div class="home-stat"><b id="home-streak-n">1</b><span data-i18n="home.statStreak">일 연속</span></div>
-      <div class="home-stat"><b id="home-total-n">1</b><span data-i18n="home.statDays">방문일</span></div>
-      <div class="home-stat"><b id="home-rec-n">0</b><span data-i18n="home.statRecords">보유 기록</span></div>
+  <div class="home-hi" data-i18n="home.title">오늘의 두뇌 체조</div>
+  <button class="card home-feature" id="home-feature" onclick="featureStart()"></button>
+  <div class="card home-goals">
+    <div class="hg-title" data-i18n="goals.title">오늘의 목표</div>
+    <div class="hg-row">
+      <div class="hg-item"><b id="hg-plays">0/3</b><span data-i18n="goals.plays">판 플레이</span></div>
+      <div class="hg-item"><b id="hg-streak">1</b><span data-i18n="goals.streak">일 연속</span></div>
+      <div class="hg-item"><b id="hg-records">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
   </div>
-  <div class="card home-mission" id="home-mission">
-    <div class="hm-top">
-      <span class="hm-label" data-i18n="mission.label">🎯 오늘의 미션</span>
-      <span class="hm-prog" id="hm-prog">0 / 3</span>
+  <div class="home-section-title" data-i18n="home.browse">게임 모음</div>
+  <div class="home-cats" id="home-cats"></div>
+  <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
+  <div class="home-grid" id="home-popular"></div>
+</div>
+
+<!-- ==================== ALL GAMES SCREEN (전체 게임) ==================== -->
+<div class="screen" id="screen-games">
+  <div class="home-section-title" data-i18n="games.title">전체 게임</div>
+  <div id="games-body"></div>
+</div>
+
+<!-- ==================== RECORDS SCREEN (내 기록) ==================== -->
+<div class="screen" id="screen-records">
+  <div class="home-section-title" data-i18n="records.title">내 기록</div>
+  <div class="card">
+    <div class="hg-row">
+      <div class="hg-item"><b id="rec-streak">1</b><span data-i18n="goals.streak">일 연속</span></div>
+      <div class="hg-item"><b id="rec-days">1</b><span data-i18n="records.days">방문일</span></div>
+      <div class="hg-item"><b id="rec-mission">0/3</b><span data-i18n="records.mission">오늘 미션</span></div>
+      <div class="hg-item"><b id="rec-count">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
-    <div class="hm-sub" data-i18n="mission.sub">머리 식힐 겸, 딱 3판만 가볍게</div>
-    <div class="hm-games" id="hm-games"></div>
-    <button class="hm-cta" id="hm-cta" onclick="missionStart()" data-i18n="mission.cta">가볍게 시작하기 →</button>
   </div>
-  <div class="home-section-title" data-i18n="home.allGames">전체 트레이닝</div>
-  <div id="home-body"></div>
+  <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
+  <div id="records-body"></div>
 </div>
 
 <!-- ==================== TYPING SCREEN ==================== -->
@@ -1367,6 +1372,19 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== BOTTOM TAB BAR ==================== -->
+<div class="tabbar">
+  <button class="tab-btn active" id="tab-home" onclick="showScreen('home')">
+    <span class="tab-ico">🏠</span><span class="tab-label" data-i18n="tab.home">홈</span>
+  </button>
+  <button class="tab-btn" id="tab-games" onclick="showScreen('games')">
+    <span class="tab-ico">🎮</span><span class="tab-label" data-i18n="tab.games">게임</span>
+  </button>
+  <button class="tab-btn" id="tab-records" onclick="showScreen('records')">
+    <span class="tab-ico">📊</span><span class="tab-label" data-i18n="tab.records">내 기록</span>
+  </button>
+</div>
+
 <script>
 const I18N = {
   "page.title": {ko:"말랑말랑 두뇌 체조", en:"Mallang Mallang Brain Gym", th:"ยิมสมองมัลลังมัลลัง"},
@@ -1620,6 +1638,26 @@ const I18N = {
   "mission.cta": {ko:"가볍게 시작하기 →", en:"Start easy →", th:"เริ่มแบบสบาย ๆ →"},
   "mission.done": {ko:"오늘의 미션 완료! 🎉", en:"Mission complete! 🎉", th:"ภารกิจสำเร็จ! 🎉"},
   "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},
+  "tab.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
+  "tab.games": {ko:"게임", en:"Games", th:"เกม"},
+  "tab.records": {ko:"내 기록", en:"Records", th:"สถิติ"},
+  "home.title": {ko:"오늘의 두뇌 체조", en:"Today's Brain Workout", th:"บริหารสมองวันนี้"},
+  "home.about1min": {ko:"약 1분", en:"about 1 min", th:"ประมาณ 1 นาที"},
+  "home.browse": {ko:"게임 모음", en:"Browse", th:"หมวดเกม"},
+  "home.popular": {ko:"인기 게임", en:"Popular", th:"เกมยอดนิยม"},
+  "feature.start": {ko:"시작하기 →", en:"Start →", th:"เริ่ม →"},
+  "feature.allDone": {ko:"미션 완료! 🎉", en:"All done! 🎉", th:"ครบแล้ว! 🎉"},
+  "feature.browseHint": {ko:"다른 게임도 즐겨보세요", en:"Enjoy other games too", th:"ลองเกมอื่นดูสิ"},
+  "feature.browse": {ko:"게임 보러가기 →", en:"Browse games →", th:"ดูเกม →"},
+  "goals.title": {ko:"오늘의 목표", en:"Today's Goals", th:"เป้าหมายวันนี้"},
+  "goals.plays": {ko:"판 플레이", en:"plays", th:"เกมที่เล่น"},
+  "goals.streak": {ko:"일 연속", en:"day streak", th:"วันติดต่อ"},
+  "goals.records": {ko:"보유 기록", en:"records", th:"สถิติ"},
+  "games.title": {ko:"전체 게임", en:"All Games", th:"เกมทั้งหมด"},
+  "records.title": {ko:"내 기록", en:"My Records", th:"สถิติของฉัน"},
+  "records.days": {ko:"방문일", en:"days", th:"วันที่มา"},
+  "records.mission": {ko:"오늘 미션", en:"today's mission", th:"ภารกิจวันนี้"},
+  "records.byGame": {ko:"게임별 최고 기록", en:"Best by Game", th:"สถิติแต่ละเกม"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
@@ -1881,8 +1919,13 @@ function refreshDynamicTexts(){
   if(typeof rtUpdateBestLine === 'function') rtUpdateBestLine();
   if(typeof cmUpdateBestLine === 'function') cmUpdateBestLine();
   if(typeof rcUpdateBestLine === 'function') rcUpdateBestLine();
-  if(typeof renderHome === 'function' && document.getElementById('screen-home') &&
-     document.getElementById('screen-home').classList.contains('active')) renderHome();
+  ['home','games','records'].forEach(s=>{
+    const el=document.getElementById('screen-'+s);
+    if(el && el.classList.contains('active')){
+      const fn={home:'renderHome',games:'renderGames',records:'renderRecords'}[s];
+      if(typeof window[fn]==='function') window[fn]();
+    }
+  });
   // 두뇌 유형 테스트: 퀴즈/결과가 떠 있으면 현재 언어로 다시 렌더
   if(typeof BT !== 'undefined'){
     if(document.getElementById('bt-quiz-card') && document.getElementById('bt-quiz-card').style.display!=='none'){
@@ -1951,13 +1994,24 @@ const S = {
 S.levelProgress.jh[0]=1; S.levelProgress.hs[0]=1;
 
 // ========== NAV ==========
+const TAB_FOR={home:'home', games:'games', records:'records'};
+function haltRunningGames(){
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame'].forEach(fn=>{
+    try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
+  });
+}
 function showScreen(id){
+  haltRunningGames();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('nav-'+id).classList.add('active');
-  if(id==='vocab') renderLevelTabs();
+  const scr=document.getElementById('screen-'+id); if(scr) scr.classList.add('active');
+  const tab='tab-'+(TAB_FOR[id]||'games');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const tb=document.getElementById(tab); if(tb) tb.classList.add('active');
+  if(id==='vocab' && typeof renderLevelTabs==='function') renderLevelTabs();
   if(id==='home' && typeof renderHome==='function') renderHome();
+  if(id==='games' && typeof renderGames==='function') renderGames();
+  if(id==='records' && typeof renderRecords==='function') renderRecords();
+  window.scrollTo(0,0);
 }
 
 // ========== TYPING — 내장 소설 데이터 ==========
@@ -4062,40 +4116,48 @@ function missionStart(){
   const next=set.find(id=>!m.done.includes(id));
   if(next) showScreen(next);
 }
-function renderMission(){
-  const set=missionToday(), m=missionLoad();
-  const doneCount=set.filter(id=>m.done.includes(id)).length;
-  const allDone=doneCount>=set.length;
-  const prog=document.getElementById('hm-prog'); if(prog) prog.textContent=doneCount+' / '+set.length;
-  const wrap=document.getElementById('hm-games');
-  if(wrap){
-    wrap.innerHTML='';
-    set.forEach(id=>{
-      const meta=gameMeta(id), isDone=m.done.includes(id);
-      const chip=document.createElement('button');
-      chip.className='hm-chip'+(isDone?' done':'');
-      chip.onclick=()=>showScreen(id);
-      chip.innerHTML='<span class="hm-chip-emoji">'+(isDone?'✅':meta.emoji)+'</span>'+
-        '<span class="hm-chip-name">'+t(meta.key)+'</span>';
-      wrap.appendChild(chip);
-    });
-  }
-  const card=document.getElementById('home-mission');
-  const cta=document.getElementById('hm-cta');
-  if(card) card.classList.toggle('done', allDone);
-  if(cta){ cta.textContent = allDone ? t('mission.done') : t('mission.cta'); cta.disabled = allDone; }
-}
+function setTxt(id,val){ const e=document.getElementById(id); if(e) e.textContent=val; }
+let _featureId='games';
+function featureStart(){ showScreen(_featureId||'games'); }
+// 홈: 오늘의 추천(미션 다음 게임) + 목표 + 카테고리 칩 + 인기게임
 function renderHome(){
   const v=homeVisit();
-  const nEl=document.getElementById('home-streak-n'); if(nEl) nEl.textContent=v.streak;
-  const tEl=document.getElementById('home-total-n'); if(tEl) tEl.textContent=v.total||1;
-  // 보유 기록 수(최고점>0인 게임)
+  const set=missionToday(), m=missionLoad();
+  const plays=set.filter(id=>m.done.includes(id)).length;
   let rec=0;
   HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
-  const rEl=document.getElementById('home-rec-n'); if(rEl) rEl.textContent=rec;
-  renderMission();
-  // 그룹별 그리드
-  const body=document.getElementById('home-body'); if(!body) return;
+  setTxt('hg-plays', plays+'/'+set.length); setTxt('hg-streak', v.streak); setTxt('hg-records', rec);
+  // 큰 추천 카드
+  const next=set.find(id=>!m.done.includes(id));
+  const fEl=document.getElementById('home-feature');
+  if(fEl){
+    if(next){
+      _featureId=next; const meta=gameMeta(next);
+      fEl.innerHTML='<div class="hf-label">'+t('home.todayPick')+'</div>'+
+        '<div class="hf-main"><span class="hf-emoji">'+meta.emoji+'</span>'+
+        '<div><div class="hf-name">'+t(meta.key)+'</div>'+
+        '<div class="hf-cat">'+t(meta.grp)+' · '+t('home.about1min')+'</div></div></div>'+
+        '<span class="hf-cta">'+t('feature.start')+'</span>';
+    }else{
+      _featureId='games';
+      fEl.innerHTML='<div class="hf-label">'+t('mission.done')+'</div>'+
+        '<div class="hf-main"><span class="hf-emoji">🎉</span>'+
+        '<div><div class="hf-name">'+t('feature.allDone')+'</div>'+
+        '<div class="hf-cat">'+t('feature.browseHint')+'</div></div></div>'+
+        '<span class="hf-cta">'+t('feature.browse')+'</span>';
+    }
+  }
+  // 게임 모음: 카테고리 칩
+  const cats=[]; HOME_GAMES.forEach(g=>{ if(!cats.includes(g.grp)) cats.push(g.grp); });
+  const catWrap=document.getElementById('home-cats');
+  if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>showScreen('games'); catWrap.appendChild(b); }); }
+  // 인기 게임(큐레이션)
+  const pop=document.getElementById('home-popular');
+  if(pop){ pop.innerHTML=''; ['flash','stroop','react','rotate'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
+}
+// 전체 게임: 카테고리별 통일 카드
+function renderGames(){
+  const body=document.getElementById('games-body'); if(!body) return;
   body.innerHTML='';
   let curGrp=null, grid=null;
   HOME_GAMES.forEach(g=>{
@@ -4110,6 +4172,25 @@ function renderHome(){
     card.className='home-card'; card.onclick=()=>showScreen(g.id);
     card.innerHTML=gameCardHTML(g);
     grid.appendChild(card);
+  });
+}
+// 내 기록
+function renderRecords(){
+  const v=homeVisit();
+  const set=missionToday(), m=missionLoad();
+  const plays=set.filter(id=>m.done.includes(id)).length;
+  let rec=0;
+  HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
+  setTxt('rec-streak', v.streak); setTxt('rec-days', v.total||1); setTxt('rec-mission', plays+'/'+set.length); setTxt('rec-count', rec);
+  const body=document.getElementById('records-body'); if(!body) return;
+  body.innerHTML='';
+  HOME_GAMES.filter(g=>g.best).forEach(g=>{
+    const b=bt_loadBest(g.best); const mx=Math.max(b.easy.all,b.normal.all,b.hard.all);
+    const row=document.createElement('div'); row.className='rec-row';
+    row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+
+      '<span class="rec-cat">'+t(g.grp)+'</span>'+
+      '<span class="rec-best">'+(mx>0?('🏆 '+mx):'—')+'</span>';
+    body.appendChild(row);
   });
 }
 

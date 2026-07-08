@@ -6,12 +6,17 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 앱 구조
 - **`index.html` = `brain_app.html`** (바이트 동일 유지). "말랑말랑 두뇌체조" — **서버 없는 단일 HTML SPA**.
   게임 수정 시 **두 파일 모두 동기화**할 것 (`cp index.html brain_app.html`).
-- 라우팅: `showScreen('id')` → `#screen-<id>` active 토글 + `#nav-<id>` 버튼. nav 버튼은 `<nav>` 안.
-- 게임 1개 = intro/game/result 3카드 패턴 (`<id>-intro-card` / `-game-card` / `-result-card`).
-- **다국어**: `I18N` 객체(각 키 `{ko,en,th}` 필수) + `t(key)` + `applyLanguage()`.
-  동적 문자열은 `refreshDynamicTexts()`에 갱신 훅 추가(언어 전환 시 재호출됨).
-- 재사용 CSS: `.card .btn .btn-outline .difficulty-row .diff-btn(3열) .result-row .section-head`
-  `.mg-top-stats .mg-stat-* .mg-timer`, 색 변수 `--purple/--teal/--amber/--red`.
+- **네비(2026-07-06 개편, Phase2)**: 상단 `<nav>`=로고+언어만. **하단 탭바 `.tabbar`**=홈/게임/내기록 3탭(랭킹은 서버 없어 보류).
+  `showScreen(id)`: `.screen` 토글 + **하단 탭 활성**(`TAB_FOR[id]||'games'`, 게임 id는 '게임' 탭). `nav-<id>` 참조 없음(제거됨).
+  `haltRunningGames()`가 showScreen마다 전 게임 reset(타이머 정리·intro 복귀). `window.scrollTo(0,0)`.
+- **홈**: `renderHome` = 오늘의 추천 큰 카드(`#home-feature`, 미션 다음 게임 → `featureStart`) + 오늘의 목표(hg-plays/streak/records)
+  + 게임 모음 카테고리 칩(`#home-cats`→게임탭) + 인기 게임(`#home-popular`, 큐레이션 flash/stroop/react/rotate).
+- **전체 게임**: `#screen-games`/`renderGames` = 카테고리별 통일 카드. **내 기록**: `#screen-records`/`renderRecords` = 통계+게임별 최고점.
+- 게임 1개 = intro/game/result 3카드 패턴. **다국어**: `I18N`(각 키 {ko,en,th}) + `t(key)` + `applyLanguage()`.
+  동적 문자열은 `refreshDynamicTexts()`에 갱신 훅(home/games/records 활성 시 재렌더).
+- **통일 카드**: `gameCardHTML(g)` = 이모지/이름/카테고리(`t(g.grp)`)/🏆기록. HOME_GAMES 각 항목 `grp`='cat.*'(소프트 카테고리).
+- 재사용 CSS: `.card .btn .btn-outline .difficulty-row .diff-btn(3열) .result-row .section-head .mg-timer .home-card .home-grid`.
+- 색(차분): `:root` 포인트 `--purple`=#4F7CFF(파랑), 성공 `--teal`=#21A67A, 배경 #F5F7FB, 텍스트 #182235. 게임 이모지·공유카드 강조색은 컬러 유지.
 
 ## 게임 목록 (인지 축)
 - 기존: 한글타자·영단어·IQ·스도쿠·암산 → 계산/타이핑/논리 축.
