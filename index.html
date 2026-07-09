@@ -21,6 +21,14 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -2049,6 +2057,8 @@ const S = {
 S.levelProgress.jh[0]=1; S.levelProgress.hs[0]=1;
 
 // ========== NAV ==========
+// GA4 커스텀 이벤트(차단/미로드 환경 안전)
+function track(name, params){ try{ if(typeof gtag==='function') gtag('event', name, params||{}); }catch(e){} }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame'].forEach(fn=>{
@@ -2066,6 +2076,7 @@ function showScreen(id){
   if(id==='home' && typeof renderHome==='function') renderHome();
   if(id==='games' && typeof renderGames==='function') renderGames();
   if(id==='records' && typeof renderRecords==='function') renderRecords();
+  track('screen_open', {screen:id});
   window.scrollTo(0,0);
 }
 
@@ -4067,6 +4078,7 @@ function btFinish(){
   let best=BT_ORDER[0];
   BT_ORDER.forEach(k=>{ if(BT.counts[k] > BT.counts[best]) best=k; });
   BT.result=best;
+  track('braintype_result', {type:best});
   document.getElementById('bt-progress-fill').style.width='100%';
   document.getElementById('bt-quiz-card').style.display='none';
   document.getElementById('bt-result-card').style.display='block';
@@ -4134,6 +4146,7 @@ function makeShareCard(o){
 }
 // 공용 공유/다운로드
 function shareOrDownload(canvas, filename, shareText){
+  track('share_card', {file:filename});
   const done=(blob)=>{
     if(!blob) return;
     const file=new File([blob],filename,{type:'image/png'});
@@ -4220,9 +4233,13 @@ function missionLoad(){
 function missionSave(o){ try{ localStorage.setItem('brain.mission', JSON.stringify(o)); }catch(e){} }
 // 게임 완료 시 각 finish에서 호출 — 오늘의 미션 게임이면 체크
 function missionMark(id){
+  track('game_finish', {game:id}); // 아케이드 9종 finish가 모두 여기를 거침
   if(!missionToday().includes(id)) return;
   const m=missionLoad();
-  if(!m.done.includes(id)){ m.done.push(id); missionSave(m); }
+  if(!m.done.includes(id)){
+    m.done.push(id); missionSave(m);
+    if(missionToday().every(g=>m.done.includes(g))) track('mission_complete', {});
+  }
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
 // 통일 게임 카드(홈·게임화면 공용): 이모지 / 이름 / 카테고리 / 🏆기록
@@ -4309,7 +4326,7 @@ const ABILITY_MAP={
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
 const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420};
-function saveFlatBest(id,val){ try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
+function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
   if(g && g.best){ const b=bt_loadBest(g.best); return Math.max(b.easy.all,b.normal.all,b.hard.all); }
