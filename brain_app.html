@@ -486,7 +486,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ab-head-label{font-size:.9rem;font-weight:700;color:var(--text)}
 .ab-head-val{font-size:1.7rem;font-weight:800;color:var(--purple)}
 .ability-sub{font-size:.7rem;color:var(--text3);margin-bottom:.9rem;line-height:1.4}
-.ab-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.ab-row{margin-bottom:.5rem}
+.ab-line{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.ab-detail{font-size:.68rem;color:var(--text3);margin:.25rem 0 .5rem 66px;line-height:1.6}
+.ability-hint{font-size:.68rem;color:var(--text3);text-align:center;margin-top:.7rem}
 .ab-name{width:66px;font-size:.78rem;font-weight:600;color:var(--text2);flex-shrink:0}
 .ab-bar{flex:1;height:10px;background:var(--bg3);border-radius:6px;overflow:hidden}
 .ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
@@ -553,7 +556,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="card">
     <div class="ab-head"><span class="ab-head-label" data-i18n="records.overall">종합 두뇌 레벨</span><span class="ab-head-val" id="ability-overall">0</span></div>
     <div class="ability-sub" data-i18n="records.abilitySub">게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)</div>
+    <canvas id="ability-radar" width="320" height="260" style="display:block;max-width:100%;margin:0 auto .5rem"></canvas>
     <div id="ability-graph"></div>
+    <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
   </div>
   <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
   <div id="records-body"></div>
@@ -1678,6 +1683,8 @@ const I18N = {
   "records.abilityTitle": {ko:"두뇌 능력치", en:"Brain Stats", th:"ค่าพลังสมอง"},
   "records.overall": {ko:"종합 두뇌 레벨", en:"Overall Level", th:"ระดับรวม"},
   "records.abilitySub": {ko:"게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)", en:"Based on game performance · recent play (not an actual intelligence measure)", th:"อิงจากผลการเล่นเกม · ล่าสุด (ไม่ใช่การวัดสติปัญญาจริง)"},
+  "records.abilityHint": {ko:"막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요", en:"Tap a bar to see which games contribute", th:"แตะแถบเพื่อดูว่าเกมใดมีส่วนช่วย"},
+  "records.noData": {ko:"아직 기록 없음 — 관련 게임을 해보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
@@ -2219,6 +2226,7 @@ function finishTyping(){
   const wpm=elapsed>0?Math.round(S.totalChars/elapsed):0;
   const total=S.totalChars+S.errors;
   const acc=total>0?Math.round((S.totalChars/total)*100):100;
+  if(typeof saveFlatBest==='function') saveFlatBest('typing', wpm);
 
   document.getElementById('r-score').textContent=wpm+' 타/분';
   document.getElementById('r-grade').textContent=
@@ -3197,6 +3205,9 @@ function checkSkComplete(){
   document.getElementById('sk-r-time').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   document.getElementById('sk-r-mistakes').textContent=SK.mistakes+t('sudoku.timesLabel');
   document.getElementById('sk-r-hints').textContent=SK.hintsUsed+t('sudoku.timesLabel');
+  const skBase={easy:60,medium:85,expert:110};
+  const skScore=Math.max(30, Math.round((skBase[SK.diff]||60) - SK.mistakes*4 - SK.hintsUsed*6 - SK.timeSec/20));
+  if(typeof saveFlatBest==='function') saveFlatBest('sudoku', skScore);
 }
 
 // ========== MATH GAME (암산 게임) ==========
@@ -4231,10 +4242,11 @@ const ABILITY_CAT={memory:'cat.memory',focus:'cat.focus',speed:'cat.speed',space
 const ABILITY_MAP={
   flash:{memory:70,focus:20,speed:10}, count:{memory:70,focus:20,calc:10}, nback:{memory:70,focus:30}, cards:{memory:70,focus:20,speed:10},
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
-  rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10}
+  rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
+  sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420};
 function saveFlatBest(id,val){ try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
@@ -4263,22 +4275,49 @@ function abilityDelta(cur){
   const d={}; ABILITIES.forEach(a=>{ d[a]=(cur[a]||0)-(prev[a]||0); });
   return d;
 }
+function abilityContributors(a){
+  return Object.keys(ABILITY_MAP).filter(id=>ABILITY_MAP[id][a] && gameBestVal(id)>0)
+    .map(id=>({id, lvl:gameLevel(id), w:ABILITY_MAP[id][a]}))
+    .sort((x,y)=>y.w-x.w);
+}
+function toggleAbility(a){ const el=document.getElementById('abd-'+a); if(el) el.style.display=(el.style.display==='none'?'block':'none'); }
 function renderAbility(){
   const wrap=document.getElementById('ability-graph'); if(!wrap) return;
   const sc=abilityScores(); const dl=abilityDelta(sc);
   const played=ABILITIES.filter(a=>sc[a]>0);
   const overall = played.length? Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length) : 0;
   setTxt('ability-overall', overall);
+  if(typeof drawRadar==='function') drawRadar(sc);
   wrap.innerHTML='';
   ABILITIES.forEach(a=>{
     const v=sc[a]||0, d=dl[a]||0;
+    const cons=abilityContributors(a);
+    const detail = cons.length ? cons.map(x=>gameMeta(x.id).emoji+' '+t(gameMeta(x.id).key)+' lv.'+x.lvl).join(' · ') : t('records.noData');
     const row=document.createElement('div'); row.className='ab-row';
-    row.innerHTML='<span class="ab-name">'+t(ABILITY_CAT[a])+'</span>'+
-      '<div class="ab-bar"><div class="ab-fill" style="width:'+v+'%"></div></div>'+
-      '<span class="ab-val">'+(v>0?v:'—')+'</span>'+
-      (d>0?'<span class="ab-delta">▲'+d+'</span>':'<span class="ab-delta"></span>');
-  wrap.appendChild(row);
+    row.innerHTML='<div class="ab-line" onclick="toggleAbility(\''+a+'\')">'+
+        '<span class="ab-name">'+t(ABILITY_CAT[a])+'</span>'+
+        '<div class="ab-bar"><div class="ab-fill" style="width:'+v+'%"></div></div>'+
+        '<span class="ab-val">'+(v>0?v:'—')+'</span>'+
+        (d>0?'<span class="ab-delta">▲'+d+'</span>':'<span class="ab-delta"></span>')+
+      '</div>'+
+      '<div class="ab-detail" id="abd-'+a+'" style="display:none">'+detail+'</div>';
+    wrap.appendChild(row);
   });
+}
+function drawRadar(sc){
+  const c=document.getElementById('ability-radar'); if(!c||!c.getContext) return;
+  const ctx=c.getContext('2d'); const W=c.width,H=c.height; ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2+4, R=Math.min(W,H)/2-42, n=ABILITIES.length;
+  ctx.lineWidth=1;
+  for(let ring=1;ring<=4;ring++){ ctx.strokeStyle='#e4e9f2'; ctx.beginPath(); for(let i=0;i<=n;i++){ const ang=-Math.PI/2+i/n*2*Math.PI, rr=R*ring/4, x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; i?ctx.lineTo(x,y):ctx.moveTo(x,y);} ctx.stroke(); }
+  ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  for(let i=0;i<n;i++){ const ang=-Math.PI/2+i/n*2*Math.PI, x=cx+Math.cos(ang)*R, y=cy+Math.sin(ang)*R;
+    ctx.strokeStyle='#e4e9f2'; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y); ctx.stroke();
+    ctx.fillStyle='#5a6683'; ctx.fillText(t(ABILITY_CAT[ABILITIES[i]]), cx+Math.cos(ang)*(R+22), cy+Math.sin(ang)*(R+13)); }
+  ctx.beginPath();
+  for(let i=0;i<=n;i++){ const idx=i%n, ang=-Math.PI/2+idx/n*2*Math.PI, val=(sc[ABILITIES[idx]]||0)/100, rr=R*val, x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+  ctx.closePath(); ctx.fillStyle='rgba(79,124,255,0.22)'; ctx.fill(); ctx.strokeStyle='#4f7cff'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#4f7cff'; for(let i=0;i<n;i++){ const ang=-Math.PI/2+i/n*2*Math.PI, val=(sc[ABILITIES[i]]||0)/100, rr=R*val, x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fill(); }
 }
 function renderRecords(){
   const v=homeVisit();
