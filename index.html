@@ -1464,7 +1464,7 @@ const I18N = {
   "vocab.scoreHigh_en": ["Great job! Keep up the momentum! 🌟","Almost perfect! 👏","Amazing! You got nearly everything right 🎉","Incredible skill! 🥇"],
   "vocab.scoreHigh_th": ["เยี่ยมมาก! รักษาฟอร์มแบบนี้ไว้! 🌟","เกือบสมบูรณ์แบบ! 👏","สุดยอด! ถูกเกือบหมดเลย 🎉","ฝีมือยอดเยี่ยม! 🥇"],
   "iq.title": {ko:"IQ 테스트", en:"IQ Test", th:"ทดสอบไอคิว"},
-  "iq.intro": {ko:"수열 완성, 언어 유추, 도형 패턴, 논리 추론 등 4개 영역에서 총 30문항이 출제됩니다.<br>제한 시간은 10분이며, 시간이 끝나면 자동으로 채점됩니다.", en:"30 questions across 4 areas: Number Series, Verbal Analogy, Pattern Recognition, and Logical Reasoning.<br>Time limit is 10 minutes; scoring happens automatically when time runs out.", th:"30 ข้อ ครอบคลุม 4 ด้าน: อนุกรมตัวเลข อุปมาทางภาษา รูปแบบ และการให้เหตุผลเชิงตรรกะ<br>เวลาจำกัด 10 นาที จะให้คะแนนอัตโนมัติเมื่อหมดเวลา"},
+  "iq.intro": {ko:"수열 완성, 언어 유추, 도형 패턴, 논리 추론 등 4개 영역에서 총 30문항이 출제됩니다.<br>쉬움~어려움 난이도가 섞여 나오며, 어려운 문항은 점수에 더 크게 반영됩니다. 제한 시간은 10분입니다.", en:"30 questions across 4 areas: Number Series, Verbal Analogy, Pattern Recognition, and Logical Reasoning.<br>Easy to hard questions are mixed, with harder ones weighted more in your score. Time limit: 10 minutes.", th:"30 ข้อ ครอบคลุม 4 ด้าน: อนุกรมตัวเลข อุปมาทางภาษา รูปแบบ และตรรกะ<br>มีตั้งแต่ง่ายถึงยากคละกัน ข้อยากมีน้ำหนักต่อคะแนนมากกว่า เวลาจำกัด 10 นาที"},
   "iq.domainNumerical": {ko:"수열 추론", en:"Number Series", th:"อนุกรมตัวเลข"},
   "iq.domainVerbal": {ko:"언어 유추", en:"Verbal Analogy", th:"อุปมาทางภาษา"},
   "iq.domainPattern": {ko:"도형 패턴", en:"Pattern Recognition", th:"รูปแบบ"},
@@ -2605,6 +2605,30 @@ const IQ_QUESTIONS = [
   {domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'열심히 공부하면 시험에 합격한다. 지훈은 시험에 합격하지 못했다. 따라서?',en:'If you study hard, you pass the exam. Jihoon did not pass the exam. Therefore?',th:'ถ้าตั้งใจเรียนจะสอบผ่าน จีฮุนสอบไม่ผ่าน ดังนั้น?'}, opts:{ko:['지훈은 열심히 공부했다','지훈은 열심히 공부하지 않았다','지훈은 시험을 보지 않았다','알 수 없다'],en:['Jihoon studied hard','Jihoon did not study hard','Jihoon did not take the exam','Cannot be determined'],th:['จีฮุนตั้งใจเรียน','จีฮุนไม่ได้ตั้งใจเรียน','จีฮุนไม่ได้เข้าสอบ','ไม่สามารถระบุได้']}, answer:1},
   {domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'어떤 의사도 게으르지 않다. 진호는 게으르다. 따라서?',en:'No doctor is lazy. Jinho is lazy. Therefore?',th:'ไม่มีหมอคนใดขี้เกียจ จินโฮขี้เกียจ ดังนั้น?'}, opts:{ko:['진호는 의사다','진호는 의사가 아니다','진호는 부지런하다','알 수 없다'],en:['Jinho is a doctor','Jinho is not a doctor','Jinho is diligent','Cannot be determined'],th:['จินโฮเป็นหมอ','จินโฮไม่ใช่หมอ','จินโฮขยัน','ไม่สามารถระบุได้']}, answer:1},
   {domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'상자에 빨간 공 3개와 파란 공 2개가 있다. 눈을 감고 하나를 꺼낼 때, 나올 확률이 가장 높은 색은?',en:'A box has 3 red balls and 2 blue balls. If you draw one at random, which color is most likely?',th:'ในกล่องมีลูกบอลแดง 3 ลูกและน้ำเงิน 2 ลูก ถ้าหยิบมา 1 ลูกแบบสุ่ม สีใดมีโอกาสมากที่สุด?'}, opts:{ko:['빨강','파랑','둘 다 같다','알 수 없다'],en:['Red','Blue','Equally likely','Cannot be determined'],th:['แดง','น้ำเงิน','เท่ากัน','ไม่สามารถระบุได้']}, answer:0},
+  // ---- 어려운 문항 (2026-07 난이도 밸런스, d:3) ----
+  {d:3, domain:{ko:'수열 추론',en:'Number Series',th:'อนุกรมตัวเลข'}, q:{ko:'다음 수열에서 빈칸에 들어갈 숫자는?\n1, 2, 6, 24, 120, ?',en:'What number completes the series?\n1, 2, 6, 24, 120, ?',th:'ตัวเลขที่หายไปคืออะไร?\n1, 2, 6, 24, 120, ?'}, opts:{ko:['600','660','720','840'],en:['600','660','720','840'],th:['600','660','720','840']}, answer:2},
+  {d:3, domain:{ko:'수열 추론',en:'Number Series',th:'อนุกรมตัวเลข'}, q:{ko:'다음 수열에서 빈칸에 들어갈 숫자는?\n3, 4, 8, 17, 33, ?',en:'What number completes the series?\n3, 4, 8, 17, 33, ?',th:'ตัวเลขที่หายไปคืออะไร?\n3, 4, 8, 17, 33, ?'}, opts:{ko:['48','54','58','62'],en:['48','54','58','62'],th:['48','54','58','62']}, answer:2},
+  {d:3, domain:{ko:'수열 추론',en:'Number Series',th:'อนุกรมตัวเลข'}, q:{ko:'다음 수열에서 빈칸에 들어갈 숫자는?\n2, 5, 11, 23, 47, ?',en:'What number completes the series?\n2, 5, 11, 23, 47, ?',th:'ตัวเลขที่หายไปคืออะไร?\n2, 5, 11, 23, 47, ?'}, opts:{ko:['91','93','95','97'],en:['91','93','95','97'],th:['91','93','95','97']}, answer:2},
+  {d:3, domain:{ko:'수열 추론',en:'Number Series',th:'อนุกรมตัวเลข'}, q:{ko:'다음 수열에서 빈칸에 들어갈 숫자는?\n6, 8, 12, 20, 36, ?',en:'What number completes the series?\n6, 8, 12, 20, 36, ?',th:'ตัวเลขที่หายไปคืออะไร?\n6, 8, 12, 20, 36, ?'}, opts:{ko:['64','68','72','76'],en:['64','68','72','76'],th:['64','68','72','76']}, answer:1},
+  {d:3, domain:{ko:'수열 추론',en:'Number Series',th:'อนุกรมตัวเลข'}, q:{ko:'다음 수열에서 빈칸에 들어갈 숫자는?\n1, 4, 27, 256, ?',en:'What number completes the series?\n1, 4, 27, 256, ?',th:'ตัวเลขที่หายไปคืออะไร?\n1, 4, 27, 256, ?'}, opts:{ko:['625','1024','3125','4096'],en:['625','1024','3125','4096'],th:['625','1024','3125','4096']}, answer:2},
+
+  {d:3, domain:{ko:'언어 유추',en:'Verbal Analogy',th:'อุปมาทางภาษา'}, q:{ko:'다음 관계와 같은 짝을 고르세요.\n낙관 : 비관 = 관대 : ?',en:'Choose the matching pair.\nOptimism : Pessimism = Generous : ?',th:'เลือกคู่ที่สัมพันธ์กันแบบเดียวกัน\nมองโลกในแง่ดี : แง่ร้าย = ใจกว้าง : ?'}, opts:{ko:['인색','절약','겸손','신중'],en:['Stingy','Thrifty','Humble','Careful'],th:['ใจแคบ','ประหยัด','ถ่อมตน','ระมัดระวัง']}, answer:0},
+  {d:3, domain:{ko:'언어 유추',en:'Verbal Analogy',th:'อุปมาทางภาษา'}, q:{ko:'다음 관계와 같은 짝을 고르세요.\n부분 : 전체 = 장(章) : ?',en:'Choose the matching pair.\nPart : Whole = Chapter : ?',th:'เลือกคู่ที่สัมพันธ์กันแบบเดียวกัน\nส่วน : ทั้งหมด = บท : ?'}, opts:{ko:['문장','책','도서관','작가'],en:['Sentence','Book','Library','Author'],th:['ประโยค','หนังสือ','ห้องสมุด','ผู้เขียน']}, answer:1},
+  {d:3, domain:{ko:'언어 유추',en:'Verbal Analogy',th:'อุปมาทางภาษา'}, q:{ko:'다음 관계와 같은 짝을 고르세요.\n망원경 : 멀다 = 현미경 : ?',en:'Choose the matching pair.\nTelescope : Far = Microscope : ?',th:'เลือกคู่ที่สัมพันธ์กันแบบเดียวกัน\nกล้องโทรทรรศน์ : ไกล = กล้องจุลทรรศน์ : ?'}, opts:{ko:['밝다','크다','작다','빠르다'],en:['Bright','Large','Small','Fast'],th:['สว่าง','ใหญ่','เล็ก','เร็ว']}, answer:2},
+  {d:3, domain:{ko:'언어 유추',en:'Verbal Analogy',th:'อุปมาทางภาษา'}, q:{ko:'다음 관계와 같은 짝을 고르세요.\n화가 : 붓 = 조각가 : ?',en:'Choose the matching pair.\nPainter : Brush = Sculptor : ?',th:'เลือกคู่ที่สัมพันธ์กันแบบเดียวกัน\nจิตรกร : พู่กัน = ประติมากร : ?'}, opts:{ko:['캔버스','물감','종이','끌'],en:['Canvas','Paint','Paper','Chisel'],th:['ผ้าใบ','สี','กระดาษ','สิ่ว']}, answer:3},
+  {d:3, domain:{ko:'언어 유추',en:'Verbal Analogy',th:'อุปมาทางภาษา'}, q:{ko:'다음 관계와 같은 짝을 고르세요.\n따뜻하다 : 뜨겁다 = 시원하다 : ?',en:'Choose the matching pair.\nWarm : Hot = Cool : ?',th:'เลือกคู่ที่สัมพันธ์กันแบบเดียวกัน\nอุ่น : ร้อน = เย็นสบาย : ?'}, opts:{ko:['춥다','서늘하다','덥다','미지근하다'],en:['Cold','Chilly','Hot','Lukewarm'],th:['หนาว','เย็นเล็กน้อย','ร้อน','อุ่นๆ']}, answer:0},
+
+  {d:3, domain:{ko:'도형 패턴',en:'Pattern Recognition',th:'รูปแบบ'}, q:{ko:'다음 패턴에서 빈칸에 들어갈 숫자는?\n1, 5, 12, 22, 35, ?',en:'What number completes the pattern?\n1, 5, 12, 22, 35, ?',th:'ตัวเลขที่หายไปในรูปแบบนี้คืออะไร?\n1, 5, 12, 22, 35, ?'}, opts:{ko:['48','51','54','57'],en:['48','51','54','57'],th:['48','51','54','57']}, answer:1},
+  {d:3, domain:{ko:'도형 패턴',en:'Pattern Recognition',th:'รูปแบบ'}, q:{ko:'다음 회전 패턴에서 빈칸에 들어갈 것은? (135°씩 회전)\n↑ ↘ ← ?',en:'What comes next? (rotating 135° each step)\n↑ ↘ ← ?',th:'อะไรมาต่อไป? (หมุน 135° ต่อขั้น)\n↑ ↘ ← ?'}, opts:{ko:['↗','↖','↓','→'],en:['↗','↖','↓','→'],th:['↗','↖','↓','→']}, answer:0},
+  {d:3, domain:{ko:'도형 패턴',en:'Pattern Recognition',th:'รูปแบบ'}, q:{ko:'다음 패턴에서 빈칸에 들어갈 것은?\n▲ ▲▲▲ ▲▲ ▲▲▲▲ ▲▲▲ ?',en:'What comes next in the pattern?\n▲ ▲▲▲ ▲▲ ▲▲▲▲ ▲▲▲ ?',th:'อะไรมาต่อไปในรูปแบบนี้?\n▲ ▲▲▲ ▲▲ ▲▲▲▲ ▲▲▲ ?'}, opts:{ko:['▲▲▲▲','▲▲','▲▲▲▲▲','▲▲▲▲▲▲'],en:['▲▲▲▲','▲▲','▲▲▲▲▲','▲▲▲▲▲▲'],th:['▲▲▲▲','▲▲','▲▲▲▲▲','▲▲▲▲▲▲']}, answer:2},
+  {d:3, domain:{ko:'도형 패턴',en:'Pattern Recognition',th:'รูปแบบ'}, q:{ko:'각 항이 앞 두 항의 곱입니다. 빈칸은?\n1, 2, 2, 4, 8, 32, ?',en:'Each term is the product of the previous two. What is next?\n1, 2, 2, 4, 8, 32, ?',th:'แต่ละพจน์คือผลคูณของสองพจน์ก่อนหน้า ถัดไปคือ?\n1, 2, 2, 4, 8, 32, ?'}, opts:{ko:['128','256','160','512'],en:['128','256','160','512'],th:['128','256','160','512']}, answer:1},
+  {d:3, domain:{ko:'도형 패턴',en:'Pattern Recognition',th:'รูปแบบ'}, q:{ko:'다음 수열의 규칙을 찾아 빈칸을 채우세요. (읽는 방식)\n1, 11, 21, 1211, 111221, ?',en:'Find the rule and fill the blank. (look-and-say)\n1, 11, 21, 1211, 111221, ?',th:'หากฎแล้วเติมช่องว่าง (อ่านออกเสียง)\n1, 11, 21, 1211, 111221, ?'}, opts:{ko:['13112221','122112','312211','1112'],en:['13112221','122112','312211','1112'],th:['13112221','122112','312211','1112']}, answer:2},
+
+  {d:3, domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'서랍에 검은 양말 10짝, 흰 양말 10짝이 섞여 있다. 어두워서 색이 안 보일 때, 같은 색 한 켤레를 확실히 얻으려면 최소 몇 개를 꺼내야 하나?',en:'A drawer has 10 black and 10 white socks mixed. In the dark, what is the minimum number to pull out to be SURE of a matching pair?',th:'ลิ้นชักมีถุงเท้าดำ 10 และขาว 10 คละกัน ในที่มืด ต้องหยิบอย่างน้อยกี่ข้างจึงมั่นใจว่าได้คู่สีเดียวกัน?'}, opts:{ko:['2','3','11','20'],en:['2','3','11','20'],th:['2','3','11','20']}, answer:1},
+  {d:3, domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'A가 말한다: "우리 둘 중 적어도 한 명은 거짓말쟁이다." A가 진실을 말한다면, B는?',en:'A says: "At least one of us two is a liar." If A tells the truth, then B is?',th:'A พูดว่า: "อย่างน้อยหนึ่งในสองเราคือคนโกหก" ถ้า A พูดจริง แล้ว B คือ?'}, opts:{ko:['거짓말쟁이다','진실을 말한다','알 수 없다','둘 다 진실'],en:['A liar','A truth-teller','Cannot be determined','Both truthful'],th:['คนโกหก','คนพูดจริง','ระบุไม่ได้','จริงทั้งคู่']}, answer:0},
+  {d:3, domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'어떤 예술가는 부자다. 모든 부자는 바쁘다. 반드시 참인 것은?',en:'Some artists are rich. All rich people are busy. Which must be true?',th:'ศิลปินบางคนรวย คนรวยทุกคนยุ่ง ข้อใดต้องเป็นจริง?'}, opts:{ko:['어떤 예술가는 바쁘다','모든 예술가는 바쁘다','모든 부자는 예술가다','바쁜 사람은 예술가다'],en:['Some artists are busy','All artists are busy','All rich people are artists','Busy people are artists'],th:['ศิลปินบางคนยุ่ง','ศิลปินทุกคนยุ่ง','คนรวยทุกคนเป็นศิลปิน','คนยุ่งเป็นศิลปิน']}, answer:0},
+  {d:3, domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'비가 오면 소풍을 취소한다. 소풍을 취소하면 영화를 본다. 오늘 영화를 보지 않았다. 따라서?',en:'If it rains, the picnic is canceled. If the picnic is canceled, we watch a movie. Today we did not watch a movie. Therefore?',th:'ถ้าฝนตกจะยกเลิกปิกนิก ถ้ายกเลิกปิกนิกจะดูหนัง วันนี้เราไม่ได้ดูหนัง ดังนั้น?'}, opts:{ko:['비가 왔다','비가 오지 않았다','소풍을 취소했다','알 수 없다'],en:['It rained','It did not rain','The picnic was canceled','Cannot be determined'],th:['ฝนตก','ฝนไม่ตก','ปิกนิกถูกยกเลิก','ระบุไม่ได้']}, answer:1},
+  {d:3, domain:{ko:'논리 추론',en:'Logical Reasoning',th:'การให้เหตุผลเชิงตรรกะ'}, q:{ko:'한 반에서 안경 쓴 학생 18명, 시계 찬 학생 15명, 둘 다인 학생 7명이다. 안경이나 시계 중 하나라도 있는 학생은 몇 명?',en:'In a class, 18 wear glasses, 15 wear a watch, and 7 wear both. How many wear glasses OR a watch (at least one)?',th:'ในห้อง 18 คนใส่แว่น 15 คนใส่นาฬิกา 7 คนใส่ทั้งสอง มีกี่คนที่ใส่แว่นหรือนาฬิกา (อย่างน้อยหนึ่ง)?'}, opts:{ko:['24','26','28','33'],en:['24','26','28','33'],th:['24','26','28','33']}, answer:1},
 ];
 
 const IQ_TOTAL = 30;
@@ -2626,13 +2650,16 @@ function shuffleArr(arr){
 }
 
 function startIQTest(){
-  // 영역별로 섞은 뒤 앞에서부터 채워 30문항 구성, 마지막에 전체 순서도 섞음
-  // domain은 {ko,en,th} 객체이므로 언어 독립적인 domain.ko를 그룹 키로 사용
+  // 난이도 혼합 출제: 어려운(d:3) 문항을 약 30% 보장해 변별력 확보
   const byDomain={};
   IQ_QUESTIONS.forEach(q=>{(byDomain[q.domain.ko]=byDomain[q.domain.ko]||[]).push(q);});
   let pool=[];
   Object.values(byDomain).forEach(arr=>pool.push(...shuffleArr(arr)));
-  pool=shuffleArr(pool).slice(0,IQ_TOTAL);
+  const hardAll=shuffleArr(IQ_QUESTIONS.filter(q=>q.d===3));
+  const hardWant=Math.min(hardAll.length, Math.round(IQ_TOTAL*0.3));
+  const hardPick=hardAll.slice(0,hardWant);
+  const restPick=shuffleArr(IQ_QUESTIONS.filter(q=>q.d!==3)).slice(0, IQ_TOTAL-hardWant);
+  pool=shuffleArr(hardPick.concat(restPick));
 
   IQS.questions=pool;
   IQS.answers=Array(pool.length).fill(null);
@@ -2740,9 +2767,13 @@ function finishIQTest(){
 
   // 평균 100, 표준편차 15에 가깝게 단순 환산 (정답률 50%→100, 정답률 100%→145, 정답률 0%→55 근방)
   const rate=correctCount/total;
+  // 난이도 가중 정답률(어려운 문항 정답이 점수에 더 기여) — 채점 신뢰도↑
+  let wSum=0, wCor=0;
+  IQS.questions.forEach((q,i)=>{ const w=(q.d===3?2.0:(q.d===2?1.4:1)); wSum+=w; if(IQS.answers[i]===q.answer) wCor+=w; });
+  const wRate = wSum>0 ? wCor/wSum : rate;
   // 게임 점수(실제 IQ 아님): 정답률 곡선(^1.3) + 남은 시간 속도 보너스, 55~145로 분산
   const speedF=Math.max(0, Math.min(1, IQS.timeLeft/IQ_TIME_LIMIT));
-  const iqScore=Math.round(Math.max(55, Math.min(145, 55 + Math.pow(rate,1.3)*75 + speedF*15)));
+  const iqScore=Math.round(Math.max(55, Math.min(145, 55 + Math.pow(wRate,1.3)*75 + speedF*15)));
   if(typeof saveFlatBest==='function') saveFlatBest('iq', iqScore);
 
   document.getElementById('iq-test-card').style.display='none';
