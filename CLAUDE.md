@@ -59,6 +59,7 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-10 — **한글 타자·영단어 비활성화**(출시 범위 제외): 두뇌게임 포지셔닝 불일치+en/th 미대응. 소프트 비활성(HOME_GAMES 주석, 코드 보존). 언어가형 추천 vocab→nback. 활성 13종.
 - 2026-07-10 — **Phase A 출시 준비**: Mallow 리브랜딩(로고/타이틀/공유카드 워터마크 playmallow.com),
   SEO(meta/OG/canonical/robots/sitemap/홈 소개문), PWA(manifest/sw.js/아이콘·OG 이미지 생성), URL 언어(?lang=)+언어 저장.
 

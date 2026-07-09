@@ -56,7 +56,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
   (`missionToday()` = 기억A/주의·속도B/유연·공간C 풀에서 1개씩). 홈 미션카드(3칩+진행 n/3), 각 게임 `finishXXX`가
   `missionMark(id)` 호출→localStorage `brain.mission`{date,done} 체크. 3개 완료 시 카드 완료상태.
   톤: **재미/휴식**("머리 식힐 겸 3판") — FTC 교훈대로 효능 단정 없음.
-- 게임/콘텐츠 **총 15종**(플레이 게임 14 + 두뇌유형 테스트). 화면 16(홈 포함).
+- 게임/콘텐츠 **활성 13종**(2026-07-10 vocab/typing 소프트 비활성 — HOME_GAMES 주석 처리, 화면/JS/i18n은 보존, 재활성=주석 해제).
+  비활성 사유: 두뇌게임 포지셔닝 불일치 + en/th 미대응. braintype 언어가형 추천은 vocab→nback으로 변경됨.
   축: 계산·타이핑·논리 / 기억(순간·인원·엔백·카드) / 주의·속도(스트룹·순서·반응) / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
 - **두뇌 능력치(2026-07-06)**: 내 기록에 7능력 레이더+막대(ABILITY_MAP 가중치·GAME_REF 정규화, brain.ability.base 주간성장). 막대 탭→기여게임. saveFlatBest로 math/iq/vocab/sudoku/typing 최고점 저장(brain.<id>.flat). IQ점수=55+정답률^1.3*75+속도*15(55~145). FTC: '게임 수행 기반·실제 지능 아님'.
 - 다음 후보: 사운드/햅틱, 주간 통계·목표, 난이도 보정 강화.
