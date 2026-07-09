@@ -481,6 +481,17 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rec-game{flex:1;font-size:.92rem;font-weight:600;color:var(--text)}
 .rec-cat{font-size:.72rem;color:var(--text3)}
 .rec-best{font-size:.9rem;font-weight:800;color:var(--amber2);min-width:60px;text-align:right}
+/* 두뇌 능력치 */
+.ab-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.3rem}
+.ab-head-label{font-size:.9rem;font-weight:700;color:var(--text)}
+.ab-head-val{font-size:1.7rem;font-weight:800;color:var(--purple)}
+.ability-sub{font-size:.7rem;color:var(--text3);margin-bottom:.9rem;line-height:1.4}
+.ab-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.ab-name{width:66px;font-size:.78rem;font-weight:600;color:var(--text2);flex-shrink:0}
+.ab-bar{flex:1;height:10px;background:var(--bg3);border-radius:6px;overflow:hidden}
+.ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
+.ab-val{width:26px;text-align:right;font-size:.82rem;font-weight:700;color:var(--text)}
+.ab-delta{width:34px;font-size:.66rem;font-weight:700;color:var(--teal2)}
 @media (max-width:640px){
   .home-hi{font-size:1.15rem}
   .hf-emoji{font-size:2.6rem}
@@ -537,6 +548,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="hg-item"><b id="rec-mission">0/3</b><span data-i18n="records.mission">오늘 미션</span></div>
       <div class="hg-item"><b id="rec-count">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
+  </div>
+  <div class="home-section-title" data-i18n="records.abilityTitle">두뇌 능력치</div>
+  <div class="card">
+    <div class="ab-head"><span class="ab-head-label" data-i18n="records.overall">종합 두뇌 레벨</span><span class="ab-head-val" id="ability-overall">0</span></div>
+    <div class="ability-sub" data-i18n="records.abilitySub">게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)</div>
+    <div id="ability-graph"></div>
   </div>
   <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
   <div id="records-body"></div>
@@ -1658,6 +1675,9 @@ const I18N = {
   "records.days": {ko:"방문일", en:"days", th:"วันที่มา"},
   "records.mission": {ko:"오늘 미션", en:"today's mission", th:"ภารกิจวันนี้"},
   "records.byGame": {ko:"게임별 최고 기록", en:"Best by Game", th:"สถิติแต่ละเกม"},
+  "records.abilityTitle": {ko:"두뇌 능력치", en:"Brain Stats", th:"ค่าพลังสมอง"},
+  "records.overall": {ko:"종합 두뇌 레벨", en:"Overall Level", th:"ระดับรวม"},
+  "records.abilitySub": {ko:"게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)", en:"Based on game performance · recent play (not an actual intelligence measure)", th:"อิงจากผลการเล่นเกม · ล่าสุด (ไม่ใช่การวัดสติปัญญาจริง)"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
@@ -2459,6 +2479,7 @@ function showExamResult(){
   document.getElementById('exam-q-card').style.display='none';
   const correct=S.examResults.filter(r=>r.correct).length;
   const score=correct*10;
+  if(typeof saveFlatBest==='function') saveFlatBest('vocab', score);
   document.getElementById('exam-score-big').textContent=score+t('exam.scoreUnit');
   const msg=document.getElementById('exam-msg');
   const msgs80=tArr('vocab.scoreLow');
@@ -2712,6 +2733,7 @@ function finishIQTest(){
   // 평균 100, 표준편차 15에 가깝게 단순 환산 (정답률 50%→100, 정답률 100%→145, 정답률 0%→55 근방)
   const rate=correctCount/total;
   const iqScore=Math.round(70 + rate*70);
+  if(typeof saveFlatBest==='function') saveFlatBest('iq', iqScore);
 
   document.getElementById('iq-test-card').style.display='none';
   document.getElementById('iq-result-card').style.display='block';
@@ -3397,6 +3419,7 @@ function finishMathGame(){
   document.getElementById('mg-result-emoji').textContent = isNewHigh ? '🏆' : '⏰';
   document.getElementById('mg-result-title').textContent = isNewHigh ? t('math.newRecord') : t('math.timeOver');
   document.getElementById('mg-result-score').textContent=MG.score;
+  if(typeof saveFlatBest==='function') saveFlatBest('math', MG.score);
   document.getElementById('mg-r-diff').textContent=MG_DIFF_LABEL(MG.diff);
   document.getElementById('mg-r-correct').textContent=MG.correctCount+t('math.itemsCount');
   document.getElementById('mg-r-wrong').textContent=MG.wrongCount+t('math.itemsCount');
@@ -4199,6 +4222,62 @@ function renderGames(){
   });
 }
 // 내 기록
+// ===== 두뇌 능력치 (게임 수행 기반 지표, 실제 지능 측정 아님) =====
+const ABILITIES=['memory','focus','speed','space','calc','logic','lang'];
+const ABILITY_CAT={memory:'cat.memory',focus:'cat.focus',speed:'cat.speed',space:'cat.space',calc:'cat.calc',logic:'cat.logic',lang:'cat.lang'};
+// 게임 → 능력 기여 가중치(%)
+const ABILITY_MAP={
+  flash:{memory:70,focus:20,speed:10}, count:{memory:70,focus:20,calc:10}, nback:{memory:70,focus:30}, cards:{memory:70,focus:20,speed:10},
+  stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
+  rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10}
+};
+// 각 게임 최고점이 레벨 100에 대응하는 기준값
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100};
+function saveFlatBest(id,val){ try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
+function gameBestVal(id){
+  const g=HOME_GAMES.find(x=>x.id===id);
+  if(g && g.best){ const b=bt_loadBest(g.best); return Math.max(b.easy.all,b.normal.all,b.hard.all); }
+  try{ return parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){ return 0; }
+}
+function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(100,Math.round(gameBestVal(id)/ref*100))); }
+function abilityScores(){
+  const num={},den={}; ABILITIES.forEach(a=>{num[a]=0;den[a]=0;});
+  Object.keys(ABILITY_MAP).forEach(id=>{
+    if(gameBestVal(id)<=0) return; // 안 한 게임 제외
+    const lvl=gameLevel(id), w=ABILITY_MAP[id];
+    Object.keys(w).forEach(a=>{ num[a]+=lvl*w[a]; den[a]+=w[a]; });
+  });
+  const out={}; ABILITIES.forEach(a=>{ out[a]= den[a]>0?Math.round(num[a]/den[a]):0; });
+  return out;
+}
+// 최근 성장: 최대 7일 전 스냅샷 대비 증가분(주간 롤링)
+function abilityDelta(cur){
+  let base=null; try{ base=JSON.parse(localStorage.getItem('brain.ability.base')||'null'); }catch(e){}
+  const today=bt_today();
+  if(!base||!base.date||!base.scores){ try{localStorage.setItem('brain.ability.base',JSON.stringify({date:today,scores:cur}));}catch(e){} return {}; }
+  let ageDays=0; try{ ageDays=(new Date(today)-new Date(base.date))/86400000; }catch(e){}
+  const prev=base.scores;
+  if(ageDays>=7){ try{localStorage.setItem('brain.ability.base',JSON.stringify({date:today,scores:cur}));}catch(e){} }
+  const d={}; ABILITIES.forEach(a=>{ d[a]=(cur[a]||0)-(prev[a]||0); });
+  return d;
+}
+function renderAbility(){
+  const wrap=document.getElementById('ability-graph'); if(!wrap) return;
+  const sc=abilityScores(); const dl=abilityDelta(sc);
+  const played=ABILITIES.filter(a=>sc[a]>0);
+  const overall = played.length? Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length) : 0;
+  setTxt('ability-overall', overall);
+  wrap.innerHTML='';
+  ABILITIES.forEach(a=>{
+    const v=sc[a]||0, d=dl[a]||0;
+    const row=document.createElement('div'); row.className='ab-row';
+    row.innerHTML='<span class="ab-name">'+t(ABILITY_CAT[a])+'</span>'+
+      '<div class="ab-bar"><div class="ab-fill" style="width:'+v+'%"></div></div>'+
+      '<span class="ab-val">'+(v>0?v:'—')+'</span>'+
+      (d>0?'<span class="ab-delta">▲'+d+'</span>':'<span class="ab-delta"></span>');
+  wrap.appendChild(row);
+  });
+}
 function renderRecords(){
   const v=homeVisit();
   const set=missionToday(), m=missionLoad();
@@ -4206,6 +4285,7 @@ function renderRecords(){
   let rec=0;
   HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
   setTxt('rec-streak', v.streak); setTxt('rec-days', v.total||1); setTxt('rec-mission', plays+'/'+set.length); setTxt('rec-count', rec);
+  renderAbility();
   const body=document.getElementById('records-body'); if(!body) return;
   body.innerHTML='';
   HOME_GAMES.filter(g=>g.best).forEach(g=>{
