@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-10 — **Phase A 출시 준비**: Mallow 리브랜딩(로고/타이틀/공유카드 워터마크 playmallow.com),
+  SEO(meta/OG/canonical/robots/sitemap/홈 소개문), PWA(manifest/sw.js/아이콘·OG 이미지 생성), URL 언어(?lang=)+언어 저장.
+
 - 2026-07-06 — **UX 개편 Phase2**: 상단바 축소+하단 탭바(홈/게임/내기록), 홈=오늘의 추천 중심, 전체게임·내기록 화면. 랭킹 보류.
 - 2026-07-06 — **UX 개편 Phase1**: 차분한 색 팔레트·게임 카드 통일·소프트 카테고리.
 - 2026-07-06 — **오늘의 미션(Daily Workout)** 추가: 매일 축 섞은 3게임 자동 선정+진행체크. 재미/휴식 톤(FTC 회피).
@@ -246,7 +249,6 @@ A newly enabled plugin loads on your **NEXT message** (plugins attach when a tur
 Installing NEW plugins from a marketplace runs code and is admin-only (the Plugins page) —
 this tool only toggles plugins already in the library.
 <!-- PLUGINS_TOOL_END -->
-
 See WORKSPACE.md for related bots in this workspace.
 
 <!-- MDBOX_MULTIMODAL_BEGIN -->

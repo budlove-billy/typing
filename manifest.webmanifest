@@ -1,0 +1,17 @@
+{
+  "name": "Mallow — 말랑말랑 두뇌게임",
+  "short_name": "Mallow",
+  "description": "가입 없이 3초 만에 시작하는 무료 두뇌게임. 매일 가볍게 머리 식히세요.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f7fb",
+  "theme_color": "#4f7cff",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

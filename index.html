@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">말랑말랑 두뇌 체조</title>
+<title id="page-title">Mallow — 말랑말랑 두뇌게임 | 무료 두뇌 트레이닝</title>
+<meta name="description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임. 기억력·집중력·순발력·공간감각 미니게임 15종, 오늘의 미션, 두뇌 유형 테스트까지. 매일 가볍게 머리 식히세요.">
+<link rel="canonical" href="https://playmallow.com/">
+<meta name="theme-color" content="#4f7cff">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mallow">
+<meta property="og:title" content="Mallow — 말랑말랑 두뇌게임">
+<meta property="og:description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임. 기억력·집중력·순발력 미니게임 15종과 오늘의 미션!">
+<meta property="og:url" content="https://playmallow.com/">
+<meta property="og:image" content="https://playmallow.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mallow — 말랑말랑 두뇌게임">
+<meta name="twitter:description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임. 매일 가볍게 머리 식히세요.">
+<meta name="twitter:image" content="https://playmallow.com/og.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -490,6 +506,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ab-line{display:flex;align-items:center;gap:.5rem;cursor:pointer}
 .ab-detail{font-size:.68rem;color:var(--text3);margin:.25rem 0 .5rem 66px;line-height:1.6}
 .ability-hint{font-size:.68rem;color:var(--text3);text-align:center;margin-top:.7rem}
+.home-about{margin-top:1.5rem;padding:1rem 1.1rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2)}
+.home-about p{font-size:.75rem;color:var(--text3);line-height:1.7;margin-bottom:.5rem}
+.home-about p:last-child{margin-bottom:0}
 .ab-name{width:66px;font-size:.78rem;font-weight:600;color:var(--text2);flex-shrink:0}
 .ab-bar{flex:1;height:10px;background:var(--bg3);border-radius:6px;overflow:hidden}
 .ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
@@ -507,7 +526,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo">말랑말랑<span> 두뇌체조</span></div>
+  <div class="nav-logo">Mallow<span data-i18n="nav.tagline"> 말랑말랑 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
       <option value="ko">🇰🇷 한국어</option>
@@ -533,6 +552,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="home-cats" id="home-cats"></div>
   <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
   <div class="home-grid" id="home-popular"></div>
+  <div class="home-about">
+    <p data-i18n="about.p1">Mallow(말랑말랑 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 15가지 미니게임을 제공합니다.</p>
+    <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
+  </div>
 </div>
 
 <!-- ==================== ALL GAMES SCREEN (전체 게임) ==================== -->
@@ -1409,7 +1432,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 
 <script>
 const I18N = {
-  "page.title": {ko:"말랑말랑 두뇌 체조", en:"Mallang Mallang Brain Gym", th:"ยิมสมองมัลลังมัลลัง"},
+  "page.title": {ko:"Mallow — 말랑말랑 두뇌게임 | 무료 두뇌 트레이닝", en:"Mallow — Light & Fun Brain Games", th:"Mallow — เกมสมองเบา ๆ สนุก ๆ"},
+  "nav.tagline": {ko:" 말랑말랑 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
+  "about.p1": {ko:"Mallow(말랑말랑 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 15가지 미니게임을 제공합니다.", en:"Mallow is a free collection of brain games you can play instantly — no signup. Memory games (flash memory, card match, N-back), focus games (Stroop, rule switch), speed games (reaction, number trail), spatial rotation, mental math, Sudoku, and an IQ quiz — 15 mini games in all.", th:"Mallow คือรวมเกมสมองฟรี เล่นได้ทันทีไม่ต้องสมัคร มีเกมความจำ (ความจำฉับพลัน จับคู่การ์ด เอ็นแบ็ก) เกมสมาธิ (สตรูป สลับกฎ) เกมความไว (ตอบสนอง เชื่อมตัวเลข) หมุนภาพ คิดเลขเร็ว ซูโดกุ และควิซไอคิว รวม 15 เกม"},
+  "about.p2": {ko:"매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.", en:"Unwind with 3 daily mission games and track your growth with best scores and brain stats. No install, no login.", th:"พักสมองกับภารกิจ 3 เกมที่เปลี่ยนทุกวัน และดูพัฒนาการผ่านสถิติกับกราฟค่าพลังสมอง ไม่ต้องติดตั้ง ไม่ต้องล็อกอิน"},
   "nav.typing": {ko:"한글 타자", en:"Korean Typing", th:"พิมพ์เกาหลี"},
   "nav.vocab": {ko:"영단어", en:"English Words", th:"คำศัพท์อังกฤษ"},
   "nav.iq": {ko:"IQ 테스트", en:"IQ Test", th:"ทดสอบไอคิว"},
@@ -1878,6 +1904,7 @@ function setLanguage(lang){
   CURRENT_LANG = lang;
   document.documentElement.lang = lang;
   document.getElementById('lang-select').value = lang;
+  try{ localStorage.setItem('brain.lang', lang); }catch(e){}
   applyLanguage();
 }
 
@@ -4085,7 +4112,7 @@ function makeShareCard(o){
   g.fillStyle=grad; g.fillRect(0,0,W,H);
   g.fillStyle='rgba(255,255,255,0.12)'; btRoundRect(g,40,40,W-80,H-80,28); g.fill();
   g.textAlign='center';
-  g.fillStyle='rgba(255,255,255,0.95)'; g.font='700 30px sans-serif'; g.fillText('말랑말랑 두뇌체조', W/2, 116);
+  g.fillStyle='rgba(255,255,255,0.95)'; g.font='700 30px sans-serif'; g.fillText('Mallow', W/2, 116);
   if(o.subtitle){ g.font='400 20px sans-serif'; g.fillStyle='rgba(255,255,255,0.8)'; g.fillText(o.subtitle, W/2, 150); }
   g.fillStyle='#fff'; g.font='150px sans-serif'; g.fillText(o.emoji, W/2, 378);
   g.font='800 46px sans-serif'; g.fillText(o.title, W/2, 468);
@@ -4099,7 +4126,7 @@ function makeShareCard(o){
     y=btWrapText(g, o.desc, W/2, y, W-170, 38)+16;
   }
   if(o.note){ g.fillStyle='rgba(255,255,255,0.85)'; g.font='500 22px sans-serif'; g.fillText(o.note, W/2, H-120); }
-  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif'; g.fillText('mallang-brain', W/2, H-70);
+  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif'; g.fillText('playmallow.com', W/2, H-70);
   return c;
 }
 // 공용 공유/다운로드
@@ -4108,7 +4135,7 @@ function shareOrDownload(canvas, filename, shareText){
     if(!blob) return;
     const file=new File([blob],filename,{type:'image/png'});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file], title:'말랑말랑 두뇌체조', text:shareText}).catch(()=>{});
+      navigator.share({files:[file], title:'Mallow', text:shareText}).catch(()=>{});
       return;
     }
     const url=URL.createObjectURL(blob);
@@ -4875,12 +4902,22 @@ function resetReact(){
 }
 
 // INIT
-applyLanguage();
+// 언어: URL ?lang= 우선 → 저장값 → 기본 ko
+(function(){
+  let lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(!lang){ try{ lang=localStorage.getItem('brain.lang'); }catch(e){} }
+  if(lang && ['ko','en','th'].includes(lang)) setLanguage(lang); else applyLanguage();
+})();
 renderLevelTabs();
 renderExamInfo();
 renderStoryList();
 loadNewStory();
 renderHome();
+// PWA 서비스워커
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
 </script>
 </body>
 </html>
