@@ -325,7 +325,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .st-opt{padding:1rem 0;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;color:#fff;cursor:pointer;transition:transform .08s,filter .12s;font-family:inherit;text-shadow:0 1px 2px rgba(0,0,0,.28)}
 .st-opt:hover:not(:disabled){filter:brightness(1.08)}
 .st-opt:active:not(:disabled){transform:scale(.95)}
-.st-opt.flash-wrong{outline:3px solid var(--red);outline-offset:2px}
+.flash-wrong{outline:3px solid var(--red);outline-offset:2px}
 .tr-board{position:relative;width:100%;max-width:460px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
 .tr-node{position:absolute;width:13%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--purple);border-radius:50%;color:var(--purple);font-weight:700;font-size:clamp(.85rem,3.4vw,1.2rem);cursor:pointer;user-select:none;transition:background .12s,border-color .12s;transform:translate(-50%,-50%)}
 .tr-node:hover{background:var(--purple3)}
@@ -3713,12 +3713,14 @@ function hcSpawnPerson(stage, enter, i){
   p.style.top = (34 + (i%3)*16) + '%'; // 3개 레인으로 분산
   if(enter){
     p.style.left='-16%'; p.style.opacity='1'; stage.appendChild(p);
-    requestAnimationFrame(()=>{ p.style.left='40%'; });
+    void p.offsetWidth; // 시작 위치를 렌더에 확정(강제 리플로우) → transition 보장
+    p.style.left='40%';
     HC.timers.push(setTimeout(()=>{ p.style.opacity='0'; }, 900));
     HC.timers.push(setTimeout(()=>p.remove(), 1400));
   }else{
     p.style.left='40%'; p.style.opacity='0'; stage.appendChild(p);
-    requestAnimationFrame(()=>{ p.style.opacity='1'; p.style.left='114%'; });
+    void p.offsetWidth;
+    p.style.opacity='1'; p.style.left='114%';
     HC.timers.push(setTimeout(()=>p.remove(), 1400));
   }
 }
