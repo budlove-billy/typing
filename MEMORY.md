@@ -63,6 +63,13 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 다음 후보: 사운드/햅틱, 주간 통계·목표, 난이도 보정 강화.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
+## 서비스 운영 (LIVE)
+- **2026-07-10 출시**: https://playmallow.com (Vercel, 가비아 도메인+네임서버 위임 ns1/ns2.vercel-dns.com).
+  git push origin master:main → Vercel 자동 배포. www는 308→apex. DNS TXT 추가는 Vercel 대시보드 DNS Records에서.
+- 배포 트러블슈팅 교훈: 네임서버 위임 후 Vercel이 'DNS zone not enabled'면 기다려도 안 됨 —
+  팀 레벨 Domains에서 존 활성화 또는 도메인 재추가로 해결(레지스트리 상태는 RDAP rdap.verisign.com으로 확인).
+- 남은 출시 후속: Search Console·네이버 서치어드바이저 등록(TXT), GA4, 블로그 시딩.
+
 ## 조사 자료
 - NDS 두뇌 트레이닝 웹구현 판정 요약은 `기억축-게임-스펙.md` §4에 통합(핵심: 음성/카메라 전제 게임은
   웹 이식 불가로 폐기, 기억·주의·속도 축을 탭 기반으로 이식). 별도 조사 파일은 없음.
