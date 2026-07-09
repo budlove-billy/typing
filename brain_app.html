@@ -2732,7 +2732,9 @@ function finishIQTest(){
 
   // 평균 100, 표준편차 15에 가깝게 단순 환산 (정답률 50%→100, 정답률 100%→145, 정답률 0%→55 근방)
   const rate=correctCount/total;
-  const iqScore=Math.round(70 + rate*70);
+  // 게임 점수(실제 IQ 아님): 정답률 곡선(^1.3) + 남은 시간 속도 보너스, 55~145로 분산
+  const speedF=Math.max(0, Math.min(1, IQS.timeLeft/IQ_TIME_LIMIT));
+  const iqScore=Math.round(Math.max(55, Math.min(145, 55 + Math.pow(rate,1.3)*75 + speedF*15)));
   if(typeof saveFlatBest==='function') saveFlatBest('iq', iqScore);
 
   document.getElementById('iq-test-card').style.display='none';
