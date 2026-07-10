@@ -456,6 +456,14 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .cp-controls{display:flex;gap:.8rem;justify-content:center;margin-top:.9rem}
 .cp-side-btn{flex:1;max-width:150px;padding:1rem 0;font-size:1.4rem;font-weight:800;border:none;border-radius:var(--radius2);background:var(--purple3);color:var(--purple);cursor:pointer;font-family:inherit}
 .cp-side-btn:active{background:var(--purple);color:#fff;transform:scale(.97)}
+/* 컬러 소트 */
+.so-tubes{display:flex;flex-wrap:wrap;gap:.9rem 1rem;justify-content:center;max-width:420px;margin:0 auto}
+.so-tube{display:flex;flex-direction:column-reverse;width:52px;height:168px;background:#fff;border:2px solid var(--border2);border-top:none;border-radius:0 0 22px 22px;cursor:pointer;padding:3px;gap:3px;transition:transform .12s;position:relative}
+.so-tube::before{content:"";position:absolute;top:-2px;left:-6px;right:-6px;height:6px;background:var(--border2);border-radius:999px}
+.so-tube.sel{transform:translateY(-9px);border-color:var(--purple)}
+.so-tube.done{border-color:var(--teal)}
+.so-unit{width:100%;height:36px;border-radius:8px}
+.so-unit.top-pop{animation:mrPop .18s ease}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1210,6 +1218,55 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 </div>
 
 <!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<!-- ==================== COLOR SORT GAME (컬러 소트 / 논리) ==================== -->
+<div class="screen" id="screen-sort">
+  <div class="card" id="sort-intro-card">
+    <div class="section-head"><h2 data-i18n="sort.title">컬러 소트</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="sort.intro">
+      병을 눌러 <b>맨 위 같은 색끼리만</b> 옮길 수 있어요.<br>
+      모든 병을 한 가지 색으로 가득 채우면 완성! 판은 항상 풀 수 있게 나와요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="so-diff-easy" onclick="setSortDiff('easy')">
+        <h3>🌱 <span data-i18n="sort.easy">쉬움</span></h3><p data-i18n="sort.easyDesc">4색 · 병 6개</p>
+      </div>
+      <div class="diff-btn active" id="so-diff-normal" onclick="setSortDiff('normal')">
+        <h3>⚡ <span data-i18n="sort.normal">보통</span></h3><p data-i18n="sort.normalDesc">6색 · 병 8개</p>
+      </div>
+      <div class="diff-btn" id="so-diff-hard" onclick="setSortDiff('hard')">
+        <h3>🔥 <span data-i18n="sort.hard">어려움</span></h3><p data-i18n="sort.hardDesc">8색 · 병 10개</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startSort()" data-i18n="sort.startGame">게임 시작</button>
+    <div class="best-line" id="so-intro-best"></div>
+  </div>
+
+  <div class="card" id="sort-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="sort.time">TIME</div><div class="mg-stat-value" id="so-time">00:00</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="sort.moves">MOVES</div><div class="mg-stat-value" id="so-moves">0</div></div>
+    </div>
+    <div class="so-tubes" id="so-tubes"></div>
+    <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1.25rem;flex-wrap:wrap">
+      <button class="btn btn-outline" id="so-undo-btn" onclick="soUndo()" data-i18n="sort.undo">↩️ 되돌리기</button>
+      <button class="btn btn-outline" onclick="leaveSort()" data-i18n="sort.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="sort-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="so-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="so-result-title">완성!</h2>
+    <div class="iq-result-score" id="so-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="sort.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="sort.difficulty">난이도</span><span id="so-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="sort.timeUsed">걸린 시간</span><span id="so-r-time">00:00</span></div>
+    <div class="result-row"><span data-i18n="sort.movesUsed">이동 수</span><span id="so-r-moves">0</span></div>
+    <div class="result-row"><span data-i18n="sort.best">최고 기록</span><span id="so-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSort()" data-i18n="sort.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('sort')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('sort')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- ==================== CHOP TOWER GAME (말로우 타워 / 순발력) ==================== -->
 <div class="screen" id="screen-chop">
   <div class="card" id="chop-intro-card">
@@ -2034,6 +2091,28 @@ const I18N = {
   "chop.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "chop.gameOver": {ko:"게임 오버!", en:"Game Over!", th:"จบเกม!"},
   "chop.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.sort": {ko:"컬러 소트", en:"Color Sort", th:"เรียงสี"},
+  "sort.title": {ko:"컬러 소트", en:"Color Sort", th:"เรียงสี"},
+  "sort.intro": {ko:"병을 눌러 <b>맨 위 같은 색끼리만</b> 옮길 수 있어요.<br>모든 병을 한 가지 색으로 가득 채우면 완성! 판은 항상 풀 수 있게 나와요.", en:"Tap a bottle to pour — <b>only onto a matching top color</b> or an empty bottle.<br>Fill every bottle with a single color to win. Boards are always solvable!", th:"แตะขวดเพื่อเท — <b>เทได้เฉพาะสีบนสุดที่ตรงกัน</b>หรือขวดว่าง<br>ทำให้ทุกขวดมีสีเดียวเต็มขวดเพื่อชนะ กระดานแก้ได้เสมอ!"},
+  "sort.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "sort.easyDesc": {ko:"4색 · 병 6개", en:"4 colors · 6 bottles", th:"4 สี · 6 ขวด"},
+  "sort.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "sort.normalDesc": {ko:"6색 · 병 8개", en:"6 colors · 8 bottles", th:"6 สี · 8 ขวด"},
+  "sort.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "sort.hardDesc": {ko:"8색 · 병 10개", en:"8 colors · 10 bottles", th:"8 สี · 10 ขวด"},
+  "sort.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "sort.time": {ko:"TIME", en:"TIME", th:"เวลา"},
+  "sort.moves": {ko:"MOVES", en:"MOVES", th:"ครั้ง"},
+  "sort.undo": {ko:"↩️ 되돌리기", en:"↩️ Undo", th:"↩️ ย้อนกลับ"},
+  "sort.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "sort.done": {ko:"완성!", en:"Solved!", th:"สำเร็จ!"},
+  "sort.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "sort.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "sort.timeUsed": {ko:"걸린 시간", en:"Time", th:"เวลาที่ใช้"},
+  "sort.movesUsed": {ko:"이동 수", en:"Moves", th:"จำนวนครั้ง"},
+  "sort.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "sort.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
+  "sort.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "backup.title": {ko:"기록 백업", en:"Backup", th:"สำรองข้อมูล"},
   "backup.hint": {ko:"기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.", en:"Records are stored on this device only. Copy the code and paste it on your new device to move them.", th:"สถิติถูกเก็บไว้ในเครื่องนี้เท่านั้น คัดลอกโค้ดแล้วนำไปวางบนเครื่องใหม่เพื่อย้ายข้อมูล"},
   "backup.export": {ko:"📤 기록 내보내기", en:"📤 Export", th:"📤 ส่งออก"},
@@ -2748,7 +2827,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetSlide','resetMerge','resetChop'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetSlide','resetMerge','resetChop','resetSort'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4895,10 +4974,157 @@ function gameShare(game){
   else if(game==='slide') o={emoji:'🧊', title:t('slide.title'),  from:'#42a5f5', to:'#7e57f0', lines:[t('slide.finalScore')+'  '+SL.score, t('slide.movesUsed')+'  '+SL.moves]};
   else if(game==='merge') o={emoji:'🍭', title:t('merge.title'),  from:'#f48fb1', to:'#7e57f0', lines:[t('merge.score')+'  '+MR.score, t('merge.maxTile')+'  '+MR.maxTile]};
   else if(game==='chop')  o={emoji:'🍡', title:t('chop.title'),   from:'#ff8a80', to:'#f06292', lines:[t('chop.score')+'  '+CP.score, CP_DIFF_LABEL(CP.diff)]};
+  else if(game==='sort')  o={emoji:'🧪', title:t('sort.title'),   from:'#8fd9a8', to:'#7fb3ff', lines:[t('sort.finalScore')+'  '+SO.score, t('sort.movesUsed')+'  '+SO.moves]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
+}
+
+// ========== 컬러 소트 (정렬 퍼즐 / 논리) ==========
+const SO_CAP=4;
+const SO_CFG={ easy:{k:4,base:500}, normal:{k:6,base:1000}, hard:{k:8,base:1600} };
+const SO_COLORS=['#ff9eb5','#ffb877','#ffe07a','#8fd9a8','#6fd6d0','#7fb3ff','#b79bf5','#f08080'];
+const SO={ diff:'normal', tubes:[], sel:-1, moves:0, sec:0, score:0,
+  timer:null, running:false, hist:[], undoLeft:3,
+  best:bt_loadBest('brain.sort.best') };
+function SO_DIFF_LABEL(d){ return d==='easy'?t('sort.easy'):d==='hard'?t('sort.hard'):t('sort.normal'); }
+function soUpdateBestLine(){ const el=document.getElementById('so-intro-best'); if(el) el.textContent=bt_bestLineText(SO.best, SO.diff); }
+function setSortDiff(d){
+  SO.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('so-diff-'+k).classList.toggle('active',k===d));
+  soUpdateBestLine();
+}
+// 솔버(메모 DFS) — 생성 판의 해결 가능성 보증용
+function soSolvable(tubes){
+  const key=st=>st.map(t=>t.join(',')).slice().sort().join('|');
+  const seen=new Set(); let nodes=0;
+  function isSolved(st){ return st.every(t=>t.length===0||(t.length===SO_CAP&&t.every(c=>c===t[0]))); }
+  function dfs(st){
+    if(isSolved(st)) return true;
+    if(++nodes>60000) return false;
+    const k0=key(st); if(seen.has(k0)) return false; seen.add(k0);
+    for(let a=0;a<st.length;a++){
+      const A=st[a]; if(!A.length) continue;
+      if(A.length===SO_CAP&&A.every(c=>c===A[0])) continue;
+      const top=A[A.length-1]; let run=1; while(run<A.length&&A[A.length-1-run]===top) run++;
+      for(let b=0;b<st.length;b++){
+        if(a===b) continue;
+        const B=st[b];
+        if(B.length===SO_CAP) continue;
+        if(B.length&&B[B.length-1]!==top) continue;
+        if(!B.length&&A.length===run) continue;
+        const amt=Math.min(run,SO_CAP-B.length);
+        const ns=st.map(t=>t.slice());
+        for(let i=0;i<amt;i++) ns[b].push(ns[a].pop());
+        if(dfs(ns)) return true;
+      }
+    }
+    return false;
+  }
+  return dfs(tubes.map(t=>t.slice()));
+}
+function soGen(){
+  const k=SO_CFG[SO.diff].k;
+  for(let tries=0;tries<30;tries++){
+    const units=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) units.push(c);
+    shuffleArr(units);
+    const tubes=[]; for(let t=0;t<k;t++) tubes.push(units.slice(t*SO_CAP,(t+1)*SO_CAP));
+    tubes.push([]); tubes.push([]);
+    // 시작부터 완성된 병이 있으면 재생성(싱겁지 않게), 솔버로 해결 가능 보증
+    const trivial=tubes.some(tb=>tb.length===SO_CAP&&tb.every(c=>c===tb[0]));
+    if(!trivial && soSolvable(tubes)) return tubes;
+  }
+  // 이론상 도달 불가(생성 판은 사실상 전부 해결 가능) — 마지막 시도 반환
+  const units=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) units.push(c);
+  shuffleArr(units);
+  const tubes=[]; for(let t=0;t<k;t++) tubes.push(units.slice(t*SO_CAP,(t+1)*SO_CAP));
+  tubes.push([]); tubes.push([]);
+  return tubes;
+}
+function soTubeDone(tb){ return tb.length===SO_CAP && tb.every(c=>c===tb[0]); }
+function soSolvedAll(){ return SO.tubes.every(tb=>tb.length===0||soTubeDone(tb)); }
+function soRender(){
+  const wrap=document.getElementById('so-tubes');
+  wrap.innerHTML='';
+  SO.tubes.forEach((tb,ti)=>{
+    const el=document.createElement('div');
+    el.className='so-tube'+(ti===SO.sel?' sel':'')+(soTubeDone(tb)?' done':'');
+    tb.forEach((c,ui)=>{
+      const u=document.createElement('div');
+      u.className='so-unit'+(ui===tb.length-1&&ti===SO.sel?' top-pop':'');
+      u.style.background=SO_COLORS[c];
+      el.appendChild(u);
+    });
+    el.onclick=()=>soTap(ti);
+    wrap.appendChild(el);
+  });
+  document.getElementById('so-moves').textContent=SO.moves;
+  const ub=document.getElementById('so-undo-btn');
+  if(ub){ ub.disabled=(!SO.hist.length||SO.undoLeft<=0); ub.textContent=t('sort.undo')+' ('+SO.undoLeft+')'; ub.style.opacity=ub.disabled?'.5':''; }
+}
+function soTap(ti){
+  if(!SO.running) return;
+  if(SO.sel===-1){
+    if(SO.tubes[ti].length===0 || soTubeDone(SO.tubes[ti])) return;
+    SO.sel=ti; _beep(600,0.04,'sine',0.12); soRender(); return;
+  }
+  if(SO.sel===ti){ SO.sel=-1; soRender(); return; }
+  const A=SO.tubes[SO.sel], B=SO.tubes[ti];
+  const top=A[A.length-1];
+  let run=1; while(run<A.length&&A[A.length-1-run]===top) run++;
+  const canPour = B.length<SO_CAP && (B.length===0 || B[B.length-1]===top);
+  if(!canPour){ SO.sel=ti; if(SO.tubes[ti].length===0||soTubeDone(SO.tubes[ti])) SO.sel=-1; soRender(); return; }
+  SO.hist.push(SO.tubes.map(t=>t.slice()));
+  if(SO.hist.length>30) SO.hist.shift();
+  const amt=Math.min(run, SO_CAP-B.length);
+  for(let i=0;i<amt;i++) B.push(A.pop());
+  SO.moves++; SO.sel=-1;
+  _beep(760,0.05,'sine',0.14);
+  if(soTubeDone(B)) sfx('good');
+  soRender();
+  if(soSolvedAll()) finishSort();
+}
+function soUndo(){
+  if(!SO.running||!SO.hist.length||SO.undoLeft<=0) return;
+  SO.tubes=SO.hist.pop(); SO.undoLeft--; SO.sel=-1; SO.moves++;
+  soRender();
+}
+function soFmtTime(sec){ return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0'); }
+function startSort(){
+  SO.tubes=soGen(); SO.sel=-1; SO.moves=0; SO.sec=0; SO.score=0; SO.hist=[]; SO.undoLeft=3; SO.running=true;
+  document.getElementById('sort-intro-card').style.display='none';
+  document.getElementById('sort-result-card').style.display='none';
+  document.getElementById('sort-game-card').style.display='block';
+  document.getElementById('so-time').textContent='00:00';
+  soRender();
+  clearInterval(SO.timer);
+  SO.timer=setInterval(()=>{ SO.sec++; document.getElementById('so-time').textContent=soFmtTime(SO.sec); },1000);
+}
+function finishSort(){
+  clearInterval(SO.timer); SO.running=false;
+  SO.score=Math.max(10, SO_CFG[SO.diff].base - SO.sec*2 - SO.moves*3);
+  const newRec=bt_recordScore(SO.best, SO.diff, SO.score); bt_saveBest('brain.sort.best', SO.best);
+  missionMark('sort');
+  sfx('win');
+  document.getElementById('sort-game-card').style.display='none';
+  document.getElementById('sort-result-card').style.display='block';
+  document.getElementById('so-result-emoji').textContent=newRec?'🏆':'🧪';
+  document.getElementById('so-result-title').textContent=newRec?t('sort.newRecord'):t('sort.done');
+  document.getElementById('so-result-score').textContent=SO.score;
+  document.getElementById('so-r-diff').textContent=SO_DIFF_LABEL(SO.diff);
+  document.getElementById('so-r-time').textContent=soFmtTime(SO.sec);
+  document.getElementById('so-r-moves').textContent=SO.moves;
+  document.getElementById('so-r-best').textContent=SO.best[SO.diff].all;
+  soUpdateBestLine();
+}
+function leaveSort(){ resetSort(); showScreen('games'); }
+function resetSort(){
+  clearInterval(SO.timer); SO.running=false; SO.sel=-1;
+  const g=document.getElementById('sort-game-card'); if(g) g.style.display='none';
+  const r=document.getElementById('sort-result-card'); if(r) r.style.display='none';
+  const i=document.getElementById('sort-intro-card'); if(i) i.style.display='block';
+  soUpdateBestLine();
 }
 
 // ========== 말로우 타워 (팀버맨류 / 순발력) ==========
@@ -5533,8 +5759,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','slide','merge','chop'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,slide:SL,merge:MR,chop:CP}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','slide','merge','chop','sort'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,slide:SL,merge:MR,chop:CP,sort:SO}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -5596,6 +5822,7 @@ const HOME_GAMES=[
   {id:'merge',  emoji:'🍭', key:'nav.merge',  best:'brain.merge.best',  grp:'cat.calc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
   {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'cat.logic'},
+  {id:'sort',   emoji:'🧪', key:'nav.sort',   best:'brain.sort.best',   grp:'cat.logic'},
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
   // {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'cat.lang'},
   // {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
@@ -5727,10 +5954,10 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}, chop:{speed:70,focus:30}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}, chop:{speed:70,focus:30}, sort:{logic:60,space:20,focus:20}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,slide:700,merge:6000,chop:130};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,slide:700,merge:6000,chop:130,sort:650};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
