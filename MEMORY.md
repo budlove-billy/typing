@@ -92,6 +92,10 @@ _Write important context, decisions, and lessons here so future sessions can pic
   셔플=풀린 상태에서 유효 이동 K회(60/150/300, 직전 되돌리기 금지) → 항상 해결 가능(9,000판 시뮬 검증).
   점수=base(600/1200/2000)−초×3−이동수(하한 10). 제자리 타일 teal 링, 값 기반 파스텔 그라데이션, 절대배치+CSS 슬라이드.
   `SL` 객체, `brain.slide.best`, 도전장·공유·능력치(space60/logic25/focus15, REF 700)·미션 풀 C 연동. 활성 18종.
+- **신규(2026-07-11): 말랑 2048(merge)** → 계산 축 3호(hi5games '매치냥' 검토 후 원작 MIT 규칙 재구현).
+  난이도=판 크기(easy 5×5/normal 4×4/hard 3×3), 스와이프(touch, .mr-board-wrap touch-action:none)+방향키, 되돌리기 1회(MR.prev 1슬롯),
+  2048 도달 시 win 팡파르 후 계속, '기록하고 끝내기' 버튼. 순수 mrMoveLine(압축→1회 병합→압축, 시뮬 9케이스+999판 검증).
+  `MR` 객체, `brain.merge.best`, 도전장·공유·능력치(calc50/logic30/space20, REF 6000) 연동. 미션 풀 제외(계산 축 관례). 활성 19종.
 - 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 

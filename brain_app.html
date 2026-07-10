@@ -433,6 +433,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
 .sl-tile:active{filter:brightness(.95)}
 .sl-tile.ok{box-shadow:inset 0 0 0 2.5px var(--teal),0 2px 6px rgba(24,34,53,.10)}
+/* 말랑 2048 */
+.mr-board-wrap{max-width:380px;margin:0 auto;touch-action:none}
+.mr-board{display:grid;gap:.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:.5rem;aspect-ratio:1/1}
+.mr-cell{border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;background:#e8ecf4;color:#5a6683;user-select:none}
+.mr-cell.pop{animation:mrPop .18s ease}
+@keyframes mrPop{0%{transform:scale(.6)}100%{transform:scale(1)}}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1187,6 +1193,55 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 </div>
 
 <!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<!-- ==================== MERGE 2048 GAME (말랑 2048 / 계산·계획) ==================== -->
+<div class="screen" id="screen-merge">
+  <div class="card" id="merge-intro-card">
+    <div class="section-head"><h2 data-i18n="merge.title">말랑 2048</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="merge.intro">
+      밀어서 <b>같은 숫자를 합치면 두 배</b>가 됩니다. 2048 타일에 도전하세요!<br>
+      화면을 스와이프하거나 방향키로 조작해요. 실수했다면 되돌리기 1회 찬스!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="mr-diff-easy" onclick="setMergeDiff('easy')">
+        <h3>🌱 <span data-i18n="merge.easy">쉬움</span></h3><p data-i18n="merge.easyDesc">5×5 넓은 판</p>
+      </div>
+      <div class="diff-btn active" id="mr-diff-normal" onclick="setMergeDiff('normal')">
+        <h3>⚡ <span data-i18n="merge.normal">보통</span></h3><p data-i18n="merge.normalDesc">4×4 클래식</p>
+      </div>
+      <div class="diff-btn" id="mr-diff-hard" onclick="setMergeDiff('hard')">
+        <h3>🔥 <span data-i18n="merge.hard">어려움</span></h3><p data-i18n="merge.hardDesc">3×3 좁은 판</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startMerge()" data-i18n="merge.startGame">게임 시작</button>
+    <div class="best-line" id="mr-intro-best"></div>
+  </div>
+
+  <div class="card" id="merge-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="merge.score">SCORE</div><div class="mg-stat-value" id="mr-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="merge.bestTile">MAX</div><div class="mg-stat-value" id="mr-max">0</div></div>
+    </div>
+    <div class="mr-board-wrap"><div class="mr-board" id="mr-board"></div></div>
+    <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1.1rem;flex-wrap:wrap">
+      <button class="btn btn-outline" id="mr-undo-btn" onclick="mrUndo()" data-i18n="merge.undo">↩️ 되돌리기 (1)</button>
+      <button class="btn btn-outline" onclick="mrGiveUp()" data-i18n="merge.finish">🏁 기록하고 끝내기</button>
+      <button class="btn btn-outline" onclick="leaveMerge()" data-i18n="merge.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="merge-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="mr-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="mr-result-title">게임 오버!</h2>
+    <div class="iq-result-score" id="mr-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="merge.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="merge.difficulty">난이도</span><span id="mr-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="merge.maxTile">최고 타일</span><span id="mr-r-max">0</span></div>
+    <div class="result-row"><span data-i18n="merge.best">최고 기록</span><span id="mr-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetMerge()" data-i18n="merge.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('merge')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('merge')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- ==================== SLIDE PUZZLE GAME (슬라이딩 퍼즐 / 공간) ==================== -->
 <div class="screen" id="screen-slide">
   <div class="card" id="slide-intro-card">
@@ -1865,6 +1920,29 @@ const I18N = {
   "slide.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "slide.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "slide.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.merge": {ko:"말랑 2048", en:"Mallow 2048", th:"มัลโลว์ 2048"},
+  "merge.title": {ko:"말랑 2048", en:"Mallow 2048", th:"มัลโลว์ 2048"},
+  "merge.intro": {ko:"밀어서 <b>같은 숫자를 합치면 두 배</b>가 됩니다. 2048 타일에 도전하세요!<br>화면을 스와이프하거나 방향키로 조작해요. 실수했다면 되돌리기 1회 찬스!", en:"Swipe to <b>merge equal numbers into double</b>. Reach the 2048 tile!<br>Swipe the board or use arrow keys. One undo if you slip!", th:"ปัดเพื่อ<b>รวมเลขเท่ากันให้เป็นสองเท่า</b> ไปให้ถึง 2048!<br>ปัดกระดานหรือใช้ปุ่มลูกศร พลาดได้ 1 ครั้งด้วยปุ่มย้อนกลับ!"},
+  "merge.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "merge.easyDesc": {ko:"5×5 넓은 판", en:"5×5 roomy", th:"5×5 กว้าง"},
+  "merge.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "merge.normalDesc": {ko:"4×4 클래식", en:"4×4 classic", th:"4×4 คลาสสิก"},
+  "merge.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "merge.hardDesc": {ko:"3×3 좁은 판", en:"3×3 tight", th:"3×3 แคบ"},
+  "merge.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "merge.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "merge.bestTile": {ko:"MAX", en:"MAX", th:"สูงสุด"},
+  "merge.undo": {ko:"↩️ 되돌리기", en:"↩️ Undo", th:"↩️ ย้อนกลับ"},
+  "merge.finish": {ko:"🏁 기록하고 끝내기", en:"🏁 Finish & save", th:"🏁 จบและบันทึก"},
+  "merge.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "merge.gameOver": {ko:"게임 오버!", en:"Game Over!", th:"จบเกม!"},
+  "merge.reached": {ko:"2048 달성!", en:"2048 reached!", th:"ถึง 2048!"},
+  "merge.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "merge.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "merge.maxTile": {ko:"최고 타일", en:"Max tile", th:"ไทล์สูงสุด"},
+  "merge.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "merge.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
+  "merge.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "backup.title": {ko:"기록 백업", en:"Backup", th:"สำรองข้อมูล"},
   "backup.hint": {ko:"기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.", en:"Records are stored on this device only. Copy the code and paste it on your new device to move them.", th:"สถิติถูกเก็บไว้ในเครื่องนี้เท่านั้น คัดลอกโค้ดแล้วนำไปวางบนเครื่องใหม่เพื่อย้ายข้อมูล"},
   "backup.export": {ko:"📤 기록 내보내기", en:"📤 Export", th:"📤 ส่งออก"},
@@ -2579,7 +2657,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetSlide'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetSlide','resetMerge'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4724,11 +4802,155 @@ function gameShare(game){
   else if(game==='bubble')o={emoji:'🫧', title:t('bubble.title'), from:'#5aa7f0', to:'#a06ef8', lines:[t('bubble.score')+'  '+BB.score, t('bubble.rounds')+'  '+BB.rounds]};
   else if(game==='spot')  o={emoji:'🌈', title:t('spot.title'),   from:'#f06292', to:'#7e57f0', lines:[t('spot.score')+'  '+SP.score, t('spot.reachedLevel')+'  '+SP.level]};
   else if(game==='slide') o={emoji:'🧊', title:t('slide.title'),  from:'#42a5f5', to:'#7e57f0', lines:[t('slide.finalScore')+'  '+SL.score, t('slide.movesUsed')+'  '+SL.moves]};
+  else if(game==='merge') o={emoji:'🍭', title:t('merge.title'),  from:'#f48fb1', to:'#7e57f0', lines:[t('merge.score')+'  '+MR.score, t('merge.maxTile')+'  '+MR.maxTile]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
 }
+
+// ========== 말랑 2048 (합치기 / 계산·계획) ==========
+const MR_CFG={ easy:{n:5}, normal:{n:4}, hard:{n:3} };
+const MR_COLORS=['#e8ecf4','#ffe9ef','#ffd7e0','#ffe9c9','#ffdfae','#d9f4e4','#b9ecd2','#d9e8ff','#bcd7ff','#eadffb','#d8c3fb','#ffd3f0'];
+const MR={ diff:'normal', n:4, grid:[], score:0, maxTile:0, running:false,
+  prev:null, undoLeft:1, reached2048:false,
+  best:bt_loadBest('brain.merge.best') };
+function MR_DIFF_LABEL(d){ return d==='easy'?t('merge.easy'):d==='hard'?t('merge.hard'):t('merge.normal'); }
+function mrUpdateBestLine(){ const el=document.getElementById('mr-intro-best'); if(el) el.textContent=bt_bestLineText(MR.best, MR.diff); }
+function setMergeDiff(d){
+  MR.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('mr-diff-'+k).classList.toggle('active',k===d));
+  mrUpdateBestLine();
+}
+// 한 줄을 왼쪽 방향으로 밀기(압축→인접 동일값 1회 병합→압축). 순수 함수
+function mrMoveLine(line){
+  const a=line.filter(v=>v!==0); let gain=0;
+  for(let i=0;i<a.length-1;i++){ if(a[i]===a[i+1]){ a[i]*=2; gain+=a[i]; a.splice(i+1,1); } }
+  while(a.length<line.length) a.push(0);
+  const moved=a.some((v,i)=>v!==line[i]);
+  return {line:a, gain:gain, moved:moved};
+}
+function mrSpawn(){
+  const empty=[]; MR.grid.forEach((v,i)=>{ if(v===0) empty.push(i); });
+  if(!empty.length) return;
+  MR.grid[empty[Math.floor(Math.random()*empty.length)]] = Math.random()<0.9?2:4;
+}
+function mrCanMove(){
+  const n=MR.n;
+  for(let i=0;i<n*n;i++){
+    if(MR.grid[i]===0) return true;
+    const r=Math.floor(i/n), c=i%n;
+    if(c<n-1 && MR.grid[i]===MR.grid[i+1]) return true;
+    if(r<n-1 && MR.grid[i]===MR.grid[i+n]) return true;
+  }
+  return false;
+}
+function mrMove(dir){ // 'left'|'right'|'up'|'down'
+  if(!MR.running) return;
+  const n=MR.n, before=MR.grid.slice();
+  let moved=false, gain=0;
+  for(let k=0;k<n;k++){
+    let idx=[];
+    if(dir==='left')  for(let c=0;c<n;c++) idx.push(k*n+c);
+    if(dir==='right') for(let c=n-1;c>=0;c--) idx.push(k*n+c);
+    if(dir==='up')    for(let r=0;r<n;r++) idx.push(r*n+k);
+    if(dir==='down')  for(let r=n-1;r>=0;r--) idx.push(r*n+k);
+    const res=mrMoveLine(idx.map(i=>MR.grid[i]));
+    if(res.moved) moved=true;
+    gain+=res.gain;
+    idx.forEach((gi,j)=>{ MR.grid[gi]=res.line[j]; });
+  }
+  if(!moved) return;
+  MR.prev={grid:before, score:MR.score};
+  MR.score+=gain;
+  if(gain>0) sfx('good'); else _beep(500,0.04,'sine',0.1);
+  mrSpawn();
+  const mx=Math.max.apply(null,MR.grid);
+  MR.maxTile=Math.max(MR.maxTile,mx);
+  if(mx>=2048 && !MR.reached2048){ MR.reached2048=true; sfx('win'); }
+  mrRender();
+  if(!mrCanMove()) finishMerge();
+}
+function mrUndo(){
+  if(!MR.running || !MR.prev || MR.undoLeft<=0) return;
+  MR.grid=MR.prev.grid.slice(); MR.score=MR.prev.score; MR.prev=null; MR.undoLeft--;
+  mrRender();
+}
+function mrRender(){
+  const n=MR.n, board=document.getElementById('mr-board');
+  board.style.gridTemplateColumns='repeat('+n+',1fr)';
+  board.innerHTML='';
+  const fs = n===3?'2rem':(n===4?'1.5rem':'1.15rem');
+  MR.grid.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='mr-cell'+(v?' pop':'');
+    if(v){
+      const e=Math.min(MR_COLORS.length-1, Math.log2(v));
+      d.style.background=MR_COLORS[e];
+      d.style.color=v>=128?'#7a4fc9':'#5a6683';
+      d.style.fontSize = v>=1024 ? (n===3?'1.5rem':'1.05rem') : fs;
+      d.textContent=v;
+    }
+    board.appendChild(d);
+  });
+  document.getElementById('mr-score').textContent=MR.score;
+  document.getElementById('mr-max').textContent=MR.maxTile||0;
+  const ub=document.getElementById('mr-undo-btn');
+  if(ub){ ub.disabled=(!MR.prev||MR.undoLeft<=0); ub.textContent=t('merge.undo')+' ('+MR.undoLeft+')'; ub.style.opacity=ub.disabled?'.5':''; }
+}
+function startMerge(){
+  MR.n=MR_CFG[MR.diff].n;
+  MR.grid=new Array(MR.n*MR.n).fill(0);
+  MR.score=0; MR.maxTile=0; MR.prev=null; MR.undoLeft=1; MR.reached2048=false; MR.running=true;
+  mrSpawn(); mrSpawn();
+  document.getElementById('merge-intro-card').style.display='none';
+  document.getElementById('merge-result-card').style.display='none';
+  document.getElementById('merge-game-card').style.display='block';
+  mrRender();
+}
+function mrGiveUp(){ if(MR.running && MR.score>0) finishMerge(); else resetMerge(); }
+function finishMerge(){
+  MR.running=false;
+  const newRec=bt_recordScore(MR.best, MR.diff, MR.score); bt_saveBest('brain.merge.best', MR.best);
+  missionMark('merge');
+  document.getElementById('merge-game-card').style.display='none';
+  document.getElementById('merge-result-card').style.display='block';
+  document.getElementById('mr-result-emoji').textContent=newRec?'🏆':(MR.reached2048?'🍭':'🌀');
+  document.getElementById('mr-result-title').textContent=newRec?t('merge.newRecord'):(MR.reached2048?t('merge.reached'):t('merge.gameOver'));
+  document.getElementById('mr-result-score').textContent=MR.score;
+  document.getElementById('mr-r-diff').textContent=MR_DIFF_LABEL(MR.diff);
+  document.getElementById('mr-r-max').textContent=MR.maxTile;
+  document.getElementById('mr-r-best').textContent=MR.best[MR.diff].all;
+  mrUpdateBestLine();
+}
+function leaveMerge(){ resetMerge(); showScreen('games'); }
+function resetMerge(){
+  MR.running=false;
+  const g=document.getElementById('merge-game-card'); if(g) g.style.display='none';
+  const r=document.getElementById('merge-result-card'); if(r) r.style.display='none';
+  const i=document.getElementById('merge-intro-card'); if(i) i.style.display='block';
+  mrUpdateBestLine();
+}
+// 입력: 스와이프 + 방향키
+(function(){
+  let sx=0, sy=0;
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const wrap=document.querySelector('.mr-board-wrap'); if(!wrap) return;
+    wrap.addEventListener('touchstart', e=>{ if(!MR.running) return; const t0=e.touches[0]; sx=t0.clientX; sy=t0.clientY; }, {passive:true});
+    wrap.addEventListener('touchend', e=>{
+      if(!MR.running) return;
+      const t0=e.changedTouches[0], dx=t0.clientX-sx, dy=t0.clientY-sy;
+      if(Math.max(Math.abs(dx),Math.abs(dy))<24) return;
+      mrMove(Math.abs(dx)>Math.abs(dy) ? (dx>0?'right':'left') : (dy>0?'down':'up'));
+    }, {passive:true});
+  });
+  document.addEventListener('keydown', e=>{
+    if(!MR.running) return;
+    const scr=document.getElementById('screen-merge'); if(!scr||!scr.classList.contains('active')) return;
+    const map={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};
+    if(map[e.key]){ e.preventDefault(); mrMove(map[e.key]); }
+  });
+})();
 
 // ========== 슬라이딩 퍼즐 (15퍼즐 / 공간) ==========
 const SL_CFG={ easy:{n:3,shuffle:60,base:600}, normal:{n:4,shuffle:150,base:1200}, hard:{n:5,shuffle:300,base:2000} };
@@ -5112,8 +5334,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','slide'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,slide:SL}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','slide','merge'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,slide:SL,merge:MR}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -5171,6 +5393,7 @@ const HOME_GAMES=[
   {id:'slide',  emoji:'🧊', key:'nav.slide',  best:'brain.slide.best',  grp:'cat.space'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
   {id:'bubble', emoji:'🫧', key:'nav.bubble', best:'brain.bubble.best', grp:'cat.calc'},
+  {id:'merge',  emoji:'🍭', key:'nav.merge',  best:'brain.merge.best',  grp:'cat.calc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
   {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'cat.logic'},
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
@@ -5304,10 +5527,10 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, slide:{space:60,logic:25,focus:15}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,slide:700};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,slide:700,merge:6000};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
