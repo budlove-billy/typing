@@ -1,12 +1,10 @@
 # Active Session State
 
 ## Current task
-(완료) Phase A 코드: Mallow 리브랜딩+SEO+PWA+?lang=. 사용자 playmallow.com 구매 진행 중.
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
 
 ## Decisions
-- 브랜드 Mallow / 서브 "말랑말랑 두뇌게임" / 도메인 playmallow.com. 아이콘=파랑 라운드+M, OG 1200x630 생성(PIL).
-- sw.js=HTML network-first. manifest.webmanifest. robots/sitemap(hreflang ko/en/th). 언어: ?lang= → localStorage brain.lang.
-- 남은 것(사용자): 도메인 결제, Cloudflare Pages 연결(GitHub repo typing), Search Console/Naver Advisor/GA4 계정 등록.
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
 
 ## Open questions
-- 도메인 구매 완료 여부 → 완료 시 배포 안내.
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.

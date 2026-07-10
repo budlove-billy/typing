@@ -60,7 +60,12 @@ _Write important context, decisions, and lessons here so future sessions can pic
   비활성 사유: 두뇌게임 포지셔닝 불일치 + en/th 미대응. braintype 언어가형 추천은 vocab→nback으로 변경됨.
   축: 계산·타이핑·논리 / 기억(순간·인원·엔백·카드) / 주의·속도(스트룹·순서·반응) / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
 - **두뇌 능력치(2026-07-06)**: 내 기록에 7능력 레이더+막대(ABILITY_MAP 가중치·GAME_REF 정규화, brain.ability.base 주간성장). 막대 탭→기여게임. saveFlatBest로 math/iq/vocab/sudoku/typing 최고점 저장(brain.<id>.flat). IQ점수=55+정답률^1.3*75+속도*15(55~145). FTC: '게임 수행 기반·실제 지능 아님'.
-- 다음 후보: 사운드/햅틱, 주간 통계·목표, 난이도 보정 강화.
+- **신규(2026-07-10): 말로우 팡팡(whack)** → 협응 축(cat.coord). 3x3 구멍에서 마스코트 탭/💣 참기(탭 시 시간-3s),
+  60초, WK_CFG(win/gap/badP), 못 잡으면 콤보 리셋. `WK` 객체(timer+spawnT+hideT). `brain.whack.best`. 마스코트 활용 1호 게임.
+- **신규(2026-07-10): 멜로디 기억(melody)** → 청각 축(cat.sound). 사이먼류 4패드(C4/E4/G4/B4, _beep 재사용),
+  재생 중 입력 잠금(playing), 성공 len+1/실패 lives-1(3). `ML` 객체(timers[]). `brain.melody.best`.
+- 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack], C=[switch,rotate].
+- 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 도전장 링크, 개인정보처리방침.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 서비스 운영 (LIVE)

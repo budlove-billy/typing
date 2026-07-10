@@ -537,6 +537,22 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .hg-item b{font-size:1.15rem}
   .tab-ico{font-size:1.3rem}
 }
+/* ===== Whack (말로우 팡팡) ===== */
+.wk-board{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;width:100%;max-width:400px;margin:0 auto}
+.wk-cell{position:relative;aspect-ratio:1/1;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);cursor:pointer;padding:0;overflow:hidden;font-family:inherit}
+.wk-hole{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);width:70%;height:22%;background:var(--bg4);border-radius:50%}
+.wk-sprite{position:absolute;left:50%;bottom:12%;transform:translateX(-50%) scale(0);transition:transform .12s ease-out;line-height:1;pointer-events:none}
+.wk-sprite img{width:52px;height:auto;image-rendering:pixelated;display:block}
+.wk-sprite.bomb{font-size:2.6rem}
+.wk-cell.up .wk-sprite{transform:translateX(-50%) scale(1)}
+.wk-cell:active{background:var(--purple3)}
+/* ===== Melody (멜로디 기억) ===== */
+.ml-pads{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;max-width:340px;margin:0 auto}
+.ml-pad{aspect-ratio:1/1;border:none;border-radius:var(--radius2);cursor:pointer;opacity:.55;transition:opacity .1s,transform .08s;padding:0}
+.ml-pad:active{transform:scale(.96)}
+.ml-pad.lit{opacity:1;box-shadow:0 0 18px rgba(0,0,0,.18)}
+.ml-p0{background:#2fb96a}.ml-p1{background:#e0475a}.ml-p2{background:#f0b429}.ml-p3{background:#4f7cff}
+@media (max-width:640px){ .wk-sprite img{width:44px} .wk-board{max-width:340px} .ml-pads{max-width:300px} }
 </style>
 </head>
 <body>
@@ -1422,6 +1438,110 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== WHACK SCREEN (말로우 팡팡 / 협응) ==================== -->
+<div class="screen" id="screen-whack">
+  <div class="card" id="whack-intro-card">
+    <div class="section-head"><h2 data-i18n="whack.title">말로우 팡팡</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="whack.intro">
+      구멍에서 튀어나오는 <b>말로우를 빠르게 탭</b>하세요!<br>
+      단, <b>폭탄(💣)은 절대 누르면 안 돼요.</b> 60초 안에 최대한 많이!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="wk-diff-easy" onclick="setWhackDiff('easy')">
+        <h3>🌱 <span data-i18n="whack.easy">쉬움</span></h3><p data-i18n="whack.easyDesc">천천히·폭탄 적음</p>
+      </div>
+      <div class="diff-btn active" id="wk-diff-normal" onclick="setWhackDiff('normal')">
+        <h3>⚡ <span data-i18n="whack.normal">보통</span></h3><p data-i18n="whack.normalDesc">기본 속도</p>
+      </div>
+      <div class="diff-btn" id="wk-diff-hard" onclick="setWhackDiff('hard')">
+        <h3>🔥 <span data-i18n="whack.hard">어려움</span></h3><p data-i18n="whack.hardDesc">빠름·폭탄 많음</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startWhack()" data-i18n="whack.startGame">게임 시작</button>
+    <div class="best-line" id="wk-intro-best"></div>
+  </div>
+
+  <div class="card" id="whack-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="whack.score">SCORE</div><div class="mg-stat-value" id="wk-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="whack.combo">COMBO</div><div class="mg-stat-value" id="wk-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="wk-timer">01:00</div></div>
+    <div class="wk-board" id="wk-board"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveWhack()" data-i18n="whack.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="whack-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="wk-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="wk-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="wk-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="whack.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="whack.difficulty">난이도</span><span id="wk-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="whack.hits">잡은 말로우</span><span id="wk-r-hits">0</span></div>
+    <div class="result-row"><span data-i18n="whack.maxCombo">최고 콤보</span><span id="wk-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="whack.best">최고 기록</span><span id="wk-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetWhack()" data-i18n="whack.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('whack')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
+<!-- ==================== MELODY SCREEN (멜로디 기억 / 청각) ==================== -->
+<div class="screen" id="screen-melody">
+  <div class="card" id="melody-intro-card">
+    <div class="section-head"><h2 data-i18n="melody.title">멜로디 기억</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="melody.intro">
+      버튼이 <b>소리와 함께 순서대로</b> 빛납니다. 잘 듣고 <b>같은 순서로</b> 눌러보세요.<br>
+      성공할 때마다 멜로디가 한 음씩 길어집니다. 🔊 소리를 켜면 더 쉬워요!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="ml-diff-easy" onclick="setMelodyDiff('easy')">
+        <h3>🌱 <span data-i18n="melody.easy">쉬움</span></h3><p data-i18n="melody.easyDesc">2음부터·천천히</p>
+      </div>
+      <div class="diff-btn active" id="ml-diff-normal" onclick="setMelodyDiff('normal')">
+        <h3>⚡ <span data-i18n="melody.normal">보통</span></h3><p data-i18n="melody.normalDesc">3음부터</p>
+      </div>
+      <div class="diff-btn" id="ml-diff-hard" onclick="setMelodyDiff('hard')">
+        <h3>🔥 <span data-i18n="melody.hard">어려움</span></h3><p data-i18n="melody.hardDesc">4음부터·빠르게</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startMelody()" data-i18n="melody.startGame">게임 시작</button>
+    <div class="best-line" id="ml-intro-best"></div>
+  </div>
+
+  <div class="card" id="melody-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="melody.score">SCORE</div><div class="mg-stat-value" id="ml-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="melody.life">LIFE</div><div class="mg-stat-value" id="ml-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="melody.level">LEVEL</div><div class="mg-stat-value" id="ml-level">3</div></div>
+    </div>
+    <div class="gm-status" id="ml-status" data-i18n="melody.listen">잘 들어보세요…</div>
+    <div class="ml-pads">
+      <button class="ml-pad ml-p0" onclick="mlTap(0)"></button>
+      <button class="ml-pad ml-p1" onclick="mlTap(1)"></button>
+      <button class="ml-pad ml-p2" onclick="mlTap(2)"></button>
+      <button class="ml-pad ml-p3" onclick="mlTap(3)"></button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveMelody()" data-i18n="melody.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="melody-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="ml-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="ml-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="ml-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="melody.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="melody.difficulty">난이도</span><span id="ml-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="melody.maxLevel">도달 멜로디 길이</span><span id="ml-r-level">0</span></div>
+    <div class="result-row"><span data-i18n="melody.best">최고 기록</span><span id="ml-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetMelody()" data-i18n="melody.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('melody')" data-i18n="share.button">📷 결과 공유</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -1843,6 +1963,59 @@ const I18N = {
   "rotate.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
   "rotate.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 
+  "cat.coord": {ko:"협응력", en:"Coordination", th:"การประสานงาน"},
+  "cat.sound": {ko:"청각", en:"Audio", th:"การฟัง"},
+
+  "nav.whack": {ko:"말로우 팡팡", en:"Mallow Pop", th:"ตีมัลโลว์"},
+  "whack.title": {ko:"말로우 팡팡", en:"Mallow Pop", th:"ตีมัลโลว์"},
+  "whack.intro": {ko:"구멍에서 튀어나오는 <b>말로우를 빠르게 탭</b>하세요!<br>단, <b>폭탄(💣)은 절대 누르면 안 돼요.</b> 60초 안에 최대한 많이!", en:"Tap the <b>Mallow popping out of the holes</b> as fast as you can!<br>But <b>never tap the bomb (💣)</b>. Score as much as you can in 60s!", th:"แตะ <b>มัลโลว์ที่โผล่จากหลุม</b> ให้เร็วที่สุด!<br>แต่ <b>ห้ามแตะระเบิด (💣)</b> เด็ดขาด ทำคะแนนให้มากที่สุดใน 60 วินาที!"},
+  "whack.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "whack.easyDesc": {ko:"천천히·폭탄 적음", en:"Slow · few bombs", th:"ช้า·ระเบิดน้อย"},
+  "whack.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "whack.normalDesc": {ko:"기본 속도", en:"Standard", th:"มาตรฐาน"},
+  "whack.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "whack.hardDesc": {ko:"빠름·폭탄 많음", en:"Fast · many bombs", th:"เร็ว·ระเบิดมาก"},
+  "whack.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "whack.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "whack.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "whack.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "whack.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "whack.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "whack.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "whack.hits": {ko:"잡은 말로우", en:"Mallows caught", th:"จับมัลโลว์ได้"},
+  "whack.maxCombo": {ko:"최고 콤보", en:"Best Combo", th:"คอมโบสูงสุด"},
+  "whack.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "whack.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "whack.timeOver": {ko:"타임 오버!", en:"Time's Up!", th:"หมดเวลา!"},
+  "whack.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
+  "nav.melody": {ko:"멜로디 기억", en:"Melody Memory", th:"จำทำนอง"},
+  "melody.title": {ko:"멜로디 기억", en:"Melody Memory", th:"จำทำนอง"},
+  "melody.intro": {ko:"버튼이 <b>소리와 함께 순서대로</b> 빛납니다. 잘 듣고 <b>같은 순서로</b> 눌러보세요.<br>성공할 때마다 멜로디가 한 음씩 길어집니다. 🔊 소리를 켜면 더 쉬워요!", en:"Buttons light up <b>in order with sounds</b>. Watch, listen, and <b>repeat the sequence</b>.<br>Each success makes the melody one note longer. Turn on 🔊 for an easier time!", th:"ปุ่มจะสว่าง <b>ตามลำดับพร้อมเสียง</b> ดูและฟังแล้ว <b>กดตามลำดับเดิม</b><br>สำเร็จแต่ละครั้งทำนองจะยาวขึ้นหนึ่งเสียง เปิด 🔊 จะง่ายขึ้น!"},
+  "melody.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "melody.easyDesc": {ko:"2음부터·천천히", en:"From 2 notes · slow", th:"เริ่ม 2 เสียง·ช้า"},
+  "melody.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "melody.normalDesc": {ko:"3음부터", en:"From 3 notes", th:"เริ่ม 3 เสียง"},
+  "melody.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "melody.hardDesc": {ko:"4음부터·빠르게", en:"From 4 notes · fast", th:"เริ่ม 4 เสียง·เร็ว"},
+  "melody.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "melody.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "melody.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"},
+  "melody.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "melody.listen": {ko:"잘 들어보세요…", en:"Listen carefully…", th:"ฟังให้ดี…"},
+  "melody.repeat": {ko:"같은 순서로 누르세요!", en:"Repeat the sequence!", th:"กดตามลำดับเดิม!"},
+  "melody.goodRound": {ko:"성공! 한 음 더 🎵", en:"Nice! One more note 🎵", th:"เยี่ยม! เพิ่มอีกเสียง 🎵"},
+  "melody.missRound": {ko:"아쉬워요! 다시 들어보세요", en:"Missed! Listen again", th:"พลาด! ฟังอีกครั้ง"},
+  "melody.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "melody.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
+  "melody.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "melody.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "melody.maxLevel": {ko:"도달 멜로디 길이", en:"Longest melody", th:"ทำนองยาวสุด"},
+  "melody.best": {ko:"최고 기록", en:"Best Score", th:"คะแนนสูงสุด"},
+  "melody.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "melody.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"},
+  "melody.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
+
   "nav.cards": {ko:"카드 짝", en:"Card Match", th:"จับคู่การ์ด"},
   "cards.title": {ko:"카드 짝 맞추기", en:"Card Match", th:"จับคู่การ์ด"},
   "cards.intro": {ko:"뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 60초 안에 몇 쌍이나?", en:"Flip two cards at a time to <b>find matching pictures.</b><br>Clear a board and the next has more cards. How many pairs in 60s?", th:"เปิดการ์ดทีละสองใบเพื่อ <b>หาภาพที่เหมือนกัน</b><br>เคลียร์กระดานแล้วกระดานถัดไปจะมีการ์ดมากขึ้น จับคู่ได้กี่คู่ใน 60 วินาที?"},
@@ -1994,6 +2167,8 @@ function refreshDynamicTexts(){
   if(typeof rtUpdateBestLine === 'function') rtUpdateBestLine();
   if(typeof cmUpdateBestLine === 'function') cmUpdateBestLine();
   if(typeof rcUpdateBestLine === 'function') rcUpdateBestLine();
+  if(typeof wkUpdateBestLine === 'function') wkUpdateBestLine();
+  if(typeof mlUpdateBestLine === 'function') mlUpdateBestLine();
   ['home','games','records'].forEach(s=>{
     const el=document.getElementById('screen-'+s);
     if(el && el.classList.contains('active')){
@@ -2102,7 +2277,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4221,6 +4396,8 @@ function gameShare(game){
   else if(game==='rotate')o={emoji:'🔄', title:t('rotate.title'), from:'#0e9e70', to:'#7b4ff0', lines:[t('rotate.score')+'  '+RT.score, t('rotate.correct')+'  '+RT.correct]};
   else if(game==='cards') o={emoji:'🃏', title:t('cards.title'),  from:'#5b4ff0', to:'#0e9e70', lines:[t('cards.score')+'  '+CM.score, t('cards.clearedBoards')+'  '+CM.boards]};
   else if(game==='react') o={emoji:'⏱️', title:t('react.title'),  from:'#15a040', to:'#2255d0', lines:[t('react.score')+'  '+RC.score, t('react.avgRt')+'  '+(RC.rtCount?Math.round(RC.rtSum/RC.rtCount)+'ms':'-')]};
+  else if(game==='whack') o={emoji:'🔨', title:t('whack.title'),  from:'#f0b429', to:'#e0475a', lines:[t('whack.score')+'  '+WK.score, t('whack.hits')+'  '+WK.hits]};
+  else if(game==='melody')o={emoji:'🎵', title:t('melody.title'), from:'#2fb96a', to:'#4f7cff', lines:[t('melody.score')+'  '+ML.score, t('melody.maxLevel')+'  '+ML.maxLen]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -4237,6 +4414,8 @@ const HOME_GAMES=[
   {id:'switch', emoji:'🔀', key:'nav.switch', best:'brain.switch.best', grp:'cat.focus'},
   {id:'trail',  emoji:'🔗', key:'nav.trail',  best:'brain.trail.best',  grp:'cat.speed'},
   {id:'react',  emoji:'⏱️', key:'nav.react',  best:'brain.react.best',  grp:'cat.speed'},
+  {id:'whack',  emoji:'🔨', key:'nav.whack',  best:'brain.whack.best',  grp:'cat.coord'},
+  {id:'melody', emoji:'🎵', key:'nav.melody', best:'brain.melody.best', grp:'cat.sound'},
   {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'cat.space'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
@@ -4261,8 +4440,8 @@ function homeVisit(){
   return v;
 }
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
-const MISSION_A=['flash','count','nback','cards'];   // 기억
-const MISSION_B=['stroop','trail','react'];          // 주의·속도
+const MISSION_A=['flash','count','nback','cards','melody'];   // 기억·청각
+const MISSION_B=['stroop','trail','react','whack'];          // 주의·속도·협응
 const MISSION_C=['switch','rotate'];                 // 유연성·공간
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
@@ -4364,10 +4543,11 @@ const ABILITY_MAP={
   flash:{memory:70,focus:20,speed:10}, count:{memory:70,focus:20,calc:10}, nback:{memory:70,focus:30}, cards:{memory:70,focus:20,speed:10},
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
-  sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10}
+  sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
@@ -4965,6 +5145,201 @@ function resetReact(){
   document.getElementById('react-game-card').style.display='none';
   document.getElementById('react-intro-card').style.display='block';
   rcUpdateBestLine();
+}
+
+// ========== 말로우 팡팡 (Whack / 협응·반응억제) ==========
+const WK_CFG={ easy:{win:950,gap:450,badP:0.15}, normal:{win:750,gap:350,badP:0.25}, hard:{win:560,gap:280,badP:0.32} };
+const WK = {
+  diff:'normal', score:0, combo:0, maxCombo:0, hits:0,
+  timeLeft:60, timer:null, spawnT:null, hideT:null,
+  active:-1, isBad:false, running:false,
+  best:bt_loadBest('brain.whack.best')
+};
+function WK_DIFF_LABEL(d){ return d==='easy'?t('whack.easy'):d==='normal'?t('whack.normal'):t('whack.hard'); }
+function wkUpdateBestLine(){ const el=document.getElementById('wk-intro-best'); if(el) el.textContent=bt_bestLineText(WK.best, WK.diff); }
+function setWhackDiff(d){
+  WK.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('wk-diff-'+k).classList.toggle('active',k===d));
+  wkUpdateBestLine();
+}
+function wkClearTimers(){ clearTimeout(WK.spawnT); clearTimeout(WK.hideT); }
+function startWhack(){
+  WK.score=0; WK.combo=0; WK.maxCombo=0; WK.hits=0; WK.timeLeft=60; WK.running=true; WK.active=-1;
+  document.getElementById('whack-intro-card').style.display='none';
+  document.getElementById('whack-result-card').style.display='none';
+  document.getElementById('whack-game-card').style.display='block';
+  const board=document.getElementById('wk-board'); board.innerHTML='';
+  for(let i=0;i<9;i++){
+    const c=document.createElement('button');
+    c.className='wk-cell'; c.id='wk-cell-'+i; c.onclick=()=>wkTap(i);
+    c.innerHTML='<span class="wk-hole"></span><span class="wk-sprite" id="wk-sp-'+i+'"></span>';
+    board.appendChild(c);
+  }
+  wkUpdateStats(); updateWkTimer();
+  clearInterval(WK.timer); wkClearTimers();
+  WK.timer=setInterval(wkTick,1000);
+  WK.spawnT=setTimeout(wkSpawn, 500);
+}
+function wkTick(){
+  if(!WK.running) return;
+  WK.timeLeft--; updateWkTimer();
+  if(WK.timeLeft<=0){ WK.timeLeft=0; updateWkTimer(); finishWhack(); }
+}
+function updateWkTimer(){
+  const m=Math.floor(WK.timeLeft/60), s=WK.timeLeft%60;
+  const el=document.getElementById('wk-timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warn', WK.timeLeft<=10);
+}
+function wkUpdateStats(){
+  document.getElementById('wk-score').textContent=WK.score;
+  document.getElementById('wk-combo').textContent=WK.combo;
+}
+function wkSpawn(){
+  if(!WK.running) return;
+  let idx; do{ idx=Math.floor(Math.random()*9); }while(idx===WK.active);
+  WK.active=idx; WK.isBad=Math.random()<WK_CFG[WK.diff].badP;
+  const sp=document.getElementById('wk-sp-'+idx);
+  if(WK.isBad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
+  else{ sp.className='wk-sprite'; sp.innerHTML='<img src="mallow-chan.png" alt="">'; }
+  document.getElementById('wk-cell-'+idx).classList.add('up');
+  WK.hideT=setTimeout(()=>{
+    // 시간 내 못 잡음: 말로우면 콤보 리셋
+    if(!WK.isBad) WK.combo=0, wkUpdateStats();
+    wkHide();
+  }, WK_CFG[WK.diff].win);
+}
+function wkHide(){
+  if(WK.active>=0){
+    const c=document.getElementById('wk-cell-'+WK.active); if(c) c.classList.remove('up');
+  }
+  WK.active=-1;
+  WK.spawnT=setTimeout(wkSpawn, WK_CFG[WK.diff].gap);
+}
+function wkTap(i){
+  if(!WK.running || i!==WK.active) return;
+  clearTimeout(WK.hideT);
+  if(WK.isBad){
+    sfx('bad'); WK.combo=0;
+    WK.timeLeft=Math.max(0, WK.timeLeft-3); updateWkTimer();
+  }else{
+    sfx('good'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
+    WK.score += 10 + (WK.combo-1)*2;
+  }
+  wkUpdateStats(); wkHide();
+}
+function finishWhack(){
+  clearInterval(WK.timer); wkClearTimers(); WK.running=false;
+  const newRec=bt_recordScore(WK.best, WK.diff, WK.score); bt_saveBest('brain.whack.best', WK.best);
+  missionMark('whack');
+  document.getElementById('whack-game-card').style.display='none';
+  document.getElementById('whack-result-card').style.display='block';
+  document.getElementById('wk-result-emoji').textContent=newRec?'🏆':'⏰';
+  document.getElementById('wk-result-title').textContent=newRec?t('whack.newRecord'):t('whack.timeOver');
+  document.getElementById('wk-result-score').textContent=WK.score;
+  document.getElementById('wk-r-diff').textContent=WK_DIFF_LABEL(WK.diff);
+  document.getElementById('wk-r-hits').textContent=WK.hits;
+  document.getElementById('wk-r-combo').textContent=WK.maxCombo;
+  document.getElementById('wk-r-best').textContent=WK.best[WK.diff].all;
+}
+function leaveWhack(){
+  if(WK.running && !confirm(t('whack.confirmLeave'))) return;
+  clearInterval(WK.timer); wkClearTimers(); WK.running=false; resetWhack();
+}
+function resetWhack(){
+  clearInterval(WK.timer); wkClearTimers(); WK.running=false;
+  document.getElementById('whack-result-card').style.display='none';
+  document.getElementById('whack-game-card').style.display='none';
+  document.getElementById('whack-intro-card').style.display='block';
+  wkUpdateBestLine();
+}
+
+// ========== 멜로디 기억 (Melody / 청각·순차기억) ==========
+const ML_CFG={ easy:{start:2,speed:620}, normal:{start:3,speed:500}, hard:{start:4,speed:400} };
+const ML_FREQ=[262,330,392,494]; // C4 E4 G4 B4
+const ML = {
+  diff:'normal', len:3, seq:[], pos:0,
+  score:0, lives:3, maxLen:0,
+  playing:false, running:false, timers:[],
+  best:bt_loadBest('brain.melody.best')
+};
+function ML_DIFF_LABEL(d){ return d==='easy'?t('melody.easy'):d==='normal'?t('melody.normal'):t('melody.hard'); }
+function mlUpdateBestLine(){ const el=document.getElementById('ml-intro-best'); if(el) el.textContent=bt_bestLineText(ML.best, ML.diff); }
+function setMelodyDiff(d){
+  ML.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('ml-diff-'+k).classList.toggle('active',k===d));
+  mlUpdateBestLine();
+}
+function mlClearTimers(){ ML.timers.forEach(clearTimeout); ML.timers=[]; }
+function mlUpdateStats(){
+  document.getElementById('ml-score').textContent=ML.score;
+  document.getElementById('ml-level').textContent=ML.len;
+  document.getElementById('ml-life').textContent='♥'.repeat(ML.lives)+'♡'.repeat(3-ML.lives);
+}
+function mlSetStatus(key,cls){ const el=document.getElementById('ml-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function mlFlash(i,dur){
+  const p=document.querySelector('.ml-p'+i); if(!p) return;
+  p.classList.add('lit');
+  if(sndOn()) _beep(ML_FREQ[i], Math.min(dur/1000*0.8,0.35), 'sine', 0.15);
+  ML.timers.push(setTimeout(()=>p.classList.remove('lit'), dur*0.7));
+}
+function startMelody(){
+  ML.len=ML_CFG[ML.diff].start; ML.score=0; ML.lives=3; ML.maxLen=0; ML.running=true;
+  document.getElementById('melody-intro-card').style.display='none';
+  document.getElementById('melody-result-card').style.display='none';
+  document.getElementById('melody-game-card').style.display='block';
+  mlUpdateStats(); mlNewRound();
+}
+function mlNewRound(){
+  mlClearTimers();
+  ML.seq=Array.from({length:ML.len},()=>Math.floor(Math.random()*4));
+  ML.pos=0; ML.playing=true;
+  mlSetStatus('melody.listen'); mlUpdateStats();
+  const sp=ML_CFG[ML.diff].speed;
+  ML.seq.forEach((v,i)=>{ ML.timers.push(setTimeout(()=>mlFlash(v,sp), 600+i*sp)); });
+  ML.timers.push(setTimeout(()=>{ ML.playing=false; mlSetStatus('melody.repeat'); }, 600+ML.seq.length*sp));
+}
+function mlTap(i){
+  if(!ML.running || ML.playing) return;
+  mlFlash(i, 260);
+  if(i===ML.seq[ML.pos]){
+    ML.pos++;
+    if(ML.pos>=ML.seq.length){ // 라운드 성공
+      ML.playing=true;
+      ML.score += ML.len*10; ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
+      mlSetStatus('melody.goodRound','good'); mlUpdateStats(); sfx('good');
+      ML.timers.push(setTimeout(mlNewRound, 900));
+    }
+  }else{
+    ML.playing=true; ML.lives--; sfx('bad');
+    mlSetStatus('melody.missRound','bad'); mlUpdateStats();
+    if(ML.lives<=0){ ML.timers.push(setTimeout(finishMelody, 900)); }
+    else{ ML.timers.push(setTimeout(mlNewRound, 1100)); }
+  }
+}
+function finishMelody(){
+  mlClearTimers(); ML.running=false; ML.playing=false;
+  const newRec=bt_recordScore(ML.best, ML.diff, ML.score); bt_saveBest('brain.melody.best', ML.best);
+  missionMark('melody');
+  document.getElementById('melody-game-card').style.display='none';
+  document.getElementById('melody-result-card').style.display='block';
+  document.getElementById('ml-result-emoji').textContent=newRec?'🏆':'🎵';
+  document.getElementById('ml-result-title').textContent=newRec?t('melody.newRecord'):t('melody.gameOver');
+  document.getElementById('ml-result-score').textContent=ML.score;
+  document.getElementById('ml-r-diff').textContent=ML_DIFF_LABEL(ML.diff);
+  document.getElementById('ml-r-level').textContent=ML.maxLen;
+  document.getElementById('ml-r-best').textContent=ML.best[ML.diff].all;
+}
+function leaveMelody(){
+  if(ML.running && !confirm(t('melody.confirmLeave'))) return;
+  mlClearTimers(); ML.running=false; resetMelody();
+}
+function resetMelody(){
+  mlClearTimers(); ML.running=false; ML.playing=false;
+  document.getElementById('melody-result-card').style.display='none';
+  document.getElementById('melody-game-card').style.display='none';
+  document.getElementById('melody-intro-card').style.display='block';
+  mlUpdateBestLine();
 }
 
 // INIT

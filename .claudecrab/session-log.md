@@ -423,3 +423,591 @@ C:\Users\budlo\ClaudeCrab\claude-config\plans\distributed-knitting-map.md
 ## Open questions
 - 사용자 결정 대기: Phase A 실행(도메인명/배포/SEO/PWA) 착수 여부.
 
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T15:41:37.226105+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) Phase A 코드: Mallow 리브랜딩+SEO+PWA+?lang=. 사용자 playmallow.com 구매 진행 중.
+
+## Decisions
+- 브랜드 Mallow / 서브 "말랑말랑 두뇌게임" / 도메인 playmallow.com. 아이콘=파랑 라운드+M, OG 1200x630 생성(PIL).
+- sw.js=HTML network-first. manifest.webmanifest. robots/sitemap(hreflang ko/en/th). 언어: ?lang= → localStorage brain.lang.
+- 남은 것(사용자): 도메인 결제, Cloudflare Pages 연결(GitHub repo typing), Search Console/Naver Advisor/GA4 계정 등록.
+
+## Open questions
+- 도메인 구매 완료 여부 → 완료 시 배포 안내.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T15:45:58.362853+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T15:52:33.683407+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T15:55:08.264645+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T15:58:21.875915+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:00:08.490585+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:06:36.139098+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:08:43.415213+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:15:56.999057+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:20:02.572979+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:23:29.081707+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:28:01.548785+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T16:29:37.252590+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:05:08.016288+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:10:21.781892+00:00
+
+
+# Active Session State
+
+## Current task
+Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정. 호스팅 Vercel 유지 확정.
+
+## Decisions
+- 가비아 구매(정보보호 ON·자동연장 ON), Vercel 무료 유지. ⚠️Vercel Hobby=비상업 약관 → 수익화 시 CF Pages 전환.
+- DNS: A @→76.76.21.21, CNAME www→cname.vercel-dns.com.
+- 구매 완료 후 할 일: Vercel 도메인 연결 확인 → OG 미리보기/PWA 설치/robots·sitemap 접근 점검 → Search Console·네이버 어드바이저·GA4.
+
+## Open questions
+- 도메인 구매/Vercel 연결 완료 통보 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:14:18.043280+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:29:48.756279+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:37:43.122277+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T21:45:25.310267+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:25:15.046029+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:27:42.101608+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:42:54.434219+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:47:13.128790+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:55:50.054515+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:58:10.807400+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-09T23:59:22.066286+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T00:02:39.495542+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T00:10:55.724529+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T00:16:34.220925+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T00:36:18.663432+00:00
+
+
+# Active Session State
+
+## Current task
+🚀 2026-07-10 playmallow.com 출시 완료. 전체 점검 통과(200/308/OG/PWA/최신버전).
+
+## 남은 후속 (사용자 계정 필요)
+1. Google Search Console 등록(TXT→Vercel DNS) + sitemap.xml 제출
+2. 네이버 서치어드바이저 등록
+3. GA4(계정 만들면 코드 삽입은 내가)
+4. 폰에서 PWA '홈 화면에 추가' 테스트
+5. 시딩(블로그/지인) — 두뇌 유형 테스트 링크 중심
+
+## Open questions
+- 사용자 다음 지시 대기.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T00:46:43.295726+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 검토 5건: 사운드/햅틱, PWA설치버튼, 언어자동감지, 로고 홈버튼 배포(6a8ab3f) + CogniFit 분석(cognifit-분석.md).
+
+## Decisions
+- sfx(good/bad/win) WebAudio+vibrate, 토글 brain.sound, 핸들러 22곳+bt_recordScore/missionMark 훅.
+- 언어: ?lang > localStorage > navigator.language(ko/th/en). PWA: beforeinstallprompt+iOS힌트.
+- CogniFit 격차 = 협응·청각 축 → 제안: ①두더지잡기(말로우 팡팡, 마스코트 활용) ②멜로디 기억(사이먼, WebAudio 재사용) ③다른것찾기.
+
+## Open questions
+- 신규 게임 2종(두더지/멜로디) 착수 여부 사용자 결정.
+
