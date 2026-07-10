@@ -56,7 +56,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
   (`missionToday()` = 기억A/주의·속도B/유연·공간C 풀에서 1개씩). 홈 미션카드(3칩+진행 n/3), 각 게임 `finishXXX`가
   `missionMark(id)` 호출→localStorage `brain.mission`{date,done} 체크. 3개 완료 시 카드 완료상태.
   톤: **재미/휴식**("머리 식힐 겸 3판") — FTC 교훈대로 효능 단정 없음.
-- 게임/콘텐츠 **활성 13종**(2026-07-10 vocab/typing 소프트 비활성 — HOME_GAMES 주석 처리, 화면/JS/i18n은 보존, 재활성=주석 해제).
+- 게임/콘텐츠 **활성 16종(2026-07-10 버블 포함)**(2026-07-10 vocab/typing 소프트 비활성 — HOME_GAMES 주석 처리, 화면/JS/i18n은 보존, 재활성=주석 해제).
   비활성 사유: 두뇌게임 포지셔닝 불일치 + en/th 미대응. braintype 언어가형 추천은 vocab→nback으로 변경됨.
   축: 계산·타이핑·논리 / 기억(순간·인원·엔백·카드) / 주의·속도(스트룹·순서·반응) / 유연성 / 공간지각 / 언어 / 바이럴 + 홈.
 - **두뇌 능력치(2026-07-06)**: 내 기록에 7능력 레이더+막대(ABILITY_MAP 가중치·GAME_REF 정규화, brain.ability.base 주간성장). 막대 탭→기여게임. saveFlatBest로 math/iq/vocab/sudoku/typing 최고점 저장(brain.<id>.flat). IQ점수=55+정답률^1.3*75+속도*15(55~145). FTC: '게임 수행 기반·실제 지능 아님'.
@@ -77,6 +77,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   본체 진입은 `?game=<id>` 딥링크(screen-<id> 존재 검증). 홈 하단 .site-footer 내부링크(ko에서만 표시). sitemap 등재.
 - **공유카드 v2(2026-07-10)**: makeShareCard = 그라데이션 배경+흰 카드+다크 텍스트, 상단 마스코트(_mascotImg 프리로드,
   pixelated)+Mallow, lines[0]=포인트색 대형 점수, 하단 playmallow.com 워터마크 강조. API(o.emoji/title/lines/desc/note) 불변.
+- **신규(2026-07-10): 버블 톡톡(bubble)** → 계산 축(cat.calc) 2호. 파스텔 버블 탭으로 목표 합 만들기(Number Sum류, 토스 금고팡 참고).
+  60초, 정답 부분집합 선생성으로 목표 항상 달성 가능(54,000판 시뮬 검증), 3판마다 조합 길이+1·판마다 숫자+2 난이도 상승,
+  초과=콤보 리셋(시간 페널티 없음). `BB` 객체, `brain.bubble.best`, 도전장(CH_GAMES)·공유·능력치(calc60/logic25/speed15, REF 350) 연동. 활성 16종.
 - 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 개인정보처리방침.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 

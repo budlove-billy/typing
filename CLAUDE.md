@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-10 — **버블 톡톡(bubble)**: 계산 축 신규 — 버블 숫자로 목표 합 만들기(단계별 난이도↑). 파스텔 버블·팝 연출,
+  기록/공유/도전장/능력치 연동. 판 생성 불변식 시뮬 검증. 활성 16종.
+
 - 2026-07-10 — **리뷰 반영 3종**: ① 키워드 랜딩 `/sudoku/` `/iq-test/` `/braintype/`(+`?game=` 딥링크, 홈 푸터 내부링크, sitemap)
   ② 도전장 링크(`?c=game.score.diff`, 11종 결과 버튼→공유, 수신 배너+승패 판정) ③ 공유카드 v2(흰 카드+마스코트+점수 강조).
 

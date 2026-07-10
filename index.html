@@ -402,6 +402,27 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ch-result{font-weight:800;text-align:center;border-radius:var(--radius);padding:.55rem;margin-bottom:.75rem;font-size:1.02rem}
 .ch-result.win{background:var(--teal3);color:var(--teal2)}
 .ch-result.lose{background:var(--amber3);color:var(--amber2)}
+/* 버블 톡톡 */
+.bb-target-wrap{display:flex;align-items:flex-end;justify-content:center;gap:.5rem;margin-bottom:.6rem}
+.bb-mascot{height:44px;image-rendering:pixelated}
+.bb-target-bubble{background:linear-gradient(135deg,#4f7cff,#6e92ff);color:#fff;border-radius:22px;padding:.5rem 1.4rem;text-align:center;box-shadow:0 4px 14px rgba(79,124,255,.28)}
+.bb-target-label{font-size:.68rem;opacity:.85;font-weight:600;letter-spacing:.05em}
+.bb-target-num{font-size:1.75rem;font-weight:800;line-height:1.1}
+.bb-current{font-size:.95rem;font-weight:700;color:var(--purple);text-align:center;margin-bottom:.9rem;min-height:1.3em}
+.bb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;max-width:420px;margin:0 auto}
+.bb-bubble{position:relative;aspect-ratio:1/1;border-radius:50%;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(1.1rem,5vw,1.5rem);box-shadow:inset -4px -6px 10px rgba(0,0,0,.06),0 3px 8px rgba(24,34,53,.10);transition:transform .12s;animation:bbFloat 3.2s ease-in-out infinite}
+.bb-bubble::after{content:"";position:absolute;top:13%;left:18%;width:28%;height:18%;background:rgba(255,255,255,.85);border-radius:50%;filter:blur(1px);pointer-events:none}
+.bb-bubble.sel{transform:scale(1.12);box-shadow:0 0 0 3px var(--purple),0 5px 14px rgba(79,124,255,.35);animation:none}
+.bb-bubble.pop{animation:bbPop .4s ease forwards}
+.bb-bubble.over{animation:bbShake .3s ease 1}
+.bb-c0{background:#ffdfe7;color:#c2506e}
+.bb-c1{background:#d9e8ff;color:#3a6bc9}
+.bb-c2{background:#fff0c9;color:#b07d1e}
+.bb-c3{background:#d9f4e4;color:#1f9a67}
+.bb-c4{background:#eadffb;color:#7a4fc9}
+@keyframes bbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes bbPop{0%{transform:scale(1);opacity:1}55%{transform:scale(1.4);opacity:.75}100%{transform:scale(0);opacity:0}}
+@keyframes bbShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1148,6 +1169,60 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 </div>
 
 <!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<!-- ==================== BUBBLE SUM GAME (버블 톡톡 / 계산) ==================== -->
+<div class="screen" id="screen-bubble">
+  <div class="card" id="bubble-intro-card">
+    <div class="section-head"><h2 data-i18n="bubble.title">버블 톡톡</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="bubble.intro">
+      버블 속 숫자를 눌러 <b>목표 숫자와 똑같은 합</b>을 만드세요!<br>
+      합이 목표를 넘으면 실패 — 판을 깰수록 숫자가 커지고 조합이 길어집니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="bb-diff-easy" onclick="setBubbleDiff('easy')">
+        <h3>🌱 <span data-i18n="bubble.easy">쉬움</span></h3><p data-i18n="bubble.easyDesc">버블 8개·2개 조합</p>
+      </div>
+      <div class="diff-btn active" id="bb-diff-normal" onclick="setBubbleDiff('normal')">
+        <h3>⚡ <span data-i18n="bubble.normal">보통</span></h3><p data-i18n="bubble.normalDesc">버블 10개·2~3개</p>
+      </div>
+      <div class="diff-btn" id="bb-diff-hard" onclick="setBubbleDiff('hard')">
+        <h3>🔥 <span data-i18n="bubble.hard">어려움</span></h3><p data-i18n="bubble.hardDesc">버블 12개·3~4개</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startBubble()" data-i18n="bubble.startGame">게임 시작</button>
+    <div class="best-line" id="bb-intro-best"></div>
+  </div>
+
+  <div class="card" id="bubble-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="bubble.score">SCORE</div><div class="mg-stat-value" id="bb-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="bubble.combo">COMBO</div><div class="mg-stat-value" id="bb-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="bb-timer">01:00</div></div>
+    <div class="bb-target-wrap">
+      <img src="mallow-chan.png" alt="" class="bb-mascot">
+      <div class="bb-target-bubble"><div class="bb-target-label" data-i18n="bubble.target">목표</div><div class="bb-target-num" id="bb-target">30</div></div>
+    </div>
+    <div class="bb-current" id="bb-current">&nbsp;</div>
+    <div class="bb-grid" id="bb-grid"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveBubble()" data-i18n="bubble.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="bubble-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="bb-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="bb-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="bb-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="bubble.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="bubble.difficulty">난이도</span><span id="bb-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="bubble.rounds">깬 판</span><span id="bb-r-rounds">0</span></div>
+    <div class="result-row"><span data-i18n="bubble.maxCombo">최고 콤보</span><span id="bb-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="bubble.best">최고 기록</span><span id="bb-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetBubble()" data-i18n="bubble.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('bubble')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('bubble')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <div class="screen" id="screen-braintype">
   <div class="card" id="bt-intro-card">
     <div class="section-head"><h2 data-i18n="braintype.title">두뇌 유형 테스트</h2></div>
@@ -1600,6 +1675,31 @@ const I18N = {
   "ch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
   "ch.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
   "ch.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "nav.bubble": {ko:"버블 톡톡", en:"Bubble Sum", th:"บับเบิลบวก"},
+  "bubble.title": {ko:"버블 톡톡", en:"Bubble Sum", th:"บับเบิลบวก"},
+  "bubble.intro": {ko:"버블 속 숫자를 눌러 <b>목표 숫자와 똑같은 합</b>을 만드세요!<br>합이 목표를 넘으면 실패 — 판을 깰수록 숫자가 커지고 조합이 길어집니다.", en:"Tap number bubbles to <b>match the target sum</b> exactly!<br>Going over the target fails. Boards grow harder as you clear them.", th:"แตะฟองตัวเลขให้<b>รวมได้เท่ากับเป้าหมาย</b>พอดี!<br>ถ้าเกินเป้าถือว่าพลาด — ยิ่งผ่านด่าน ตัวเลขยิ่งใหญ่และชุดยิ่งยาว"},
+  "bubble.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "bubble.easyDesc": {ko:"버블 8개·2개 조합", en:"8 bubbles · pairs", th:"8 ฟอง · จับคู่"},
+  "bubble.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "bubble.normalDesc": {ko:"버블 10개·2~3개", en:"10 bubbles · 2–3", th:"10 ฟอง · 2–3"},
+  "bubble.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "bubble.hardDesc": {ko:"버블 12개·3~4개", en:"12 bubbles · 3–4", th:"12 ฟอง · 3–4"},
+  "bubble.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "bubble.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "bubble.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "bubble.target": {ko:"목표", en:"TARGET", th:"เป้าหมาย"},
+  "bubble.current": {ko:"현재 합", en:"Current", th:"ผลรวม"},
+  "bubble.over": {ko:"앗, 넘었어요!", en:"Oops, over!", th:"โอ๊ะ เกินแล้ว!"},
+  "bubble.clear": {ko:"딱 맞았어요!", en:"Perfect!", th:"เป๊ะเลย!"},
+  "bubble.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "bubble.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "bubble.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "bubble.rounds": {ko:"깬 판", en:"Boards cleared", th:"ด่านที่ผ่าน"},
+  "bubble.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"},
+  "bubble.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "bubble.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
+  "bubble.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
+  "bubble.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "cat.daily": {ko:"오늘의 퍼즐", en:"Daily Puzzle", th:"ปริศนารายวัน"},
   "about.p1": {ko:"Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 13가지 미니게임을 제공합니다.", en:"Mallow is a free collection of brain games you can play instantly — no signup. Memory games (flash memory, card match, N-back), focus games (Stroop, rule switch), speed games (reaction, number trail), spatial rotation, mental math, Sudoku, and an IQ quiz — 13 mini games in all.", th:"Mallow คือรวมเกมสมองฟรี เล่นได้ทันทีไม่ต้องสมัคร มีเกมความจำ (ความจำฉับพลัน จับคู่การ์ด เอ็นแบ็ก) เกมสมาธิ (สตรูป สลับกฎ) เกมความไว (ตอบสนอง เชื่อมตัวเลข) หมุนภาพ คิดเลขเร็ว ซูโดกุ และควิซไอคิว รวม 13 เกม"},
   "about.p2": {ko:"매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.", en:"Unwind with 3 daily mission games and track your growth with best scores and brain stats. No install, no login.", th:"พักสมองกับภารกิจ 3 เกมที่เปลี่ยนทุกวัน และดูพัฒนาการผ่านสถิติกับกราฟค่าพลังสมอง ไม่ต้องติดตั้ง ไม่ต้องล็อกอิน"},
@@ -2305,7 +2405,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4447,15 +4547,137 @@ function gameShare(game){
   else if(game==='react') o={emoji:'⏱️', title:t('react.title'),  from:'#15a040', to:'#2255d0', lines:[t('react.score')+'  '+RC.score, t('react.avgRt')+'  '+(RC.rtCount?Math.round(RC.rtSum/RC.rtCount)+'ms':'-')]};
   else if(game==='whack') o={emoji:'🔨', title:t('whack.title'),  from:'#f0b429', to:'#e0475a', lines:[t('whack.score')+'  '+WK.score, t('whack.hits')+'  '+WK.hits]};
   else if(game==='melody')o={emoji:'🎵', title:t('melody.title'), from:'#2fb96a', to:'#4f7cff', lines:[t('melody.score')+'  '+ML.score, t('melody.maxLevel')+'  '+ML.maxLen]};
+  else if(game==='bubble')o={emoji:'🫧', title:t('bubble.title'), from:'#5aa7f0', to:'#a06ef8', lines:[t('bubble.score')+'  '+BB.score, t('bubble.rounds')+'  '+BB.rounds]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
 }
 
+// ========== 버블 톡톡 (목표 합 만들기 / 계산) ==========
+const BB_CFG={ easy:{n:8,kMin:2,kMax:2,valMax:9}, normal:{n:10,kMin:2,kMax:3,valMax:12}, hard:{n:12,kMin:3,kMax:4,valMax:15} };
+const BB_TIME=60;
+const BB={ diff:'normal', score:0, combo:0, maxCombo:0, rounds:0, level:1,
+  timeLeft:BB_TIME, timer:null, running:false, lock:false,
+  target:0, vals:[], sel:[],
+  best:bt_loadBest('brain.bubble.best') };
+function BB_DIFF_LABEL(d){ return d==='easy'?t('bubble.easy'):d==='hard'?t('bubble.hard'):t('bubble.normal'); }
+function bbUpdateBestLine(){ const el=document.getElementById('bb-intro-best'); if(el) el.textContent=bt_bestLineText(BB.best, BB.diff); }
+function setBubbleDiff(d){
+  BB.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('bb-diff-'+k).classList.toggle('active',k===d));
+  bbUpdateBestLine();
+}
+// 판 생성: 정답 부분집합을 먼저 만들어 목표가 항상 달성 가능함을 보장
+function bbGen(){
+  const cfg=BB_CFG[BB.diff];
+  const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+  const k=Math.min(cfg.kMax, cfg.kMin+Math.floor((BB.level-1)/3)); // 3판마다 조합 길이 +1 (난이도 상한)
+  const vmax=Math.min(99, cfg.valMax+(BB.level-1)*2);              // 판마다 숫자 크기 증가
+  const ans=[]; for(let i=0;i<k;i++) ans.push(rnd(1,vmax));
+  const target=ans.reduce((a,b)=>a+b,0);
+  const vals=ans.slice();
+  while(vals.length<cfg.n) vals.push(rnd(1,vmax));
+  shuffleArr(vals);
+  return {target:target, vals:vals};
+}
+function bbUpdateStats(){
+  document.getElementById('bb-score').textContent=BB.score;
+  document.getElementById('bb-combo').textContent=BB.combo;
+}
+function bbUpdateTimer(){
+  const el=document.getElementById('bb-timer');
+  const m=Math.floor(BB.timeLeft/60), sec=BB.timeLeft%60;
+  el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  el.style.color = BB.timeLeft<=10 ? 'var(--red)' : '';
+}
+function bbSum(){ return BB.sel.reduce((a,i)=>a+BB.vals[i],0); }
+function bbCurrentLine(){
+  const el=document.getElementById('bb-current');
+  el.textContent = BB.sel.length ? (t('bubble.current')+' '+bbSum()) : '\u00a0';
+  el.style.color='';
+}
+function bbNewRound(){
+  const g=bbGen();
+  BB.target=g.target; BB.vals=g.vals; BB.sel=[]; BB.lock=false;
+  document.getElementById('bb-target').textContent=BB.target;
+  const grid=document.getElementById('bb-grid'); grid.innerHTML='';
+  BB.vals.forEach((v,i)=>{
+    const b=document.createElement('button');
+    b.className='bb-bubble bb-c'+(i%5); b.textContent=v;
+    b.style.animationDelay=(i*0.22)+'s';
+    b.onclick=()=>bbTap(i,b);
+    grid.appendChild(b);
+  });
+  bbCurrentLine();
+}
+function bbTap(i,el){
+  if(!BB.running||BB.lock) return;
+  const at=BB.sel.indexOf(i);
+  if(at>=0){ BB.sel.splice(at,1); el.classList.remove('sel'); _beep(420,0.05,'sine',0.12); bbCurrentLine(); return; }
+  BB.sel.push(i); el.classList.add('sel'); _beep(660,0.05,'sine',0.15);
+  bbCurrentLine();
+  const sum=bbSum();
+  if(sum===BB.target){
+    BB.lock=true;
+    BB.combo++; BB.maxCombo=Math.max(BB.maxCombo,BB.combo);
+    BB.score += 10 + (BB.combo-1)*2;
+    BB.rounds++; BB.level++;
+    sfx('good'); bbUpdateStats();
+    const cur=document.getElementById('bb-current'); cur.textContent='🫧 '+t('bubble.clear'); cur.style.color='var(--teal2)';
+    document.querySelectorAll('#bb-grid .bb-bubble').forEach((b,bi)=>{ if(BB.sel.includes(bi)) b.classList.add('pop'); });
+    setTimeout(()=>{ if(BB.running) bbNewRound(); },450);
+  }else if(sum>BB.target){
+    BB.lock=true;
+    BB.combo=0; sfx('bad'); bbUpdateStats();
+    const cur=document.getElementById('bb-current'); cur.textContent=t('bubble.over')+' ('+sum+')'; cur.style.color='var(--red)';
+    document.querySelectorAll('#bb-grid .bb-bubble.sel').forEach(b=>b.classList.add('over'));
+    setTimeout(()=>{
+      document.querySelectorAll('#bb-grid .bb-bubble').forEach(b=>b.classList.remove('sel','over'));
+      BB.sel=[]; BB.lock=false; bbCurrentLine();
+    },420);
+  }
+}
+function startBubble(){
+  BB.score=0; BB.combo=0; BB.maxCombo=0; BB.rounds=0; BB.level=1;
+  BB.timeLeft=BB_TIME; BB.running=true;
+  document.getElementById('bubble-intro-card').style.display='none';
+  document.getElementById('bubble-result-card').style.display='none';
+  document.getElementById('bubble-game-card').style.display='block';
+  bbUpdateStats(); bbUpdateTimer(); bbNewRound();
+  clearInterval(BB.timer);
+  BB.timer=setInterval(()=>{
+    BB.timeLeft--; bbUpdateTimer();
+    if(BB.timeLeft<=0) finishBubble();
+  },1000);
+}
+function finishBubble(){
+  clearInterval(BB.timer); BB.running=false;
+  const newRec=bt_recordScore(BB.best, BB.diff, BB.score); bt_saveBest('brain.bubble.best', BB.best);
+  missionMark('bubble');
+  document.getElementById('bubble-game-card').style.display='none';
+  document.getElementById('bubble-result-card').style.display='block';
+  document.getElementById('bb-result-emoji').textContent=newRec?'🏆':'🫧';
+  document.getElementById('bb-result-title').textContent=newRec?t('bubble.newRecord'):t('bubble.timeOver');
+  document.getElementById('bb-result-score').textContent=BB.score;
+  document.getElementById('bb-r-diff').textContent=BB_DIFF_LABEL(BB.diff);
+  document.getElementById('bb-r-rounds').textContent=BB.rounds;
+  document.getElementById('bb-r-combo').textContent=BB.maxCombo;
+  document.getElementById('bb-r-best').textContent=BB.best[BB.diff].all;
+  bbUpdateBestLine();
+}
+function leaveBubble(){ resetBubble(); showScreen('games'); }
+function resetBubble(){
+  clearInterval(BB.timer); BB.running=false; BB.sel=[];
+  const g=document.getElementById('bubble-game-card'); if(g) g.style.display='none';
+  const r=document.getElementById('bubble-result-card'); if(r) r.style.display='none';
+  const i=document.getElementById('bubble-intro-card'); if(i) i.style.display='block';
+  bbUpdateBestLine();
+}
+
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -4510,6 +4732,7 @@ const HOME_GAMES=[
   {id:'melody', emoji:'🎵', key:'nav.melody', best:'brain.melody.best', grp:'cat.sound'},
   {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'cat.space'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
+  {id:'bubble', emoji:'🫧', key:'nav.bubble', best:'brain.bubble.best', grp:'cat.calc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
   {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'cat.logic'},
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
@@ -4643,10 +4866,10 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
