@@ -1450,13 +1450,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </p>
     <div class="difficulty-row">
       <div class="diff-btn" id="wk-diff-easy" onclick="setWhackDiff('easy')">
-        <h3>🌱 <span data-i18n="whack.easy">쉬움</span></h3><p data-i18n="whack.easyDesc">천천히·폭탄 적음</p>
+        <h3>🌱 <span data-i18n="whack.easy">쉬움</span></h3><p data-i18n="whack.easyDesc">한 마리씩·천천히</p>
       </div>
       <div class="diff-btn active" id="wk-diff-normal" onclick="setWhackDiff('normal')">
-        <h3>⚡ <span data-i18n="whack.normal">보통</span></h3><p data-i18n="whack.normalDesc">기본 속도</p>
+        <h3>⚡ <span data-i18n="whack.normal">보통</span></h3><p data-i18n="whack.normalDesc">동시 2마리</p>
       </div>
       <div class="diff-btn" id="wk-diff-hard" onclick="setWhackDiff('hard')">
-        <h3>🔥 <span data-i18n="whack.hard">어려움</span></h3><p data-i18n="whack.hardDesc">빠름·폭탄 많음</p>
+        <h3>🔥 <span data-i18n="whack.hard">어려움</span></h3><p data-i18n="whack.hardDesc">동시 3마리·폭탄 많음</p>
       </div>
     </div>
     <button class="btn" onclick="startWhack()" data-i18n="whack.startGame">게임 시작</button>
@@ -1972,11 +1972,11 @@ const I18N = {
   "whack.title": {ko:"말로우 팡팡", en:"Mallow Pop", th:"ตีมัลโลว์"},
   "whack.intro": {ko:"구멍에서 튀어나오는 <b>말로우를 빠르게 탭</b>하세요!<br>단, <b>폭탄(💣)은 절대 누르면 안 돼요.</b> 60초 안에 최대한 많이!", en:"Tap the <b>Mallow popping out of the holes</b> as fast as you can!<br>But <b>never tap the bomb (💣)</b>. Score as much as you can in 60s!", th:"แตะ <b>มัลโลว์ที่โผล่จากหลุม</b> ให้เร็วที่สุด!<br>แต่ <b>ห้ามแตะระเบิด (💣)</b> เด็ดขาด ทำคะแนนให้มากที่สุดใน 60 วินาที!"},
   "whack.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
-  "whack.easyDesc": {ko:"천천히·폭탄 적음", en:"Slow · few bombs", th:"ช้า·ระเบิดน้อย"},
+  "whack.easyDesc": {ko:"한 마리씩·천천히", en:"One at a time · slow", th:"ทีละตัว·ช้า"},
   "whack.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
-  "whack.normalDesc": {ko:"기본 속도", en:"Standard", th:"มาตรฐาน"},
+  "whack.normalDesc": {ko:"동시 2마리", en:"Up to 2 at once", th:"พร้อมกัน 2 ตัว"},
   "whack.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
-  "whack.hardDesc": {ko:"빠름·폭탄 많음", en:"Fast · many bombs", th:"เร็ว·ระเบิดมาก"},
+  "whack.hardDesc": {ko:"동시 3마리·폭탄 많음", en:"Up to 3 · many bombs", th:"พร้อมกัน 3·ระเบิดมาก"},
   "whack.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "whack.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "whack.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
@@ -5150,11 +5150,11 @@ function resetReact(){
 }
 
 // ========== 말로우 팡팡 (Whack / 협응·반응억제) ==========
-const WK_CFG={ easy:{win:950,gap:450,badP:0.15}, normal:{win:750,gap:350,badP:0.25}, hard:{win:560,gap:280,badP:0.32} };
+const WK_CFG={ easy:{max:1,win:950,gap:600,badP:0.15}, normal:{max:2,win:820,gap:420,badP:0.22}, hard:{max:3,win:780,gap:260,badP:0.28} };
 const WK = {
   diff:'normal', score:0, combo:0, maxCombo:0, hits:0,
-  timeLeft:60, timer:null, spawnT:null, hideT:null, cdT:[],
-  active:-1, isBad:false, running:false,
+  timeLeft:60, timer:null, spawnT:null, cdT:[],
+  slots:{}, running:false,
   best:bt_loadBest('brain.whack.best')
 };
 function WK_DIFF_LABEL(d){ return d==='easy'?t('whack.easy'):d==='normal'?t('whack.normal'):t('whack.hard'); }
@@ -5164,9 +5164,9 @@ function setWhackDiff(d){
   ['easy','normal','hard'].forEach(k=>document.getElementById('wk-diff-'+k).classList.toggle('active',k===d));
   wkUpdateBestLine();
 }
-function wkClearTimers(){ clearTimeout(WK.spawnT); clearTimeout(WK.hideT); WK.cdT.forEach(clearTimeout); WK.cdT=[]; }
+function wkClearTimers(){ clearTimeout(WK.spawnT); Object.values(WK.slots).forEach(sl=>clearTimeout(sl.hideT)); WK.slots={}; WK.cdT.forEach(clearTimeout); WK.cdT=[]; }
 function startWhack(){
-  WK.score=0; WK.combo=0; WK.maxCombo=0; WK.hits=0; WK.timeLeft=60; WK.running=false; WK.active=-1;
+  WK.score=0; WK.combo=0; WK.maxCombo=0; WK.hits=0; WK.timeLeft=60; WK.running=false; WK.slots={};
   document.getElementById('whack-intro-card').style.display='none';
   document.getElementById('whack-result-card').style.display='none';
   document.getElementById('whack-game-card').style.display='block';
@@ -5211,36 +5211,40 @@ function wkUpdateStats(){
 }
 function wkSpawn(){
   if(!WK.running) return;
-  let idx; do{ idx=Math.floor(Math.random()*9); }while(idx===WK.active);
-  WK.active=idx; WK.isBad=Math.random()<WK_CFG[WK.diff].badP;
-  const sp=document.getElementById('wk-sp-'+idx);
-  if(WK.isBad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
-  else{ sp.className='wk-sprite'; sp.innerHTML='<img src="mallow-chan.png" alt="">'; }
-  document.getElementById('wk-cell-'+idx).classList.add('up');
-  WK.hideT=setTimeout(()=>{
-    // 시간 내 못 잡음: 말로우면 콤보 리셋
-    if(!WK.isBad) WK.combo=0, wkUpdateStats();
-    wkHide();
-  }, WK_CFG[WK.diff].win);
-}
-function wkHide(){
-  if(WK.active>=0){
-    const c=document.getElementById('wk-cell-'+WK.active); if(c) c.classList.remove('up');
+  const cfg=WK_CFG[WK.diff];
+  const activeIdx=Object.keys(WK.slots).map(Number);
+  if(activeIdx.length < cfg.max){
+    // 빈 구멍 중 랜덤 선택 (연속 스폰 — 이미 나온 말로우와 겹쳐서 등장)
+    const free=[]; for(let i=0;i<9;i++) if(!WK.slots[i]) free.push(i);
+    const idx=free[Math.floor(Math.random()*free.length)];
+    const bad=Math.random()<cfg.badP;
+    const sp=document.getElementById('wk-sp-'+idx);
+    if(bad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
+    else{ sp.className='wk-sprite'; sp.innerHTML='<img src="mallow-chan.png" alt="">'; }
+    document.getElementById('wk-cell-'+idx).classList.add('up');
+    WK.slots[idx]={ bad, hideT:setTimeout(()=>{
+      if(!bad){ WK.combo=0; wkUpdateStats(); } // 말로우 놓침 → 콤보 리셋
+      wkRemove(idx);
+    }, cfg.win) };
   }
-  WK.active=-1;
-  WK.spawnT=setTimeout(wkSpawn, WK_CFG[WK.diff].gap);
+  WK.spawnT=setTimeout(wkSpawn, cfg.gap);
+}
+function wkRemove(idx){
+  const sl=WK.slots[idx]; if(!sl) return;
+  clearTimeout(sl.hideT); delete WK.slots[idx];
+  const c=document.getElementById('wk-cell-'+idx); if(c) c.classList.remove('up');
 }
 function wkTap(i){
-  if(!WK.running || i!==WK.active) return;
-  clearTimeout(WK.hideT);
-  if(WK.isBad){
+  if(!WK.running) return;
+  const sl=WK.slots[i]; if(!sl) return;
+  if(sl.bad){
     sfx('bad'); WK.combo=0;
     WK.timeLeft=Math.max(0, WK.timeLeft-3); updateWkTimer();
   }else{
     sfx('good'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
     WK.score += 10 + (WK.combo-1)*2;
   }
-  wkUpdateStats(); wkHide();
+  wkUpdateStats(); wkRemove(i);
 }
 function finishWhack(){
   clearInterval(WK.timer); wkClearTimers(); WK.running=false;
