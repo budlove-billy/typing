@@ -423,6 +423,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 @keyframes bbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes bbPop{0%{transform:scale(1);opacity:1}55%{transform:scale(1.4);opacity:.75}100%{transform:scale(0);opacity:0}}
 @keyframes bbShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* 다른 색 찾기 */
+.sp-grid{display:grid;gap:.45rem;max-width:400px;margin:0 auto}
+.sp-tile{aspect-ratio:1/1;border:none;border-radius:12px;cursor:pointer;transition:transform .1s;padding:0}
+.sp-tile:active{transform:scale(.94)}
+.sp-tile.miss{animation:bbShake .3s ease 1}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1177,6 +1182,58 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 </div>
 
 <!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<!-- ==================== SPOT COLOR GAME (다른 색 찾기 / 관찰) ==================== -->
+<div class="screen" id="screen-spot">
+  <div class="card" id="spot-intro-card">
+    <div class="section-head"><h2 data-i18n="spot.title">다른 색 찾기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="spot.intro">
+      타일 중 <b>딱 하나만 색이 미묘하게 달라요.</b> 그 타일을 찾아 누르세요!<br>
+      레벨이 오를수록 판이 커지고 색 차이가 줄어듭니다. 당신의 색감은 어디까지?
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="sp-diff-easy" onclick="setSpotDiff('easy')">
+        <h3>🌱 <span data-i18n="spot.easy">쉬움</span></h3><p data-i18n="spot.easyDesc">2×2 시작·차이 큼</p>
+      </div>
+      <div class="diff-btn active" id="sp-diff-normal" onclick="setSpotDiff('normal')">
+        <h3>⚡ <span data-i18n="spot.normal">보통</span></h3><p data-i18n="spot.normalDesc">3×3 시작·기본</p>
+      </div>
+      <div class="diff-btn" id="sp-diff-hard" onclick="setSpotDiff('hard')">
+        <h3>🔥 <span data-i18n="spot.hard">어려움</span></h3><p data-i18n="spot.hardDesc">4×4 시작·차이 작음</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startSpot()" data-i18n="spot.startGame">게임 시작</button>
+    <div class="best-line" id="sp-intro-best"></div>
+  </div>
+
+  <div class="card" id="spot-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="spot.score">SCORE</div><div class="mg-stat-value" id="sp-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="spot.level">LEVEL</div><div class="mg-stat-value" id="sp-level">1</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="spot.combo">COMBO</div><div class="mg-stat-value" id="sp-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="sp-timer">01:00</div></div>
+    <div class="gm-status" data-i18n="spot.guide">색이 다른 타일 하나를 찾아 누르세요</div>
+    <div class="sp-grid" id="sp-grid"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="leaveSpot()" data-i18n="spot.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="spot-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="sp-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="sp-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="sp-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="spot.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="spot.difficulty">난이도</span><span id="sp-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="spot.reachedLevel">도달 레벨</span><span id="sp-r-level">1</span></div>
+    <div class="result-row"><span data-i18n="spot.maxCombo">최고 콤보</span><span id="sp-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="spot.best">최고 기록</span><span id="sp-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSpot()" data-i18n="spot.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('spot')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('spot')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- ==================== BUBBLE SUM GAME (버블 톡톡 / 계산) ==================== -->
 <div class="screen" id="screen-bubble">
   <div class="card" id="bubble-intro-card">
@@ -1708,6 +1765,30 @@ const I18N = {
   "bubble.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "bubble.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
   "bubble.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.spot": {ko:"다른 색 찾기", en:"Odd Color Out", th:"หาสีที่ต่าง"},
+  "cat.sight": {ko:"관찰력", en:"Perception", th:"การสังเกต"},
+  "spot.title": {ko:"다른 색 찾기", en:"Odd Color Out", th:"หาสีที่ต่าง"},
+  "spot.intro": {ko:"타일 중 <b>딱 하나만 색이 미묘하게 달라요.</b> 그 타일을 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 색 차이가 줄어듭니다. 당신의 색감은 어디까지?", en:"<b>Exactly one tile is a slightly different color.</b> Find and tap it!<br>Higher levels mean bigger boards and subtler differences. How sharp are your eyes?", th:"<b>มีแค่กระเบื้องเดียวที่สีต่างเล็กน้อย</b> หาแล้วแตะเลย!<br>ยิ่งเลเวลสูง กระดานยิ่งใหญ่และสีต่างน้อยลง สายตาคุณเฉียบแค่ไหน?"},
+  "spot.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "spot.easyDesc": {ko:"2×2 시작·차이 큼", en:"2×2 start · big diff", th:"เริ่ม 2×2 · ต่างชัด"},
+  "spot.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "spot.normalDesc": {ko:"3×3 시작·기본", en:"3×3 start · default", th:"เริ่ม 3×3 · ปกติ"},
+  "spot.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "spot.hardDesc": {ko:"4×4 시작·차이 작음", en:"4×4 start · small diff", th:"เริ่ม 4×4 · ต่างน้อย"},
+  "spot.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "spot.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
+  "spot.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "spot.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "spot.guide": {ko:"색이 다른 타일 하나를 찾아 누르세요", en:"Find and tap the odd-colored tile", th:"หากระเบื้องที่สีต่างแล้วแตะ"},
+  "spot.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "spot.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "spot.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "spot.reachedLevel": {ko:"도달 레벨", en:"Level reached", th:"เลเวลที่ถึง"},
+  "spot.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"},
+  "spot.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "spot.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
+  "spot.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
+  "spot.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "backup.title": {ko:"기록 백업", en:"Backup", th:"สำรองข้อมูล"},
   "backup.hint": {ko:"기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.", en:"Records are stored on this device only. Copy the code and paste it on your new device to move them.", th:"สถิติถูกเก็บไว้ในเครื่องนี้เท่านั้น คัดลอกโค้ดแล้วนำไปวางบนเครื่องใหม่เพื่อย้ายข้อมูล"},
   "backup.export": {ko:"📤 기록 내보내기", en:"📤 Export", th:"📤 ส่งออก"},
@@ -2422,7 +2503,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4565,10 +4646,114 @@ function gameShare(game){
   else if(game==='whack') o={emoji:'🔨', title:t('whack.title'),  from:'#f0b429', to:'#e0475a', lines:[t('whack.score')+'  '+WK.score, t('whack.hits')+'  '+WK.hits]};
   else if(game==='melody')o={emoji:'🎵', title:t('melody.title'), from:'#2fb96a', to:'#4f7cff', lines:[t('melody.score')+'  '+ML.score, t('melody.maxLevel')+'  '+ML.maxLen]};
   else if(game==='bubble')o={emoji:'🫧', title:t('bubble.title'), from:'#5aa7f0', to:'#a06ef8', lines:[t('bubble.score')+'  '+BB.score, t('bubble.rounds')+'  '+BB.rounds]};
+  else if(game==='spot')  o={emoji:'🌈', title:t('spot.title'),   from:'#f06292', to:'#7e57f0', lines:[t('spot.score')+'  '+SP.score, t('spot.reachedLevel')+'  '+SP.level]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
+}
+
+// ========== 다른 색 찾기 (시각 탐색 / 관찰) ==========
+const SP_CFG={ easy:{startN:2,maxN:6,d0:22,dStep:1.6,dMin:5}, normal:{startN:3,maxN:7,d0:18,dStep:1.5,dMin:4}, hard:{startN:4,maxN:8,d0:14,dStep:1.4,dMin:3} };
+const SP_TIME=60;
+const SP={ diff:'normal', score:0, combo:0, maxCombo:0, level:1,
+  timeLeft:SP_TIME, timer:null, running:false, lock:false,
+  best:bt_loadBest('brain.spot.best') };
+function SP_DIFF_LABEL(d){ return d==='easy'?t('spot.easy'):d==='hard'?t('spot.hard'):t('spot.normal'); }
+function spUpdateBestLine(){ const el=document.getElementById('sp-intro-best'); if(el) el.textContent=bt_bestLineText(SP.best, SP.diff); }
+function setSpotDiff(d){
+  SP.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('sp-diff-'+k).classList.toggle('active',k===d));
+  spUpdateBestLine();
+}
+// 레벨 → 판 크기·색 차이(명도 %p). 3레벨마다 판 +1, 레벨마다 차이 감소(하한 보장)
+function spParams(level){
+  const cfg=SP_CFG[SP.diff];
+  const n=Math.min(cfg.maxN, cfg.startN+Math.floor((level-1)/3));
+  const delta=Math.max(cfg.dMin, cfg.d0-(level-1)*cfg.dStep);
+  return {n:n, delta:delta};
+}
+function spUpdateStats(){
+  document.getElementById('sp-score').textContent=SP.score;
+  document.getElementById('sp-level').textContent=SP.level;
+  document.getElementById('sp-combo').textContent=SP.combo;
+}
+function spUpdateTimer(){
+  const el=document.getElementById('sp-timer');
+  const m=Math.floor(SP.timeLeft/60), sec=SP.timeLeft%60;
+  el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  el.style.color = SP.timeLeft<=10 ? 'var(--red)' : '';
+}
+function spNewRound(){
+  const p=spParams(SP.level);
+  const total=p.n*p.n, odd=Math.floor(Math.random()*total);
+  const h=Math.floor(Math.random()*360);
+  const sat=55+Math.floor(Math.random()*20);          // 55~74%
+  const li=48+Math.floor(Math.random()*22);           // 48~69%
+  const dir=(li>60||Math.random()<0.5)?-1:1;          // 밝은 색은 어둡게, 아니면 랜덤
+  const li2=Math.max(18,Math.min(88, li+dir*p.delta));
+  const grid=document.getElementById('sp-grid');
+  grid.innerHTML=''; grid.style.gridTemplateColumns='repeat('+p.n+',1fr)';
+  for(let i=0;i<total;i++){
+    const b=document.createElement('button');
+    b.className='sp-tile';
+    b.style.background='hsl('+h+','+sat+'%,'+(i===odd?li2:li)+'%)';
+    b.onclick=()=>spTap(i===odd,b);
+    grid.appendChild(b);
+  }
+  SP.lock=false;
+}
+function spTap(isOdd,el){
+  if(!SP.running||SP.lock) return;
+  if(isOdd){
+    SP.lock=true;
+    SP.combo++; SP.maxCombo=Math.max(SP.maxCombo,SP.combo);
+    SP.score += 10 + (SP.combo-1)*2;
+    SP.level++;
+    sfx('good'); spUpdateStats();
+    spNewRound();
+  }else{
+    SP.combo=0; sfx('bad');
+    SP.timeLeft=Math.max(0,SP.timeLeft-2); spUpdateTimer(); spUpdateStats();
+    el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320);
+    if(SP.timeLeft<=0) finishSpot();
+  }
+}
+function startSpot(){
+  SP.score=0; SP.combo=0; SP.maxCombo=0; SP.level=1;
+  SP.timeLeft=SP_TIME; SP.running=true;
+  document.getElementById('spot-intro-card').style.display='none';
+  document.getElementById('spot-result-card').style.display='none';
+  document.getElementById('spot-game-card').style.display='block';
+  spUpdateStats(); spUpdateTimer(); spNewRound();
+  clearInterval(SP.timer);
+  SP.timer=setInterval(()=>{
+    SP.timeLeft--; spUpdateTimer();
+    if(SP.timeLeft<=0) finishSpot();
+  },1000);
+}
+function finishSpot(){
+  clearInterval(SP.timer); SP.running=false;
+  const newRec=bt_recordScore(SP.best, SP.diff, SP.score); bt_saveBest('brain.spot.best', SP.best);
+  missionMark('spot');
+  document.getElementById('spot-game-card').style.display='none';
+  document.getElementById('spot-result-card').style.display='block';
+  document.getElementById('sp-result-emoji').textContent=newRec?'🏆':'🌈';
+  document.getElementById('sp-result-title').textContent=newRec?t('spot.newRecord'):t('spot.timeOver');
+  document.getElementById('sp-result-score').textContent=SP.score;
+  document.getElementById('sp-r-diff').textContent=SP_DIFF_LABEL(SP.diff);
+  document.getElementById('sp-r-level').textContent=SP.level;
+  document.getElementById('sp-r-combo').textContent=SP.maxCombo;
+  document.getElementById('sp-r-best').textContent=SP.best[SP.diff].all;
+  spUpdateBestLine();
+}
+function leaveSpot(){ resetSpot(); showScreen('games'); }
+function resetSpot(){
+  clearInterval(SP.timer); SP.running=false;
+  const g=document.getElementById('spot-game-card'); if(g) g.style.display='none';
+  const r=document.getElementById('spot-result-card'); if(r) r.style.display='none';
+  const i=document.getElementById('spot-intro-card'); if(i) i.style.display='block';
+  spUpdateBestLine();
 }
 
 // ========== 버블 톡톡 (목표 합 만들기 / 계산) ==========
@@ -4746,8 +4931,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -4800,6 +4985,7 @@ const HOME_GAMES=[
   {id:'react',  emoji:'⏱️', key:'nav.react',  best:'brain.react.best',  grp:'cat.speed'},
   {id:'whack',  emoji:'🔨', key:'nav.whack',  best:'brain.whack.best',  grp:'cat.coord'},
   {id:'melody', emoji:'🎵', key:'nav.melody', best:'brain.melody.best', grp:'cat.sound'},
+  {id:'spot',   emoji:'🌈', key:'nav.spot',   best:'brain.spot.best',   grp:'cat.sight'},
   {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'cat.space'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
   {id:'bubble', emoji:'🫧', key:'nav.bubble', best:'brain.bubble.best', grp:'cat.calc'},
@@ -4827,7 +5013,7 @@ function homeVisit(){
 }
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
 const MISSION_A=['flash','count','nback','cards','melody'];   // 기억·청각
-const MISSION_B=['stroop','trail','react','whack'];          // 주의·속도·협응
+const MISSION_B=['stroop','trail','react','whack','spot'];          // 주의·속도·협응
 const MISSION_C=['switch','rotate'];                 // 유연성·공간
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
@@ -4936,10 +5122,10 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);

@@ -6,6 +6,7 @@
 - **Nblog Chat** (project: Nblog, dir: D:\claude\Nblog) — mode: confirm
 - **플리퍼 전자책 Chat** (project: 플리퍼 전자책, dir: D:\claude\fbook) — mode: confirm
 - **freetv Chat** [freeTV] (project: freetv, dir: D:\claude\freetv) — mode: confirm
+- **thai-semantle Chat** (project: thai-semantle, dir: D:\claude\thai-semantle) — mode: confirm
 
 ## Shared Directory
 A `shared/` directory is available in your project root for cross-project file exchange.
