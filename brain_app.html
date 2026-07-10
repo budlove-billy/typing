@@ -541,9 +541,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .wk-board{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;width:100%;max-width:400px;margin:0 auto}
 .wk-cell{position:relative;aspect-ratio:1/1;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);cursor:pointer;padding:0;overflow:hidden;font-family:inherit}
 .wk-hole{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);width:70%;height:22%;background:var(--bg4);border-radius:50%}
-.wk-sprite{position:absolute;left:50%;bottom:12%;transform:translateX(-50%) scale(0);transition:transform .12s ease-out;line-height:1;pointer-events:none}
-.wk-sprite img{width:52px;height:auto;image-rendering:pixelated;display:block}
-.wk-sprite.bomb{font-size:2.6rem}
+.wk-sprite{position:absolute;left:50%;bottom:10%;transform:translateX(-50%) scale(0);transition:transform .12s ease-out;line-height:1;pointer-events:none}
+.wk-sprite img{width:82px;height:auto;image-rendering:pixelated;display:block}
+.wk-sprite.bomb{font-size:4.2rem}
+.wk-wrap{position:relative;width:100%;max-width:400px;margin:0 auto}
+.wk-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.2rem;font-weight:800;color:var(--purple);background:rgba(245,247,251,.8);border-radius:var(--radius2);z-index:5;letter-spacing:.05em}
 .wk-cell.up .wk-sprite{transform:translateX(-50%) scale(1)}
 .wk-cell:active{background:var(--purple3)}
 /* ===== Melody (멜로디 기억) ===== */
@@ -552,7 +554,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ml-pad:active{transform:scale(.96)}
 .ml-pad.lit{opacity:1;box-shadow:0 0 18px rgba(0,0,0,.18)}
 .ml-p0{background:#2fb96a}.ml-p1{background:#e0475a}.ml-p2{background:#f0b429}.ml-p3{background:#4f7cff}
-@media (max-width:640px){ .wk-sprite img{width:44px} .wk-board{max-width:340px} .ml-pads{max-width:300px} }
+@media (max-width:640px){ .wk-sprite img{width:64px} .wk-sprite.bomb{font-size:3.4rem} .wk-board,.wk-wrap{max-width:340px} .wk-count{font-size:2.6rem} .ml-pads{max-width:300px} }
 </style>
 </head>
 <body>
@@ -1468,7 +1470,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="whack.combo">COMBO</div><div class="mg-stat-value" id="wk-combo">0</div></div>
     </div>
     <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="wk-timer">01:00</div></div>
-    <div class="wk-board" id="wk-board"></div>
+    <div class="wk-wrap"><div class="wk-board" id="wk-board"></div><div class="wk-count" id="wk-count" style="display:none">READY</div></div>
     <div style="display:flex;justify-content:center;margin-top:1.25rem">
       <button class="btn btn-outline" onclick="leaveWhack()" data-i18n="whack.leave">나가기</button>
     </div>
@@ -5151,7 +5153,7 @@ function resetReact(){
 const WK_CFG={ easy:{win:950,gap:450,badP:0.15}, normal:{win:750,gap:350,badP:0.25}, hard:{win:560,gap:280,badP:0.32} };
 const WK = {
   diff:'normal', score:0, combo:0, maxCombo:0, hits:0,
-  timeLeft:60, timer:null, spawnT:null, hideT:null,
+  timeLeft:60, timer:null, spawnT:null, hideT:null, cdT:[],
   active:-1, isBad:false, running:false,
   best:bt_loadBest('brain.whack.best')
 };
@@ -5162,9 +5164,9 @@ function setWhackDiff(d){
   ['easy','normal','hard'].forEach(k=>document.getElementById('wk-diff-'+k).classList.toggle('active',k===d));
   wkUpdateBestLine();
 }
-function wkClearTimers(){ clearTimeout(WK.spawnT); clearTimeout(WK.hideT); }
+function wkClearTimers(){ clearTimeout(WK.spawnT); clearTimeout(WK.hideT); WK.cdT.forEach(clearTimeout); WK.cdT=[]; }
 function startWhack(){
-  WK.score=0; WK.combo=0; WK.maxCombo=0; WK.hits=0; WK.timeLeft=60; WK.running=true; WK.active=-1;
+  WK.score=0; WK.combo=0; WK.maxCombo=0; WK.hits=0; WK.timeLeft=60; WK.running=false; WK.active=-1;
   document.getElementById('whack-intro-card').style.display='none';
   document.getElementById('whack-result-card').style.display='none';
   document.getElementById('whack-game-card').style.display='block';
@@ -5177,8 +5179,20 @@ function startWhack(){
   }
   wkUpdateStats(); updateWkTimer();
   clearInterval(WK.timer); wkClearTimers();
+  // READY → 3 → 2 → 1 → GO! 카운트다운 후 시작
+  const cd=document.getElementById('wk-count');
+  cd.style.display='flex';
+  const seq=['READY','3','2','1','GO!'];
+  seq.forEach((txt,i)=>{
+    WK.cdT.push(setTimeout(()=>{ cd.textContent=txt; if(sndOn()) _beep(i<4?660:988,0.09,'sine',0.12); }, i*650));
+  });
+  WK.cdT.push(setTimeout(()=>{ cd.style.display='none'; wkBegin(); }, seq.length*650));
+}
+function wkBegin(){
+  if(document.getElementById('whack-game-card').style.display==='none') return; // 카운트다운 중 이탈 방어
+  WK.running=true;
   WK.timer=setInterval(wkTick,1000);
-  WK.spawnT=setTimeout(wkSpawn, 500);
+  WK.spawnT=setTimeout(wkSpawn, 300);
 }
 function wkTick(){
   if(!WK.running) return;
@@ -5248,6 +5262,7 @@ function leaveWhack(){
 }
 function resetWhack(){
   clearInterval(WK.timer); wkClearTimers(); WK.running=false;
+  const cd=document.getElementById('wk-count'); if(cd) cd.style.display='none';
   document.getElementById('whack-result-card').style.display='none';
   document.getElementById('whack-game-card').style.display='none';
   document.getElementById('whack-intro-card').style.display='block';
