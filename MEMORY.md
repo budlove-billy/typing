@@ -80,7 +80,10 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-10): 버블 톡톡(bubble)** → 계산 축(cat.calc) 2호. 파스텔 버블 탭으로 목표 합 만들기(Number Sum류, 토스 금고팡 참고).
   60초, 정답 부분집합 선생성으로 목표 항상 달성 가능(54,000판 시뮬 검증), 3판마다 조합 길이+1·판마다 숫자+2 난이도 상승,
   초과=콤보 리셋(시간 페널티 없음). `BB` 객체, `brain.bubble.best`, 도전장(CH_GAMES)·공유·능력치(calc60/logic25/speed15, REF 350) 연동. 활성 16종.
-- 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 개인정보처리방침.
+- **기록 백업(2026-07-10)**: 내 기록 화면 하단 backupExport/backupImport — `brain.*`+`moamoa_*` 키를 `MLW1.`+base64(JSON) 코드로
+  내보내기(클립보드)/가져오기(prompt). 병합: `.best`=난이도별 all max·최신 date의 day, `.flat`=max, 그 외는 기존 기기 값 유지.
+  로그인 없는 기기 이전용 — 로그인(Supabase+카카오, 백업 전용)은 리텐션 신호 후 Phase C 검토로 결정(2026-07-10 논의).
+- 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 서비스 운영 (LIVE)

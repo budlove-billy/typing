@@ -658,6 +658,14 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
   <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
   <div id="records-body"></div>
+  <div class="home-section-title" data-i18n="backup.title">기록 백업</div>
+  <div class="card">
+    <p style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem" data-i18n="backup.hint">기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.</p>
+    <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="backupExport()" data-i18n="backup.export">📤 기록 내보내기</button>
+      <button class="btn btn-outline" onclick="backupImport()" data-i18n="backup.import">📥 기록 가져오기</button>
+    </div>
+  </div>
 </div>
 
 <!-- ==================== TYPING SCREEN ==================== -->
@@ -1700,6 +1708,15 @@ const I18N = {
   "bubble.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "bubble.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
   "bubble.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "backup.title": {ko:"기록 백업", en:"Backup", th:"สำรองข้อมูล"},
+  "backup.hint": {ko:"기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.", en:"Records are stored on this device only. Copy the code and paste it on your new device to move them.", th:"สถิติถูกเก็บไว้ในเครื่องนี้เท่านั้น คัดลอกโค้ดแล้วนำไปวางบนเครื่องใหม่เพื่อย้ายข้อมูล"},
+  "backup.export": {ko:"📤 기록 내보내기", en:"📤 Export", th:"📤 ส่งออก"},
+  "backup.import": {ko:"📥 기록 가져오기", en:"📥 Import", th:"📥 นำเข้า"},
+  "backup.exported": {ko:"백업 코드를 복사했어요! 메모장·메신저 등 안전한 곳에 보관하세요.", en:"Backup code copied! Keep it somewhere safe.", th:"คัดลอกโค้ดสำรองแล้ว! เก็บไว้ในที่ปลอดภัย"},
+  "backup.exportManual": {ko:"아래 코드를 복사해 보관하세요", en:"Copy and keep the code below", th:"คัดลอกและเก็บโค้ดด้านล่าง"},
+  "backup.importPrompt": {ko:"백업 코드를 붙여넣으세요", en:"Paste your backup code", th:"วางโค้ดสำรองของคุณ"},
+  "backup.importOk": {ko:"복원 완료! 더 좋은 기록은 그대로 유지했어요.", en:"Restored! Better local records were kept.", th:"กู้คืนแล้ว! สถิติที่ดีกว่าในเครื่องถูกเก็บไว้"},
+  "backup.importBad": {ko:"코드를 읽을 수 없어요. 전체가 복사됐는지 확인해주세요.", en:"Could not read the code. Make sure you copied all of it.", th:"อ่านโค้ดไม่ได้ กรุณาตรวจว่าคัดลอกครบ"},
   "cat.daily": {ko:"오늘의 퍼즐", en:"Daily Puzzle", th:"ปริศนารายวัน"},
   "about.p1": {ko:"Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 13가지 미니게임을 제공합니다.", en:"Mallow is a free collection of brain games you can play instantly — no signup. Memory games (flash memory, card match, N-back), focus games (Stroop, rule switch), speed games (reaction, number trail), spatial rotation, mental math, Sudoku, and an IQ quiz — 13 mini games in all.", th:"Mallow คือรวมเกมสมองฟรี เล่นได้ทันทีไม่ต้องสมัคร มีเกมความจำ (ความจำฉับพลัน จับคู่การ์ด เอ็นแบ็ก) เกมสมาธิ (สตรูป สลับกฎ) เกมความไว (ตอบสนอง เชื่อมตัวเลข) หมุนภาพ คิดเลขเร็ว ซูโดกุ และควิซไอคิว รวม 13 เกม"},
   "about.p2": {ko:"매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.", en:"Unwind with 3 daily mission games and track your growth with best scores and brain stats. No install, no login.", th:"พักสมองกับภารกิจ 3 เกมที่เปลี่ยนทุกวัน และดูพัฒนาการผ่านสถิติกับกราฟค่าพลังสมอง ไม่ต้องติดตั้ง ไม่ต้องล็อกอิน"},
@@ -4673,6 +4690,59 @@ function resetBubble(){
   const r=document.getElementById('bubble-result-card'); if(r) r.style.display='none';
   const i=document.getElementById('bubble-intro-card'); if(i) i.style.display='block';
   bbUpdateBestLine();
+}
+
+// ========== 기록 백업 (내보내기/가져오기, 서버 없는 기기 이전) ==========
+const BK_PREFIX='MLW1.';
+function backupExport(){
+  const data={};
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k && (k.indexOf('brain.')===0 || k.indexOf('moamoa_')===0)) data[k]=localStorage.getItem(k);
+    }
+  }catch(e){}
+  const code=BK_PREFIX+btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  track('backup_export',{keys:Object.keys(data).length});
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(()=>alert(t('backup.exported'))).catch(()=>prompt(t('backup.exportManual'),code));
+  }else prompt(t('backup.exportManual'),code);
+}
+function bkMergeBest(oldV,newV){
+  // {easy|normal|hard:{all,day,date}} — all은 max, day/date는 최신 날짜 우선
+  try{
+    const a=JSON.parse(oldV), b=JSON.parse(newV), out={};
+    ['easy','normal','hard'].forEach(d=>{
+      const x=a&&a[d]||{all:0,day:0,date:''}, y=b&&b[d]||{all:0,day:0,date:''};
+      out[d]={ all:Math.max(x.all||0,y.all||0),
+               day:(y.date||'')>(x.date||'')?(y.day||0):(x.day||0),
+               date:(y.date||'')>(x.date||'')?(y.date||''):(x.date||'') };
+    });
+    return JSON.stringify(out);
+  }catch(e){ return oldV; }
+}
+function backupImport(){
+  const code=(prompt(t('backup.importPrompt'))||'').trim();
+  if(!code) return;
+  if(code.indexOf(BK_PREFIX)!==0){ alert(t('backup.importBad')); return; }
+  let data=null;
+  try{ data=JSON.parse(decodeURIComponent(escape(atob(code.slice(BK_PREFIX.length))))); }catch(e){}
+  if(!data || typeof data!=='object'){ alert(t('backup.importBad')); return; }
+  let n=0;
+  Object.keys(data).forEach(k=>{
+    if(k.indexOf('brain.')!==0 && k.indexOf('moamoa_')!==0) return; // 키 화이트리스트
+    const inc=String(data[k]);
+    try{
+      const cur=localStorage.getItem(k);
+      if(cur===null){ localStorage.setItem(k,inc); n++; return; }
+      if(/^brain\..+\.best$/.test(k)){ localStorage.setItem(k,bkMergeBest(cur,inc)); n++; return; }
+      if(/^brain\..+\.flat$/.test(k)){ const mx=Math.max(parseFloat(cur)||0,parseFloat(inc)||0); localStorage.setItem(k,String(mx)); n++; return; }
+      // 그 외(방문/미션/설정/모아모아 상태)는 기존 기기 값 유지
+    }catch(e){}
+  });
+  track('backup_import',{keys:n});
+  alert(t('backup.importOk'));
+  try{ if(typeof renderRecords==='function') renderRecords(); if(typeof renderHome==='function') renderHome(); }catch(e){}
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
