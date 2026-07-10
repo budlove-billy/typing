@@ -5932,7 +5932,7 @@ function renderHome(){
   const ftr=document.getElementById('site-footer'); if(ftr) ftr.style.display=(CURRENT_LANG==='ko')?'':'none';
   // 인기 게임(큐레이션)
   const pop=document.getElementById('home-popular');
-  if(pop){ pop.innerHTML=''; ['flash','stroop','react','rotate'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
+  if(pop){ pop.innerHTML=''; ['iq','sudoku','braintype'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
 }
 // 전체 게임: 카테고리별 통일 카드
 function renderGames(){
