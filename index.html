@@ -398,6 +398,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .site-footer{text-align:center;font-size:.78rem;color:var(--text3);padding:1rem 0 .3rem}
 .site-footer a{color:var(--text3);text-decoration:none;margin:0 .35rem}
 .site-footer a:hover{color:var(--purple)}
+.ch-banner{background:var(--purple3);color:var(--purple);font-weight:700;font-size:.92rem;border-radius:var(--radius);padding:.6rem .8rem;margin-bottom:.9rem;text-align:center}
+.ch-result{font-weight:800;text-align:center;border-radius:var(--radius);padding:.55rem;margin-bottom:.75rem;font-size:1.02rem}
+.ch-result.win{background:var(--teal3);color:var(--teal2)}
+.ch-result.lose{background:var(--amber3);color:var(--amber2)}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -984,7 +988,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="flash.difficulty">난이도</span><span id="fm-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="flash.maxLevel">도달 최고 레벨</span><span id="fm-r-level">0</span></div>
     <div class="result-row"><span data-i18n="flash.best">최고 기록</span><span id="fm-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFlash()" data-i18n="flash.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('flash')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFlash()" data-i18n="flash.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('flash')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('flash')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1038,7 +1042,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="count.difficulty">난이도</span><span id="hc-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="count.maxStreak">최고 연속</span><span id="hc-r-streak">0</span></div>
     <div class="result-row"><span data-i18n="count.best">최고 기록</span><span id="hc-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCount()" data-i18n="count.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('count')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCount()" data-i18n="count.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('count')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('count')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1089,7 +1093,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="stroop.correct">정답</span><span id="st-r-correct">0</span></div>
     <div class="result-row"><span data-i18n="stroop.maxCombo">최고 콤보</span><span id="st-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="stroop.best">최고 기록</span><span id="st-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetStroop()" data-i18n="stroop.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('stroop')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetStroop()" data-i18n="stroop.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('stroop')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('stroop')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1139,7 +1143,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="trail.difficulty">난이도</span><span id="tr-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="trail.clearedBoards">지운 판</span><span id="tr-r-boards">0</span></div>
     <div class="result-row"><span data-i18n="trail.best">최고 기록</span><span id="tr-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetTrail()" data-i18n="trail.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('trail')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetTrail()" data-i18n="trail.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('trail')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('trail')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1234,7 +1238,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="switch.correct">정답</span><span id="sw-r-correct">0</span></div>
     <div class="result-row"><span data-i18n="switch.maxCombo">최고 콤보</span><span id="sw-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="switch.best">최고 기록</span><span id="sw-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSwitch()" data-i18n="switch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('switch')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSwitch()" data-i18n="switch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('switch')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('switch')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1285,7 +1289,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="nback.correct">적중</span><span id="nb-r-correct">0</span></div>
     <div class="result-row"><span data-i18n="nback.maxCombo">최고 콤보</span><span id="nb-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="nback.best">최고 기록</span><span id="nb-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetNback()" data-i18n="nback.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('nback')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetNback()" data-i18n="nback.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('nback')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('nback')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1343,7 +1347,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="rotate.correct">정답</span><span id="rt2-r-correct">0</span></div>
     <div class="result-row"><span data-i18n="rotate.maxCombo">최고 콤보</span><span id="rt2-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="rotate.best">최고 기록</span><span id="rt2-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetRotate()" data-i18n="rotate.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('rotate')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetRotate()" data-i18n="rotate.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('rotate')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('rotate')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1394,7 +1398,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="cards.clearedBoards">지운 판</span><span id="cm-r-boards">0</span></div>
     <div class="result-row"><span data-i18n="cards.maxCombo">최고 콤보</span><span id="cm-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="cards.best">최고 기록</span><span id="cm-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCards()" data-i18n="cards.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('cards')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCards()" data-i18n="cards.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('cards')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('cards')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1447,7 +1451,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="react.avgRt">평균 반응</span><span id="rc-r-avg">- ms</span></div>
     <div class="result-row"><span data-i18n="react.maxCombo">최고 콤보</span><span id="rc-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="react.best">최고 기록</span><span id="rc-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetReact()" data-i18n="react.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('react')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetReact()" data-i18n="react.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('react')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('react')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1496,7 +1500,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="whack.hits">잡은 말로우</span><span id="wk-r-hits">0</span></div>
     <div class="result-row"><span data-i18n="whack.maxCombo">최고 콤보</span><span id="wk-r-combo">0</span></div>
     <div class="result-row"><span data-i18n="whack.best">최고 기록</span><span id="wk-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetWhack()" data-i18n="whack.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('whack')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetWhack()" data-i18n="whack.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('whack')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('whack')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1551,7 +1555,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="result-row"><span data-i18n="melody.difficulty">난이도</span><span id="ml-r-diff">보통</span></div>
     <div class="result-row"><span data-i18n="melody.maxLevel">도달 멜로디 길이</span><span id="ml-r-level">0</span></div>
     <div class="result-row"><span data-i18n="melody.best">최고 기록</span><span id="ml-r-best">0</span></div>
-    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetMelody()" data-i18n="melody.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('melody')" data-i18n="share.button">📷 결과 공유</button></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetMelody()" data-i18n="melody.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('melody')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('melody')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
 </div>
 
@@ -1587,6 +1591,15 @@ const I18N = {
   "page.title": {ko:"Mallow — 가볍게 즐기는 두뇌게임 | 무료 두뇌 트레이닝", en:"Mallow — Light & Fun Brain Games", th:"Mallow — เกมสมองเบา ๆ สนุก ๆ"},
   "nav.tagline": {ko:" 가볍게 즐기는 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
   "nav.moamoa": {ko:"모아모아", en:"Moamoa", th:"โมอาโมอา"},
+  "ch.send": {ko:"🎯 도전장", en:"🎯 Challenge", th:"🎯 ท้าดวล"},
+  "ch.msg": {ko:"Mallow {name} {score}점! 나를 이겨봐 👊", en:"I scored {score} in {name} on Mallow! Beat me 👊", th:"ฉันได้ {score} คะแนนใน {name} บน Mallow! มาเอาชนะฉันสิ 👊"},
+  "ch.copied": {ko:"도전장 링크를 복사했어요! 친구에게 붙여넣어 보내세요", en:"Challenge link copied! Paste it to a friend", th:"คัดลอกลิงก์ท้าดวลแล้ว! ส่งให้เพื่อนได้เลย"},
+  "ch.banner": {ko:"도전장 도착! {score}점({diff})을 이겨보세요", en:"Challenge received! Beat {score} pts ({diff})", th:"มีคำท้า! เอาชนะ {score} คะแนน ({diff})"},
+  "ch.win": {ko:"승리! 도전 성공", en:"You win!", th:"คุณชนะ!"},
+  "ch.lose": {ko:"아쉽다! 한 번 더?", en:"So close! One more try?", th:"เกือบแล้ว! อีกครั้งไหม?"},
+  "ch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "ch.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "ch.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
   "cat.daily": {ko:"오늘의 퍼즐", en:"Daily Puzzle", th:"ปริศนารายวัน"},
   "about.p1": {ko:"Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 13가지 미니게임을 제공합니다.", en:"Mallow is a free collection of brain games you can play instantly — no signup. Memory games (flash memory, card match, N-back), focus games (Stroop, rule switch), speed games (reaction, number trail), spatial rotation, mental math, Sudoku, and an IQ quiz — 13 mini games in all.", th:"Mallow คือรวมเกมสมองฟรี เล่นได้ทันทีไม่ต้องสมัคร มีเกมความจำ (ความจำฉับพลัน จับคู่การ์ด เอ็นแบ็ก) เกมสมาธิ (สตรูป สลับกฎ) เกมความไว (ตอบสนอง เชื่อมตัวเลข) หมุนภาพ คิดเลขเร็ว ซูโดกุ และควิซไอคิว รวม 13 เกม"},
   "about.p2": {ko:"매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.", en:"Unwind with 3 daily mission games and track your growth with best scores and brain stats. No install, no login.", th:"พักสมองกับภารกิจ 3 เกมที่เปลี่ยนทุกวัน และดูพัฒนาการผ่านสถิติกับกราฟค่าพลังสมอง ไม่ต้องติดตั้ง ไม่ต้องล็อกอิน"},
@@ -4421,6 +4434,49 @@ function gameShare(game){
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
 }
 
+// ========== 도전장 (서버 없는 1:1 점수 대결) ==========
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML}[id]; }
+let CH=null; // 수신한 도전 {game,score,diff}
+function chDiffLabel(d){ return t('ch.'+d); }
+function sendChallenge(game){
+  const st=chState(game); if(!st) return;
+  const url='https://playmallow.com/?c='+game+'.'+st.score+'.'+st.diff;
+  const txt=t('ch.msg').replace('{name}',t(gameMeta(game).key)).replace('{score}',st.score)+' '+url;
+  track('challenge_send',{game:game,score:st.score});
+  if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); }
+  else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>alert(t('ch.copied'))).catch(()=>prompt('URL',txt)); }
+  else prompt('URL',txt);
+}
+function chReceive(){
+  let c=null; try{ c=new URLSearchParams(location.search).get('c'); }catch(e){ return false; }
+  if(!c) return false;
+  const m=c.match(/^([a-z]+)\.(\d{1,7})\.(easy|normal|hard)$/);
+  if(!m || !CH_GAMES.includes(m[1])) return false;
+  CH={game:m[1], score:+m[2], diff:m[3]};
+  const setter=window['set'+CH.game.charAt(0).toUpperCase()+CH.game.slice(1)+'Diff'];
+  if(typeof setter==='function') setter(CH.diff);
+  const card=document.getElementById(CH.game+'-intro-card');
+  if(card) card.insertAdjacentHTML('afterbegin',
+    '<div class="ch-banner">🎯 '+t('ch.banner').replace('{score}',CH.score).replace('{diff}',chDiffLabel(CH.diff))+'</div>');
+  track('challenge_open',{game:CH.game});
+  showScreen(CH.game);
+  return true;
+}
+function chCheck(id){
+  if(!CH || CH.game!==id) return;
+  const st=chState(id); if(!st) return;
+  const my=st.score, win=my>CH.score;
+  const el=document.getElementById(id+'-result-card');
+  if(el){
+    const old=el.querySelector('.ch-result'); if(old) old.remove();
+    el.insertAdjacentHTML('afterbegin','<div class="ch-result '+(win?'win':'lose')+'">'+
+      (win?'🏆 '+t('ch.win'):'😅 '+t('ch.lose'))+' · '+CH.score+' : '+my+'</div>');
+  }
+  track('challenge_result',{game:id,win:win?1:0});
+  if(win) CH=null; // 이기면 종료, 지면 재도전 계속 비교
+}
+
 // ========== 홈 / 대시보드 ==========
 const HOME_GAMES=[
   {id:'flash',  emoji:'⚡', key:'nav.flash',  best:'brain.flash.best',  grp:'cat.memory'},
@@ -4473,6 +4529,7 @@ function missionSave(o){ try{ localStorage.setItem('brain.mission', JSON.stringi
 // 게임 완료 시 각 finish에서 호출 — 오늘의 미션 게임이면 체크
 function missionMark(id){
   track('game_finish', {game:id}); // 아케이드 9종 finish가 모두 여기를 거침
+  if(typeof chCheck==='function') chCheck(id);
   if(!missionToday().includes(id)) return;
   const m=missionLoad();
   if(!m.done.includes(id)){
@@ -5400,8 +5457,9 @@ renderExamInfo();
 renderStoryList();
 loadNewStory();
 renderHome();
-// 랜딩 페이지 딥링크: ?game=<id> 로 진입 시 해당 게임 화면 직행
+// 랜딩 페이지 딥링크: ?game=<id> 로 진입 시 해당 게임 화면 직행 (도전장 ?c=가 우선)
 (function(){
+  if(chReceive()) return;
   try{
     const g=new URLSearchParams(location.search).get('game');
     if(g && /^[a-z]+$/.test(g) && document.getElementById('screen-'+g)) showScreen(g);
