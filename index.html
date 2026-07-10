@@ -442,8 +442,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 /* 말로우 타워 */
 .cp-gauge{height:12px;background:var(--bg4);border-radius:999px;max-width:340px;margin:0 auto .8rem;overflow:hidden}
 .cp-gauge-fill{height:100%;width:100%;background:linear-gradient(90deg,#21a67a,#4f7cff);border-radius:999px;transition:width .1s linear}
-.cp-stage{position:relative;max-width:300px;height:330px;margin:0 auto;overflow:hidden}
-.cp-tower{position:absolute;left:50%;transform:translateX(-50%);bottom:64px;width:96px}
+.cp-stage{position:relative;max-width:300px;height:350px;margin:0 auto;overflow:hidden}
+.cp-tower{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:96px}
 .cp-seg{position:absolute;left:0;width:96px;height:52px;border-radius:14px;background:linear-gradient(180deg,#fff6f8,#ffe4ec);border:1.5px solid #f6cfdc;box-shadow:0 2px 5px rgba(24,34,53,.07)}
 .cp-seg:nth-child(even){background:linear-gradient(180deg,#fffdf5,#fdf0d5);border-color:#eedfb8}
 .cp-seg .cp-fork{position:absolute;top:50%;transform:translateY(-50%);font-size:1.6rem}
@@ -453,6 +453,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 @keyframes cpChomp{0%{transform:scale(1);opacity:1}100%{transform:scale(1.25);opacity:0}}
 .cp-player{position:absolute;bottom:6px;height:52px;image-rendering:pixelated;transition:left .08s}
 .cp-player.hit{animation:bbShake .3s ease 1}
+.cp-fork.hit{animation:cpForkHit .35s ease 2;filter:drop-shadow(0 0 6px #e0344b)}
+@keyframes cpForkHit{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.45)}}
+.cp-fork.L.hit{animation:cpForkHitL .35s ease 2;filter:drop-shadow(0 0 6px #e0344b)}
+@keyframes cpForkHitL{0%,100%{transform:translateY(-50%) scaleX(-1) scale(1)}50%{transform:translateY(-50%) scaleX(-1) scale(1.45)}}
 .cp-controls{display:flex;gap:.8rem;justify-content:center;margin-top:.9rem}
 .cp-side-btn{flex:1;max-width:150px;padding:1rem 0;font-size:1.4rem;font-weight:800;border:none;border-radius:var(--radius2);background:var(--purple3);color:var(--purple);cursor:pointer;font-family:inherit}
 .cp-side-btn:active{background:var(--purple);color:#fff;transform:scale(.97)}
@@ -1295,6 +1299,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="chop.score">SCORE</div><div class="mg-stat-value" id="cp-score">0</div></div>
     </div>
     <div class="cp-gauge"><div class="cp-gauge-fill" id="cp-gauge-fill"></div></div>
+    <div class="gm-status" data-i18n="chop.guide">🍴 포크가 없는 쪽 버튼을 눌러 깨물어요!</div>
     <div class="cp-stage">
       <div class="cp-tower" id="cp-tower"></div>
       <img src="mallow-chan.png" alt="" class="cp-player" id="cp-player">
@@ -2072,7 +2077,7 @@ const I18N = {
   "merge.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.chop": {ko:"말로우 타워", en:"Mallow Tower", th:"หอมัลโลว์"},
   "chop.title": {ko:"말로우 타워", en:"Mallow Tower", th:"หอมัลโลว์"},
-  "chop.intro": {ko:"마시멜로 타워를 좌우에서 <b>콕콕 깨물어</b> 내려가세요. 단, <b>포크가 있는 쪽은 금지!</b><br>시간이 계속 줄어들고 깨물 때마다 조금 회복돼요 — 빠를수록 오래 살아남습니다.", en:"<b>Chomp the marshmallow tower</b> from left or right — but <b>never on the fork side!</b><br>Time drains constantly and each chomp restores a little. Speed keeps you alive.", th:"<b>กัดหอมาร์ชเมลโลว์</b>จากซ้ายหรือขวา — แต่<b>ห้ามฝั่งที่มีส้อม!</b><br>เวลาลดลงเรื่อย ๆ และการกัดแต่ละครั้งช่วยฟื้นเวลา ยิ่งเร็วยิ่งอยู่รอด"},
+  "chop.intro": {ko:"버튼을 누르면 그쪽으로 이동해 <b>맨 아래 블록을 한 입</b> 깨물어요.<br>블록이 한 칸씩 내려오는데, <b>🍴 포크가 내 쪽으로 내려오면 아웃!</b> 포크 반대쪽을 누르세요.<br>시간은 계속 줄고 깨물 때마다 조금 회복 — 빠를수록 오래 살아남아요.", en:"Tap a side to move there and <b>chomp the bottom block</b>.<br>Blocks slide down one by one — <b>if a 🍴 fork comes down on your side, you're out!</b> Always tap the fork-free side.<br>Time drains constantly; each chomp restores a little.", th:"แตะปุ่มเพื่อย้ายไปฝั่งนั้นแล้ว<b>กัดบล็อกล่างสุด</b><br>บล็อกจะเลื่อนลงทีละชั้น — <b>ถ้าส้อม 🍴 ลงมาฝั่งคุณ = แพ้!</b> ให้แตะฝั่งที่ไม่มีส้อมเสมอ<br>เวลาลดตลอด กัดแต่ละครั้งฟื้นเวลาเล็กน้อย"},
   "chop.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
   "chop.easyDesc": {ko:"여유로운 시간", en:"Relaxed timer", th:"เวลาเหลือเฟือ"},
   "chop.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
@@ -2080,6 +2085,7 @@ const I18N = {
   "chop.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
   "chop.hardDesc": {ko:"빠른 소모·포크 많음", en:"Fast drain · more forks", th:"เวลาลดไว · ส้อมเยอะ"},
   "chop.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "chop.guide": {ko:"🍴 포크가 없는 쪽 버튼을 눌러 깨물어요!", en:"🍴 Tap the fork-free side to chomp!", th:"🍴 แตะฝั่งที่ไม่มีส้อมเพื่อกัด!"},
   "chop.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "chop.leave": {ko:"나가기", en:"Leave", th:"ออก"},
   "chop.finalScore": {ko:"깨문 횟수", en:"Chomps", th:"จำนวนกัด"},
@@ -5185,11 +5191,15 @@ function cpDie(cause){
   clearInterval(CP.timer); CP.running=false;
   sfx('bad');
   const p=document.getElementById('cp-player'); if(p){ p.classList.add('hit'); }
-  setTimeout(()=>{ if(p) p.classList.remove('hit'); finishChop(cause); }, 350);
+  if(cause==='fork'){ // 나를 찌른 포크를 빨갛게 강조
+    const fk=document.querySelector('#cp-tower .cp-seg:first-child .cp-fork');
+    if(fk) fk.classList.add('hit');
+  }
+  setTimeout(()=>{ if(p) p.classList.remove('hit'); finishChop(cause); }, cause==='fork'?750:350);
 }
 function startChop(){
   CP.score=0; CP.gauge=100; CP.side='L'; CP.running=true;
-  CP.segs=['N','N','N'];
+  CP.segs=['N','N','N','N','N']; // 워밍업: 첫 5칸은 포크 없음
   while(CP.segs.length<CP_VISIBLE+2) CP.segs.push(cpNewSeg());
   document.getElementById('chop-intro-card').style.display='none';
   document.getElementById('chop-result-card').style.display='none';
