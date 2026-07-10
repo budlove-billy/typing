@@ -395,6 +395,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-card-cat{font-size:.66rem;color:var(--text3);font-weight:500}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
 .home-card-dot{position:absolute;top:.5rem;right:.6rem;width:9px;height:9px;border-radius:50%;background:var(--red)}
+.site-footer{text-align:center;font-size:.78rem;color:var(--text3);padding:1rem 0 .3rem}
+.site-footer a{color:var(--text3);text-decoration:none;margin:0 .35rem}
+.site-footer a:hover{color:var(--purple)}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -597,6 +600,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="home-about">
     <p data-i18n="about.p1">Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 13가지 미니게임을 제공합니다.</p>
     <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
+  </div>
+  <div class="site-footer" id="site-footer">
+    <a href="sudoku/">스도쿠 무료</a>·<a href="iq-test/">IQ 테스트</a>·<a href="braintype/">두뇌 유형 테스트</a>·<a href="moamoa/">모아모아</a>
   </div>
 </div>
 
@@ -4525,6 +4531,8 @@ function renderHome(){
   const cats=[]; HOME_GAMES.forEach(g=>{ if(g.koOnly&&CURRENT_LANG!=='ko') return; if(!cats.includes(g.grp)) cats.push(g.grp); });
   const catWrap=document.getElementById('home-cats');
   if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>showScreen('games'); catWrap.appendChild(b); }); }
+  // 랜딩 내부링크 푸터는 ko에서만
+  const ftr=document.getElementById('site-footer'); if(ftr) ftr.style.display=(CURRENT_LANG==='ko')?'':'none';
   // 인기 게임(큐레이션)
   const pop=document.getElementById('home-popular');
   if(pop){ pop.innerHTML=''; ['flash','stroop','react','rotate'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
@@ -5392,6 +5400,13 @@ renderExamInfo();
 renderStoryList();
 loadNewStory();
 renderHome();
+// 랜딩 페이지 딥링크: ?game=<id> 로 진입 시 해당 게임 화면 직행
+(function(){
+  try{
+    const g=new URLSearchParams(location.search).get('game');
+    if(g && /^[a-z]+$/.test(g) && document.getElementById('screen-'+g)) showScreen(g);
+  }catch(e){}
+})();
 // PWA 서비스워커
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
