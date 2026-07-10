@@ -4229,12 +4229,12 @@ function resetTrail(){
 function btL(o){ return o[CURRENT_LANG] || o.ko; }
 // 6 유형 — 각 유형은 앱 내 게임 추천으로 연결(크로스 프로모션)
 const BT_TYPES={
-  calc:  {emoji:'🧮', rec:'math',   name:{ko:'계산가형',en:'The Calculator',th:'สายคำนวณ'},     desc:{ko:'숫자와 논리에 강한 냉철한 두뇌',en:'A sharp mind, strong with numbers and logic',th:'สมองเฉียบคมด้านตัวเลขและตรรกะ'}},
-  word:  {emoji:'📚', rec:'nback',  name:{ko:'언어가형',en:'The Wordsmith',th:'สายภาษา'},       desc:{ko:'말과 글을 자유자재로 다루는 두뇌',en:'A brain that masters words and language',th:'สมองที่เชี่ยวชาญด้านคำและภาษา'}},
-  memory:{emoji:'🧠', rec:'flash',  name:{ko:'기억가형',en:'The Memory Master',th:'สายความจำ'}, desc:{ko:'한번 본 것은 놓치지 않는 기억의 달인',en:'A master who never forgets what they see',th:'ปรมาจารย์ที่ไม่ลืมสิ่งที่เห็น'}},
-  focus: {emoji:'🎯', rec:'stroop', name:{ko:'집중가형',en:'The Focuser',th:'สายสมาธิ'},        desc:{ko:'흔들림 없는 강력한 집중력의 소유자',en:'The owner of unshakable concentration',th:'เจ้าของสมาธิที่ไม่หวั่นไหว'}},
-  quick: {emoji:'⚡', rec:'trail',  name:{ko:'순발가형',en:'The Sprinter',th:'สายไว'},          desc:{ko:'빠른 눈과 손을 가진 순발력의 화신',en:'Lightning-fast eyes and hands',th:'สายตาและมือที่ว่องไวปานสายฟ้า'}},
-  logic: {emoji:'🧩', rec:'iq',     name:{ko:'추리가형',en:'The Thinker',th:'สายตรรกะ'},        desc:{ko:'복잡한 패턴을 꿰뚫는 논리의 대가',en:'A logic master who sees through patterns',th:'ปรมาจารย์ตรรกะที่มองทะลุรูปแบบ'}},
+  calc:  {emoji:'🧮', rec:'math',   name:{ko:'계산감각형',en:'The Calculator',th:'สายคำนวณ'},     desc:{ko:'숫자와 논리에 강한 냉철한 두뇌',en:'A sharp mind, strong with numbers and logic',th:'สมองเฉียบคมด้านตัวเลขและตรรกะ'}},
+  word:  {emoji:'📚', rec:'nback',  name:{ko:'언어감각형',en:'The Wordsmith',th:'สายภาษา'},       desc:{ko:'말과 글을 자유자재로 다루는 두뇌',en:'A brain that masters words and language',th:'สมองที่เชี่ยวชาญด้านคำและภาษา'}},
+  memory:{emoji:'🧠', rec:'flash',  name:{ko:'기억력형',en:'The Memory Master',th:'สายความจำ'}, desc:{ko:'한번 본 것은 놓치지 않는 기억의 달인',en:'A master who never forgets what they see',th:'ปรมาจารย์ที่ไม่ลืมสิ่งที่เห็น'}},
+  focus: {emoji:'🎯', rec:'stroop', name:{ko:'집중력형',en:'The Focuser',th:'สายสมาธิ'},        desc:{ko:'흔들림 없는 강력한 집중력의 소유자',en:'The owner of unshakable concentration',th:'เจ้าของสมาธิที่ไม่หวั่นไหว'}},
+  quick: {emoji:'⚡', rec:'trail',  name:{ko:'순발력형',en:'The Sprinter',th:'สายไว'},          desc:{ko:'빠른 눈과 손을 가진 순발력의 화신',en:'Lightning-fast eyes and hands',th:'สายตาและมือที่ว่องไวปานสายฟ้า'}},
+  logic: {emoji:'🧩', rec:'iq',     name:{ko:'추리력형',en:'The Thinker',th:'สายตรรกะ'},        desc:{ko:'복잡한 패턴을 꿰뚫는 논리의 대가',en:'A logic master who sees through patterns',th:'ปรมาจารย์ตรรกะที่มองทะลุรูปแบบ'}},
 };
 const BT_ORDER=['calc','word','memory','focus','quick','logic']; // 동점 시 우선순위
 const BT_QUESTIONS=[
