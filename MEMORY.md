@@ -64,7 +64,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
   60초, WK_CFG(win/gap/badP), 못 잡으면 콤보 리셋. `WK` 객체(timer+spawnT+hideT). `brain.whack.best`. 마스코트 활용 1호 게임.
 - **신규(2026-07-10): 멜로디 기억(melody)** → 청각 축(cat.sound). 사이먼류 4패드(C4/E4/G4/B4, _beep 재사용),
   재생 중 입력 잠금(playing), 성공 len+1/실패 lives-1(3). `ML` 객체(timers[]). `brain.melody.best`.
-- 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack,spot], C=[switch,rotate].
+- 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack,spot], C=[switch,rotate,slide].
 - **신규(2026-07-10): 모아모아(moamoa)** — 한국어 Connections류 데일리 낱말 퍼즐. **SPA 편입 아님**: `/moamoa/index.html` 별도 정적 페이지
   (자체 header/모달·KST 데일리·이모지 공유·streak·localStorage `moamoa_state_v1`/`moamoa_stats_v1`).
   HOME_GAMES에 `{id:'moamoa', koOnly:true, external:'moamoa/'}` — **ko에서만 노출**(renderGames/홈 칩 필터), 카드 클릭=location.href.
@@ -88,7 +88,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-10): 다른 색 찾기(spot)** → 관찰력 축(cat.sight) 신설(앱인토스 '절대 색감' 포맷 검증 후 제작).
   n×n 중 명도만 다른 타일 1개 탭. 3레벨마다 판+1(상한 6/7/8), 레벨마다 색차 감소(하한 Δ5/4/3%p — 시뮬 검증).
   60초·오답 -2s. `SP` 객체, `brain.spot.best`, 도전장·공유·능력치(focus50/speed30/space20, REF 400)·미션 풀 B 연동. 활성 17종.
-- 다음 후보: 어림 계산, 슬라이딩 퍼즐(15퍼즐, 앱인토스 검증 2순위), 개인정보처리방침(로그인 도입 시 필수).
+- **신규(2026-07-10): 슬라이딩 퍼즐(slide)** → 공간지각 축(cat.space) 2호. 3×3/4×4/5×5, 완성형(타임어택 아님).
+  셔플=풀린 상태에서 유효 이동 K회(60/150/300, 직전 되돌리기 금지) → 항상 해결 가능(9,000판 시뮬 검증).
+  점수=base(600/1200/2000)−초×3−이동수(하한 10). 제자리 타일 teal 링, 값 기반 파스텔 그라데이션, 절대배치+CSS 슬라이드.
+  `SL` 객체, `brain.slide.best`, 도전장·공유·능력치(space60/logic25/focus15, REF 700)·미션 풀 C 연동. 활성 18종.
+- 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 서비스 운영 (LIVE)

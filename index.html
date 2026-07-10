@@ -428,6 +428,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .sp-tile{aspect-ratio:1/1;border:none;border-radius:12px;cursor:pointer;transition:transform .1s;padding:0}
 .sp-tile:active{transform:scale(.94)}
 .sp-tile.miss{animation:bbShake .3s ease 1}
+/* 슬라이딩 퍼즐 */
+.sl-board{position:relative;width:100%;max-width:380px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
+.sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
+.sl-tile:active{filter:brightness(.95)}
+.sl-tile.ok{box-shadow:inset 0 0 0 2.5px var(--teal),0 2px 6px rgba(24,34,53,.10)}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1182,6 +1187,55 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 </div>
 
 <!-- ==================== BRAIN TYPE TEST SCREEN (두뇌 유형) ==================== -->
+<!-- ==================== SLIDE PUZZLE GAME (슬라이딩 퍼즐 / 공간) ==================== -->
+<div class="screen" id="screen-slide">
+  <div class="card" id="slide-intro-card">
+    <div class="section-head"><h2 data-i18n="slide.title">슬라이딩 퍼즐</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="slide.intro">
+      빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>
+      빠르게, 적은 이동으로 완성할수록 점수가 높아집니다. 판은 항상 풀 수 있게 섞여요!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="sl-diff-easy" onclick="setSlideDiff('easy')">
+        <h3>🌱 <span data-i18n="slide.easy">쉬움</span></h3><p data-i18n="slide.easyDesc">3×3 (8퍼즐)</p>
+      </div>
+      <div class="diff-btn active" id="sl-diff-normal" onclick="setSlideDiff('normal')">
+        <h3>⚡ <span data-i18n="slide.normal">보통</span></h3><p data-i18n="slide.normalDesc">4×4 (15퍼즐)</p>
+      </div>
+      <div class="diff-btn" id="sl-diff-hard" onclick="setSlideDiff('hard')">
+        <h3>🔥 <span data-i18n="slide.hard">어려움</span></h3><p data-i18n="slide.hardDesc">5×5 (24퍼즐)</p>
+      </div>
+    </div>
+    <button class="btn" onclick="startSlide()" data-i18n="slide.startGame">게임 시작</button>
+    <div class="best-line" id="sl-intro-best"></div>
+  </div>
+
+  <div class="card" id="slide-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="slide.time">TIME</div><div class="mg-stat-value" id="sl-time">00:00</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="slide.moves">MOVES</div><div class="mg-stat-value" id="sl-moves">0</div></div>
+    </div>
+    <div class="sl-board" id="sl-board"></div>
+    <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1.25rem">
+      <button class="btn btn-outline" onclick="slReshuffle()" data-i18n="slide.reshuffle">🔀 다시 섞기</button>
+      <button class="btn btn-outline" onclick="leaveSlide()" data-i18n="slide.leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="card" id="slide-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="sl-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="sl-result-title">완성!</h2>
+    <div class="iq-result-score" id="sl-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="slide.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="slide.difficulty">난이도</span><span id="sl-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="slide.timeUsed">걸린 시간</span><span id="sl-r-time">00:00</span></div>
+    <div class="result-row"><span data-i18n="slide.movesUsed">이동 수</span><span id="sl-r-moves">0</span></div>
+    <div class="result-row"><span data-i18n="slide.best">최고 기록</span><span id="sl-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetSlide()" data-i18n="slide.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('slide')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('slide')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- ==================== SPOT COLOR GAME (다른 색 찾기 / 관찰) ==================== -->
 <div class="screen" id="screen-spot">
   <div class="card" id="spot-intro-card">
@@ -1789,6 +1843,28 @@ const I18N = {
   "spot.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "spot.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
   "spot.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.slide": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
+  "slide.title": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
+  "slide.intro": {ko:"빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>빠르게, 적은 이동으로 완성할수록 점수가 높아집니다. 판은 항상 풀 수 있게 섞여요!", en:"Slide tiles into the empty space to <b>arrange numbers in order</b>.<br>Finish faster with fewer moves for a higher score. Boards are always solvable!", th:"เลื่อนกระเบื้องเข้าช่องว่างเพื่อ<b>เรียงตัวเลขตามลำดับ</b><br>ยิ่งเร็วและเลื่อนน้อย คะแนนยิ่งสูง กระดานสับแบบแก้ได้เสมอ!"},
+  "slide.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
+  "slide.easyDesc": {ko:"3×3 (8퍼즐)", en:"3×3 (8-puzzle)", th:"3×3"},
+  "slide.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
+  "slide.normalDesc": {ko:"4×4 (15퍼즐)", en:"4×4 (15-puzzle)", th:"4×4"},
+  "slide.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
+  "slide.hardDesc": {ko:"5×5 (24퍼즐)", en:"5×5 (24-puzzle)", th:"5×5"},
+  "slide.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "slide.time": {ko:"TIME", en:"TIME", th:"เวลา"},
+  "slide.moves": {ko:"MOVES", en:"MOVES", th:"ครั้ง"},
+  "slide.reshuffle": {ko:"🔀 다시 섞기", en:"🔀 Reshuffle", th:"🔀 สับใหม่"},
+  "slide.leave": {ko:"나가기", en:"Leave", th:"ออก"},
+  "slide.done": {ko:"완성!", en:"Solved!", th:"สำเร็จ!"},
+  "slide.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "slide.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "slide.timeUsed": {ko:"걸린 시간", en:"Time", th:"เวลาที่ใช้"},
+  "slide.movesUsed": {ko:"이동 수", en:"Moves", th:"จำนวนครั้ง"},
+  "slide.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "slide.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
+  "slide.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "backup.title": {ko:"기록 백업", en:"Backup", th:"สำรองข้อมูล"},
   "backup.hint": {ko:"기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.", en:"Records are stored on this device only. Copy the code and paste it on your new device to move them.", th:"สถิติถูกเก็บไว้ในเครื่องนี้เท่านั้น คัดลอกโค้ดแล้วนำไปวางบนเครื่องใหม่เพื่อย้ายข้อมูล"},
   "backup.export": {ko:"📤 기록 내보내기", en:"📤 Export", th:"📤 ส่งออก"},
@@ -2503,7 +2579,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetSlide'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -4647,10 +4723,115 @@ function gameShare(game){
   else if(game==='melody')o={emoji:'🎵', title:t('melody.title'), from:'#2fb96a', to:'#4f7cff', lines:[t('melody.score')+'  '+ML.score, t('melody.maxLevel')+'  '+ML.maxLen]};
   else if(game==='bubble')o={emoji:'🫧', title:t('bubble.title'), from:'#5aa7f0', to:'#a06ef8', lines:[t('bubble.score')+'  '+BB.score, t('bubble.rounds')+'  '+BB.rounds]};
   else if(game==='spot')  o={emoji:'🌈', title:t('spot.title'),   from:'#f06292', to:'#7e57f0', lines:[t('spot.score')+'  '+SP.score, t('spot.reachedLevel')+'  '+SP.level]};
+  else if(game==='slide') o={emoji:'🧊', title:t('slide.title'),  from:'#42a5f5', to:'#7e57f0', lines:[t('slide.finalScore')+'  '+SL.score, t('slide.movesUsed')+'  '+SL.moves]};
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
   shareOrDownload(c, game+'.png', o.title+' · '+o.lines[0]);
+}
+
+// ========== 슬라이딩 퍼즐 (15퍼즐 / 공간) ==========
+const SL_CFG={ easy:{n:3,shuffle:60,base:600}, normal:{n:4,shuffle:150,base:1200}, hard:{n:5,shuffle:300,base:2000} };
+const SL={ diff:'normal', n:4, tiles:[], moves:0, sec:0, score:0,
+  timer:null, running:false,
+  best:bt_loadBest('brain.slide.best') };
+function SL_DIFF_LABEL(d){ return d==='easy'?t('slide.easy'):d==='hard'?t('slide.hard'):t('slide.normal'); }
+function slUpdateBestLine(){ const el=document.getElementById('sl-intro-best'); if(el) el.textContent=bt_bestLineText(SL.best, SL.diff); }
+function setSlideDiff(d){
+  SL.diff=d;
+  ['easy','normal','hard'].forEach(k=>document.getElementById('sl-diff-'+k).classList.toggle('active',k===d));
+  slUpdateBestLine();
+}
+function slFmtTime(sec){ return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0'); }
+// 풀린 상태에서 유효 이동만 K번 수행해 섞음 → 항상 해결 가능 (직전 이동 되돌리기 금지)
+function slShuffleTiles(){
+  const n=SL.n, total=n*n;
+  const tiles=[]; for(let i=0;i<total-1;i++) tiles.push(i+1); tiles.push(0);
+  let empty=total-1, prev=-1;
+  const K=SL_CFG[SL.diff].shuffle;
+  for(let k=0;k<K;k++){
+    const r=Math.floor(empty/n), c=empty%n, cand=[];
+    if(r>0) cand.push(empty-n); if(r<n-1) cand.push(empty+n);
+    if(c>0) cand.push(empty-1); if(c<n-1) cand.push(empty+1);
+    const pick=cand.filter(x=>x!==prev);
+    const m=pick[Math.floor(Math.random()*pick.length)];
+    tiles[empty]=tiles[m]; tiles[m]=0; prev=empty; empty=m;
+  }
+  return tiles;
+}
+function slSolved(){ for(let i=0;i<SL.tiles.length-1;i++){ if(SL.tiles[i]!==i+1) return false; } return true; }
+function slRender(){
+  const n=SL.n, board=document.getElementById('sl-board');
+  board.innerHTML='';
+  const cell=100/n, pad=1.6, sz=cell-pad*2;
+  SL.tiles.forEach((v,i)=>{
+    if(v===0) return;
+    const r=Math.floor(i/n), c=i%n;
+    const b=document.createElement('button');
+    b.className='sl-tile'+(v===i+1?' ok':'');
+    const hue=Math.round(200+((v-1)/(n*n-1))*140); // 파랑→분홍 파스텔 그라데이션
+    b.style.background='hsl('+hue+',65%,82%)';
+    b.style.color='hsl('+hue+',45%,30%)';
+    b.style.width=sz+'%'; b.style.height=sz+'%';
+    b.style.left=(c*cell+pad)+'%'; b.style.top=(r*cell+pad)+'%';
+    b.textContent=v;
+    b.onclick=()=>slTap(i);
+    board.appendChild(b);
+  });
+}
+function slTap(i){
+  if(!SL.running) return;
+  const n=SL.n, empty=SL.tiles.indexOf(0);
+  const r=Math.floor(i/n), c=i%n, er=Math.floor(empty/n), ec=empty%n;
+  if(Math.abs(r-er)+Math.abs(c-ec)!==1) return; // 빈칸과 인접해야 이동
+  SL.tiles[empty]=SL.tiles[i]; SL.tiles[i]=0;
+  SL.moves++; document.getElementById('sl-moves').textContent=SL.moves;
+  _beep(520,0.04,'sine',0.12);
+  slRender();
+  if(slSolved()) finishSlide();
+}
+function slReshuffle(){
+  if(!SL.running) return;
+  SL.tiles=slShuffleTiles(); slRender();
+}
+function startSlide(){
+  SL.n=SL_CFG[SL.diff].n;
+  SL.moves=0; SL.sec=0; SL.score=0; SL.running=true;
+  SL.tiles=slShuffleTiles();
+  if(slSolved()) SL.tiles=slShuffleTiles(); // 만일 셔플 결과가 풀린 상태면 재셔플
+  document.getElementById('slide-intro-card').style.display='none';
+  document.getElementById('slide-result-card').style.display='none';
+  document.getElementById('slide-game-card').style.display='block';
+  document.getElementById('sl-moves').textContent='0';
+  document.getElementById('sl-time').textContent='00:00';
+  slRender();
+  clearInterval(SL.timer);
+  SL.timer=setInterval(()=>{ SL.sec++; document.getElementById('sl-time').textContent=slFmtTime(SL.sec); },1000);
+}
+function finishSlide(){
+  clearInterval(SL.timer); SL.running=false;
+  SL.score=Math.max(10, SL_CFG[SL.diff].base - SL.sec*3 - SL.moves);
+  const newRec=bt_recordScore(SL.best, SL.diff, SL.score); bt_saveBest('brain.slide.best', SL.best);
+  missionMark('slide');
+  sfx('good');
+  document.getElementById('slide-game-card').style.display='none';
+  document.getElementById('slide-result-card').style.display='block';
+  document.getElementById('sl-result-emoji').textContent=newRec?'🏆':'🧊';
+  document.getElementById('sl-result-title').textContent=newRec?t('slide.newRecord'):t('slide.done');
+  document.getElementById('sl-result-score').textContent=SL.score;
+  document.getElementById('sl-r-diff').textContent=SL_DIFF_LABEL(SL.diff);
+  document.getElementById('sl-r-time').textContent=slFmtTime(SL.sec);
+  document.getElementById('sl-r-moves').textContent=SL.moves;
+  document.getElementById('sl-r-best').textContent=SL.best[SL.diff].all;
+  slUpdateBestLine();
+}
+function leaveSlide(){ resetSlide(); showScreen('games'); }
+function resetSlide(){
+  clearInterval(SL.timer); SL.running=false;
+  const g=document.getElementById('slide-game-card'); if(g) g.style.display='none';
+  const r=document.getElementById('slide-result-card'); if(r) r.style.display='none';
+  const i=document.getElementById('slide-intro-card'); if(i) i.style.display='block';
+  slUpdateBestLine();
 }
 
 // ========== 다른 색 찾기 (시각 탐색 / 관찰) ==========
@@ -4931,8 +5112,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','slide'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,slide:SL}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -4987,6 +5168,7 @@ const HOME_GAMES=[
   {id:'melody', emoji:'🎵', key:'nav.melody', best:'brain.melody.best', grp:'cat.sound'},
   {id:'spot',   emoji:'🌈', key:'nav.spot',   best:'brain.spot.best',   grp:'cat.sight'},
   {id:'rotate', emoji:'🔄', key:'nav.rotate', best:'brain.rotate.best', grp:'cat.space'},
+  {id:'slide',  emoji:'🧊', key:'nav.slide',  best:'brain.slide.best',  grp:'cat.space'},
   {id:'math',   emoji:'➗', key:'nav.math',   grp:'cat.calc'},
   {id:'bubble', emoji:'🫧', key:'nav.bubble', best:'brain.bubble.best', grp:'cat.calc'},
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
@@ -5014,7 +5196,7 @@ function homeVisit(){
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
 const MISSION_A=['flash','count','nback','cards','melody'];   // 기억·청각
 const MISSION_B=['stroop','trail','react','whack','spot'];          // 주의·속도·협응
-const MISSION_C=['switch','rotate'];                 // 유연성·공간
+const MISSION_C=['switch','rotate','slide'];                 // 유연성·공간
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
   return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
@@ -5122,10 +5304,10 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, slide:{space:60,logic:25,focus:15}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,slide:700};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
