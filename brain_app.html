@@ -48,7 +48,7 @@ h1,h2,h3{font-weight:600}
 
 /* NAV */
 nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
-.nav-logo{display:flex;align-items:center;gap:.45rem;font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0}
+.nav-logo{display:flex;align-items:center;gap:.45rem;font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0;cursor:pointer}
 .nav-mascot{height:30px;width:auto;image-rendering:pixelated}
 .nav-logo span{color:var(--teal)}
 .nav-menu{display:flex;align-items:center;gap:.25rem;overflow-x:auto;overflow-y:hidden;flex:1;padding:0 1rem 0 0;scrollbar-width:none;-ms-overflow-style:none;height:100%}
@@ -297,7 +297,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .mg-feedback{text-align:center;font-size:.85rem;min-height:40px;line-height:1.4;color:var(--text3);display:flex;align-items:center;justify-content:center;padding:0 .5rem}
 
 /* LANGUAGE SELECT */
-.lang-select-wrap{flex-shrink:0;padding:0 1rem 0 .5rem}
+.lang-select-wrap{flex-shrink:0;padding:0 1rem 0 .5rem;display:flex;align-items:center;gap:.4rem}
+.snd-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);font-size:.9rem;padding:.25rem .4rem;cursor:pointer;line-height:1}
 .lang-select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.35rem .5rem;font-size:.8rem;color:var(--text);font-family:inherit;cursor:pointer;outline:none}
 .lang-select:hover{border-color:var(--purple)}
 @media (max-width:640px){
@@ -389,6 +390,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
 .home-card-cat{font-size:.66rem;color:var(--text3);font-weight:500}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
+.home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
+.home-install:hover{background:var(--purple3)}
+.home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
+.ios-hint-x{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.9rem;margin-left:auto;flex-shrink:0}
 .home-grp{font-size:.82rem;font-weight:700;color:var(--text2);margin:1.1rem .25rem .6rem}
 .home-grp:first-child{margin-top:.25rem}
 /* ===== Rule switch (규칙 바꾸기) ===== */
@@ -537,8 +542,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo"><img src="mallow-chan.png" alt="Mallow 마스코트" class="nav-mascot">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="showScreen('home')" role="button"><img src="mallow-chan.png" alt="Mallow 마스코트" class="nav-mascot">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
+    <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
       <option value="ko">🇰🇷 한국어</option>
       <option value="en">🇺🇸 English</option>
@@ -559,6 +565,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="hg-item"><b id="hg-records">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
   </div>
+  <button class="card home-install" id="pwa-install" style="display:none" onclick="pwaInstall()">📲 <span data-i18n="install.button">홈 화면에 앱으로 설치</span></button>
+  <div class="card home-ios-hint" id="ios-hint" style="display:none"><span data-i18n="install.ios">iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요</span><button class="ios-hint-x" onclick="dismissIosHint()">✕</button></div>
   <div class="home-section-title" data-i18n="home.browse">게임 모음</div>
   <div class="home-cats" id="home-cats"></div>
   <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
@@ -1701,6 +1709,8 @@ const I18N = {
   "tab.games": {ko:"게임", en:"Games", th:"เกม"},
   "tab.records": {ko:"내 기록", en:"Records", th:"สถิติ"},
   "home.title": {ko:"오늘의 두뇌 체조", en:"Today's Brain Workout", th:"บริหารสมองวันนี้"},
+  "install.button": {ko:"홈 화면에 앱으로 설치", en:"Install as app", th:"ติดตั้งเป็นแอป"},
+  "install.ios": {ko:"iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요", en:"On iPhone: Safari Share button → 'Add to Home Screen' to install", th:"บน iPhone: ปุ่มแชร์ใน Safari → 'เพิ่มลงหน้าจอโฮม' เพื่อติดตั้ง"},
   "home.about1min": {ko:"약 1분", en:"about 1 min", th:"ประมาณ 1 นาที"},
   "home.browse": {ko:"게임 모음", en:"Browse", th:"หมวดเกม"},
   "home.popular": {ko:"인기 게임", en:"Popular", th:"เกมยอดนิยม"},
@@ -2061,6 +2071,35 @@ S.levelProgress.jh[0]=1; S.levelProgress.hs[0]=1;
 // ========== NAV ==========
 // GA4 커스텀 이벤트(차단/미로드 환경 안전)
 function track(name, params){ try{ if(typeof gtag==='function') gtag('event', name, params||{}); }catch(e){} }
+// ===== 사운드/햅틱 (WebAudio 생성음 — 파일 없음, 토글 brain.sound) =====
+let _AC=null;
+function sndOn(){ try{ return localStorage.getItem('brain.sound')!=='off'; }catch(e){ return true; } }
+function toggleSound(){
+  const on=!sndOn();
+  try{ localStorage.setItem('brain.sound', on?'on':'off'); }catch(e){}
+  const b=document.getElementById('snd-btn'); if(b) b.textContent=on?'🔊':'🔇';
+  if(on) sfx('good');
+}
+function _beep(freq,dur,type,vol,when){
+  try{
+    if(!_AC) _AC=new (window.AudioContext||window.webkitAudioContext)();
+    if(_AC.state==='suspended') _AC.resume();
+    const o=_AC.createOscillator(), g=_AC.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(_AC.destination);
+    const t=_AC.currentTime+(when||0);
+    g.gain.setValueAtTime(vol||0.12,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    o.start(t); o.stop(t+dur+0.02);
+  }catch(e){}
+}
+function sfx(kind){
+  if(!sndOn()) return;
+  const vib=(p)=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
+  if(kind==='good'){ _beep(880,0.08); vib(12); }
+  else if(kind==='bad'){ _beep(180,0.16,'square',0.10); vib([40,30,40]); }
+  else if(kind==='win'){ _beep(660,0.09); _beep(880,0.09,'sine',0.12,0.10); _beep(1174,0.16,'sine',0.12,0.20); vib([20,40,20,40,60]); }
+}
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame'].forEach(fn=>{
@@ -3534,7 +3573,7 @@ function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
   let newAll=false;
-  if(score>b.all){ b.all=score; newAll=true; }
+  if(score>b.all){ b.all=score; newAll=true; sfx('win'); }
   if(score>b.day){ b.day=score; }
   return newAll;
 }
@@ -3602,7 +3641,7 @@ function fmTapCell(cellIdx){
   if(FM.phase!=='input') return;
   const c=document.getElementById('fm-cell-'+cellIdx);
   if(cellIdx===FM.order[FM.expect-1]){
-    c.textContent=FM.expect; c.classList.remove('empty'); c.classList.add('done'); c.onclick=null;
+    c.textContent=FM.expect; c.classList.remove('empty'); c.classList.add('done'); c.onclick=null; sfx('good');
     FM.expect++;
     if(FM.expect>FM.n) fmClear();
   }else{ fmFail(); }
@@ -3615,7 +3654,7 @@ function fmClear(){
   clearTimeout(FM.timer); FM.timer=setTimeout(fmNewRound, 900);
 }
 function fmFail(){
-  FM.phase='idle'; FM.lives--;
+  FM.phase='idle'; FM.lives--; sfx('bad');
   FM.order.forEach((cellIdx,k)=>{ // 못 누른 정답 잠깐 공개
     if(k+1>=FM.expect){ const c=document.getElementById('fm-cell-'+cellIdx); c.textContent=k+1; c.classList.remove('empty'); c.classList.add('reveal'); c.onclick=null; }
   });
@@ -3753,13 +3792,13 @@ function hcAnswer(v, btn){
   const btns=document.querySelectorAll('#hc-options .hc-opt');
   btns.forEach(b=>b.disabled=true);
   if(v===HC.answer){
-    btn.classList.add('correct');
+    btn.classList.add('correct'); sfx('good');
     const cfg=HC_CFG[HC.diff];
     HC.streak++; HC.maxStreak=Math.max(HC.maxStreak, HC.streak);
     HC.score += cfg.pts + (HC.streak-1)*2;
     hcSetStatus('count.correctMsg','good');
   }else{
-    btn.classList.add('wrong');
+    btn.classList.add('wrong'); sfx('bad');
     btns.forEach(b=>{ if(Number(b.textContent)===HC.answer) b.classList.add('correct'); });
     HC.lives--; HC.streak=0;
     hcSetStatus(null,'bad', t('count.wrongMsg')+' '+HC.answer+t('count.people'));
@@ -3862,8 +3901,9 @@ function stAnswer(key, btn){
   if(key===ST.inkKey){
     ST.correct++; ST.combo++; ST.maxCombo=Math.max(ST.maxCombo,ST.combo);
     ST.score += 10 + (ST.combo-1)*2;
+    sfx('good');
   }else{
-    ST.combo=0;
+    ST.combo=0; sfx('bad');
     ST.timeLeft=Math.max(0, ST.timeLeft-2); // 오답 시간 페널티
     updateStTimerDisplay();
     btn.classList.add('flash-wrong');
@@ -3966,14 +4006,14 @@ function trNewBoard(){
 function trTapNode(num,node){
   if(!TR.running) return;
   if(num===TR.next){
-    node.classList.add('done'); node.onclick=null; TR.next++;
+    node.classList.add('done'); node.onclick=null; TR.next++; sfx('good');
     if(TR.next>TR.n){ // 판 클리어
       TR.boards++; TR.score+=TR.n; TR.n++;
       trUpdateStats();
       setTimeout(()=>{ if(TR.running) trNewBoard(); }, 350);
     }else{ trUpdateStats(); }
   }else{
-    node.classList.remove('wrong'); void node.offsetWidth; node.classList.add('wrong');
+    node.classList.remove('wrong'); void node.offsetWidth; node.classList.add('wrong'); sfx('bad');
     TR.timeLeft=Math.max(0, TR.timeLeft-2); updateTrTimerDisplay(); // 오답 페널티
   }
 }
@@ -4240,7 +4280,7 @@ function missionMark(id){
   const m=missionLoad();
   if(!m.done.includes(id)){
     m.done.push(id); missionSave(m);
-    if(missionToday().every(g=>m.done.includes(g))) track('mission_complete', {});
+    if(missionToday().every(g=>m.done.includes(g))){ track('mission_complete', {}); sfx('win'); }
   }
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
@@ -4486,8 +4526,9 @@ function swAnswer(btn){
   if(btn.dataset.k===SW.answer){
     SW.correct++; SW.combo++; SW.maxCombo=Math.max(SW.maxCombo,SW.combo);
     SW.score += 10 + (SW.combo-1)*2;
+    sfx('good');
   }else{
-    SW.combo=0; SW.timeLeft=Math.max(0, SW.timeLeft-2); updateSwTimerDisplay();
+    SW.combo=0; sfx('bad'); SW.timeLeft=Math.max(0, SW.timeLeft-2); updateSwTimerDisplay();
     btn.classList.add('flash-wrong'); setTimeout(()=>btn.classList.remove('flash-wrong'),250);
   }
   swUpdateStats();
@@ -4590,9 +4631,10 @@ function nbPress(){
   if(NB.isMatch){
     NB.hits++; NB.combo++; NB.maxCombo=Math.max(NB.maxCombo,NB.combo);
     NB.score += 10 + (NB.combo-1)*2;
+    sfx('good');
     el.classList.add('hit');
   }else{
-    NB.combo=0; NB.timeLeft=Math.max(0, NB.timeLeft-2); updateNbTimer();
+    NB.combo=0; sfx('bad'); NB.timeLeft=Math.max(0, NB.timeLeft-2); updateNbTimer();
     el.classList.add('miss');
   }
   nbUpdateStats();
@@ -4679,8 +4721,9 @@ function rtAnswer(ans, btn){
   if(ans===RT.answer){
     RT.correct++; RT.combo++; RT.maxCombo=Math.max(RT.maxCombo,RT.combo);
     RT.score += 10 + (RT.combo-1)*2;
+    sfx('good');
   }else{
-    RT.combo=0; RT.timeLeft=Math.max(0, RT.timeLeft-2); updateRtTimer();
+    RT.combo=0; sfx('bad'); RT.timeLeft=Math.max(0, RT.timeLeft-2); updateRtTimer();
     btn.classList.add('flash-wrong'); setTimeout(()=>btn.classList.remove('flash-wrong'),250);
   }
   rtUpdateStats();
@@ -4777,7 +4820,7 @@ function cmFlip(i,b){
     f.b.classList.remove('up'); f.b.classList.add('done');
     b.classList.remove('up'); b.classList.add('done');
     CM.combo++; CM.maxCombo=Math.max(CM.maxCombo,CM.combo);
-    CM.score += 10 + (CM.combo-1)*2; CM.matched++;
+    CM.score += 10 + (CM.combo-1)*2; CM.matched++; sfx('good');
     cmUpdateStats();
     if(CM.matched>=CM.pairs){ // 판 클리어
       CM.boards++; CM.score += 20; CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
@@ -4785,7 +4828,7 @@ function cmFlip(i,b){
       CM.flipT=setTimeout(()=>{ if(CM.running) cmNewBoard(); }, 550);
     }
   }else{
-    CM.combo=0; cmUpdateStats(); CM.lock=true;
+    CM.combo=0; sfx('bad'); cmUpdateStats(); CM.lock=true;
     const fb=f.b;
     CM.flipT=setTimeout(()=>{
       fb.classList.remove('up'); fb.classList.add('back'); fb.textContent='';
@@ -4877,7 +4920,7 @@ function rcSurviveNoGo(){
   if(!RC.running) return;
   RC.state='resolved';
   RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=120; RC.done++;
-  rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+120'); rcSchedNext();
+  sfx('good'); rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+120'); rcSchedNext();
 }
 function rcTap(){
   if(!RC.running) return;
@@ -4886,15 +4929,15 @@ function rcTap(){
     RC.state='resolved'; RC.rtSum+=rt; RC.rtCount++;
     RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo);
     const pts=Math.max(20, Math.round(500 - rt*0.5)); RC.score+=pts; RC.done++;
-    rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
+    sfx('good'); rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
   }else if(RC.state==='waiting'){
     clearTimeout(RC.waitT);
     RC.state='resolved'; RC.combo=0; RC.done++;
-    rcUpdateStats(); rcSetBox('bad', t('react.foulEarly'), ''); rcSchedNext();
+    sfx('bad'); rcUpdateStats(); rcSetBox('bad', t('react.foulEarly'), ''); rcSchedNext();
   }else if(RC.state==='nogo'){
     clearTimeout(RC.nogoT);
     RC.state='resolved'; RC.combo=0; RC.done++;
-    rcUpdateStats(); rcSetBox('bad', t('react.foulNogo'), ''); rcSchedNext();
+    sfx('bad'); rcUpdateStats(); rcSetBox('bad', t('react.foulNogo'), ''); rcSchedNext();
   }
 }
 function rcSchedNext(){ RC.fbT=setTimeout(rcNextTrial, 850); }
@@ -4925,12 +4968,16 @@ function resetReact(){
 }
 
 // INIT
-// 언어: URL ?lang= 우선 → 저장값 → 기본 ko
+// 언어: URL ?lang= 우선 → 저장값 → 브라우저 언어 자동 감지(ko/th/기타=en)
 (function(){
   let lang=null;
   try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
   if(!lang){ try{ lang=localStorage.getItem('brain.lang'); }catch(e){} }
-  if(lang && ['ko','en','th'].includes(lang)) setLanguage(lang); else applyLanguage();
+  if(lang && ['ko','en','th'].includes(lang)){ setLanguage(lang); }
+  else{
+    const nav=((navigator.language||'ko')+'').toLowerCase();
+    setLanguage(nav.startsWith('ko')?'ko':(nav.startsWith('th')?'th':'en'));
+  }
 })();
 renderLevelTabs();
 renderExamInfo();
@@ -4941,6 +4988,30 @@ renderHome();
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
 }
+// PWA 설치 버튼(안드로이드 크롬) + iOS 안내
+let _deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); _deferredPrompt=e;
+  const b=document.getElementById('pwa-install'); if(b) b.style.display='block';
+});
+function pwaInstall(){
+  if(!_deferredPrompt) return;
+  _deferredPrompt.prompt(); track('pwa_install',{});
+  _deferredPrompt=null;
+  const b=document.getElementById('pwa-install'); if(b) b.style.display='none';
+}
+function dismissIosHint(){
+  try{ localStorage.setItem('brain.iosHint','1'); }catch(e){}
+  const h=document.getElementById('ios-hint'); if(h) h.style.display='none';
+}
+(function(){
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+  let seen=false; try{ seen=localStorage.getItem('brain.iosHint')==='1'; }catch(e){}
+  if(isIOS && !standalone && !seen){ const h=document.getElementById('ios-hint'); if(h) h.style.display='flex'; }
+})();
+// 사운드 버튼 초기 상태
+(function(){ const b=document.getElementById('snd-btn'); if(b) b.textContent=sndOn()?'🔊':'🔇'; })();
 </script>
 </body>
 </html>
