@@ -70,7 +70,14 @@ _Write important context, decisions, and lessons here so future sessions can pic
   HOME_GAMES에 `{id:'moamoa', koOnly:true, external:'moamoa/'}` — **ko에서만 노출**(renderGames/홈 칩 필터), 카드 클릭=location.href.
   홈 카드에 오늘 미완료 ● 뱃지(.home-card-dot). 내기록/능력치/미션에서는 제외. 퍼즐 30일치 내장(EPOCH 2026-07-10),
   **D+25쯤 추가 제작 필요** — moamoa/validate_puzzles.cjs로 검증, 제작 원칙은 moamoa/README.md. 원본 드롭은 shared/(gitignore).
-- 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 도전장 링크, 개인정보처리방침.
+- **도전장 링크(2026-07-10)**: 아케이드 11종 결과에 sendChallenge(game) 버튼 → `?c=game.score.diff` URL 공유.
+  수신 chReceive()(파라미터 검증+난이도 세터+인트로 배너+화면 직행), 판정 chCheck(id)는 missionMark 관문에서 호출(이기면 CH=null).
+  GA: challenge_send/open/result.
+- **키워드 랜딩(2026-07-10)**: `/sudoku/` `/iq-test/` `/braintype/` 정적 페이지(특징·방법·FAQ·canonical·GA4).
+  본체 진입은 `?game=<id>` 딥링크(screen-<id> 존재 검증). 홈 하단 .site-footer 내부링크(ko에서만 표시). sitemap 등재.
+- **공유카드 v2(2026-07-10)**: makeShareCard = 그라데이션 배경+흰 카드+다크 텍스트, 상단 마스코트(_mascotImg 프리로드,
+  pixelated)+Mallow, lines[0]=포인트색 대형 점수, 하단 playmallow.com 워터마크 강조. API(o.emoji/title/lines/desc/note) 불변.
+- 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 개인정보처리방침.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 서비스 운영 (LIVE)

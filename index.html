@@ -4366,29 +4366,48 @@ function btWrapText(g,text,cx,y,maxW,lh){
   return yy;
 }
 // 공용 카드 생성: {emoji, title, subtitle, lines[], desc, note, from, to} → canvas
+const _mascotImg=new Image(); _mascotImg.src='mallow-chan.png'; // 공유카드용 프리로드
 function makeShareCard(o){
   const c=document.createElement('canvas'); c.width=600; c.height=800;
   const W=c.width, H=c.height, g=c.getContext('2d');
   const grad=g.createLinearGradient(0,0,W,H);
   grad.addColorStop(0,o.from||'#4f7cff'); grad.addColorStop(1,o.to||'#21a67a');
   g.fillStyle=grad; g.fillRect(0,0,W,H);
-  g.fillStyle='rgba(255,255,255,0.12)'; btRoundRect(g,40,40,W-80,H-80,28); g.fill();
+  // 은은한 장식 원
+  g.fillStyle='rgba(255,255,255,0.07)';
+  g.beginPath(); g.arc(70,120,150,0,7); g.fill();
+  g.beginPath(); g.arc(W-40,H-160,190,0,7); g.fill();
   g.textAlign='center';
-  g.fillStyle='rgba(255,255,255,0.95)'; g.font='700 30px sans-serif'; g.fillText('Mallow', W/2, 116);
-  if(o.subtitle){ g.font='400 20px sans-serif'; g.fillStyle='rgba(255,255,255,0.8)'; g.fillText(o.subtitle, W/2, 150); }
-  g.fillStyle='#fff'; g.font='150px sans-serif'; g.fillText(o.emoji, W/2, 378);
-  g.font='800 46px sans-serif'; g.fillText(o.title, W/2, 468);
-  let y=534;
+  // 상단 브랜드: 마스코트 + Mallow + 태그라인
+  if(_mascotImg.complete && _mascotImg.naturalWidth){
+    g.imageSmoothingEnabled=false;
+    g.drawImage(_mascotImg, W/2-30, 52, 60, 56);
+    g.imageSmoothingEnabled=true;
+  }
+  g.fillStyle='#fff'; g.font='800 36px sans-serif'; g.fillText('Mallow', W/2, 152);
+  if(o.subtitle){ g.font='500 21px sans-serif'; g.fillStyle='rgba(255,255,255,0.85)'; g.fillText(o.subtitle, W/2, 188); }
+  // 흰 카드
+  g.save();
+  g.shadowColor='rgba(0,0,0,0.22)'; g.shadowBlur=30; g.shadowOffsetY=10;
+  g.fillStyle='#fff'; btRoundRect(g,44,220,W-88,H-364,28); g.fill();
+  g.restore();
+  // 카드 내용 (다크 텍스트)
+  g.font='104px sans-serif'; g.fillText(o.emoji, W/2, 356);
+  g.fillStyle='#182235'; g.font='800 42px sans-serif'; g.fillText(o.title, W/2, 430);
+  let y=506;
   if(o.lines && o.lines.length){
-    g.font='600 32px sans-serif'; g.fillStyle='#fff';
-    o.lines.forEach(ln=>{ g.fillText(ln, W/2, y); y+=48; });
+    g.font='800 42px sans-serif'; g.fillStyle=o.from||'#4f7cff';
+    g.fillText(o.lines[0], W/2, y); y+=54;
+    g.font='600 27px sans-serif'; g.fillStyle='#5a6683';
+    o.lines.slice(1).forEach(ln=>{ g.fillText(ln, W/2, y); y+=42; });
   }
   if(o.desc){
-    g.font='400 26px sans-serif'; g.fillStyle='rgba(255,255,255,0.92)';
-    y=btWrapText(g, o.desc, W/2, y, W-170, 38)+16;
+    g.font='400 25px sans-serif'; g.fillStyle='#5a6683';
+    y=btWrapText(g, o.desc, W/2, y, W-190, 38)+16;
   }
-  if(o.note){ g.fillStyle='rgba(255,255,255,0.85)'; g.font='500 22px sans-serif'; g.fillText(o.note, W/2, H-120); }
-  g.fillStyle='rgba(255,255,255,0.7)'; g.font='400 20px sans-serif'; g.fillText('playmallow.com', W/2, H-70);
+  // 하단: 추천/노트 + 도메인 워터마크
+  if(o.note){ g.fillStyle='rgba(255,255,255,0.95)'; g.font='600 23px sans-serif'; g.fillText(o.note, W/2, H-96); }
+  g.fillStyle='#fff'; g.font='700 27px sans-serif'; g.fillText('playmallow.com', W/2, H-46);
   return c;
 }
 // 공용 공유/다운로드

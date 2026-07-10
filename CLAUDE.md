@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-10 — **리뷰 반영 3종**: ① 키워드 랜딩 `/sudoku/` `/iq-test/` `/braintype/`(+`?game=` 딥링크, 홈 푸터 내부링크, sitemap)
+  ② 도전장 링크(`?c=game.score.diff`, 11종 결과 버튼→공유, 수신 배너+승패 판정) ③ 공유카드 v2(흰 카드+마스코트+점수 강조).
+
 - 2026-07-10 — **모아모아 편입**: 한국어 데일리 낱말 퍼즐을 `/moamoa/` 별도 페이지로 배치(브랜딩 Mallow·GA4·canonical),
   홈/게임탭에 ko 전용 카드(koOnly 필터, en/th 숨김) + 오늘 미완료 ● 뱃지, sitemap 추가. 퍼즐 30일치(D+25 추가 제작 필요).
 
