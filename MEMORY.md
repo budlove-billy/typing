@@ -64,7 +64,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
   60초, WK_CFG(win/gap/badP), 못 잡으면 콤보 리셋. `WK` 객체(timer+spawnT+hideT). `brain.whack.best`. 마스코트 활용 1호 게임.
 - **신규(2026-07-10): 멜로디 기억(melody)** → 청각 축(cat.sound). 사이먼류 4패드(C4/E4/G4/B4, _beep 재사용),
   재생 중 입력 잠금(playing), 성공 len+1/실패 lives-1(3). `ML` 객체(timers[]). `brain.melody.best`.
-- 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack,spot], C=[switch,rotate,slide].
+- 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack,spot,chop], C=[switch,rotate,slide].
 - **신규(2026-07-10): 모아모아(moamoa)** — 한국어 Connections류 데일리 낱말 퍼즐. **SPA 편입 아님**: `/moamoa/index.html` 별도 정적 페이지
   (자체 header/모달·KST 데일리·이모지 공유·streak·localStorage `moamoa_state_v1`/`moamoa_stats_v1`).
   HOME_GAMES에 `{id:'moamoa', koOnly:true, external:'moamoa/'}` — **ko에서만 노출**(renderGames/홈 칩 필터), 카드 클릭=location.href.
@@ -96,6 +96,10 @@ _Write important context, decisions, and lessons here so future sessions can pic
   난이도=판 크기(easy 5×5/normal 4×4/hard 3×3), 스와이프(touch, .mr-board-wrap touch-action:none)+방향키, 되돌리기 1회(MR.prev 1슬롯),
   2048 도달 시 win 팡파르 후 계속, '기록하고 끝내기' 버튼. 순수 mrMoveLine(압축→1회 병합→압축, 시뮬 9케이스+999판 검증).
   `MR` 객체, `brain.merge.best`, 도전장·공유·능력치(calc50/logic30/space20, REF 6000) 연동. 미션 풀 제외(계산 축 관례). 활성 19종.
+- **신규(2026-07-11): 말로우 타워(chop)** → 순발력 축 3호(팀버맨류, hi5games '숲속의 나무꾼' 검토 후 마시멜로 깨물기로 재테마).
+  좌/우 탭(버튼+방향키)으로 타워 깨물기, 포크(🍴) 쪽=아웃(바닥 포크 쪽 이동도 아웃), 시간 게이지 상시 감소+깨물면 회복,
+  점수 오를수록 감소 가속(accel). 생성 규칙: 포크 다음 칸은 반드시 빈 칸(완벽 플레이 무한 생존 시뮬 검증).
+  `CP` 객체, `brain.chop.best`, 도전장·공유·능력치(speed70/focus30, REF 130)·미션 풀 B 연동. 활성 20종.
 - 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
