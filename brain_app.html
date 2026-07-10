@@ -3667,6 +3667,7 @@ function mgSubmitAnswer(){
   if(isCorrect){
     MG.score++;
     MG.correctCount++;
+    sfx('good');
     inp.className='mg-answer-input correct';
     fb.textContent=t('math.correctMsg');
     fb.style.color='var(--teal2)';
@@ -3677,6 +3678,7 @@ function mgSubmitAnswer(){
     }
   }else{
     MG.wrongCount++;
+    sfx('bad');
     inp.className='mg-answer-input wrong';
     fb.textContent=`${t('math.wrongMsg')} ${MG.currentProblem.answer}`;
     fb.style.color='var(--red)';
@@ -4472,7 +4474,8 @@ function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', ke
 // 통일 게임 카드(홈·게임화면 공용): 이모지 / 이름 / 카테고리 / 🏆기록
 function gameCardHTML(g){
   let best='';
-  if(g.best){ const b=bt_loadBest(g.best); const mx=Math.max(b.easy.all,b.normal.all,b.hard.all); if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>'; }
+  const mx = g.id==='braintype' ? 0 : gameBestVal(g.id);
+  if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>';
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
     '<div class="home-card-cat">'+t(g.grp)+'</div>';
@@ -4491,7 +4494,7 @@ function renderHome(){
   const set=missionToday(), m=missionLoad();
   const plays=set.filter(id=>m.done.includes(id)).length;
   let rec=0;
-  HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
+  HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && gameBestVal(g.id)>0) rec++; });
   setTxt('hg-plays', plays+'/'+set.length); setTxt('hg-streak', v.streak); setTxt('hg-records', rec);
   // 큰 추천 카드
   const next=set.find(id=>!m.done.includes(id));
@@ -4636,8 +4639,8 @@ function renderRecords(){
   renderAbility();
   const body=document.getElementById('records-body'); if(!body) return;
   body.innerHTML='';
-  HOME_GAMES.filter(g=>g.best).forEach(g=>{
-    const b=bt_loadBest(g.best); const mx=Math.max(b.easy.all,b.normal.all,b.hard.all);
+  HOME_GAMES.filter(g=>g.id!=='braintype').forEach(g=>{
+    const mx=gameBestVal(g.id);
     const row=document.createElement('div'); row.className='rec-row';
     row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+
       '<span class="rec-cat">'+t(g.grp)+'</span>'+
