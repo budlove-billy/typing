@@ -310,6 +310,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .gm-status{text-align:center;font-size:1rem;font-weight:600;color:var(--purple);margin-bottom:1rem;min-height:1.4em}
 .gm-status.good{color:var(--teal2)}
 .gm-status.bad{color:var(--red)}
+.gm-status.pop{animation:statusPop .45s ease}
+.gm-status.turn{background:var(--purple3);border-radius:999px;padding:.4rem 1.1rem;width:fit-content;margin:0 auto 1rem}
+@keyframes statusPop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
 .best-line{text-align:center;font-size:.8rem;color:var(--text3);margin-top:.75rem;min-height:1.1em}
 /* flash memory board */
 .fm-board{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;width:100%;max-width:380px;margin:0 auto}
@@ -340,7 +343,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .st-opt:active:not(:disabled){transform:scale(.95)}
 .flash-wrong{outline:3px solid var(--red);outline-offset:2px}
 .tr-board{position:relative;width:100%;max-width:460px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
-.tr-node{position:absolute;width:13%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--purple);border-radius:50%;color:var(--purple);font-weight:700;font-size:clamp(.85rem,3.4vw,1.2rem);cursor:pointer;user-select:none;transition:background .12s,border-color .12s;transform:translate(-50%,-50%)}
+.tr-node{position:absolute;width:13%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--purple);border-radius:50%;color:var(--purple);font-weight:700;font-size:clamp(1rem,4vw,1.5rem);cursor:pointer;user-select:none;transition:background .12s,border-color .12s;transform:translate(-50%,-50%)}
 .tr-node:hover{background:var(--purple3)}
 .tr-node.done{background:var(--teal);border-color:var(--teal);color:#fff;cursor:default}
 .tr-node.wrong{animation:mgPulse .3s 2}
@@ -436,7 +439,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .st-opt{padding:.85rem 0;font-size:.92rem}
   .sw-opt{padding:1.05rem .35rem;font-size:1rem}
   .sw-num{font-size:clamp(3rem,20vw,4.5rem);margin-bottom:1rem}
-  .tr-node{width:15%;font-size:clamp(.8rem,4.2vw,1.1rem)}
+  .tr-node{width:15%;font-size:clamp(1.05rem,5.5vw,1.4rem)}
   .hc-stage{height:190px}
   .hc-house{font-size:4.5rem}
   .hc-person{font-size:2.9rem}
@@ -461,11 +464,11 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rot-vs{font-size:1.1rem;color:var(--text3);font-weight:700}
 .rot-options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;max-width:440px;margin:0 auto}
 .rot-opt{padding:1.15rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.05rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
-.rot-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}
+@media(hover:hover){.rot-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple3)}}
 .rot-opt:active{transform:scale(.97)}
 /* ===== Card match (카드 짝 맞추기) ===== */
 .cm-board{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;width:100%;max-width:400px;margin:0 auto}
-.cm-card{aspect-ratio:3/4;border:none;border-radius:var(--radius);cursor:pointer;font-size:clamp(1.4rem,7vw,2.2rem);display:flex;align-items:center;justify-content:center;font-family:inherit;transition:transform .12s,background .12s;padding:0}
+.cm-card{aspect-ratio:3/4;border:none;border-radius:var(--radius);cursor:pointer;font-size:clamp(1.8rem,9.5vw,2.8rem);display:flex;align-items:center;justify-content:center;font-family:inherit;transition:transform .12s,background .12s;padding:0}
 .cm-card.back{background:linear-gradient(135deg,#4f7cff,#6e92ff);color:transparent}
 .cm-card.back::after{content:"?";color:rgba(255,255,255,.7);font-weight:800}
 .cm-card.up{background:#fff;border:1.5px solid var(--purple)}
@@ -473,14 +476,14 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .cm-card:active:not(.done){transform:scale(.95)}
 @media (max-width:640px){ .cm-board{gap:.4rem;max-width:340px} }
 /* ===== Reaction (반응 속도) ===== */
-.rc-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;height:220px;border-radius:var(--radius3);cursor:pointer;user-select:none;font-weight:800;color:#fff;font-size:1.6rem;transition:background .08s;text-align:center;padding:1rem;-webkit-tap-highlight-color:transparent}
+.rc-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;height:220px;border-radius:var(--radius3);cursor:pointer;user-select:none;font-weight:800;color:#fff;font-size:2rem;transition:background .08s;text-align:center;padding:1rem;-webkit-tap-highlight-color:transparent}
 .rc-box.idle{background:var(--bg4);color:var(--text2)}
 .rc-box.waiting{background:linear-gradient(135deg,#7b8bb0,#556089)}
 .rc-box.go{background:linear-gradient(135deg,#15a040,#0e9e70)}
 .rc-box.nogo{background:linear-gradient(135deg,#e0344b,#b02030)}
 .rc-box.good{background:linear-gradient(135deg,#4f7cff,#2255d0)}
 .rc-box.bad{background:linear-gradient(135deg,#c97a00,#a86300)}
-.rc-box-sub{font-size:1rem;font-weight:600;opacity:.92}
+.rc-box-sub{font-size:1.2rem;font-weight:600;opacity:.92}
 /* ===== Phase2: 하단 탭바 · 홈 개편 · 기록 ===== */
 .tabbar{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -1px 6px rgba(24,34,53,.05)}
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text3);transition:.12s;padding:0}
@@ -1285,7 +1288,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="section-head"><h2 data-i18n="rotate.title">도형 회전</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rotate.intro">
       두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>
-      아무리 돌려도 안 겹치는 <b>거울상이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!
+      아무리 돌려도 안 겹치게 <b>뒤집힌 모양이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!
     </p>
     <div class="difficulty-row">
       <div class="diff-btn" id="rt-diff-easy" onclick="setRotateDiff('easy')">
@@ -1309,7 +1312,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rotate.combo">COMBO</div><div class="mg-stat-value" id="rt2-combo">0</div></div>
     </div>
     <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="rt2-timer">01:00</div></div>
-    <div class="gm-status" id="rt2-status" data-i18n="rotate.guide">같은 도형일까요, 거울상일까요?</div>
+    <div class="gm-status" id="rt2-status" data-i18n="rotate.guide">같은 도형일까요, 뒤집힌 도형일까요?</div>
     <div class="rot-stage">
       <div class="rot-box"><span class="rot-glyph" id="rot-left">F</span></div>
       <div class="rot-vs">vs</div>
@@ -1317,7 +1320,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </div>
     <div class="rot-options">
       <button class="rot-opt" id="rot-opt-same" onclick="rtAnswer('same',this)" data-i18n="rotate.same">같다 (회전)</button>
-      <button class="rot-opt" id="rot-opt-diff" onclick="rtAnswer('diff',this)" data-i18n="rotate.diff">다르다 (거울상)</button>
+      <button class="rot-opt" id="rot-opt-diff" onclick="rtAnswer('diff',this)" data-i18n="rotate.diff">다르다 (뒤집힘)</button>
     </div>
     <div style="display:flex;justify-content:center;margin-top:1.25rem">
       <button class="btn btn-outline" onclick="leaveRotate()" data-i18n="rotate.leave">나가기</button>
@@ -1942,7 +1945,7 @@ const I18N = {
   "nav.rotate": {ko:"도형 회전", en:"Rotation", th:"หมุนภาพ"},
   "home.grpSpace": {ko:"🧭 공간지각", en:"🧭 Spatial", th:"🧭 มิติสัมพันธ์"},
   "rotate.title": {ko:"도형 회전", en:"Mental Rotation", th:"หมุนภาพในใจ"},
-  "rotate.intro": {ko:"두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>아무리 돌려도 안 겹치는 <b>거울상이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!", en:"Compare the two letter-shapes. If the right one <b>matches the left by rotation only</b>, tap [Same];<br>if it's a <b>mirror image</b> that never lines up, tap [Different]. A <b>spatial</b> workout of rotating in your head!", th:"เปรียบเทียบตัวอักษรสองรูป ถ้าด้านขวา <b>หมุนแล้วตรงกับด้านซ้าย</b> แตะ [เหมือน]<br>ถ้าเป็น <b>ภาพกระจก</b> ที่หมุนยังไงก็ไม่ตรง แตะ [ต่าง] ฝึก <b>มิติสัมพันธ์</b> ด้วยการหมุนในใจ!"},
+  "rotate.intro": {ko:"두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>아무리 돌려도 안 겹치게 <b>뒤집힌 모양이면</b> [다르다]. 머릿속으로 회전시키는 <b>공간지각</b> 훈련!", en:"Compare the two letter-shapes. If the right one <b>matches the left by rotation only</b>, tap [Same];<br>if it's a <b>mirror image</b> that never lines up, tap [Different]. A <b>spatial</b> workout of rotating in your head!", th:"เปรียบเทียบตัวอักษรสองรูป ถ้าด้านขวา <b>หมุนแล้วตรงกับด้านซ้าย</b> แตะ [เหมือน]<br>ถ้าเป็น <b>ภาพกระจก</b> ที่หมุนยังไงก็ไม่ตรง แตะ [ต่าง] ฝึก <b>มิติสัมพันธ์</b> ด้วยการหมุนในใจ!"},
   "rotate.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
   "rotate.easyDesc": {ko:"직각 회전만", en:"Right angles", th:"มุมฉากเท่านั้น"},
   "rotate.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
@@ -1952,9 +1955,9 @@ const I18N = {
   "rotate.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "rotate.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "rotate.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
-  "rotate.guide": {ko:"같은 도형일까요, 거울상일까요?", en:"Same shape, or a mirror image?", th:"รูปเดียวกัน หรือภาพกระจก?"},
+  "rotate.guide": {ko:"같은 도형일까요, 뒤집힌 도형일까요?", en:"Same shape, or a mirror image?", th:"รูปเดียวกัน หรือภาพกระจก?"},
   "rotate.same": {ko:"같다 (회전)", en:"Same (rotation)", th:"เหมือน (หมุน)"},
-  "rotate.diff": {ko:"다르다 (거울상)", en:"Different (mirror)", th:"ต่าง (กระจก)"},
+  "rotate.diff": {ko:"다르다 (뒤집힘)", en:"Different (mirror)", th:"ต่าง (กระจก)"},
   "rotate.leave": {ko:"나가기", en:"Leave", th:"ออก"},
   "rotate.confirmLeave": {ko:"게임을 종료하고 나가시겠습니까?", en:"End the game and leave?", th:"จบเกมแล้วออกหรือไม่?"},
   "rotate.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -2006,7 +2009,7 @@ const I18N = {
   "melody.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"},
   "melody.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
   "melody.listen": {ko:"잘 들어보세요…", en:"Listen carefully…", th:"ฟังให้ดี…"},
-  "melody.repeat": {ko:"같은 순서로 누르세요!", en:"Repeat the sequence!", th:"กดตามลำดับเดิม!"},
+  "melody.repeat": {ko:"👆 내 차례! 같은 순서로 누르세요", en:"👆 Your turn! Repeat the sequence", th:"👆 ตาคุณ! กดตามลำดับเดิม"},
   "melody.goodRound": {ko:"성공! 한 음 더 🎵", en:"Nice! One more note 🎵", th:"เยี่ยม! เพิ่มอีกเสียง 🎵"},
   "melody.missRound": {ko:"아쉬워요! 다시 들어보세요", en:"Missed! Listen again", th:"พลาด! ฟังอีกครั้ง"},
   "melody.leave": {ko:"나가기", en:"Leave", th:"ออก"},
@@ -4901,6 +4904,7 @@ function rtNextTrial(){
 }
 function rtAnswer(ans, btn){
   if(!RT.running) return;
+  if(btn&&btn.blur) btn.blur();
   if(ans===RT.answer){
     RT.correct++; RT.combo++; RT.maxCombo=Math.max(RT.maxCombo,RT.combo);
     RT.score += 10 + (RT.combo-1)*2;
@@ -5296,7 +5300,7 @@ function mlUpdateStats(){
   document.getElementById('ml-level').textContent=ML.len;
   document.getElementById('ml-life').textContent='♥'.repeat(ML.lives)+'♡'.repeat(3-ML.lives);
 }
-function mlSetStatus(key,cls){ const el=document.getElementById('ml-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function mlSetStatus(key,cls){ const el=document.getElementById('ml-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); void el.offsetWidth; el.classList.add('pop'); }
 function mlFlash(i,dur){
   const p=document.querySelector('.ml-p'+i); if(!p) return;
   p.classList.add('lit');
@@ -5317,7 +5321,7 @@ function mlNewRound(){
   mlSetStatus('melody.listen'); mlUpdateStats();
   const sp=ML_CFG[ML.diff].speed;
   ML.seq.forEach((v,i)=>{ ML.timers.push(setTimeout(()=>mlFlash(v,sp), 600+i*sp)); });
-  ML.timers.push(setTimeout(()=>{ ML.playing=false; mlSetStatus('melody.repeat'); }, 600+ML.seq.length*sp));
+  ML.timers.push(setTimeout(()=>{ ML.playing=false; mlSetStatus('melody.repeat','turn'); try{navigator.vibrate&&navigator.vibrate(50)}catch(_){} }, 600+ML.seq.length*sp));
 }
 function mlTap(i){
   if(!ML.running || ML.playing) return;
