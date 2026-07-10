@@ -8,4 +8,9 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th"/>
   </url>
+  <url>
+    <loc>https://playmallow.com/moamoa/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

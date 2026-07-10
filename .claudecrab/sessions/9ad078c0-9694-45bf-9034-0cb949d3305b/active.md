@@ -1,10 +1,10 @@
 # Active Session State
 
 ## Current task
-(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+(완료) 암산 수정(3a91abf) — 내기록·게임카드가 flat 저장(math/iq/sudoku)을 누락하던 버그를 gameBestVal()로 통일, 정답/오답 sfx 추가. 배포·라이브 확인.
 
 ## Decisions
-- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+- 기록 조회는 어디서든 gameBestVal(id) 사용(best/flat 모두 처리). braintype만 제외.
 
 ## Open questions
-- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.

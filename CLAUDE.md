@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-10 — **모아모아 편입**: 한국어 데일리 낱말 퍼즐을 `/moamoa/` 별도 페이지로 배치(브랜딩 Mallow·GA4·canonical),
+  홈/게임탭에 ko 전용 카드(koOnly 필터, en/th 숨김) + 오늘 미완료 ● 뱃지, sitemap 추가. 퍼즐 30일치(D+25 추가 제작 필요).
+
 - 2026-07-10 — 신규 축 2종: 협응 **말로우 팡팡(whack, 마스코트 활용)** + 청각 **멜로디 기억(melody, WebAudio)**. 활성 15종, 인지 축 8개.
 
 - 2026-07-10 — **한글 타자·영단어 비활성화**(출시 범위 제외): 두뇌게임 포지셔닝 불일치+en/th 미대응. 소프트 비활성(HOME_GAMES 주석, 코드 보존). 언어가형 추천 vocab→nback. 활성 13종.

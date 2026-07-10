@@ -1011,3 +1011,182 @@ Phase A 배포 대기: 사용자가 가비아에서 playmallow.com 구매 예정
 ## Open questions
 - 신규 게임 2종(두더지/멜로디) 착수 여부 사용자 결정.
 
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:07:04.261986+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+
+## Decisions
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+
+## Open questions
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:13:24.334439+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+
+## Decisions
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+
+## Open questions
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:19:00.118712+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+
+## Decisions
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+
+## Open questions
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:23:48.886280+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+
+## Decisions
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+
+## Open questions
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:27:41.322856+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 신규 게임 2종 whack+melody 제작·통합·배포. 활성 15종, 인지 축 8개.
+
+## Decisions
+- 상세 MEMORY.md. 미션 풀 A+melody, B+whack. 능력치 whack{speed60,focus40}/melody{memory70,focus30}.
+
+## Open questions
+- 다음 후보: 시각탐색, 어림, 도전장 링크, 개인정보방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:33:56.306112+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 스도쿠 모바일 가독성 2차 조정 — 숫자 clamp(20px,6.5vw,30px)·굵기600, 셀 #e9eef5, 카드 #f2f4f9, 하이라이트 재조정. f0b1df4 배포·라이브 확인.
+
+## Decisions
+- 사용자가 같은 요청 반복 → 1차(ec02c8b)가 부족했다고 보고 더 강하게 조정. 추가 불만 시 clamp/색값만 미세조정.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:38:25.507589+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 5개 게임 UX 개선(0ce317e) — trail/cards/react 글자·이미지 확대, melody 상태문구 팝+칩+진동, rotate hover 잔상 제거+'거울상'→'뒤집힘'. 배포·라이브 확인.
+
+## Decisions
+- 터치기기 hover 잔상은 @media(hover:hover) 가드+btn.blur()로 해결 — 다른 게임 버튼에도 같은 증상 나오면 동일 패턴 적용.
+- rotate en/th의 mirror 표현은 자연스러워 유지, ko만 '뒤집힘'으로.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:39:59.705937+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 5개 게임 UX 개선(0ce317e) — trail/cards/react 글자·이미지 확대, melody 상태문구 팝+칩+진동, rotate hover 잔상 제거+'거울상'→'뒤집힘'. 배포·라이브 확인.
+
+## Decisions
+- 터치기기 hover 잔상은 @media(hover:hover) 가드+btn.blur()로 해결 — 다른 게임 버튼에도 같은 증상 나오면 동일 패턴 적용.
+- rotate en/th의 mirror 표현은 자연스러워 유지, ko만 '뒤집힘'으로.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:41:30.817911+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 5개 게임 UX 개선(0ce317e) — trail/cards/react 글자·이미지 확대, melody 상태문구 팝+칩+진동, rotate hover 잔상 제거+'거울상'→'뒤집힘'. 배포·라이브 확인.
+
+## Decisions
+- 터치기기 hover 잔상은 @media(hover:hover) 가드+btn.blur()로 해결 — 다른 게임 버튼에도 같은 증상 나오면 동일 패턴 적용.
+- rotate en/th의 mirror 표현은 자연스러워 유지, ko만 '뒤집힘'으로.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T01:56:19.149559+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 암산 수정(3a91abf) — 내기록·게임카드가 flat 저장(math/iq/sudoku)을 누락하던 버그를 gameBestVal()로 통일, 정답/오답 sfx 추가. 배포·라이브 확인.
+
+## Decisions
+- 기록 조회는 어디서든 gameBestVal(id) 사용(best/flat 모두 처리). braintype만 제외.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-10T05:59:17.865941+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 암산 수정(3a91abf) — 내기록·게임카드가 flat 저장(math/iq/sudoku)을 누락하던 버그를 gameBestVal()로 통일, 정답/오답 sfx 추가. 배포·라이브 확인.
+
+## Decisions
+- 기록 조회는 어디서든 gameBestVal(id) 사용(best/flat 모두 처리). braintype만 제외.
+
+## Open questions
+- 백로그: 시각탐색, 어림계산, 도전장 링크, 개인정보처리방침.
+

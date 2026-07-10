@@ -394,6 +394,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
 .home-card-cat{font-size:.66rem;color:var(--text3);font-weight:500}
 .home-card-best{position:absolute;top:.4rem;right:.5rem;font-size:.7rem;font-weight:700;color:var(--amber2);background:var(--amber3);border-radius:999px;padding:.1rem .4rem}
+.home-card-dot{position:absolute;top:.5rem;right:.6rem;width:9px;height:9px;border-radius:50%;background:var(--red)}
 .home-install{display:block;width:100%;text-align:center;cursor:pointer;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:.92rem;font-family:inherit;padding:.85rem}
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
@@ -1579,6 +1580,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 const I18N = {
   "page.title": {ko:"Mallow — 가볍게 즐기는 두뇌게임 | 무료 두뇌 트레이닝", en:"Mallow — Light & Fun Brain Games", th:"Mallow — เกมสมองเบา ๆ สนุก ๆ"},
   "nav.tagline": {ko:" 가볍게 즐기는 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
+  "nav.moamoa": {ko:"모아모아", en:"Moamoa", th:"โมอาโมอา"},
+  "cat.daily": {ko:"오늘의 퍼즐", en:"Daily Puzzle", th:"ปริศนารายวัน"},
   "about.p1": {ko:"Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 순간기억·카드 짝 맞추기·엔백 같은 기억력 게임, 색깔 맞추기(스트룹)·규칙 바꾸기 같은 집중력 게임, 반응 속도·순서 잇기 같은 순발력 게임, 도형 회전(공간감각), 암산·스도쿠·IQ 테스트까지 13가지 미니게임을 제공합니다.", en:"Mallow is a free collection of brain games you can play instantly — no signup. Memory games (flash memory, card match, N-back), focus games (Stroop, rule switch), speed games (reaction, number trail), spatial rotation, mental math, Sudoku, and an IQ quiz — 13 mini games in all.", th:"Mallow คือรวมเกมสมองฟรี เล่นได้ทันทีไม่ต้องสมัคร มีเกมความจำ (ความจำฉับพลัน จับคู่การ์ด เอ็นแบ็ก) เกมสมาธิ (สตรูป สลับกฎ) เกมความไว (ตอบสนอง เชื่อมตัวเลข) หมุนภาพ คิดเลขเร็ว ซูโดกุ และควิซไอคิว รวม 13 เกม"},
   "about.p2": {ko:"매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.", en:"Unwind with 3 daily mission games and track your growth with best scores and brain stats. No install, no login.", th:"พักสมองกับภารกิจ 3 เกมที่เปลี่ยนทุกวัน และดูพัฒนาการผ่านสถิติกับกราฟค่าพลังสมอง ไม่ต้องติดตั้ง ไม่ต้องล็อกอิน"},
   "nav.typing": {ko:"한글 타자", en:"Korean Typing", th:"พิมพ์เกาหลี"},
@@ -4431,6 +4434,7 @@ const HOME_GAMES=[
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
   // {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'cat.lang'},
   // {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
+  {id:'moamoa', emoji:'🧩', key:'nav.moamoa', grp:'cat.daily', koOnly:true, external:'moamoa/'},
   {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'cat.fun'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -4474,8 +4478,9 @@ function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', ke
 // 통일 게임 카드(홈·게임화면 공용): 이모지 / 이름 / 카테고리 / 🏆기록
 function gameCardHTML(g){
   let best='';
-  const mx = g.id==='braintype' ? 0 : gameBestVal(g.id);
+  const mx = (g.id==='braintype'||g.external) ? 0 : gameBestVal(g.id);
   if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>';
+  if(g.id==='moamoa'){ try{ const st=JSON.parse(localStorage.getItem('moamoa_state_v1')||'null'); const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(!(st&&st.date===kst&&st.done)) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
     '<div class="home-card-cat">'+t(g.grp)+'</div>';
@@ -4494,7 +4499,7 @@ function renderHome(){
   const set=missionToday(), m=missionLoad();
   const plays=set.filter(id=>m.done.includes(id)).length;
   let rec=0;
-  HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && gameBestVal(g.id)>0) rec++; });
+  HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('hg-plays', plays+'/'+set.length); setTxt('hg-streak', v.streak); setTxt('hg-records', rec);
   // 큰 추천 카드
   const next=set.find(id=>!m.done.includes(id));
@@ -4517,7 +4522,7 @@ function renderHome(){
     }
   }
   // 게임 모음: 카테고리 칩
-  const cats=[]; HOME_GAMES.forEach(g=>{ if(!cats.includes(g.grp)) cats.push(g.grp); });
+  const cats=[]; HOME_GAMES.forEach(g=>{ if(g.koOnly&&CURRENT_LANG!=='ko') return; if(!cats.includes(g.grp)) cats.push(g.grp); });
   const catWrap=document.getElementById('home-cats');
   if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>showScreen('games'); catWrap.appendChild(b); }); }
   // 인기 게임(큐레이션)
@@ -4529,7 +4534,7 @@ function renderGames(){
   const body=document.getElementById('games-body'); if(!body) return;
   body.innerHTML='';
   let curGrp=null, grid=null;
-  HOME_GAMES.forEach(g=>{
+  HOME_GAMES.filter(g=>!g.koOnly||CURRENT_LANG==='ko').forEach(g=>{
     if(g.grp!==curGrp){
       curGrp=g.grp;
       const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(g.grp);
@@ -4538,7 +4543,8 @@ function renderGames(){
       body.appendChild(grid);
     }
     const card=document.createElement('button');
-    card.className='home-card'; card.onclick=()=>showScreen(g.id);
+    card.className='home-card';
+    card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
     card.innerHTML=gameCardHTML(g);
     grid.appendChild(card);
   });
@@ -4634,12 +4640,12 @@ function renderRecords(){
   const set=missionToday(), m=missionLoad();
   const plays=set.filter(id=>m.done.includes(id)).length;
   let rec=0;
-  HOME_GAMES.forEach(g=>{ if(g.best){ const b=bt_loadBest(g.best); if(Math.max(b.easy.all,b.normal.all,b.hard.all)>0) rec++; } });
+  HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('rec-streak', v.streak); setTxt('rec-days', v.total||1); setTxt('rec-mission', plays+'/'+set.length); setTxt('rec-count', rec);
   renderAbility();
   const body=document.getElementById('records-body'); if(!body) return;
   body.innerHTML='';
-  HOME_GAMES.filter(g=>g.id!=='braintype').forEach(g=>{
+  HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external).forEach(g=>{
     const mx=gameBestVal(g.id);
     const row=document.createElement('div'); row.className='rec-row';
     row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+

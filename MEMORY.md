@@ -65,6 +65,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-10): 멜로디 기억(melody)** → 청각 축(cat.sound). 사이먼류 4패드(C4/E4/G4/B4, _beep 재사용),
   재생 중 입력 잠금(playing), 성공 len+1/실패 lives-1(3). `ML` 객체(timers[]). `brain.melody.best`.
 - 미션 풀: A=[flash,count,nback,cards,melody], B=[stroop,trail,react,whack], C=[switch,rotate].
+- **신규(2026-07-10): 모아모아(moamoa)** — 한국어 Connections류 데일리 낱말 퍼즐. **SPA 편입 아님**: `/moamoa/index.html` 별도 정적 페이지
+  (자체 header/모달·KST 데일리·이모지 공유·streak·localStorage `moamoa_state_v1`/`moamoa_stats_v1`).
+  HOME_GAMES에 `{id:'moamoa', koOnly:true, external:'moamoa/'}` — **ko에서만 노출**(renderGames/홈 칩 필터), 카드 클릭=location.href.
+  홈 카드에 오늘 미완료 ● 뱃지(.home-card-dot). 내기록/능력치/미션에서는 제외. 퍼즐 30일치 내장(EPOCH 2026-07-10),
+  **D+25쯤 추가 제작 필요** — moamoa/validate_puzzles.cjs로 검증, 제작 원칙은 moamoa/README.md. 원본 드롭은 shared/(gitignore).
 - 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 도전장 링크, 개인정보처리방침.
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
