@@ -48,7 +48,8 @@ h1,h2,h3{font-weight:600}
 
 /* NAV */
 nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
-.nav-logo{font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0}
+.nav-logo{display:flex;align-items:center;gap:.45rem;font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0}
+.nav-mascot{height:30px;width:auto;image-rendering:pixelated}
 .nav-logo span{color:var(--teal)}
 .nav-menu{display:flex;align-items:center;gap:.25rem;overflow-x:auto;overflow-y:hidden;flex:1;padding:0 1rem 0 0;scrollbar-width:none;-ms-overflow-style:none;height:100%}
 .nav-menu::-webkit-scrollbar{display:none}
@@ -60,7 +61,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 
 @media (max-width:640px){
   nav{height:60px}
-  .nav-logo{font-size:.9rem;padding:0 .5rem 0 .8rem}
+  .nav-logo{font-size:.9rem;padding:0 .5rem 0 .8rem;gap:.35rem}
+  .nav-mascot{height:26px}
   .nav-btn{padding:.25rem .45rem;min-width:52px;gap:.12rem}
   .nav-ico{font-size:1.3rem}
   .nav-label{font-size:.58rem}
@@ -535,7 +537,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo"><img src="mallow-chan.png" alt="Mallow 마스코트" class="nav-mascot">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
       <option value="ko">🇰🇷 한국어</option>
