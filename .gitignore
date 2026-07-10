@@ -8,3 +8,4 @@ venv/
 *.log
 .logs/
 shared/
+generated_images/
