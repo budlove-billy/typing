@@ -83,6 +83,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **기록 백업(2026-07-10)**: 내 기록 화면 하단 backupExport/backupImport — `brain.*`+`moamoa_*` 키를 `MLW1.`+base64(JSON) 코드로
   내보내기(클립보드)/가져오기(prompt). 병합: `.best`=난이도별 all max·최신 date의 day, `.flat`=max, 그 외는 기존 기기 값 유지.
   로그인 없는 기기 이전용 — 로그인(Supabase+카카오, 백업 전용)은 리텐션 신호 후 Phase C 검토로 결정(2026-07-10 논의).
+  ⚠️ 사용자 Supabase 무료 계정은 프로젝트 2/2 슬롯 사용 중(하나는 flipper용) — 로그인 착수 시
+  flipper 프로젝트 정리 또는 새 계정 필요. 이 준비 비용까지 감안해 로그인은 보류, 신호 확인 후 진행(2026-07-10 사용자 결정).
 - 다음 후보: 다른 것 찾기(시각탐색), 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
