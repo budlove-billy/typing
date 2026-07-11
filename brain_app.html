@@ -6307,7 +6307,7 @@ function resetSlide(){
 }
 
 // ========== 다른 색 찾기 (시각 탐색 / 관찰) ==========
-const SP_CFG={ easy:{startN:2,maxN:6,d0:22,dStep:1.6,dMin:5}, normal:{startN:3,maxN:7,d0:18,dStep:1.5,dMin:4}, hard:{startN:4,maxN:8,d0:14,dStep:1.4,dMin:3} };
+const SP_CFG={ easy:{startN:2,maxN:6,d0:28,dStep:1.5,dMin:13}, normal:{startN:3,maxN:7,d0:23,dStep:1.3,dMin:10}, hard:{startN:4,maxN:8,d0:19,dStep:1.1,dMin:8} };
 const SP_TIME=60;
 const SP={ diff:'normal', score:0, combo:0, maxCombo:0, level:1,
   timeLeft:SP_TIME, timer:null, running:false, lock:false,
@@ -6341,16 +6341,17 @@ function spNewRound(){
   const p=spParams(SP.level);
   const total=p.n*p.n, odd=Math.floor(Math.random()*total);
   const h=Math.floor(Math.random()*360);
-  const sat=55+Math.floor(Math.random()*20);          // 55~74%
-  const li=48+Math.floor(Math.random()*22);           // 48~69%
-  const dir=(li>60||Math.random()<0.5)?-1:1;          // 밝은 색은 어둡게, 아니면 랜덤
-  const li2=Math.max(18,Math.min(88, li+dir*p.delta));
+  const sat=44+Math.floor(Math.random()*14);          // 44~57% (채도 낮춰 명도차가 잘 읽히게)
+  const li=50+Math.floor(Math.random()*13);           // 50~62% (중간 명도대 유지)
+  const dir=(li>57||Math.random()<0.5)?-1:1;          // 밝게/어둡게
+  const li2=Math.max(20,Math.min(85, li+dir*p.delta));
+  const sat2=Math.max(20,Math.min(80, sat - dir*Math.round(p.delta*0.5)));  // 명도+채도 복합 차이(모니터 편차·색수차에 강함)
   const grid=document.getElementById('sp-grid');
   grid.innerHTML=''; grid.style.gridTemplateColumns='repeat('+p.n+',1fr)';
   for(let i=0;i<total;i++){
     const b=document.createElement('button');
     b.className='sp-tile';
-    b.style.background='hsl('+h+','+sat+'%,'+(i===odd?li2:li)+'%)';
+    b.style.background='hsl('+h+','+(i===odd?sat2:sat)+'%,'+(i===odd?li2:li)+'%)';
     b.onclick=()=>spTap(i===odd,b);
     grid.appendChild(b);
   }
