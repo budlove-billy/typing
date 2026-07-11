@@ -8153,9 +8153,9 @@ function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   idx.forEach(i=>{ let e; do{ e=DF_POOL[Math.floor(Math.random()*DF_POOL.length)]; }while(e===base[i]); g2[i]=e; });
   DF.g1=base; DF.g2=g2; dfRender();
 }
-function dfRender(){ const cs=Math.max(34,Math.floor(300/DF.n));
+function dfRender(){ const cs=Math.max(42,Math.floor(332/DF.n)); const fs=Math.round(cs*0.66);
   [['df-grid1',DF.g1],['df-grid2',DF.g2]].forEach(pair=>{ const g=document.getElementById(pair[0]); g.style.gridTemplateColumns='repeat('+DF.n+','+cs+'px)'; g.innerHTML='';
-    for(let i=0;i<pair[1].length;i++){ const d=document.createElement('div'); d.className='df-cell'+(DF.foundSet.has(i)?' found':''); d.style.width=cs+'px'; d.style.height=cs+'px'; d.textContent=pair[1][i]; d.onclick=()=>dfTap(i,d); g.appendChild(d); } });
+    for(let i=0;i<pair[1].length;i++){ const d=document.createElement('div'); d.className='df-cell'+(DF.foundSet.has(i)?' found':''); d.style.width=cs+'px'; d.style.height=cs+'px'; d.style.fontSize=fs+'px'; d.textContent=pair[1][i]; d.onclick=()=>dfTap(i,d); g.appendChild(d); } });
 }
 function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
 function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
