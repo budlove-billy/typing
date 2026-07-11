@@ -8228,24 +8228,30 @@ function tcGenPath(steps){ let pts,tr=0; do{ pts=tcWalk(steps); tr++; }while(pts
 function segDist(p,a,b){ const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy; let tt=l2?((p.x-a.x)*dx+(p.y-a.y)*dy)/l2:0; tt=Math.max(0,Math.min(1,tt)); return Math.hypot(p.x-(a.x+tt*dx),p.y-(a.y+tt*dy)); }
 function tcDist(p){ let md=1e9; for(let i=0;i<TC.path.length-1;i++) md=Math.min(md,segDist(p,TC.path[i],TC.path[i+1])); return md; }
 function tcPoint(e){ const r=document.getElementById('tc-area').getBoundingClientRect(); return { x:(e.clientX-r.left)/r.width*TC.W, y:(e.clientY-r.top)/r.height*TC.H }; }
-function tcRender(){ const cfg=TC_CFG[TC.diff]; const steps=cfg.steps+(TC.level-1)*2; const w=Math.max(12, cfg.w-(TC.level-1)*1.2); TC.tol=w/2+11; TC.path=tcGenPath(steps);
+function tcRender(){ const cfg=TC_CFG[TC.diff]; const steps=cfg.steps+(TC.level-1)*2; const w=Math.max(12, cfg.w-(TC.level-1)*1.2); TC.tol=w/2+11; TC.path=tcGenPath(steps); TC.trail=[];
   const d='M'+TC.path.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' L'); const s=TC.path[0], e=TC.path[TC.path.length-1];
+  const tw=Math.max(5,Math.min(9,w*0.5)), cr=Math.max(7,Math.min(11,w*0.55));
   const area=document.getElementById('tc-area'); area.style.height=TC.H+'px';
   area.innerHTML='<svg viewBox="0 0 '+TC.W+' '+TC.H+'" preserveAspectRatio="xMidYMid meet">'
     +'<path d="'+d+'" fill="none" stroke="#c7cde0" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"/>'
     +'<path d="'+d+'" fill="none" stroke="#f0f2f9" stroke-width="'+Math.max(2,w-7)+'" stroke-linecap="round" stroke-linejoin="round"/>'
+    +'<polyline id="tc-trail" fill="none" stroke="#4f7cff" stroke-width="'+tw+'" stroke-linecap="round" stroke-linejoin="round" points=""/>'
     +'<circle cx="'+s.x.toFixed(1)+'" cy="'+s.y.toFixed(1)+'" r="13" fill="#21a67a"/>'
-    +'<circle cx="'+e.x.toFixed(1)+'" cy="'+e.y.toFixed(1)+'" r="13" fill="#e0475a"/></svg>';
+    +'<circle cx="'+e.x.toFixed(1)+'" cy="'+e.y.toFixed(1)+'" r="13" fill="#e0475a"/>'
+    +'<circle id="tc-cursor" r="'+cr+'" fill="#4f7cff" opacity="0"/></svg>';
   TC.active=false; tcStatus('trace.guide'); }
-function tcStray(){ if(!TC.active) return; TC.active=false; TC.lives--; sfx('bad'); tcStats(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
+function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points',''); const cur=document.getElementById('tc-cursor'); if(cur) cur.setAttribute('opacity','0'); }
+function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>=3){ TC.trail.push({x:p.x,y:p.y}); const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points', TC.trail.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ')); }
+  const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
+function tcStray(){ if(!TC.active) return; TC.active=false; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
 function tcClearLevel(){ TC.active=false; TC.level++; TC.score+=30+TC.level*10; sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
 function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.active=false;
   document.getElementById('trace-intro-card').style.display='none'; document.getElementById('trace-result-card').style.display='none'; document.getElementById('trace-game-card').style.display='block';
   tcStats(); tcRender();
   const area=document.getElementById('tc-area');
-  area.onpointerdown=e=>{ if(!TC.running)return; const p=tcPoint(e); const s=TC.path[0]; if(Math.hypot(p.x-s.x,p.y-s.y)<=28){ TC.active=true; try{area.setPointerCapture(e.pointerId);}catch(_){} tcStatus('trace.guide'); e.preventDefault(); } };
-  area.onpointermove=e=>{ if(!TC.running||!TC.active)return; const p=tcPoint(e); const en=TC.path[TC.path.length-1]; if(Math.hypot(p.x-en.x,p.y-en.y)<=22){ tcClearLevel(); return; } if(tcDist(p)>TC.tol){ tcStray(); } };
-  area.onpointerup=()=>{ TC.active=false; };
+  area.onpointerdown=e=>{ if(!TC.running)return; const p=tcPoint(e); const s=TC.path[0]; if(Math.hypot(p.x-s.x,p.y-s.y)<=28){ TC.active=true; try{area.setPointerCapture(e.pointerId);}catch(_){} TC.trail=[{x:s.x,y:s.y}]; tcAddTrail(p); tcStatus('trace.guide'); e.preventDefault(); } };
+  area.onpointermove=e=>{ if(!TC.running||!TC.active)return; const p=tcPoint(e); if(tcDist(p)>TC.tol){ tcStray(); return; } tcAddTrail(p); const en=TC.path[TC.path.length-1]; if(Math.hypot(p.x-en.x,p.y-en.y)<=22){ tcClearLevel(); } };
+  area.onpointerup=()=>{ if(TC.active){ TC.active=false; tcResetTrail(); } };
 }
 function finishTrace(){ if(!TC.running) return; TC.running=false; TC.active=false;
   const nr=bt_recordScore(TC.best,TC.diff,TC.score); bt_saveBest('brain.trace.best',TC.best); missionMark('trace');
