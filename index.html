@@ -43,7 +43,22 @@
   --blue:#4f7cff;--blue3:#e9f0ff;
   --radius:8px;--radius2:12px;--radius3:16px;
 }
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px;background-attachment:fixed;transition:background .5s ease}
+/* ===== 인지 축별 테마 배경(은은한 상단 글로우) ===== */
+body[data-axis]{background:radial-gradient(135% 62% at 50% -12%,var(--glow,#e9f0ff) 0%,#f2f5fb 56%);background-attachment:fixed}
+body[data-axis="memory"]{--glow:#ffe6c2}
+body[data-axis="focus"]{--glow:#eaddf8}
+body[data-axis="speed"]{--glow:#d6e8ff}
+body[data-axis="coord"]{--glow:#ffd9e2}
+body[data-axis="sound"]{--glow:#cdf0e0}
+body[data-axis="sight"]{--glow:#d0eef5}
+body[data-axis="space"]{--glow:#dde3ff}
+body[data-axis="calc"]{--glow:#ffe0cf}
+body[data-axis="logic"]{--glow:#e6dcff}
+body[data-axis="lang"]{--glow:#ffdcec}
+body[data-axis="daily"]{--glow:#d3f0ea}
+body[data-axis="fun"]{--glow:#fff0c9}
+body[data-axis="home"]{--glow:#e5edff}
 h1,h2,h3{font-weight:600}
 
 /* NAV */
@@ -2696,6 +2711,7 @@ function basketSVG(size){size=size||56;
     `<ellipse cx="50" cy="27" rx="26" ry="4.5" fill="#C98A44" opacity=".6"/></svg>`;
 }
 function initMallowUI(){
+  if(!document.body.dataset.axis) document.body.dataset.axis='home';
   document.querySelectorAll('[data-mallow]').forEach(el=>{
     const mood=el.getAttribute('data-mallow')||'default';
     const sz=+el.getAttribute('data-mallow-size')||34;
@@ -3781,10 +3797,21 @@ function haltRunningGames(){
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
+let _axisCache=null;
+function _gameAxis(id){
+  if(!_axisCache){ _axisCache={};
+    try{ (typeof HOME_GAMES!=='undefined'?HOME_GAMES:[]).forEach(g=>{ if(g&&g.id&&g.grp) _axisCache[g.id]=g.grp.replace('cat.',''); }); }catch(e){}
+    // HOME_GAMES에 없는(소프트 비활성/외부) 게임 보정
+    Object.assign(_axisCache,{vocab:'lang',typing:'lang',braintype:'fun',moamoa:'lang'});
+  }
+  return _axisCache[id];
+}
 function showScreen(id){
   haltRunningGames();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const scr=document.getElementById('screen-'+id); if(scr) scr.classList.add('active');
+  // 인지 축별 테마 배경
+  document.body.dataset.axis = ((id==='home'||id==='games'||id==='records') ? 'home' : (_gameAxis(id)||'home'));
   const tab='tab-'+(TAB_FOR[id]||'games');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   const tb=document.getElementById(tab); if(tb) tb.classList.add('active');
