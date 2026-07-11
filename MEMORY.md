@@ -143,6 +143,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   - **pitch(높은음 찾기/청각)**: n패드 중 살짝 높은 음 찾기(melody 순서·rhythm 박자와 구분=변별). 순차 자동재생+다시듣기. cents 축소 난이도. PT. {focus:50,memory:30,speed:20}. 미션A. 소리 필수.
   - **trace(길 따라가기/협응)**: 초록점→빨간점 경로 이탈 없이 드래그(whack 탭·catch 이동과 구분=연속 정밀). SVG path+point-segment 히트테스트, tol=폭/2+11. lives3·레벨↑. TC. {focus:40,space:35,speed:25}. 미션C.
   - 선검증 `.logs/gen_sim2.mjs`(wsPlace 배치·tcWalk 경로, **실제 shuffleArr 의미**), 배선 `.logs/wire_check.mjs`, 런타임 `.logs/runtime_probe.mjs`(4종 start 무예외). 라이브 스모크 필요(특히 ws/trace 드래그 모바일, pitch 오디오).
+- **신규(2026-07-12): 말로우 운세(unse)** — 재미(cat.fun) 게임. **moamoa식 별도 정적 페이지** `/unse/index.html`(자체 header·GA4·canonical, 기록/능력치/미션 제외).
+  생년월일→띠((year-4)%12)·오행(STEM_ELEM[(year-4)%10]) 라이트 사주 + **오늘 날짜 시드**(mulberry32) 데일리 운세(총운★·분야4·행운색/숫자/아이템·한마디)+canvas 공유카드. koOnly, 면책 문구.
+  HOME_GAMES `{id:'unse',emoji:'🌙',grp:'cat.fun',koOnly:true,external:'unse/'}`, sitemap 등재. 콘텐츠=템플릿 배열(내장). 기획=`재미게임-운세-기획.md`. 검증 `.logs/unse_check.mjs`.
 - 다음 후보: 개인정보처리방침(로그인 도입 시 필수), ko 전용 언어게임(끝말잇기/속담) 후보.
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.

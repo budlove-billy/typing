@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-12 — **말로우 운세(`/unse/`)**: 재미(cat.fun) 게임 — 생년월일→띠·오행(양력 연주 기반 라이트) + 오늘 날짜 시드 데일리 운세(총운/애정·금전·건강·일/행운색·숫자·아이템/한마디)+공유카드.
+  moamoa식 별도 정적 페이지(koOnly·external, 기록/능력치/미션 제외), 재미 톤·면책 문구. HOME_GAMES/sitemap 등재. 기획=`재미게임-운세-기획.md`.
+
 - 2026-07-12 — **디자인 상용화 리프트(캐릭터·오브젝트·손맛·입체·테마)**: 전 34종 화면 검토 후 5단계 보완.
   ① Mallow 인라인 SVG 마스코트(표정 5종·몸통 6색, `mallowSVG()`)로 통일·픽셀PNG 폐기 ② whack 굴/catch Mallow·포크·바구니 SVG/count 인원=Mallow(이모지 제거)
   ③ 공통 손맛 FX(`sfx('good'/'win')`→파티클 자동, 38지점) +점수팝·콤보배지 ④ 버튼·타일 입체화(그라데+그림자) ⑤ 축별 테마 배경(`body[data-axis]`). 검증 `.logs/errcheck.mjs`(34종 pageerror 0). 상세=MEMORY.md 디자인 시스템.

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>말로우 운세 — 오늘의 운세 & 간단 사주 | Mallow</title>
+<meta name="description" content="생년월일만 넣으면 오늘의 운세! 띠·오행으로 보는 타고난 기질과 매일 바뀌는 총운·애정·금전·건강, 행운의 색과 숫자까지. 재미로 보는 말로우 운세.">
+<meta property="og:title" content="말로우 운세 — 오늘의 운세 & 간단 사주">
+<meta property="og:description" content="생년월일로 보는 오늘의 운세와 타고난 기질. 매일 바뀌는 운세를 친구와 공유해 보세요!">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playmallow.com/unse/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/unse/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>
+:root{
+  --bg:#f6f4fb; --text:#2a2140; --sub:#7d7495; --card:#ffffff; --line:#ece7f6;
+  --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a;
+  --radius:18px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #efe7ff 0%, var(--bg) 55%);color:var(--text);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
+#backHome{position:absolute;left:12px;top:18px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:4px 6px;}
+#backHome:active{opacity:.6;}
+h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px;}
+h1 .sp{color:var(--p);}
+.tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
+main{width:100%;max-width:480px;padding:8px 14px 40px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
+label{display:block;font-size:13px;font-weight:700;color:var(--sub);margin:2px 0 7px;}
+input[type=date],select{width:100%;padding:13px 12px;font-size:16px;border:1.5px solid var(--line);border-radius:12px;background:#fbfaff;color:var(--text);font-family:inherit;}
+.row2{display:flex;gap:10px;}.row2>div{flex:1;}
+.btn{display:block;width:100%;margin-top:16px;padding:14px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
+.btn:active{transform:translateY(1px);}
+.btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+.hero{text-align:center;padding:22px 18px 18px;}
+.hero .emoji{font-size:66px;line-height:1;}
+.hero .zname{font-size:22px;font-weight:800;margin-top:6px;}
+.hero .zsub{font-size:13px;color:var(--sub);margin-top:3px;}
+.elem-badge{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:999px;font-size:13.5px;font-weight:700;}
+.trait{margin-top:14px;font-size:14.5px;line-height:1.7;color:var(--text);background:#f7f4ff;border-radius:12px;padding:12px 14px;}
+.stars{font-size:26px;letter-spacing:3px;color:var(--gold);text-align:center;margin:2px 0 6px;}
+.total{text-align:center;font-size:15px;line-height:1.7;font-weight:600;}
+.sect-title{font-size:12.5px;font-weight:800;color:var(--sub);margin:18px 2px 8px;letter-spacing:.3px;}
+.frow{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border-radius:12px;background:#fbfaff;margin-bottom:8px;}
+.frow .fi{font-size:22px;line-height:1.3;}
+.frow .ft{flex:1;}
+.frow .fn{font-size:13.5px;font-weight:800;}
+.frow .fc{font-size:13.5px;color:var(--sub);margin-top:2px;line-height:1.6;}
+.frow .fv{font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;align-self:center;white-space:nowrap;}
+.lv-good{background:#e3f7ee;color:var(--teal);}
+.lv-mid{background:#fff3d6;color:#b9821a;}
+.lv-low{background:#ffe6ec;color:#d6437a;}
+.lucky{display:flex;gap:8px;margin-top:10px;}
+.lucky>div{flex:1;text-align:center;background:#f7f4ff;border-radius:12px;padding:12px 6px;}
+.lucky .lk{font-size:11.5px;color:var(--sub);font-weight:700;}
+.lucky .lv{font-size:16px;font-weight:800;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.swatch{width:15px;height:15px;border-radius:50%;border:1px solid rgba(0,0,0,.1);display:inline-block;}
+.say{margin-top:16px;text-align:center;font-size:14.5px;line-height:1.7;font-weight:700;color:var(--p);}
+.disc{font-size:11px;color:var(--sub);text-align:center;margin-top:16px;line-height:1.6;}
+.btns{display:flex;gap:10px;margin-top:16px;}
+.btns .btn{margin-top:0;}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;}
+footer a{color:var(--sub);}
+</style>
+</head>
+<body>
+<header>
+  <a id="backHome" href="/">← 홈</a>
+  <h1>🔮 말로우 <span class="sp">운세</span></h1>
+  <div class="tagline">생년월일로 보는 오늘의 운세 · 간단 사주</div>
+</header>
+<main>
+  <!-- 입력 -->
+  <div class="card" id="inputCard">
+    <label for="birth">생년월일 (양력)</label>
+    <input type="date" id="birth" min="1930-01-01">
+    <div style="height:12px"></div>
+    <label for="btime">태어난 시간 <span style="font-weight:500">(선택)</span></label>
+    <select id="btime">
+      <option value="">모름</option>
+      <option value="새벽">🌙 새벽 (0~5시)</option>
+      <option value="아침">🌅 아침 (5~10시)</option>
+      <option value="낮">☀️ 낮 (10~15시)</option>
+      <option value="저녁">🌇 저녁 (15~20시)</option>
+      <option value="밤">🌌 밤 (20~24시)</option>
+    </select>
+    <button class="btn" id="goBtn">오늘의 운세 보기</button>
+  </div>
+
+  <!-- 결과 -->
+  <div id="result" style="display:none">
+    <div class="card hero">
+      <div class="emoji" id="zEmoji">🐲</div>
+      <div class="zname" id="zName">용띠</div>
+      <div class="zsub" id="zSub"></div>
+      <div class="elem-badge" id="elemBadge"></div>
+      <div class="trait" id="trait"></div>
+    </div>
+
+    <div class="card">
+      <div class="sect-title">🌟 오늘의 총운 <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
+      <div class="stars" id="stars">★★★★☆</div>
+      <div class="total" id="total"></div>
+
+      <div class="sect-title">🍀 분야별 운세</div>
+      <div id="fields"></div>
+
+      <div class="sect-title">🎁 오늘의 행운</div>
+      <div class="lucky">
+        <div><div class="lk">행운의 색</div><div class="lv" id="luckColor"></div></div>
+        <div><div class="lk">행운의 숫자</div><div class="lv" id="luckNum"></div></div>
+        <div><div class="lk">행운의 아이템</div><div class="lv" id="luckItem" style="font-size:13.5px"></div></div>
+      </div>
+
+      <div class="say" id="say"></div>
+
+      <div class="btns">
+        <button class="btn" id="shareBtn">📷 결과 공유</button>
+        <button class="btn sub" id="againBtn">다시 입력</button>
+      </div>
+      <div class="disc">본 운세는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없으며, 정통 사주(입춘·시주)와 다를 수 있어요. 🌙 내일도 새로운 운세로 만나요!</div>
+    </div>
+  </div>
+</main>
+<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+
+<canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
+<script>
+"use strict";
+/* ---------- 데이터 ---------- */
+const ZODIAC=[
+ {n:'쥐',e:'🐭',t:'재치 있고 눈치 빠른'},
+ {n:'소',e:'🐮',t:'묵묵하고 성실한'},
+ {n:'범',e:'🐯',t:'용감하고 카리스마 있는'},
+ {n:'토끼',e:'🐰',t:'다정하고 센스 있는'},
+ {n:'용',e:'🐲',t:'당당하고 스케일 큰'},
+ {n:'뱀',e:'🐍',t:'신중하고 통찰력 있는'},
+ {n:'말',e:'🐴',t:'활기차고 자유로운'},
+ {n:'양',e:'🐑',t:'온화하고 배려심 깊은'},
+ {n:'원숭이',e:'🐵',t:'영리하고 재주 많은'},
+ {n:'닭',e:'🐔',t:'부지런하고 꼼꼼한'},
+ {n:'개',e:'🐶',t:'의리 있고 든든한'},
+ {n:'돼지',e:'🐷',t:'너그럽고 복이 많은'}
+];
+// 천간(year-4)%10 → 오행
+const STEM_ELEM=['목','목','화','화','토','토','금','금','수','수'];
+const ELEM={
+ 목:{h:'木',adj:'따뜻하게 자라나는',color:'#7fb3ff',bg:'#eaf2ff',fc:'#3d6fd6'},
+ 화:{h:'火',adj:'열정적으로 빛나는',color:'#ff7a7a',bg:'#ffecec',fc:'#d64a4a'},
+ 토:{h:'土',adj:'든든하게 품어주는',color:'#f0b429',bg:'#fff5da',fc:'#b9821a'},
+ 금:{h:'金',adj:'명료하고 단단한',color:'#9aa7bd',bg:'#eef1f6',fc:'#5b6b86'},
+ 수:{h:'水',adj:'지혜롭고 유연한',color:'#5ec6c0',bg:'#e4f6f5',fc:'#1f8f89'}
+};
+const TIME_FLAVOR={
+ '새벽':'고요한 새벽 기운을 품어 사색과 직관이 남달라요.',
+ '아침':'떠오르는 아침 기운으로 시작이 빠르고 부지런해요.',
+ '낮':'환한 낮 기운을 받아 사교적이고 표현이 밝아요.',
+ '저녁':'노을 지는 저녁 기운으로 감성과 여유가 있어요.',
+ '밤':'깊은 밤 기운을 품어 집중력과 뚝심이 강해요.'
+};
+const TOTAL_HI=['오늘은 흐름이 시원하게 트이는 날. 미뤄둔 일을 밀어붙여요.','기분 좋은 일이 겹치는 하루. 웃을 일이 자주 생겨요.','원하던 소식이 들려올 수 있어요. 기대해도 좋아요.','작은 행운이 큰 기쁨으로 이어지는 날이에요.','자신감이 빛나는 날. 하고 싶던 걸 시도해 보세요.','주변의 도움으로 일이 술술 풀려요.'];
+const TOTAL_MID=['무난하고 안정적인 하루. 큰 욕심보다 리듬 유지가 좋아요.','평범해 보여도 알찬 하루. 기본에 충실하면 만족스러워요.','서두르지 않으면 오후로 갈수록 흐름이 좋아져요.','잔잔하지만 나쁘지 않아요. 컨디션 관리에 신경 쓰세요.','기복 없이 흘러가는 날. 익숙한 일이 편안해요.','작은 선택 하나가 기분을 바꿔줄 수 있어요.'];
+const TOTAL_LO=['조급함은 잠시 내려두세요. 천천히 가면 무탈해요.','오늘은 새 일보다 정리·마무리가 잘 맞아요.','예상 밖 변수가 있을 수 있으니 여유 있게 움직여요.','무리하지 말고 나를 먼저 챙기는 하루로.','작은 실수는 웃어넘기면 그만. 마음을 가볍게.','속도를 늦추면 오히려 놓친 게 보여요.'];
+const LOVE=['따뜻한 말 한마디가 관계를 데워요.','반가운 연락이 올 수 있어요.','솔직함이 매력으로 통하는 날.','작은 챙김이 오래 기억돼요.','혼자여도 마음이 넉넉한 하루.','인연은 익숙한 곳 가까이에.','오늘은 듣는 쪽이 더 사랑받아요.','설레는 순간이 스칠 수 있어요.'];
+const MONEY=['불필요한 지출만 줄여도 이득.','뜻밖의 굳히기 찬스가 있어요.','작은 절약이 큰 만족으로.','충동구매는 잠시 참기.','정보가 곧 돈. 잘 챙겨두세요.','나눔이 복으로 돌아와요.','계획한 소비는 오히려 기분전환.','장부를 한 번 들여다볼 때.'];
+const HEALTH=['물 자주 마시고 스트레칭 한 번.','가벼운 산책이 컨디션을 살려요.','눈과 어깨에 휴식을 주세요.','잘 자는 게 최고의 보약.','따뜻한 음식으로 속을 달래요.','심호흡 세 번, 마음이 가라앉아요.','오늘은 무리 대신 회복.','햇빛 조금이 기분을 밝혀요.'];
+const WORK=['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','작은 성취를 칭찬해 주세요.','미룬 일 하나만 처리해도 개운.','새 배움이 도움이 되는 날.','꼼꼼함이 실수를 막아줘요.','도움을 청하면 빨라져요.'];
+const SAY=['오늘도 말랑말랑하게, 파이팅! 🍡','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 ✨','웃는 하루가 좋은 하루 😊','천천히 가도 괜찮아요 🐢','좋은 일은 곧 찾아와요 🍀','스스로를 꼭 안아주기 🤗','오늘의 나, 충분히 멋져요 💫'];
+const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'}];
+const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','포스트잇','텀블러','이어폰','손수건','반짝이는 것','종이 노트','작은 인형','귤 하나','우산','열쇠고리'];
+
+/* ---------- 유틸 ---------- */
+function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function kstDate(){const d=new Date(Date.now()+9*3600*1000);return d.toISOString().slice(0,10);}
+function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
+function lvl(rng){const r=rng();return r<0.5?{c:'lv-good',t:'좋음'}:r<0.85?{c:'lv-mid',t:'보통'}:{c:'lv-low',t:'주의'};}
+
+let LAST=null; // 공유용 상태
+
+function compute(){
+  const bv=document.getElementById('birth').value;
+  if(!bv){ alert('생년월일을 입력해 주세요 🙂'); return; }
+  const [Y,M,D]=bv.split('-').map(Number);
+  const now=new Date(); if(new Date(bv)>now){ alert('미래 날짜는 볼 수 없어요 😅'); return; }
+  const time=document.getElementById('btime').value;
+  try{localStorage.setItem('unse_birth',bv);localStorage.setItem('unse_time',time);localStorage.setItem('unse_seen',kstDate());}catch(e){}
+  gtag('event','unse_view',{});
+
+  const zi=((Y-4)%12+12)%12, z=ZODIAC[zi];
+  const elemKey=STEM_ELEM[((Y-4)%10+10)%10], el=ELEM[elemKey];
+
+  // 타고난 기질
+  let traitTxt='<b>'+z.t+'</b> 기질에, '+el.adj+' <b>'+elemKey+'('+el.h+')</b>의 기운을 타고났어요.';
+  if(time) traitTxt+='<br>'+TIME_FLAVOR[time];
+
+  // 오늘의 운세(생일+오늘 시드)
+  const rng=mulberry32(hashStr(bv+'|'+time+'|'+kstDate()));
+  const starN=2+Math.floor(rng()*4); // 2~5
+  const totalArr = starN>=4?TOTAL_HI : starN===3?TOTAL_MID : TOTAL_LO;
+  const totalTxt=pick(rng,totalArr);
+  const fields=[
+    {i:'💗',n:'애정운',c:pick(rng,LOVE),v:lvl(rng)},
+    {i:'💰',n:'금전운',c:pick(rng,MONEY),v:lvl(rng)},
+    {i:'🍀',n:'건강운',c:pick(rng,HEALTH),v:lvl(rng)},
+    {i:'📚',n:'학업·일운',c:pick(rng,WORK),v:lvl(rng)}
+  ];
+  const lc=pick(rng,LUCK_COLORS), ln=1+Math.floor(rng()*45), li=pick(rng,LUCK_ITEMS);
+  const say=pick(rng,SAY);
+
+  // 렌더
+  document.getElementById('zEmoji').textContent=z.e;
+  document.getElementById('zName').textContent=z.n+'띠';
+  document.getElementById('zSub').textContent=Y+'년생 · '+M+'월 '+D+'일';
+  const eb=document.getElementById('elemBadge'); eb.textContent=elemKey+'('+el.h+') 기운'; eb.style.background=el.bg; eb.style.color=el.fc;
+  document.getElementById('trait').innerHTML=traitTxt;
+  document.getElementById('todayLabel').textContent='· '+kstDate();
+  document.getElementById('stars').textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN);
+  document.getElementById('total').textContent=totalTxt;
+  document.getElementById('fields').innerHTML=fields.map(f=>
+    '<div class="frow"><div class="fi">'+f.i+'</div><div class="ft"><div class="fn">'+f.n+'</div><div class="fc">'+f.c+'</div></div><div class="fv '+f.v.c+'">'+f.v.t+'</div></div>').join('');
+  document.getElementById('luckColor').innerHTML='<span class="swatch" style="background:'+lc.x+'"></span>'+lc.n;
+  document.getElementById('luckNum').textContent=ln;
+  document.getElementById('luckItem').textContent=li;
+  document.getElementById('say').textContent=say;
+
+  document.getElementById('inputCard').style.display='none';
+  document.getElementById('result').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,lc,ln,li,say,Y};
+}
+
+/* ---------- 공유 카드 ---------- */
+function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
+function drawCard(){
+  const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#b79bf5'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  // 흰 카드
+  c.fillStyle='#fff'; roundRect(c,40,60,W-80,H-140,28); c.fill();
+  c.textAlign='center';
+  c.font='700 26px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🔮 오늘의 운세',W/2,130);
+  c.font='96px sans-serif'; c.fillText(L.z.e,W/2,250);
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.z.n+'띠 · '+L.el+'('+ELEM[L.el].h+')',W/2,300);
+  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,350);
+  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,398,W-160,34);
+  // 행운
+  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495';
+  c.fillText('행운의 색',W/2-120,560); c.fillText('행운의 숫자',W/2+120,560);
+  c.beginPath(); c.arc(W/2-120,600,18,0,7); c.fillStyle=L.lc.x; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,612);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,680,W-160,30);
+  c.font='600 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#b0a8c8'; c.fillText('playmallow.com/unse',W/2,H-40);
+  return cv;
+}
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function share(){
+  if(!LAST) return; gtag('event','unse_share',{});
+  const cv=drawCard();
+  cv.toBlob(function(blob){
+    const file=new File([blob],'mallow-unse.png',{type:'image/png'});
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file],text:'오늘의 내 운세 🔮 playmallow.com/unse'}).catch(()=>{});
+    } else {
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-unse.png'; a.click();
+    }
+  },'image/png');
+}
+
+/* ---------- 이벤트 ---------- */
+document.getElementById('goBtn').onclick=compute;
+document.getElementById('shareBtn').onclick=share;
+document.getElementById('againBtn').onclick=function(){document.getElementById('result').style.display='none';document.getElementById('inputCard').style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
+(function(){try{const b=localStorage.getItem('unse_birth');if(b)document.getElementById('birth').value=b;const t=localStorage.getItem('unse_time');if(t)document.getElementById('btime').value=t;}catch(e){}})();
+</script>
+</body>
+</html>

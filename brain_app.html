@@ -3313,6 +3313,7 @@ const I18N = {
   "trail.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"ทำลายสถิติ!"},
 
   "nav.braintype": {ko:"두뇌 유형", en:"Brain Type", th:"ประเภทสมอง"},
+  "nav.unse": {ko:"오늘의 운세", en:"Fortune", th:"ดวงวันนี้"},
   "nav.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
   "home.greeting": {ko:"오늘도 두뇌 체조 한 판!", en:"Time for today's brain workout!", th:"ได้เวลาบริหารสมองวันนี้!"},
   "home.sub": {ko:"매일 조금씩, 뇌가 말랑말랑해집니다.", en:"A little each day keeps your brain sharp.", th:"ทำทุกวันทีละนิด สมองก็เฉียบคม"},
@@ -6998,6 +6999,7 @@ const HOME_GAMES=[
   // {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
   {id:'moamoa', emoji:'🧩', key:'nav.moamoa', grp:'cat.daily', koOnly:true, external:'moamoa/'},
   {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'cat.fun'},
+  {id:'unse', emoji:'🌙', key:'nav.unse', grp:'cat.fun', koOnly:true, external:'unse/'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
