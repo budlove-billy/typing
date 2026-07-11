@@ -727,7 +727,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="showScreen('home')" role="button"><img src="mallow-chan.png" alt="Mallow 마스코트" class="nav-mascot">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><img src="mallow-chan.png" alt="Mallow 마스코트" class="nav-mascot">Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
@@ -2579,13 +2579,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 
 <!-- ==================== BOTTOM TAB BAR ==================== -->
 <div class="tabbar">
-  <button class="tab-btn active" id="tab-home" onclick="showScreen('home')">
+  <button class="tab-btn active" id="tab-home" onclick="navTo('home')">
     <span class="tab-ico">🏠</span><span class="tab-label" data-i18n="tab.home">홈</span>
   </button>
-  <button class="tab-btn" id="tab-games" onclick="showScreen('games')">
+  <button class="tab-btn" id="tab-games" onclick="navTo('games')">
     <span class="tab-ico">🎮</span><span class="tab-label" data-i18n="tab.games">게임</span>
   </button>
-  <button class="tab-btn" id="tab-records" onclick="showScreen('records')">
+  <button class="tab-btn" id="tab-records" onclick="navTo('records')">
     <span class="tab-ico">📊</span><span class="tab-label" data-i18n="tab.records">내 기록</span>
   </button>
 </div>
@@ -2594,6 +2594,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 const I18N = {
   "page.title": {ko:"Mallow — 가볍게 즐기는 두뇌게임 | 무료 두뇌 트레이닝", en:"Mallow — Light & Fun Brain Games", th:"Mallow — เกมสมองเบา ๆ สนุก ๆ"},
   "nav.tagline": {ko:" 가볍게 즐기는 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
+  "nav.leaveConfirm": {ko:"게임을 종료하고 이동할까요? 진행 상황은 저장되지 않아요.", en:"Quit the current game and leave? Your progress won't be saved.", th:"ออกจากเกมแล้วไปต่อไหม? ความคืบหน้าจะไม่ถูกบันทึก"},
   "nav.moamoa": {ko:"모아모아", en:"Moamoa", th:"โมอาโมอา"},
   "ch.send": {ko:"🎯 도전장", en:"🎯 Challenge", th:"🎯 ท้าดวล"},
   "ch.msg": {ko:"Mallow {name} {score}점! 나를 이겨봐 👊", en:"I scored {score} in {name} on Mallow! Beat me 👊", th:"ฉันได้ {score} คะแนนใน {name} บน Mallow! มาเอาชนะฉันสิ 👊"},
@@ -3650,7 +3651,17 @@ function showScreen(id){
   track('screen_open', {screen:id});
   window.scrollTo(0,0);
 }
-
+// 게임 진행 중(게임 카드 표시)인지 — 실수 이탈 방지용
+function gameInProgress(){
+  const s=document.querySelector('.screen.active'); if(!s) return false;
+  const id=s.id.replace('screen-',''); if(['home','games','records'].includes(id)) return false;
+  const gc=document.getElementById(id+'-game-card');
+  if(gc && gc.style.display && gc.style.display!=='none') return true;
+  if(id==='iq'){ const tc=document.getElementById('iq-test-card'); if(tc && tc.style.display && tc.style.display!=='none') return true; }
+  return false;
+}
+// 하단 탭/상단 로고 등 네비 이동 진입점: 게임 중이면 확인 팝업
+function navTo(id){ if(gameInProgress() && !confirm(t('nav.leaveConfirm'))) return; showScreen(id); }
 // ========== TYPING — 내장 소설 데이터 ==========
 const PRESET={
     '무협':[
