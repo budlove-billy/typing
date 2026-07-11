@@ -2479,6 +2479,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="wordsearch.combo">COMBO</div><div class="mg-stat-value" id="ws-combo">0</div></div>
     </div>
     <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="ws-timer">01:00</div></div>
+    <div style="text-align:center;font-weight:700;color:var(--purple);margin-bottom:.5rem" id="ws-theme"></div>
     <div class="ws-words" id="ws-words"></div>
     <div class="ws-wrap"><div class="ws-grid" id="ws-grid"></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveWordsearch()" data-i18n="wordsearch.leave">나가기</button></div>
@@ -7827,6 +7828,9 @@ function wkUpdateStats(){
   document.getElementById('wk-score').textContent=WK.score;
   document.getElementById('wk-combo').textContent=WK.combo;
 }
+// 난이도별 말로우 몸통색 가짓수(높을수록 여러 색이 섞여 혼동↑)
+const WK_COLORS=['cream','pink','mint','sky','lemon','grape'];
+const WK_COLORN={ easy:2, normal:4, hard:6 };
 function wkSpawn(){
   if(!WK.running) return;
   const cfg=WK_CFG[WK.diff];
@@ -7838,7 +7842,7 @@ function wkSpawn(){
     const bad=Math.random()<cfg.badP;
     const sp=document.getElementById('wk-sp-'+idx);
     if(bad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
-    else{ sp.className='wk-sprite'; sp.innerHTML=mallowSVG('default',{size:82}); }
+    else{ sp.className='wk-sprite'; const vn=WK_COLORS[Math.floor(Math.random()*(WK_COLORN[WK.diff]||6))]; sp.innerHTML=mallowSVG('default',{size:82,variant:vn}); }
     document.getElementById('wk-cell-'+idx).classList.add('up');
     WK.slots[idx]={ bad, hideT:setTimeout(()=>{
       if(!bad){ WK.combo=0; wkUpdateStats(); } // 말로우 놓침 → 콤보 리셋
@@ -8321,7 +8325,22 @@ function leaveAnagram(){ resetAnagram(); showScreen('games'); }
 function resetAnagram(){ clearInterval(AG.timer); AG.running=false; const g=document.getElementById('anagram-game-card');if(g)g.style.display='none'; const r=document.getElementById('anagram-result-card');if(r)r.style.display='none'; const i=document.getElementById('anagram-intro-card');if(i)i.style.display='block'; agUpdateBestLine(); }
 
 // ========== 숨은 단어 찾기 (언어) ==========
-const WS_CFG={ easy:{n:6,k:3,lens:{ko:[3],en:[3,4]},diag:false}, normal:{n:8,k:4,lens:{ko:[3,4],en:[4,5]},diag:false}, hard:{n:9,k:5,lens:{ko:[4],en:[5]},diag:true} };
+const WS_CFG={ easy:{n:6,k:3,maxLen:4,diag:false}, normal:{n:8,k:4,maxLen:5,diag:false}, hard:{n:9,k:5,maxLen:6,diag:true} };
+// 테마별 단어(매 판 한 테마에서 뽑아 통일감 + 재미). 길이는 런타임에 난이도(maxLen)로 필터.
+const WS_THEMES={
+  ko:[
+    {n:{ko:'🐾 동물',en:'🐾 Animals',th:'🐾 สัตว์'}, w:['고양이','강아지','코끼리','원숭이','다람쥐','호랑이','거북이','물고기','개구리','병아리','두더지','고슴도치','무당벌레']},
+    {n:{ko:'🍽️ 음식',en:'🍽️ Food',th:'🍽️ อาหาร'}, w:['떡볶이','순두부','비빔밥','된장국','미역국','바나나','고구마','도토리','갈비탕','김치찌개','수제비','칼국수']},
+    {n:{ko:'🌿 자연',en:'🌿 Nature',th:'🌿 ธรรมชาติ'}, w:['무지개','진달래','개나리','민들레','무궁화','보름달','해바라기','코스모스','단풍잎','소나기','이슬비','반딧불']},
+    {n:{ko:'📦 사물',en:'📦 Objects',th:'📦 สิ่งของ'}, w:['자전거','냉장고','컴퓨터','자동차','비행기','운동화','손수건','세탁기','청소기','우체국','소방차','손거울']}
+  ],
+  en:[
+    {n:{ko:'🐾 동물',en:'🐾 Animals',th:'🐾 สัตว์'}, w:['CAT','DOG','FOX','OWL','BEE','ANT','COW','PIG','BAT','LION','BEAR','FROG','DUCK','BIRD','WOLF','TIGER','ZEBRA','PANDA','MONKEY','TURTLE','DONKEY']},
+    {n:{ko:'🍽️ 음식',en:'🍽️ Food',th:'🍽️ อาหาร'}, w:['JAM','EGG','NUT','CAKE','MILK','CORN','SALT','BREAD','HONEY','SUGAR','LEMON','GRAPE','CANDY','MANGO','OLIVE','TOAST','APPLE','COOKIE','PEPPER','ORANGE']},
+    {n:{ko:'🌿 자연',en:'🌿 Nature',th:'🌿 ธรรมชาติ'}, w:['SUN','SKY','ICE','STAR','MOON','TREE','RAIN','SNOW','WIND','LEAF','ROSE','CLOUD','RIVER','PLANT','OCEAN','BEACH','STORM','ISLAND','JUNGLE','FLOWER']},
+    {n:{ko:'📦 사물',en:'📦 Objects',th:'📦 สิ่งของ'}, w:['MAP','BOX','CUP','KEY','PEN','BUS','HAT','CAP','FAN','POT','VAN','BOOK','LAMP','RING','KITE','DESK','DOOR','MASK','ROBOT','PIANO','GUITAR','PENCIL','BASKET','BUTTON','MIRROR','ROCKET','CASTLE']}
+  ]
+};
 const WS_TIME=60;
 const WS_FILL_KO='가나다라마바사아자차카타파하고노도로모보소오조기니디리미비시이지구누두루무부수우주';
 const WS={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:WS_TIME, timer:null, running:false, n:8, grid:[], targets:[], drag:null, best:bt_loadBest('brain.wordsearch.best') };
@@ -8344,9 +8363,15 @@ function wsPlace(n, words, diag){
 }
 function wsBuild(){
   const cfg=WS_CFG[WS.diff], lang=(CURRENT_LANG==='ko')?'ko':'en', n=cfg.n; WS.n=n;
-  let pool=[]; cfg.lens[lang].forEach(L=>{ if(AG_WORDS[lang][L]) pool=pool.concat(AG_WORDS[lang][L]); }); pool=pool.filter(w=>[...w].length<=n);
+  const themes=WS_THEMES[lang];
+  const avail=themes.map((_,i)=>i).filter(i=>i!==WS.lastTheme);
+  const ti=(avail.length?avail:themes.map((_,i)=>i))[Math.floor(Math.random()*(avail.length||themes.length))];
+  const theme=themes[ti]; WS.lastTheme=ti; WS.themeName=theme.n[CURRENT_LANG]||theme.n.en;
+  const maxLen=Math.min(n-1, cfg.maxLen);
+  let cand=theme.w.filter(w=>{ const L=[...w].length; return L>=3 && L<=maxLen; });
+  if(cand.length<cfg.k) cand=theme.w.filter(w=>{ const L=[...w].length; return L>=3 && L<=(n-1); });
   if(!WS.recent) WS.recent=[];
-  const fresh=pool.filter(w=>!WS.recent.includes(w)); const usePool=(fresh.length>=cfg.k)?fresh:pool;   // 최근 쓴 단어 제외(부족하면 전체)
+  const fresh=cand.filter(w=>!WS.recent.includes(w)); const usePool=(fresh.length>=cfg.k)?fresh:cand;   // 최근 쓴 단어 제외
   for(let attempt=0;attempt<50;attempt++){ const words=shuffleArr(usePool).slice(0,cfg.k); if(words.length<cfg.k) break;
     const grid=wsPlace(n, words, cfg.diag);
     if(grid){ for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(grid[r][c]===null) grid[r][c]=wsFill(lang); WS.grid=grid; WS.targets=words.map(w=>({word:w,found:false}));
@@ -8354,7 +8379,7 @@ function wsBuild(){
   return false;
 }
 function wsCellEl(r,c){ const g=document.getElementById('ws-grid'); return g.children[r*WS.n+c]; }
-function wsRenderWords(){ document.getElementById('ws-words').innerHTML=WS.targets.map(tt=>'<span class="ws-word'+(tt.found?' done':'')+'">'+tt.word+'</span>').join(''); }
+function wsRenderWords(){ const th=document.getElementById('ws-theme'); if(th) th.textContent=WS.themeName||''; document.getElementById('ws-words').innerHTML=WS.targets.map(tt=>'<span class="ws-word'+(tt.found?' done':'')+'">'+tt.word+'</span>').join(''); }
 function wsRender(){ const cs=Math.max(26,Math.floor(300/WS.n)); const g=document.getElementById('ws-grid');
   g.style.gridTemplateColumns='repeat('+WS.n+','+cs+'px)'; g.style.fontSize=Math.max(12,Math.round(cs*0.42))+'px'; g.innerHTML='';
   for(let r=0;r<WS.n;r++)for(let c=0;c<WS.n;c++){ const d=document.createElement('div'); d.className='ws-cell'; d.dataset.r=r; d.dataset.c=c; d.style.height=cs+'px'; d.textContent=WS.grid[r][c]; g.appendChild(d); }
