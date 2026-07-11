@@ -461,6 +461,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ft-piece.used{opacity:.2;pointer-events:none}
 .ft-pcell{width:15px;height:15px;border-radius:3px}
 .ft-pcell.on{background:var(--teal)}
+.ft-piece{touch-action:none}
+.ft-piece.drag{opacity:.3}
+.ft-ghost{position:fixed;display:grid;gap:2px;z-index:999;pointer-events:none;opacity:.9;left:0;top:0}
+.ft-ghost .ft-gon{background:var(--purple);border-radius:4px}
+.ft-cell.pre{background:var(--teal)}
+.ft-cell.prebad{background:#f0b6c0}
 .no-wrap{text-align:center;overflow-x:auto;padding-bottom:.3rem}
 .no-grid{display:inline-grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;padding:1px}
 .no-cell{background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text3)}
@@ -7899,22 +7905,52 @@ function ftAnyFit(){ for(const item of FT.tray){ if(item.used) continue; for(let
 function ftNewTray(){ FT.tray=[0,1,2].map(()=>({p:FT_PIECES[Math.floor(Math.random()*FT_PIECES.length)],used:false})); FT.sel=-1; }
 function ftBounds(p){ let mr=0,mc=0; for(const q of p){ mr=Math.max(mr,q[0]); mc=Math.max(mc,q[1]); } return {mr,mc}; }
 function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; document.getElementById('ft-bestv').textContent=FT.best[FT.diff].all; }
+function ftCellPx(){ return Math.floor(340/FT.n); }
+function ftCellEl(r,c){ return document.getElementById('ft-board').children[r*FT.n+c]; }
 function ftRender(){
-  const bd=document.getElementById('ft-board'); const cs=Math.floor(340/FT.n); bd.style.gridTemplateColumns='repeat('+FT.n+','+cs+'px)'; bd.innerHTML='';
-  for(let r=0;r<FT.n;r++)for(let c=0;c<FT.n;c++){ const cell=document.createElement('div'); cell.className='ft-cell'+(FT.board[r][c]?' on':''); cell.onclick=()=>ftPlace(r,c); bd.appendChild(cell); }
+  const bd=document.getElementById('ft-board'); const cs=ftCellPx(); bd.style.gridTemplateColumns='repeat('+FT.n+','+cs+'px)'; bd.innerHTML='';
+  for(let r=0;r<FT.n;r++)for(let c=0;c<FT.n;c++){ const cell=document.createElement('div'); cell.className='ft-cell'+(FT.board[r][c]?' on':''); cell.dataset.r=r; cell.dataset.c=c; bd.appendChild(cell); }
   const tray=document.getElementById('ft-tray'); tray.innerHTML='';
-  FT.tray.forEach((item,idx)=>{ const b=ftBounds(item.p); const pc=document.createElement('div'); pc.className='ft-piece'+(item.used?' used':'')+(FT.sel===idx?' sel':'');
+  FT.tray.forEach((item,idx)=>{ const b=ftBounds(item.p); const pc=document.createElement('div'); pc.className='ft-piece'+(item.used?' used':'')+(FT.drag&&FT.drag.idx===idx?' drag':'');
     pc.style.gridTemplateColumns='repeat('+(b.mc+1)+',15px)'; const set=new Set(item.p.map(q=>q[0]+'_'+q[1]));
     for(let r=0;r<=b.mr;r++)for(let c=0;c<=b.mc;c++){ const d=document.createElement('div'); d.className='ft-pcell'+(set.has(r+'_'+c)?' on':''); pc.appendChild(d); }
-    pc.onclick=()=>{ if(!item.used){ FT.sel=idx; ftRender(); } }; tray.appendChild(pc); });
+    if(!item.used) pc.onpointerdown=(e)=>ftDragStart(e,idx); tray.appendChild(pc); });
   ftStatsBar();
 }
-function ftPlace(r,c){ if(FT.over||FT.sel<0||!FT.running) return; const item=FT.tray[FT.sel]; if(!item||item.used||!ftCanPlace(item.p,r,c)) return;
+// 드래그: 조각을 집어 플레이 화면으로 끌기 + 착지 그림자 미리보기 (모바일 터치/마우스 공통)
+function ftDragStart(e, idx){
+  if(!FT.running||FT.over||FT.drag) return; const item=FT.tray[idx]; if(!item||item.used) return;
+  const cs=ftCellPx(), gap=2, b=ftBounds(item.p);
+  const ghost=document.createElement('div'); ghost.className='ft-ghost'; ghost.style.gridTemplateColumns='repeat('+(b.mc+1)+','+cs+'px)';
+  const set=new Set(item.p.map(q=>q[0]+'_'+q[1]));
+  for(let r=0;r<=b.mr;r++)for(let c=0;c<=b.mc;c++){ const d=document.createElement('div'); d.style.width=cs+'px'; d.style.height=cs+'px'; if(set.has(r+'_'+c)) d.className='ft-gon'; ghost.appendChild(d); }
+  document.body.appendChild(ghost);
+  FT.drag={ idx, piece:item.p, ghost, cs, offX:(b.mc+1)*(cs+gap)/2, offY:(b.mr+1)*(cs+gap)+26, anchor:null, valid:false };
+  document.addEventListener('pointermove', ftDragMove); document.addEventListener('pointerup', ftDragEnd); document.addEventListener('pointercancel', ftDragEnd);
+  ftRender(); ftDragMove(e); e.preventDefault();
+}
+function ftDragMove(e){ if(!FT.drag) return; const d=FT.drag; const x=e.clientX-d.offX, y=e.clientY-d.offY;
+  d.ghost.style.left=x+'px'; d.ghost.style.top=y+'px';
+  const el=document.elementFromPoint(x+d.cs/2, y+d.cs/2);   // 조각 [0,0]칸 중심 아래의 보드 셀 = 착지 앵커
+  let anchor=null; if(el&&el.classList&&el.classList.contains('ft-cell')) anchor={r:+el.dataset.r, c:+el.dataset.c};
+  ftPreview(anchor); if(e.cancelable) e.preventDefault();
+}
+function ftClearPreview(){ document.querySelectorAll('.ft-cell.pre,.ft-cell.prebad').forEach(x=>x.classList.remove('pre','prebad')); }
+function ftPreview(anchor){ ftClearPreview(); const d=FT.drag; if(!d) return; d.anchor=anchor; if(!anchor){ d.valid=false; return; }
+  const ok=ftCanPlace(d.piece, anchor.r, anchor.c); d.valid=ok;
+  d.piece.forEach(q=>{ const rr=anchor.r+q[0], cc=anchor.c+q[1]; if(rr>=0&&cc>=0&&rr<FT.n&&cc<FT.n){ const cell=ftCellEl(rr,cc); if(cell) cell.classList.add(ok?'pre':'prebad'); } });
+}
+function ftDragEnd(){ if(!FT.drag) return; const d=FT.drag; FT.drag=null;
+  document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd);
+  if(d.ghost) d.ghost.remove(); ftClearPreview();
+  if(d.valid && d.anchor){ ftDoPlace(d.idx, d.anchor.r, d.anchor.c); } else { ftRender(); }
+}
+function ftDoPlace(idx,r,c){ if(FT.over||!FT.running) return; const item=FT.tray[idx]; if(!item||item.used||!ftCanPlace(item.p,r,c)){ ftRender(); return; }
   for(const q of item.p) FT.board[r+q[0]][c+q[1]]=1; FT.score+=item.p.length;
   let full=[]; for(let i=0;i<FT.n;i++){ if(FT.board[i].every(v=>v)) full.push(['r',i]); let cf=true; for(let k=0;k<FT.n;k++) if(!FT.board[k][i]) cf=false; if(cf) full.push(['c',i]); }
   for(const f of full){ if(f[0]==='r') for(let k=0;k<FT.n;k++) FT.board[f[1]][k]=0; else for(let k=0;k<FT.n;k++) FT.board[k][f[1]]=0; }
   if(full.length) FT.score+=full.length*FT.n*4;
-  item.used=true; FT.sel=-1; sfx(full.length?'win':'good');
+  item.used=true; sfx(full.length?'win':'good');
   if(FT.tray.every(x=>x.used)) ftNewTray();
   ftRender(); if(!ftAnyFit()) finishFit(); }
 function startFit(){ FT.n=FT_CFG[FT.diff].n; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0)); FT.score=0; FT.over=false; FT.running=true; ftNewTray();
@@ -7925,7 +7961,7 @@ function finishFit(){ if(!FT.running) return; FT.over=true; FT.running=false;
   document.getElementById('ft-result-emoji').textContent=nr?'🏆':'🧱'; document.getElementById('ft-result-title').textContent=nr?t('fit.newRecord'):t('fit.gameOver');
   document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent=FT_DIFF_LABEL(FT.diff); document.getElementById('ft-r-best').textContent=FT.best[FT.diff].all; ftUpdateBestLine(); }
 function leaveFit(){ resetFit(); showScreen('games'); }
-function resetFit(){ FT.running=false; FT.over=false; const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
+function resetFit(){ FT.running=false; FT.over=false; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
 
 // ========== 픽셀 로직 / 노노그램 (논리) ==========
 const NO_CFG={ easy:{n:5,dens:0.55,base:500}, normal:{n:8,dens:0.55,base:1100}, hard:{n:10,dens:0.55,base:1800} };
