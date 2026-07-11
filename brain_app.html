@@ -7529,15 +7529,16 @@ function startRev(){ RV.len=RV_CFG[RV.diff].start; RV.score=0; RV.lives=3; RV.ma
   rvStats(); rvShow(); }
 function rvShow(){ rvClear(); RV.phase='show'; RV.seq=Array.from({length:RV.len},()=>Math.floor(Math.random()*10)); RV.entry=[];
   document.getElementById('rv-entry').textContent=''; rvStatus('rev.watch'); rvStats(); const sp=RV_CFG[RV.diff].speed; const disp=document.getElementById('rv-display'); disp.textContent='';
-  RV.seq.forEach((d,i)=>{ RV.timers.push(setTimeout(()=>{ disp.textContent=d; RV.timers.push(setTimeout(()=>{ if(disp.textContent===String(d)) disp.textContent=''; }, sp*0.55)); }, 500+i*sp)); });
+  RV.seq.forEach((d,i)=>{ RV.timers.push(setTimeout(()=>{ disp.textContent=d; if(sndOn()) _beep(330*Math.pow(2,d/12),0.16,'sine',0.16); try{navigator.vibrate&&navigator.vibrate(10)}catch(_){} RV.timers.push(setTimeout(()=>{ if(disp.textContent===String(d)) disp.textContent=''; }, sp*0.55)); }, 500+i*sp)); });
   RV.timers.push(setTimeout(()=>{ RV.phase='input'; disp.textContent='?'; rvStatus('rev.input','turn'); }, 500+RV.seq.length*sp+150)); }
-function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
-function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
+function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); if(sndOn()) _beep(680,0.05,'sine',0.12); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
+function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); if(sndOn()) _beep(360,0.05,'sine',0.10); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
 function rvCheck(){ RV.phase='wait'; const target=RV.seq.slice().reverse(); const ok=RV.entry.every((v,i)=>v===target[i]);
   if(ok){ RV.score+=RV.len*10; RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
   else{ RV.lives--; sfx('bad'); rvStatus('rev.miss','bad'); rvStats(); if(RV.lives<=0) RV.timers.push(setTimeout(finishRev,900)); else RV.timers.push(setTimeout(rvShow,1100)); } }
 function finishRev(){ rvClear(); RV.running=false;
   const nr=bt_recordScore(RV.best,RV.diff,RV.score); bt_saveBest('brain.rev.best',RV.best); missionMark('rev');
+  if(nr) sfx('win'); else { if(sndOn()){ _beep(392,0.14,'sine',0.14); _beep(262,0.2,'sine',0.13,0.14); } try{navigator.vibrate&&navigator.vibrate([30,40,30])}catch(_){} }
   document.getElementById('rev-game-card').style.display='none'; document.getElementById('rev-result-card').style.display='block';
   document.getElementById('rv-result-emoji').textContent=nr?'🏆':'🔁'; document.getElementById('rv-result-title').textContent=nr?t('rev.newRecord'):t('rev.gameOver');
   document.getElementById('rv-result-score').textContent=RV.score; document.getElementById('rv-r-diff').textContent=RV_DIFF_LABEL(RV.diff);
