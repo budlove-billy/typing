@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-11 — **다른 모양 찾기(odd)**: 관찰력 축 2호 — spot(색차) 대비 형태(회전)차. n×n 화살표 중 각도 다른 1개 탭.
+  spot 구조 미러링(판 확대+각도차 감소, 유일성 delta>0 보장), 60초·오답 -2s. 능력치/공유/도전장/미션B 연동. 활성 22종. (Wave1 1호, 로드맵=`신규게임-기획-능력영역별.md`)
+
 - 2026-07-11 — **공략 가이드 6종**(`/guide/`): 스도쿠·2048·IQ·컬러소트·슬라이딩퍼즐 공략 + 두뇌게임 총정리 허브.
   SEO 롱테일 타깃 실전 콘텐츠, 딥링크 CTA·상호 내부링크·sitemap. 홈 푸터/랜딩에 연결.
 
@@ -115,15 +118,15 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8045-8049** (5 ports total).
+This project is allocated the port range **8065-8069** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8045-8049`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8065-8069`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8045`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8049`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8065`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8069`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -299,12 +302,12 @@ this project — files written anywhere else are NOT reachable from chat.
 
 ### How to deliver — paste the REAL public URL
 For a file at `generated_images/<name>.<ext>`, its public URL is exactly
-`/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
+`/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
 correctly in web and Telegram/Discord:
-- Image → `![<alt>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.png)` — shows inline
-- Video → `[<title>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
-- Audio → `[<title>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.mp3)` — web embeds an audio player
-- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/86afe8ac-2081-4dfd-9f4c-8a177db1e68c/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
+- Image → `![<alt>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.png)` — shows inline
+- Video → `[<title>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
+- Audio → `[<title>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.mp3)` — web embeds an audio player
+- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
 
 Always give the user the link for anything you produce — never just say "saved to
 generated_images/" without the URL.

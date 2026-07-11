@@ -107,6 +107,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   용량 4, 같은 색 위에만 붓기(연속 런 일괄). 생성마다 내장 솔버(soSolvable, 메모 DFS 6만 노드 캡)로 해결 가능 보증
   +시작부터 완성된 병 배제. 되돌리기 3회(undo도 move+1), 점수=base(500/1000/1600)−초×2−이동×3.
   `SO` 객체, `brain.sort.best`, 도전장·공유·능력치(logic60/space20/focus20, REF 650) 연동. 미션 풀 제외. 활성 21종.
+- **신규(2026-07-11): 다른 모양 찾기(odd)** → 관찰력 축(cat.sight) 2호. spot(색차)과 대비되는 **형태(회전)차** — n×n 화살표 중 1개만 각도 다름, 탭.
+  spot 로직 미러링(3레벨마다 판+1 상한 6/7/8, 레벨마다 각도차 감소 하한 aMin 20/15/11°), 유일성=delta>0 보장(SVG 화살표 비대칭). 60초·오답 -2s.
+  `OD` 객체, `brain.odd.best`, ABILITY_MAP odd={focus:40,space:30,speed:30} REF 400, 공유·도전장·미션 풀 B 연동. 활성 22종. Wave1 1호.
 - 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.
