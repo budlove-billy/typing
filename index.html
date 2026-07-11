@@ -760,7 +760,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="happy" data-mallow-size="30" aria-label="Mallow 마스코트" role="img"></span>Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-size="30" aria-label="Mallow 마스코트" role="img"></span>Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
@@ -2647,33 +2647,31 @@ function _mgDefs(){
     d+=`<linearGradient id="mg_${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset=".62" stop-color="${c[1]}"/><stop offset="1" stop-color="${c[2]}"/></linearGradient>`;}
   d+='</defs>'; svg.innerHTML=d; document.body.appendChild(svg);
 }
-const _mCheeks='<ellipse cx="30" cy="60" rx="6.4" ry="4" fill="#FFAEC4" opacity=".7"/><ellipse cx="70" cy="60" rx="6.4" ry="4" fill="#FFAEC4" opacity=".7"/>';
-const _EYE='#3b3550';
+const _EYE='#33405c';
+/* 원본 마시멜로 감성: 네모난(둥근사각) 눈 + 작은 'w' 입 + 핑크 볼 */
+const _mCheeks=`<rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/>`;
+const _EYES=`<rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="${_EYE}"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="${_EYE}"/>`+
+  `<rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff" opacity=".92"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff" opacity=".92"/>`;
+const _sparkles=`<path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/>`+
+  `<path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/>`;
 const MALLOW_FACES={
-  default:_mCheeks+
-    `<circle cx="37" cy="52" r="5.2" fill="${_EYE}"/><circle cx="63" cy="52" r="5.2" fill="${_EYE}"/>`+
-    `<circle cx="39" cy="50" r="1.7" fill="#fff"/><circle cx="65" cy="50" r="1.7" fill="#fff"/>`+
-    `<path d="M43 63 Q50 69 57 63" fill="none" stroke="${_EYE}" stroke-width="2.6" stroke-linecap="round"/>`,
-  happy:_mCheeks+
-    `<path d="M31 53 Q37 46 43 53" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M57 53 Q63 46 69 53" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M41 60 Q50 72 59 60 Z" fill="#E8657F"/>`,
-  success:_mCheeks+
-    `<path d="M31 54 Q37 47 43 54" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M57 54 Q63 47 69 54" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M39 59 Q50 75 61 59 Z" fill="#E8657F"/><path d="M43 64 Q50 68 57 64" fill="#F7A8BC"/>`+
-    `<path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/>`+
-    `<path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/>`,
-  sad:'<ellipse cx="30" cy="61" rx="6" ry="3.6" fill="#FFAEC4" opacity=".5"/><ellipse cx="70" cy="61" rx="6" ry="3.6" fill="#FFAEC4" opacity=".5"/>'+
-    `<path d="M32 51 Q37 56 42 51" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M58 51 Q63 56 68 51" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M43 66 Q50 60 57 66" fill="none" stroke="${_EYE}" stroke-width="2.6" stroke-linecap="round"/>`+
-    `<path d="M75 33 Q79 41 75 44 Q71 41 75 33 Z" fill="#7FC6FF"/>`,
+  default:_mCheeks+_EYES+
+    `<path d="M43.5 59 Q47 64.2 50 60.4 Q53 64.2 56.5 59" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+  happy:_mCheeks+_EYES+
+    `<path d="M43 59 Q50 68.5 57 59 Z" fill="#E8657F"/><path d="M45.5 62 Q50 65 54.5 62" fill="#F49BB1"/>`,
+  success:_mCheeks+_EYES+_sparkles+
+    `<path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/>`,
+  sad:`<rect x="21.5" y="56" width="11" height="7.5" rx="3.6" fill="#FFB0C4" opacity=".5"/><rect x="67.5" y="56" width="11" height="7.5" rx="3.6" fill="#FFB0C4" opacity=".5"/>`+
+    `<rect x="31.5" y="44" width="10.5" height="11" rx="5.25" fill="${_EYE}"/><rect x="58" y="44" width="10.5" height="11" rx="5.25" fill="${_EYE}"/>`+
+    `<rect x="33.6" y="45.6" width="3.4" height="4.4" rx="1.7" fill="#fff" opacity=".9"/><rect x="60.1" y="45.6" width="3.4" height="4.4" rx="1.7" fill="#fff" opacity=".9"/>`+
+    `<path d="M43.5 65 Q50 59.5 56.5 65" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round"/>`+
+    `<path d="M76 33 Q80 41 76 44 Q72 41 76 33 Z" fill="#7FC6FF"/>`,
   focus:_mCheeks+
-    `<path d="M30 45 L43 48" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<path d="M70 45 L57 48" fill="none" stroke="${_EYE}" stroke-width="3" stroke-linecap="round"/>`+
-    `<circle cx="37" cy="55" r="4.4" fill="${_EYE}"/><circle cx="63" cy="55" r="4.4" fill="${_EYE}"/>`+
-    `<path d="M44 65 L56 65" fill="none" stroke="${_EYE}" stroke-width="2.6" stroke-linecap="round"/>`,
+    `<path d="M31 40.5 Q36.5 39 42 41" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round"/>`+
+    `<path d="M69 40.5 Q63.5 39 58 41" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round"/>`+
+    `<rect x="31" y="44.5" width="11" height="10" rx="5" fill="${_EYE}"/><rect x="58" y="44.5" width="11" height="10" rx="5" fill="${_EYE}"/>`+
+    `<rect x="33.4" y="46.4" width="3.5" height="4.2" rx="1.75" fill="#fff" opacity=".9"/><rect x="60.4" y="46.4" width="3.5" height="4.2" rx="1.75" fill="#fff" opacity=".9"/>`+
+    `<path d="M45 63.5 Q50 66 55 63.5" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round"/>`,
 };
 function mallowSVG(mood,opts){
   opts=opts||{}; _mgDefs();
@@ -2687,8 +2685,9 @@ function mallowSVG(mood,opts){
   const xmlns=opts.standalone?' xmlns="http://www.w3.org/2000/svg"':'';
   return `<svg class="mallow${cls}"${xmlns} viewBox="0 0 100 100" width="${size}" height="${size}" ${attrs} aria-hidden="true">`+defs+
     `<ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/>`+
-    `<rect x="16" y="16" width="68" height="66" rx="27" fill="url(#mg_${v})" stroke="${stroke}" stroke-width="1.5"/>`+
-    `<ellipse cx="37" cy="33" rx="13" ry="7.5" fill="rgba(255,255,255,.5)"/>`+
+    `<rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mg_${v})" stroke="${stroke}" stroke-width="1.5"/>`+
+    `<ellipse cx="50" cy="70" rx="27" ry="11" fill="rgba(150,110,60,.09)"/>`+
+    `<ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/>`+
     face+`</svg>`;
 }
 /* 마스코트 이미지 자리(로고·인트로) 를 인라인 SVG로 채움 */
@@ -7781,7 +7780,7 @@ function wkSpawn(){
     const bad=Math.random()<cfg.badP;
     const sp=document.getElementById('wk-sp-'+idx);
     if(bad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
-    else{ sp.className='wk-sprite'; sp.innerHTML=mallowSVG('happy',{size:82}); }
+    else{ sp.className='wk-sprite'; sp.innerHTML=mallowSVG('default',{size:82}); }
     document.getElementById('wk-cell-'+idx).classList.add('up');
     WK.slots[idx]={ bad, hideT:setTimeout(()=>{
       if(!bad){ WK.combo=0; wkUpdateStats(); } // 말로우 놓침 → 콤보 리셋
