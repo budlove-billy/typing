@@ -5600,20 +5600,23 @@ function soSolvable(tubes){
 }
 function soGen(){
   const k=SO_CFG[SO.diff].k;
-  for(let tries=0;tries<30;tries++){
-    const units=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) units.push(c);
-    shuffleArr(units);
+  for(let tries=0;tries<40;tries++){
+    const seed=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) seed.push(c);
+    const units=shuffleArr(seed);   // shuffleArr는 섞인 새 배열을 반환(제자리 변형 아님) → 반드시 반환값 사용
     const tubes=[]; for(let t=0;t<k;t++) tubes.push(units.slice(t*SO_CAP,(t+1)*SO_CAP));
     tubes.push([]); tubes.push([]);
     // 시작부터 완성된 병이 있으면 재생성(싱겁지 않게), 솔버로 해결 가능 보증
     const trivial=tubes.some(tb=>tb.length===SO_CAP&&tb.every(c=>c===tb[0]));
     if(!trivial && soSolvable(tubes)) return tubes;
   }
-  // 이론상 도달 불가(생성 판은 사실상 전부 해결 가능) — 마지막 시도 반환
-  const units=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) units.push(c);
-  shuffleArr(units);
-  const tubes=[]; for(let t=0;t<k;t++) tubes.push(units.slice(t*SO_CAP,(t+1)*SO_CAP));
-  tubes.push([]); tubes.push([]);
+  // 폴백: 완성 병이 없을 때까지 섞어서 반환(스크램블은 항상 해결 가능)
+  let tubes;
+  do{
+    const seed=[]; for(let c=0;c<k;c++) for(let i=0;i<SO_CAP;i++) seed.push(c);
+    const units=shuffleArr(seed);
+    tubes=[]; for(let t=0;t<k;t++) tubes.push(units.slice(t*SO_CAP,(t+1)*SO_CAP));
+    tubes.push([]); tubes.push([]);
+  }while(tubes.some(tb=>tb.length===SO_CAP&&tb.every(c=>c===tb[0])));
   return tubes;
 }
 function soTubeDone(tb){ return tb.length===SO_CAP && tb.every(c=>c===tb[0]); }
