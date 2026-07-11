@@ -64,8 +64,11 @@ h1,h2,h3{font-weight:600}
 /* NAV */
 :focus-visible{outline:2px solid var(--purple);outline-offset:2px;border-radius:4px}
 nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
-.nav-logo{display:flex;align-items:baseline;gap:.45rem;font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0;cursor:pointer}
-.nav-mascot{height:30px;width:auto;align-self:center;display:inline-flex}
+.nav-logo{display:flex;align-items:center;gap:.5rem;letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.05rem;flex-shrink:0;cursor:pointer;line-height:1}
+.nav-mascot{display:inline-flex;align-items:center;flex-shrink:0}
+.nav-mascot svg{width:40px;height:40px;display:block}
+.nav-brand{font-size:1.36rem;font-weight:800;color:var(--purple)}
+.nav-tagline{font-size:.7rem;font-weight:500;color:var(--teal);letter-spacing:0}
 .mallow{display:inline-block;vertical-align:middle;overflow:visible}
 .mallow-bob{animation:mallowBob 2.2s ease-in-out infinite}
 @keyframes mallowBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8%)}}
@@ -78,14 +81,16 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 @keyframes fxPop{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}18%{opacity:1;transform:translate(-50%,-60%) scale(1.12)}100%{opacity:0;transform:translate(-50%,-165%) scale(1)}}
 .fx-combo{position:fixed;left:50%;top:34%;transform:translateX(-50%);pointer-events:none;z-index:9001;font-weight:900;font-size:2rem;color:#fff;padding:.35rem 1.1rem;border-radius:999px;background:linear-gradient(135deg,#ff8a5b,#ff5f9e);box-shadow:0 8px 22px rgba(255,95,158,.4);animation:fxCombo 1s cubic-bezier(.2,.8,.3,1) forwards;white-space:nowrap}
 @keyframes fxCombo{0%{opacity:0;transform:translateX(-50%) scale(.4) rotate(-8deg)}22%{opacity:1;transform:translateX(-50%) scale(1.15) rotate(-3deg)}40%{transform:translateX(-50%) scale(1) rotate(0)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-30px) scale(.9)}}
-.nav-logo span{color:var(--teal)}
+.nav-brand{color:var(--purple)}
 .nav-ico{font-size:1.4rem;line-height:1;flex-shrink:0}
 .nav-label{font-size:.64rem;line-height:1;font-weight:600}
 
 @media (max-width:640px){
-  nav{height:60px}
-  .nav-logo{font-size:.9rem;padding:0 .5rem 0 .8rem;gap:.35rem}
-  .nav-mascot{height:26px}
+  nav{height:58px}
+  .nav-logo{padding:0 .5rem 0 .7rem;gap:.4rem}
+  .nav-mascot svg{width:36px;height:36px}
+  .nav-brand{font-size:1.2rem}
+  .nav-tagline{font-size:.66rem}
   .nav-ico{font-size:1.3rem}
   .nav-label{font-size:.58rem}
 
@@ -95,8 +100,9 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   .word-input-row .btn{padding:.5rem .75rem;font-size:.82rem}
 }
 @media (max-width:420px){
-  .nav-logo{font-size:.85rem}
-  .nav-logo span{display:inline}
+  .nav-mascot svg{width:32px;height:32px}
+  .nav-brand{font-size:1.08rem}
+  .nav-tagline{font-size:.6rem}
 }
 
 /* SCREENS */
@@ -774,7 +780,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-size="30" aria-label="Mallow 마스코트" role="img"></span>Mallow<span data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-size="40" aria-label="Mallow 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
