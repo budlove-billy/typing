@@ -3802,7 +3802,7 @@ function celebrateRecordScreen(){
   document.querySelectorAll('[id$="-result-card"]').forEach(c=>{ if(c.offsetParent!==null){ const s=c.querySelector('.iq-result-score'); if(s) scoreEl=s; } });
   if(!scoreEl) return;
   const emit=()=>{ if(!scoreEl.offsetParent){ stopRecordFx(); return; } const r=scoreEl.getBoundingClientRect(); const cx=r.left+r.width/2, cy=r.top+r.height/2;
-    for(let k=0;k<2;k++){ const ox=(Math.random()-0.5)*r.width*1.25, oy=(Math.random()-0.5)*r.height*1.0; fxBurst(cx+ox,cy+oy,{count:7,spread:40}); } };
+    fxBurst(cx,cy,{count:11,spread:Math.max(26,Math.min(46,r.width*0.4))}); };
   emit(); _recordFxTimer=setInterval(emit,620);
 }
 /* 신기록 게임 추적(내 기록 NEW 배지) */
