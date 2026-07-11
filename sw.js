@@ -1,5 +1,5 @@
 // Mallow PWA service worker — HTML은 network-first(항상 최신), 정적 자산은 cache-first
-const CACHE = 'mallow-v3';
+const CACHE = 'mallow-v4';
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png'];
 
 self.addEventListener('install', e => {
