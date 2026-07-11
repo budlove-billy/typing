@@ -110,7 +110,18 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-11): 다른 모양 찾기(odd)** → 관찰력 축(cat.sight) 2호. spot(색차)과 대비되는 **형태(회전)차** — n×n 화살표 중 1개만 각도 다름, 탭.
   spot 로직 미러링(3레벨마다 판+1 상한 6/7/8, 레벨마다 각도차 감소 하한 aMin 20/15/11°), 유일성=delta>0 보장(SVG 화살표 비대칭). 60초·오답 -2s.
   `OD` 객체, `brain.odd.best`, ABILITY_MAP odd={focus:40,space:30,speed:30} REF 400, 공유·도전장·미션 풀 B 연동. 활성 22종. Wave1 1호.
-- 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
+- **신규(2026-07-12): Wave2-3 7종 일괄 배포** → 활성 **30종**. 로드맵(`신규게임-기획-능력영역별.md`) 나머지 전부 구현, 한 번에 라이브.
+  - **flank(화살표 집중/집중)**: 플랭커 과제. 가운데 화살표 방향 답(◀▶), 양옆 무시. 60s·오답-2s. FK. incong 확률 난이도. ABILITY {focus:60,speed:30,logic:10}, 미션B.
+  - **guess(어림 계산/계산)**: 식의 근사값 3택(유일 최근접 보장, 보기간격≥unit*0.42). 60s. GU. maxOperand 30/90/400. {calc:70,speed:20,focus:10}. 미션 제외.
+  - **rev(거꾸로 기억/기억)**: backward digit span. 숫자 순차표시→키패드 역순입력. len+lives. RV. {memory:70,focus:30}, 미션A.
+  - **rhythm(리듬 따라하기/청각)**: 박자 재생→탭 재현. 템포정규화 판정(min기준 비 1.7 임계, ≥1 short). len+lives, performance.now. RH. {memory:50,focus:30,speed:20}, 미션A.
+  - **catch(마시멜로 받기/협응)**: 4레인 낙하물 바구니로 받기(🍡 받고 🍴 피함). 60s, tick 40ms·spawn간격. CA. {speed:50,focus:30,space:20}, 미션B. 포크는 내 레인일 때만 페널티(-3s)→불가피 손해 없음.
+  - **fit(블록 채우기/공간)**: 폴리오미노 3조각 탭선택→탭배치, 줄 소거. 데드락 시 종료(그리디 6×6 최소16조각 검증). FT. {space:60,logic:25,focus:15}, 미션C.
+  - **nono(픽셀 로직/논리)**: 노노그램. 라인솔버 유일해 생성(무추론 보장, 5/8/10 즉시생성 검증). 카운트업, base-시간. 칠하기/X 토글. NO. {logic:60,focus:25,space:15}. 미션 제외.
+  - **anagram(글자 맞추기/언어)**: vocab/typing 대체(언어 축 0→채움). 셔플 글자 재배열, 정답선지정→사전검증불요. **ko+en 동시**(음절/알파벳 타일), th 숨김(langs:['ko','en'] 필터). 힌트3. 60s. AG. {lang:70,memory:20,focus:10}. 미션 제외.
+  - 선검증: `.logs/gen_sim.mjs`(nono유일해/fit생존/guess보기/rhythm판정/anagram셔플), 배선정합성 `.logs/wire_check.mjs`. 미션풀 A+rev,rhythm / B+flank,catch / C+fit.
+  - ⚠️ 라이브 스모크 테스트 미완(이 환경 playwright/webread 없음) — 각 게임 실제 플레이 확인 필요(특히 nono 클루 레이아웃, catch 낙하 타이밍, rhythm 오디오 resume).
+- 다음 후보: 어림 계산(완료), 개인정보처리방침(로그인 도입 시 필수).
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.
   braintype 언어가형 추천은 anagram으로 갱신 예정. `ABILITY_MAP.anagram={lang:70,memory:20,focus:10}`. 상세: **`신규게임-기획-능력영역별.md`** §4.

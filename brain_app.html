@@ -428,6 +428,57 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .od-tile:active{transform:scale(.94)}
 .od-tile.miss{animation:bbShake .3s ease 1}
 .od-tile svg{width:60%;height:60%;display:block;color:var(--purple)}
+/* ===== 신규 8종 (Wave1-3): flank/guess/rev/rhythm/catch/fit/nono/anagram ===== */
+.fk-stage{background:var(--bg3);border-radius:var(--radius2);padding:1.6rem 1rem;text-align:center;margin-bottom:1rem;min-height:96px;display:flex;align-items:center;justify-content:center}
+.fk-row{font-size:2.6rem;letter-spacing:.14em;line-height:1;color:var(--text3);user-select:none}
+.fk-row b{color:var(--purple);font-weight:400}
+.fk-btns,.ca-btns{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;max-width:340px;margin:1rem auto 0}
+.fk-btn,.ca-btn{padding:1.1rem 0;font-size:1.7rem;border:none;border-radius:var(--radius2);background:var(--purple);color:#fff;cursor:pointer}
+.fk-btn:active,.ca-btn:active{transform:scale(.96)}
+.gu-q{font-size:2.1rem;font-weight:700;text-align:center;margin:.4rem 0 1.1rem;color:var(--text)}
+.gu-choices{display:grid;gap:.6rem;max-width:340px;margin:0 auto}
+.gu-choice{padding:1rem 0;font-size:1.4rem;font-weight:700;border:1.5px solid var(--border);border-radius:var(--radius2);background:var(--bg);color:var(--text);cursor:pointer}
+.gu-choice:active{transform:scale(.97)}
+.gu-choice.no{background:var(--red);color:#fff;border-color:var(--red)}
+.rv-display{font-size:3.4rem;font-weight:800;text-align:center;height:76px;display:flex;align-items:center;justify-content:center;color:var(--purple);letter-spacing:.1em}
+.rv-entry{text-align:center;font-size:1.5rem;letter-spacing:.25em;min-height:1.9rem;margin-bottom:.7rem;color:var(--text)}
+.rv-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;max-width:270px;margin:0 auto}
+.rv-key{padding:.85rem 0;font-size:1.3rem;font-weight:700;border:1.5px solid var(--border);border-radius:var(--radius2);background:var(--bg);cursor:pointer}
+.rv-key:active{background:var(--purple3)}
+.rv-key.empty{border:none;background:none;pointer-events:none}
+.rh-pad{width:100%;max-width:300px;aspect-ratio:2/1;margin:1.2rem auto;border:none;border-radius:var(--radius2);background:#7e57f0;opacity:.5;cursor:pointer;transition:opacity .08s,transform .08s}
+.rh-pad.lit{opacity:1;box-shadow:0 0 22px rgba(126,87,240,.5)}
+.rh-pad:active{transform:scale(.98)}
+.ca-area{position:relative;width:100%;max-width:360px;height:330px;margin:0 auto;background:var(--bg3);border-radius:var(--radius2);overflow:hidden;transition:background .12s}
+.ca-item{position:absolute;font-size:2rem;line-height:1;transform:translateX(-50%);pointer-events:none;will-change:top}
+.ca-basket{position:absolute;bottom:6px;font-size:2.3rem;transform:translateX(-50%);transition:left .07s;pointer-events:none}
+.ft-board{display:grid;gap:2px;max-width:360px;margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
+.ft-cell{aspect-ratio:1/1;background:var(--bg3);border-radius:4px;cursor:pointer}
+.ft-cell.on{background:var(--purple)}
+.ft-tray{display:flex;justify-content:center;gap:1rem;margin-top:1rem;min-height:70px;align-items:center}
+.ft-piece{display:grid;gap:2px;padding:.4rem;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.ft-piece.sel{border-color:var(--purple);background:var(--purple3)}
+.ft-piece.used{opacity:.2;pointer-events:none}
+.ft-pcell{width:15px;height:15px;border-radius:3px}
+.ft-pcell.on{background:var(--teal)}
+.no-wrap{text-align:center;overflow-x:auto;padding-bottom:.3rem}
+.no-grid{display:inline-grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;padding:1px}
+.no-cell{background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text3)}
+.no-cell.fill{background:var(--purple)}
+.no-clue{background:var(--bg3);font-size:.6rem;line-height:1.06;color:var(--text2);display:flex;align-items:center;justify-content:flex-end}
+.no-clue.col{flex-direction:column;padding-bottom:2px}
+.no-clue.row{flex-direction:row;gap:2px;padding-right:2px}
+.no-clue span{padding:0 1px}
+.no-corner{background:var(--bg3)}
+.no-tools{display:flex;justify-content:center;gap:.6rem;margin:.2rem 0 1rem}
+.ag-slots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:52px;margin-bottom:1.1rem}
+.ag-slots.miss{animation:bbShake .3s ease 1}
+.ag-slot{min-width:44px;height:44px;padding:0 .35rem;border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:var(--text)}
+.ag-slot.filled{border-style:solid;border-color:var(--purple);background:var(--purple3);cursor:pointer}
+.ag-tiles{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:52px}
+.ag-tile{min-width:44px;height:44px;padding:0 .4rem;border:none;border-radius:8px;background:var(--purple);color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer}
+.ag-tile:active{transform:scale(.95)}
+.ag-tile.used{visibility:hidden}
 /* 슬라이딩 퍼즐 */
 .sl-board{position:relative;width:100%;max-width:380px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
 .sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
@@ -1990,6 +2041,328 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== FLANK SCREEN (화살표 집중 / 집중) ==================== -->
+<div class="screen" id="screen-flank">
+  <div class="card" id="flank-intro-card">
+    <div class="section-head"><h2 data-i18n="flank.title">화살표 집중</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="flank.intro">
+      <b>가운데 화살표</b>가 가리키는 방향을 누르세요. 양옆 화살표는 함정이니 무시!<br>
+      60초 동안 최대한 많이 맞히세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="fk-diff-easy" onclick="setFlankDiff('easy')"><h3>🌱 <span data-i18n="flank.easy">쉬움</span></h3><p data-i18n="flank.easyDesc">함정 적음</p></div>
+      <div class="diff-btn active" id="fk-diff-normal" onclick="setFlankDiff('normal')"><h3>⚡ <span data-i18n="flank.normal">보통</span></h3><p data-i18n="flank.normalDesc">기본</p></div>
+      <div class="diff-btn" id="fk-diff-hard" onclick="setFlankDiff('hard')"><h3>🔥 <span data-i18n="flank.hard">어려움</span></h3><p data-i18n="flank.hardDesc">함정 많음</p></div>
+    </div>
+    <button class="btn" onclick="startFlank()" data-i18n="flank.startGame">게임 시작</button>
+    <div class="best-line" id="fk-intro-best"></div>
+  </div>
+  <div class="card" id="flank-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flank.score">SCORE</div><div class="mg-stat-value" id="fk-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flank.combo">COMBO</div><div class="mg-stat-value" id="fk-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="fk-timer">01:00</div></div>
+    <div class="fk-stage"><div class="fk-row" id="fk-row"></div></div>
+    <div class="gm-status" data-i18n="flank.guide">가운데 화살표 방향을 누르세요</div>
+    <div class="fk-btns"><button class="fk-btn" onclick="fkAns(-1)">◀</button><button class="fk-btn" onclick="fkAns(1)">▶</button></div>
+    <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveFlank()" data-i18n="flank.leave">나가기</button></div>
+  </div>
+  <div class="card" id="flank-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="fk-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="fk-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="fk-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="flank.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="flank.difficulty">난이도</span><span id="fk-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="flank.maxCombo">최고 콤보</span><span id="fk-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="flank.best">최고 기록</span><span id="fk-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFlank()" data-i18n="flank.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('flank')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('flank')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== GUESS SCREEN (어림 계산 / 계산) ==================== -->
+<div class="screen" id="screen-guess">
+  <div class="card" id="guess-intro-card">
+    <div class="section-head"><h2 data-i18n="guess.title">어림 계산</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="guess.intro">
+      정확히 계산하지 말고 <b>가장 가까운 어림값</b>을 빠르게 고르세요.<br>
+      60초 안에 수 감각을 최대한 발휘해보세요!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="gu-diff-easy" onclick="setGuessDiff('easy')"><h3>🌱 <span data-i18n="guess.easy">쉬움</span></h3><p data-i18n="guess.easyDesc">두 자리</p></div>
+      <div class="diff-btn active" id="gu-diff-normal" onclick="setGuessDiff('normal')"><h3>⚡ <span data-i18n="guess.normal">보통</span></h3><p data-i18n="guess.normalDesc">기본</p></div>
+      <div class="diff-btn" id="gu-diff-hard" onclick="setGuessDiff('hard')"><h3>🔥 <span data-i18n="guess.hard">어려움</span></h3><p data-i18n="guess.hardDesc">세 자리</p></div>
+    </div>
+    <button class="btn" onclick="startGuess()" data-i18n="guess.startGame">게임 시작</button>
+    <div class="best-line" id="gu-intro-best"></div>
+  </div>
+  <div class="card" id="guess-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="guess.score">SCORE</div><div class="mg-stat-value" id="gu-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="guess.combo">COMBO</div><div class="mg-stat-value" id="gu-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="gu-timer">01:00</div></div>
+    <div class="gu-q" id="gu-q"></div>
+    <div class="gu-choices" id="gu-choices"></div>
+    <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveGuess()" data-i18n="guess.leave">나가기</button></div>
+  </div>
+  <div class="card" id="guess-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="gu-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="gu-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="gu-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="guess.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="guess.difficulty">난이도</span><span id="gu-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="guess.maxCombo">최고 콤보</span><span id="gu-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="guess.best">최고 기록</span><span id="gu-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetGuess()" data-i18n="guess.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('guess')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('guess')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== REV SCREEN (거꾸로 기억 / 기억) ==================== -->
+<div class="screen" id="screen-rev">
+  <div class="card" id="rev-intro-card">
+    <div class="section-head"><h2 data-i18n="rev.title">거꾸로 기억</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rev.intro">
+      숫자가 하나씩 나타납니다. 다 본 뒤 <b>거꾸로 순서</b>로 입력하세요!<br>
+      성공할 때마다 한 자리씩 길어집니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="rv-diff-easy" onclick="setRevDiff('easy')"><h3>🌱 <span data-i18n="rev.easy">쉬움</span></h3><p data-i18n="rev.easyDesc">3자리·천천히</p></div>
+      <div class="diff-btn active" id="rv-diff-normal" onclick="setRevDiff('normal')"><h3>⚡ <span data-i18n="rev.normal">보통</span></h3><p data-i18n="rev.normalDesc">4자리</p></div>
+      <div class="diff-btn" id="rv-diff-hard" onclick="setRevDiff('hard')"><h3>🔥 <span data-i18n="rev.hard">어려움</span></h3><p data-i18n="rev.hardDesc">4자리·빠르게</p></div>
+    </div>
+    <button class="btn" onclick="startRev()" data-i18n="rev.startGame">게임 시작</button>
+    <div class="best-line" id="rv-intro-best"></div>
+  </div>
+  <div class="card" id="rev-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rev.score">SCORE</div><div class="mg-stat-value" id="rv-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rev.life">LIFE</div><div class="mg-stat-value" id="rv-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rev.level">LEVEL</div><div class="mg-stat-value" id="rv-level">3</div></div>
+    </div>
+    <div class="gm-status" id="rv-status" data-i18n="rev.watch">잘 기억하세요…</div>
+    <div class="rv-display" id="rv-display"></div>
+    <div class="rv-entry" id="rv-entry"></div>
+    <div class="rv-keypad">
+      <button class="rv-key" onclick="rvKey(1)">1</button><button class="rv-key" onclick="rvKey(2)">2</button><button class="rv-key" onclick="rvKey(3)">3</button>
+      <button class="rv-key" onclick="rvKey(4)">4</button><button class="rv-key" onclick="rvKey(5)">5</button><button class="rv-key" onclick="rvKey(6)">6</button>
+      <button class="rv-key" onclick="rvKey(7)">7</button><button class="rv-key" onclick="rvKey(8)">8</button><button class="rv-key" onclick="rvKey(9)">9</button>
+      <button class="rv-key" onclick="rvBack()">⌫</button><button class="rv-key" onclick="rvKey(0)">0</button><span class="rv-key empty"></span>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveRev()" data-i18n="rev.leave">나가기</button></div>
+  </div>
+  <div class="card" id="rev-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="rv-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="rv-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="rv-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="rev.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="rev.difficulty">난이도</span><span id="rv-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="rev.maxLevel">도달 자리수</span><span id="rv-r-level">0</span></div>
+    <div class="result-row"><span data-i18n="rev.best">최고 기록</span><span id="rv-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetRev()" data-i18n="rev.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('rev')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('rev')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== RHYTHM SCREEN (리듬 따라하기 / 청각) ==================== -->
+<div class="screen" id="screen-rhythm">
+  <div class="card" id="rhythm-intro-card">
+    <div class="section-head"><h2 data-i18n="rhythm.title">리듬 따라하기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rhythm.intro">
+      들려주는 <b>박자</b>를 잘 듣고, 같은 리듬으로 패드를 두드리세요.<br>
+      성공할 때마다 박자가 하나씩 길어집니다. 🔊 소리를 켜면 더 쉬워요!
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="rh-diff-easy" onclick="setRhythmDiff('easy')"><h3>🌱 <span data-i18n="rhythm.easy">쉬움</span></h3><p data-i18n="rhythm.easyDesc">2박부터·천천히</p></div>
+      <div class="diff-btn active" id="rh-diff-normal" onclick="setRhythmDiff('normal')"><h3>⚡ <span data-i18n="rhythm.normal">보통</span></h3><p data-i18n="rhythm.normalDesc">3박부터</p></div>
+      <div class="diff-btn" id="rh-diff-hard" onclick="setRhythmDiff('hard')"><h3>🔥 <span data-i18n="rhythm.hard">어려움</span></h3><p data-i18n="rhythm.hardDesc">3박부터·빠르게</p></div>
+    </div>
+    <button class="btn" onclick="startRhythm()" data-i18n="rhythm.startGame">게임 시작</button>
+    <div class="best-line" id="rh-intro-best"></div>
+  </div>
+  <div class="card" id="rhythm-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rhythm.score">SCORE</div><div class="mg-stat-value" id="rh-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rhythm.life">LIFE</div><div class="mg-stat-value" id="rh-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="rhythm.level">LEVEL</div><div class="mg-stat-value" id="rh-level">2</div></div>
+    </div>
+    <div class="gm-status" id="rh-status" data-i18n="rhythm.listen">잘 들어보세요…</div>
+    <button class="rh-pad" id="rh-pad" onclick="rhTap()"></button>
+    <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveRhythm()" data-i18n="rhythm.leave">나가기</button></div>
+  </div>
+  <div class="card" id="rhythm-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="rh-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="rh-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="rh-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="rhythm.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="rhythm.difficulty">난이도</span><span id="rh-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="rhythm.maxLevel">도달 박자 수</span><span id="rh-r-level">0</span></div>
+    <div class="result-row"><span data-i18n="rhythm.best">최고 기록</span><span id="rh-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetRhythm()" data-i18n="rhythm.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('rhythm')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('rhythm')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== CATCH SCREEN (마시멜로 받기 / 협응) ==================== -->
+<div class="screen" id="screen-catch">
+  <div class="card" id="catch-intro-card">
+    <div class="section-head"><h2 data-i18n="catch.title">마시멜로 받기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="catch.intro">
+      떨어지는 <b>마시멜로 🍡</b>를 바구니로 받으세요. <b>포크 🍴</b>는 피해야 해요!<br>
+      60초 동안 최대한 많이 받으세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="ca-diff-easy" onclick="setCatchDiff('easy')"><h3>🌱 <span data-i18n="catch.easy">쉬움</span></h3><p data-i18n="catch.easyDesc">천천히</p></div>
+      <div class="diff-btn active" id="ca-diff-normal" onclick="setCatchDiff('normal')"><h3>⚡ <span data-i18n="catch.normal">보통</span></h3><p data-i18n="catch.normalDesc">기본</p></div>
+      <div class="diff-btn" id="ca-diff-hard" onclick="setCatchDiff('hard')"><h3>🔥 <span data-i18n="catch.hard">어려움</span></h3><p data-i18n="catch.hardDesc">빠르게</p></div>
+    </div>
+    <button class="btn" onclick="startCatch()" data-i18n="catch.startGame">게임 시작</button>
+    <div class="best-line" id="ca-intro-best"></div>
+  </div>
+  <div class="card" id="catch-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="catch.score">SCORE</div><div class="mg-stat-value" id="ca-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="catch.combo">COMBO</div><div class="mg-stat-value" id="ca-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="ca-timer">01:00</div></div>
+    <div class="ca-area" id="ca-area"></div>
+    <div class="ca-btns"><button class="ca-btn" onclick="caMove(-1)">◀</button><button class="ca-btn" onclick="caMove(1)">▶</button></div>
+    <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveCatch()" data-i18n="catch.leave">나가기</button></div>
+  </div>
+  <div class="card" id="catch-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="ca-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="ca-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="ca-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="catch.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="catch.difficulty">난이도</span><span id="ca-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="catch.maxCombo">최고 콤보</span><span id="ca-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="catch.best">최고 기록</span><span id="ca-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetCatch()" data-i18n="catch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('catch')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('catch')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== FIT SCREEN (블록 채우기 / 공간) ==================== -->
+<div class="screen" id="screen-fit">
+  <div class="card" id="fit-intro-card">
+    <div class="section-head"><h2 data-i18n="fit.title">블록 채우기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="fit.intro">
+      조각을 골라 판에 놓으세요. <b>가로·세로 줄을 꽉 채우면</b> 사라집니다!<br>
+      더 놓을 곳이 없으면 게임 종료. 얼마나 오래 버틸까요?
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="ft-diff-easy" onclick="setFitDiff('easy')"><h3>🌱 <span data-i18n="fit.easy">쉬움</span></h3><p data-i18n="fit.easyDesc">6×6</p></div>
+      <div class="diff-btn active" id="ft-diff-normal" onclick="setFitDiff('normal')"><h3>⚡ <span data-i18n="fit.normal">보통</span></h3><p data-i18n="fit.normalDesc">8×8</p></div>
+      <div class="diff-btn" id="ft-diff-hard" onclick="setFitDiff('hard')"><h3>🔥 <span data-i18n="fit.hard">어려움</span></h3><p data-i18n="fit.hardDesc">10×10</p></div>
+    </div>
+    <button class="btn" onclick="startFit()" data-i18n="fit.startGame">게임 시작</button>
+    <div class="best-line" id="ft-intro-best"></div>
+  </div>
+  <div class="card" id="fit-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="fit.score">SCORE</div><div class="mg-stat-value" id="ft-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="fit.best">BEST</div><div class="mg-stat-value" id="ft-bestv">0</div></div>
+    </div>
+    <div class="gm-status" data-i18n="fit.guide">조각을 고른 뒤 놓을 칸을 누르세요</div>
+    <div class="ft-board" id="ft-board"></div>
+    <div class="ft-tray" id="ft-tray"></div>
+    <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveFit()" data-i18n="fit.leave">나가기</button></div>
+  </div>
+  <div class="card" id="fit-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="ft-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="ft-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="ft-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="fit.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="fit.difficulty">난이도</span><span id="ft-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="fit.best">최고 기록</span><span id="ft-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFit()" data-i18n="fit.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('fit')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('fit')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== NONO SCREEN (픽셀 로직 / 논리) ==================== -->
+<div class="screen" id="screen-nono">
+  <div class="card" id="nono-intro-card">
+    <div class="section-head"><h2 data-i18n="nono.title">픽셀 로직</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="nono.intro">
+      가장자리 <b>숫자 힌트</b>로 어떤 칸을 칠할지 추리하세요. 줄마다 연속으로 칠할 칸 수입니다.<br>
+      찍지 않고 <b>논리</b>로만 풀 수 있게 만들어집니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="no-diff-easy" onclick="setNonoDiff('easy')"><h3>🌱 <span data-i18n="nono.easy">쉬움</span></h3><p data-i18n="nono.easyDesc">5×5</p></div>
+      <div class="diff-btn active" id="no-diff-normal" onclick="setNonoDiff('normal')"><h3>⚡ <span data-i18n="nono.normal">보통</span></h3><p data-i18n="nono.normalDesc">8×8</p></div>
+      <div class="diff-btn" id="no-diff-hard" onclick="setNonoDiff('hard')"><h3>🔥 <span data-i18n="nono.hard">어려움</span></h3><p data-i18n="nono.hardDesc">10×10</p></div>
+    </div>
+    <button class="btn" onclick="startNono()" data-i18n="nono.startGame">게임 시작</button>
+    <div class="best-line" id="no-intro-best"></div>
+  </div>
+  <div class="card" id="nono-game-card" style="display:none">
+    <div style="text-align:center;margin-bottom:.4rem"><div class="mg-timer" id="no-timer">00:00</div></div>
+    <div class="no-tools">
+      <button class="btn btn-outline" id="no-mode-btn" onclick="noToggleMark()" style="padding:.5rem .9rem">🖌️ <span data-i18n="nono.fillMode">칠하기</span></button>
+    </div>
+    <div class="no-wrap"><div class="no-grid" id="no-grid"></div></div>
+    <div class="gm-status" data-i18n="nono.guide">힌트를 보고 칸을 칠하세요</div>
+    <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveNono()" data-i18n="nono.leave">나가기</button></div>
+  </div>
+  <div class="card" id="nono-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="no-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="no-result-title">완성!</h2>
+    <div class="iq-result-score" id="no-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="nono.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="nono.difficulty">난이도</span><span id="no-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="nono.timeUsed">걸린 시간</span><span id="no-r-time">0</span></div>
+    <div class="result-row"><span data-i18n="nono.best">최고 기록</span><span id="no-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetNono()" data-i18n="nono.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('nono')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('nono')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== ANAGRAM SCREEN (글자 맞추기 / 언어) ==================== -->
+<div class="screen" id="screen-anagram">
+  <div class="card" id="anagram-intro-card">
+    <div class="section-head"><h2 data-i18n="anagram.title">글자 맞추기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="anagram.intro">
+      뒤섞인 글자를 <b>올바른 순서</b>로 배열해 단어를 완성하세요!<br>
+      60초 동안 최대한 많은 단어를 맞혀보세요. 막히면 힌트를 쓰세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="ag-diff-easy" onclick="setAnagramDiff('easy')"><h3>🌱 <span data-i18n="anagram.easy">쉬움</span></h3><p data-i18n="anagram.easyDesc">짧은 단어</p></div>
+      <div class="diff-btn active" id="ag-diff-normal" onclick="setAnagramDiff('normal')"><h3>⚡ <span data-i18n="anagram.normal">보통</span></h3><p data-i18n="anagram.normalDesc">기본</p></div>
+      <div class="diff-btn" id="ag-diff-hard" onclick="setAnagramDiff('hard')"><h3>🔥 <span data-i18n="anagram.hard">어려움</span></h3><p data-i18n="anagram.hardDesc">긴 단어</p></div>
+    </div>
+    <button class="btn" onclick="startAnagram()" data-i18n="anagram.startGame">게임 시작</button>
+    <div class="best-line" id="ag-intro-best"></div>
+  </div>
+  <div class="card" id="anagram-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="anagram.score">SCORE</div><div class="mg-stat-value" id="ag-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="anagram.combo">COMBO</div><div class="mg-stat-value" id="ag-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="ag-timer">01:00</div></div>
+    <div class="ag-slots" id="ag-slots"></div>
+    <div class="ag-tiles" id="ag-tiles"></div>
+    <div style="display:flex;justify-content:center;gap:.5rem;margin-top:1.1rem">
+      <button class="btn btn-outline" id="ag-hint-btn" onclick="agHint()">💡 <span data-i18n="anagram.hint">힌트</span> (<span id="ag-hint-n">3</span>)</button>
+      <button class="btn btn-outline" onclick="leaveAnagram()" data-i18n="anagram.leave">나가기</button>
+    </div>
+  </div>
+  <div class="card" id="anagram-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="ag-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="ag-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="ag-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="anagram.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="anagram.difficulty">난이도</span><span id="ag-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="anagram.maxCombo">최고 콤보</span><span id="ag-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="anagram.best">최고 기록</span><span id="ag-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetAnagram()" data-i18n="anagram.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('anagram')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('anagram')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -2103,6 +2476,101 @@ const I18N = {
   "odd.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "odd.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"},
   "odd.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.flank": {ko:"화살표 집중", en:"Arrow Focus", th:"ลูกศรโฟกัส"},
+  "flank.title": {ko:"화살표 집중", en:"Arrow Focus", th:"ลูกศรโฟกัส"},
+  "flank.intro": {ko:"<b>가운데 화살표</b>가 가리키는 방향을 누르세요. 양옆 화살표는 함정이니 무시!<br>60초 동안 최대한 많이 맞히세요.", en:"Tap the direction of the <b>center arrow</b>. Ignore the flankers — they're traps!<br>Score as much as you can in 60 seconds.", th:"แตะทิศของ<b>ลูกศรตรงกลาง</b> อย่าสนใจลูกศรข้างๆ มันคือกับดัก!<br>ทำคะแนนให้มากที่สุดใน 60 วินาที"},
+  "flank.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "flank.easyDesc": {ko:"함정 적음", en:"Few traps", th:"กับดักน้อย"},
+  "flank.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "flank.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "flank.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "flank.hardDesc": {ko:"함정 많음", en:"Many traps", th:"กับดักเยอะ"},
+  "flank.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "flank.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "flank.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "flank.guide": {ko:"가운데 화살표 방향을 누르세요", en:"Tap the center arrow's direction", th:"แตะทิศของลูกศรตรงกลาง"},
+  "flank.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "flank.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "flank.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "flank.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "flank.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "flank.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "flank.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "flank.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.guess": {ko:"어림 계산", en:"Estimation", th:"ประมาณค่า"},
+  "guess.title": {ko:"어림 계산", en:"Estimation", th:"ประมาณค่า"},
+  "guess.intro": {ko:"정확히 계산하지 말고 <b>가장 가까운 어림값</b>을 빠르게 고르세요.<br>60초 안에 수 감각을 최대한 발휘해보세요!", en:"Don't calculate exactly — quickly pick the <b>closest estimate</b>.<br>Sharpen your number sense in 60 seconds!", th:"ไม่ต้องคำนวณเป๊ะ เลือก<b>ค่าที่ใกล้ที่สุด</b>ให้ไว<br>ฝึกสัมผัสตัวเลขใน 60 วินาที!"},
+  "guess.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "guess.easyDesc": {ko:"두 자리", en:"2-digit", th:"เลข 2 หลัก"},
+  "guess.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "guess.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "guess.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "guess.hardDesc": {ko:"세 자리", en:"3-digit", th:"เลข 3 หลัก"},
+  "guess.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "guess.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "guess.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "guess.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "guess.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "guess.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "guess.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "guess.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "guess.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "guess.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "guess.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.rev": {ko:"거꾸로 기억", en:"Reverse Recall", th:"จำย้อนกลับ"},
+  "rev.title": {ko:"거꾸로 기억", en:"Reverse Recall", th:"จำย้อนกลับ"},
+  "rev.intro": {ko:"숫자가 하나씩 나타납니다. 다 본 뒤 <b>거꾸로 순서</b>로 입력하세요!<br>성공할 때마다 한 자리씩 길어집니다.", en:"Digits appear one by one. Then type them in <b>reverse order</b>!<br>Each success adds one more digit.", th:"ตัวเลขจะโผล่ทีละตัว จากนั้นพิมพ์<b>ย้อนกลับ</b>!<br>สำเร็จแต่ละครั้งจะยาวขึ้นทีละหลัก"},
+  "rev.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "rev.easyDesc": {ko:"3자리·천천히", en:"3 digits · slow", th:"3 หลัก · ช้า"},
+  "rev.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "rev.normalDesc": {ko:"4자리", en:"4 digits", th:"4 หลัก"},
+  "rev.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "rev.hardDesc": {ko:"4자리·빠르게", en:"4 digits · fast", th:"4 หลัก · เร็ว"},
+  "rev.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "rev.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "rev.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"}, "rev.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "rev.watch": {ko:"잘 기억하세요…", en:"Memorize…", th:"จำให้ดี…"}, "rev.input": {ko:"거꾸로 입력하세요!", en:"Type in reverse!", th:"พิมพ์ย้อนกลับ!"},
+  "rev.good": {ko:"정확해요!", en:"Correct!", th:"ถูกต้อง!"}, "rev.miss": {ko:"아쉬워요!", en:"Missed!", th:"พลาด!"},
+  "rev.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "rev.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "rev.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "rev.maxLevel": {ko:"도달 자리수", en:"Max digits", th:"หลักสูงสุด"}, "rev.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "rev.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "rev.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "rev.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.rhythm": {ko:"리듬 따라하기", en:"Rhythm Tap", th:"เคาะจังหวะ"},
+  "rhythm.title": {ko:"리듬 따라하기", en:"Rhythm Tap", th:"เคาะจังหวะ"},
+  "rhythm.intro": {ko:"들려주는 <b>박자</b>를 잘 듣고, 같은 리듬으로 패드를 두드리세요.<br>성공할 때마다 박자가 하나씩 길어집니다. 🔊 소리를 켜면 더 쉬워요!", en:"Listen to the <b>beat</b>, then tap the pad in the same rhythm.<br>Each success adds one beat. 🔊 Sound on makes it easier!", th:"ฟัง<b>จังหวะ</b>แล้วเคาะแป้นให้เหมือนเดิม<br>สำเร็จแต่ละครั้งจะยาวขึ้นหนึ่งจังหวะ 🔊 เปิดเสียงจะง่ายขึ้น!"},
+  "rhythm.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "rhythm.easyDesc": {ko:"2박부터·천천히", en:"From 2 · slow", th:"เริ่ม 2 · ช้า"},
+  "rhythm.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "rhythm.normalDesc": {ko:"3박부터", en:"From 3", th:"เริ่ม 3"},
+  "rhythm.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "rhythm.hardDesc": {ko:"3박부터·빠르게", en:"From 3 · fast", th:"เริ่ม 3 · เร็ว"},
+  "rhythm.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "rhythm.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "rhythm.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"}, "rhythm.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "rhythm.listen": {ko:"잘 들어보세요…", en:"Listen…", th:"ฟังให้ดี…"}, "rhythm.repeat": {ko:"따라 두드리세요!", en:"Tap it back!", th:"เคาะตาม!"},
+  "rhythm.good": {ko:"좋아요!", en:"Nice!", th:"เยี่ยม!"}, "rhythm.miss": {ko:"아쉬워요!", en:"Missed!", th:"พลาด!"},
+  "rhythm.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "rhythm.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "rhythm.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "rhythm.maxLevel": {ko:"도달 박자 수", en:"Max beats", th:"จังหวะสูงสุด"}, "rhythm.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "rhythm.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "rhythm.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "rhythm.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.catch": {ko:"마시멜로 받기", en:"Catch Mallow", th:"รับมาร์ชเมลโล่"},
+  "catch.title": {ko:"마시멜로 받기", en:"Catch Mallow", th:"รับมาร์ชเมลโล่"},
+  "catch.intro": {ko:"떨어지는 <b>마시멜로 🍡</b>를 바구니로 받으세요. <b>포크 🍴</b>는 피해야 해요!<br>60초 동안 최대한 많이 받으세요.", en:"Catch the falling <b>marshmallows 🍡</b> with your basket. Dodge the <b>forks 🍴</b>!<br>Catch as many as you can in 60 seconds.", th:"รับ<b>มาร์ชเมลโล่ 🍡</b>ที่ตกลงมาด้วยตะกร้า หลบ<b>ส้อม 🍴</b>ให้ได้!<br>รับให้มากที่สุดใน 60 วินาที"},
+  "catch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "catch.easyDesc": {ko:"천천히", en:"Slow", th:"ช้า"},
+  "catch.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "catch.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "catch.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "catch.hardDesc": {ko:"빠르게", en:"Fast", th:"เร็ว"},
+  "catch.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "catch.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "catch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "catch.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "catch.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "catch.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "catch.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "catch.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "catch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "catch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "catch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.fit": {ko:"블록 채우기", en:"Block Fit", th:"ต่อบล็อก"},
+  "fit.title": {ko:"블록 채우기", en:"Block Fit", th:"ต่อบล็อก"},
+  "fit.intro": {ko:"조각을 골라 판에 놓으세요. <b>가로·세로 줄을 꽉 채우면</b> 사라집니다!<br>더 놓을 곳이 없으면 게임 종료. 얼마나 오래 버틸까요?", en:"Pick a piece and place it on the board. <b>Fill a full row or column</b> to clear it!<br>Game over when nothing fits. How long can you last?", th:"เลือกชิ้นแล้ววางบนกระดาน <b>เติมแถวหรือคอลัมน์ให้เต็ม</b>เพื่อล้าง!<br>จบเกมเมื่อวางไม่ได้ จะอยู่ได้นานแค่ไหน?"},
+  "fit.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "fit.easyDesc": {ko:"6×6", en:"6×6", th:"6×6"},
+  "fit.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "fit.normalDesc": {ko:"8×8", en:"8×8", th:"8×8"},
+  "fit.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "fit.hardDesc": {ko:"10×10", en:"10×10", th:"10×10"},
+  "fit.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "fit.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "fit.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "fit.guide": {ko:"조각을 고른 뒤 놓을 칸을 누르세요", en:"Pick a piece, then tap a cell to place", th:"เลือกชิ้นแล้วแตะช่องเพื่อวาง"},
+  "fit.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "fit.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "fit.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
+  "fit.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "fit.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "fit.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.nono": {ko:"픽셀 로직", en:"Pixel Logic", th:"พิกเซลลอจิก"},
+  "nono.title": {ko:"픽셀 로직", en:"Pixel Logic", th:"พิกเซลลอจิก"},
+  "nono.intro": {ko:"가장자리 <b>숫자 힌트</b>로 어떤 칸을 칠할지 추리하세요. 줄마다 연속으로 칠할 칸 수입니다.<br>찍지 않고 <b>논리</b>로만 풀 수 있게 만들어집니다.", en:"Use the <b>number clues</b> on the edges to deduce which cells to fill — each is a run of filled cells.<br>Every puzzle is solvable by <b>pure logic</b>, no guessing.", th:"ใช้<b>เลขใบ้</b>ที่ขอบเพื่อหาช่องที่ต้องระบาย แต่ละเลขคือจำนวนช่องต่อเนื่อง<br>ทุกด่านแก้ได้ด้วย<b>ตรรกะ</b>ล้วนๆ ไม่ต้องเดา"},
+  "nono.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "nono.easyDesc": {ko:"5×5", en:"5×5", th:"5×5"},
+  "nono.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "nono.normalDesc": {ko:"8×8", en:"8×8", th:"8×8"},
+  "nono.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "nono.hardDesc": {ko:"10×10", en:"10×10", th:"10×10"},
+  "nono.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "nono.fillMode": {ko:"칠하기", en:"Fill", th:"ระบาย"}, "nono.markMode": {ko:"X 표시", en:"Mark X", th:"กากบาท"},
+  "nono.guide": {ko:"힌트를 보고 칸을 칠하세요", en:"Read the clues and fill the cells", th:"อ่านใบ้แล้วระบายช่อง"},
+  "nono.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "nono.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "nono.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "nono.timeUsed": {ko:"걸린 시간", en:"Time", th:"เวลา"}, "nono.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "nono.complete": {ko:"완성!", en:"Complete!", th:"สำเร็จ!"}, "nono.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "nono.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.anagram": {ko:"글자 맞추기", en:"Word Scramble", th:"เรียงอักษร"},
+  "anagram.title": {ko:"글자 맞추기", en:"Word Scramble", th:"เรียงอักษร"},
+  "anagram.intro": {ko:"뒤섞인 글자를 <b>올바른 순서</b>로 배열해 단어를 완성하세요!<br>60초 동안 최대한 많은 단어를 맞혀보세요. 막히면 힌트를 쓰세요.", en:"Arrange the scrambled letters in the <b>right order</b> to spell the word!<br>Solve as many as you can in 60 seconds. Stuck? Use a hint.", th:"เรียงอักษรที่สลับให้<b>ถูกลำดับ</b>เป็นคำ!<br>ทำให้ได้มากที่สุดใน 60 วินาที ติดขัดก็ใช้คำใบ้"},
+  "anagram.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "anagram.easyDesc": {ko:"짧은 단어", en:"Short words", th:"คำสั้น"},
+  "anagram.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "anagram.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "anagram.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "anagram.hardDesc": {ko:"긴 단어", en:"Long words", th:"คำยาว"},
+  "anagram.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "anagram.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "anagram.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"}, "anagram.hint": {ko:"힌트", en:"Hint", th:"ใบ้"},
+  "anagram.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "anagram.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "anagram.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "anagram.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "anagram.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "anagram.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "anagram.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.slide": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.title": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.intro": {ko:"빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>빠르게, 적은 이동으로 완성할수록 점수가 높아집니다. 판은 항상 풀 수 있게 섞여요!", en:"Slide tiles into the empty space to <b>arrange numbers in order</b>.<br>Finish faster with fewer moves for a higher score. Boards are always solvable!", th:"เลื่อนกระเบื้องเข้าช่องว่างเพื่อ<b>เรียงตัวเลขตามลำดับ</b><br>ยิ่งเร็วและเลื่อนน้อย คะแนนยิ่งสูง กระดานสับแบบแก้ได้เสมอ!"},
@@ -2906,7 +3374,7 @@ function sfx(kind){
 }
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -5051,6 +5519,14 @@ function gameShare(game){
   else if(game==='bubble')o={emoji:'🫧', title:t('bubble.title'), from:'#5aa7f0', to:'#a06ef8', lines:[t('bubble.score')+'  '+BB.score, t('bubble.rounds')+'  '+BB.rounds]};
   else if(game==='spot')  o={emoji:'🌈', title:t('spot.title'),   from:'#f06292', to:'#7e57f0', lines:[t('spot.score')+'  '+SP.score, t('spot.reachedLevel')+'  '+SP.level]};
   else if(game==='odd')   o={emoji:'🔎', title:t('odd.title'),    from:'#4f7cff', to:'#7e57f0', lines:[t('odd.score')+'  '+OD.score, t('odd.reachedLevel')+'  '+OD.level]};
+  else if(game==='flank') o={emoji:'🎯', title:t('flank.title'),  from:'#4f7cff', to:'#21a67a', lines:[t('flank.score')+'  '+FK.score, t('flank.maxCombo')+'  '+FK.maxCombo]};
+  else if(game==='guess') o={emoji:'📊', title:t('guess.title'),  from:'#5aa7f0', to:'#a06ef8', lines:[t('guess.score')+'  '+GU.score, t('guess.maxCombo')+'  '+GU.maxCombo]};
+  else if(game==='rev')   o={emoji:'🔁', title:t('rev.title'),    from:'#7b6ff8', to:'#4f7cff', lines:[t('rev.score')+'  '+RV.score, t('rev.maxLevel')+'  '+RV.maxLen]};
+  else if(game==='rhythm')o={emoji:'🥁', title:t('rhythm.title'), from:'#7e57f0', to:'#f06292', lines:[t('rhythm.score')+'  '+RH.score, t('rhythm.maxLevel')+'  '+RH.maxLen]};
+  else if(game==='catch') o={emoji:'🧺', title:t('catch.title'),  from:'#f0b429', to:'#f06292', lines:[t('catch.score')+'  '+CA.score, t('catch.maxCombo')+'  '+CA.maxCombo]};
+  else if(game==='fit')   o={emoji:'🧱', title:t('fit.title'),    from:'#21a67a', to:'#4f7cff', lines:[t('fit.finalScore')+'  '+FT.score, FT_DIFF_LABEL(FT.diff)]};
+  else if(game==='nono')  o={emoji:'🖼️', title:t('nono.title'),   from:'#4f7cff', to:'#182235', lines:[t('nono.finalScore')+'  '+(NO.score||0), NO_DIFF_LABEL(NO.diff)]};
+  else if(game==='anagram')o={emoji:'🔤',title:t('anagram.title'),from:'#a06ef8', to:'#5aa7f0', lines:[t('anagram.score')+'  '+AG.score, t('anagram.maxCombo')+'  '+AG.maxCombo]};
   else if(game==='slide') o={emoji:'🧊', title:t('slide.title'),  from:'#42a5f5', to:'#7e57f0', lines:[t('slide.finalScore')+'  '+SL.score, t('slide.movesUsed')+'  '+SL.moves]};
   else if(game==='merge') o={emoji:'🍭', title:t('merge.title'),  from:'#f48fb1', to:'#7e57f0', lines:[t('merge.score')+'  '+MR.score, t('merge.maxTile')+'  '+MR.maxTile]};
   else if(game==='chop')  o={emoji:'🍡', title:t('chop.title'),   from:'#ff8a80', to:'#f06292', lines:[t('chop.score')+'  '+CP.score, CP_DIFF_LABEL(CP.diff)]};
@@ -5946,8 +6422,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','odd','slide','merge','chop','sort'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,odd:OD,slide:SL,merge:MR,chop:CP,sort:SO}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','odd','slide','merge','chop','sort','flank','guess','rev','rhythm','catch','fit','nono','anagram'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,odd:OD,slide:SL,merge:MR,chop:CP,sort:SO,flank:FK,guess:GU,rev:RV,rhythm:RH,catch:CA,fit:FT,nono:NO,anagram:AG}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -6011,6 +6487,14 @@ const HOME_GAMES=[
   {id:'iq',     emoji:'🧠', key:'nav.iq',     grp:'cat.logic'},
   {id:'sudoku', emoji:'🔢', key:'nav.sudoku', grp:'cat.logic'},
   {id:'sort',   emoji:'🧪', key:'nav.sort',   best:'brain.sort.best',   grp:'cat.logic'},
+  {id:'flank',  emoji:'🎯', key:'nav.flank',  best:'brain.flank.best',  grp:'cat.focus'},
+  {id:'rev',    emoji:'🔁', key:'nav.rev',    best:'brain.rev.best',    grp:'cat.memory'},
+  {id:'rhythm', emoji:'🥁', key:'nav.rhythm', best:'brain.rhythm.best', grp:'cat.sound'},
+  {id:'catch',  emoji:'🧺', key:'nav.catch',  best:'brain.catch.best',  grp:'cat.coord'},
+  {id:'fit',    emoji:'🧱', key:'nav.fit',    best:'brain.fit.best',    grp:'cat.space'},
+  {id:'guess',  emoji:'📊', key:'nav.guess',  best:'brain.guess.best',  grp:'cat.calc'},
+  {id:'nono',   emoji:'🖼️', key:'nav.nono',   best:'brain.nono.best',   grp:'cat.logic'},
+  {id:'anagram',emoji:'🔤', key:'nav.anagram',best:'brain.anagram.best',grp:'cat.lang', langs:['ko','en']},
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
   // {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'cat.lang'},
   // {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
@@ -6032,9 +6516,9 @@ function homeVisit(){
   return v;
 }
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
-const MISSION_A=['flash','count','nback','cards','melody'];   // 기억·청각
-const MISSION_B=['stroop','trail','react','whack','spot','odd','chop'];          // 주의·속도·협응
-const MISSION_C=['switch','rotate','slide'];                 // 유연성·공간
+const MISSION_A=['flash','count','nback','cards','melody','rev','rhythm'];   // 기억·청각
+const MISSION_B=['stroop','trail','react','whack','spot','odd','chop','flank','catch'];          // 주의·속도·협응
+const MISSION_C=['switch','rotate','slide','fit'];                 // 유연성·공간
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
   return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
@@ -6103,7 +6587,7 @@ function renderHome(){
     }
   }
   // 게임 모음: 카테고리 칩
-  const cats=[]; HOME_GAMES.forEach(g=>{ if(g.koOnly&&CURRENT_LANG!=='ko') return; if(!cats.includes(g.grp)) cats.push(g.grp); });
+  const cats=[]; HOME_GAMES.forEach(g=>{ if(g.koOnly&&CURRENT_LANG!=='ko') return; if(g.langs&&!g.langs.includes(CURRENT_LANG)) return; if(!cats.includes(g.grp)) cats.push(g.grp); });
   const catWrap=document.getElementById('home-cats');
   if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>showScreen('games'); catWrap.appendChild(b); }); }
   // 랜딩 내부링크 푸터는 ko에서만
@@ -6117,7 +6601,7 @@ function renderGames(){
   const body=document.getElementById('games-body'); if(!body) return;
   body.innerHTML='';
   let curGrp=null, grid=null;
-  HOME_GAMES.filter(g=>!g.koOnly||CURRENT_LANG==='ko').forEach(g=>{
+  HOME_GAMES.filter(g=>(!g.koOnly||CURRENT_LANG==='ko')&&(!g.langs||g.langs.includes(CURRENT_LANG))).forEach(g=>{
     if(g.grp!==curGrp){
       curGrp=g.grp;
       const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(g.grp);
@@ -6142,10 +6626,11 @@ const ABILITY_MAP={
   stroop:{focus:60,speed:30,lang:10}, switch:{focus:50,logic:30,speed:20}, trail:{speed:60,focus:25,space:15}, react:{speed:80,focus:20},
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
-  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, odd:{focus:40,space:30,speed:30}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}, chop:{speed:70,focus:30}, sort:{logic:60,space:20,focus:20}
+  whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, odd:{focus:40,space:30,speed:30}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}, chop:{speed:70,focus:30}, sort:{logic:60,space:20,focus:20},
+  flank:{focus:60,speed:30,logic:10}, guess:{calc:70,speed:20,focus:10}, rev:{memory:70,focus:30}, rhythm:{memory:50,focus:30,speed:20}, catch:{speed:50,focus:30,space:20}, fit:{space:60,logic:25,focus:15}, nono:{logic:60,focus:25,space:15}, anagram:{lang:70,memory:20,focus:10}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:6000,chop:130,sort:650};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:6000,chop:130,sort:650,flank:650,guess:600,rev:130,rhythm:130,catch:450,fit:800,nono:1300,anagram:350};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
@@ -6957,6 +7442,299 @@ function resetMelody(){
   document.getElementById('melody-intro-card').style.display='block';
   mlUpdateBestLine();
 }
+
+// ========== 화살표 집중 / 플랭커 (집중) ==========
+const FK_CFG={ easy:{incong:0.4}, normal:{incong:0.62}, hard:{incong:0.82} };
+const FK_TIME=60;
+const FK={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:FK_TIME, timer:null, running:false, lock:false, cur:0, best:bt_loadBest('brain.flank.best') };
+function FK_DIFF_LABEL(d){ return d==='easy'?t('flank.easy'):d==='hard'?t('flank.hard'):t('flank.normal'); }
+function fkUpdateBestLine(){ const el=document.getElementById('fk-intro-best'); if(el) el.textContent=bt_bestLineText(FK.best,FK.diff); }
+function setFlankDiff(d){ FK.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('fk-diff-'+k).classList.toggle('active',k===d)); fkUpdateBestLine(); }
+function fkStats(){ document.getElementById('fk-score').textContent=FK.score; document.getElementById('fk-combo').textContent=FK.combo; }
+function fkTimer(){ const el=document.getElementById('fk-timer'); const m=Math.floor(FK.timeLeft/60),s=FK.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=FK.timeLeft<=10?'var(--red)':''; }
+function fkRound(){ const cfg=FK_CFG[FK.diff]; FK.cur=Math.random()<0.5?-1:1; const fl=(Math.random()<cfg.incong)?-FK.cur:FK.cur; const A=v=>v<0?'◀':'▶';
+  document.getElementById('fk-row').innerHTML=A(fl)+A(fl)+' <b>'+A(FK.cur)+'</b> '+A(fl)+A(fl); FK.lock=false; }
+function fkAns(dir){ if(!FK.running||FK.lock) return;
+  if(dir===FK.cur){ FK.lock=true; FK.combo++; FK.maxCombo=Math.max(FK.maxCombo,FK.combo); FK.score+=10+(FK.combo-1)*2; sfx('good'); fkStats(); fkRound(); }
+  else{ FK.combo=0; sfx('bad'); FK.timeLeft=Math.max(0,FK.timeLeft-2); fkTimer(); fkStats(); if(FK.timeLeft<=0) finishFlank(); } }
+function startFlank(){ FK.score=0;FK.combo=0;FK.maxCombo=0;FK.timeLeft=FK_TIME;FK.running=true;
+  document.getElementById('flank-intro-card').style.display='none'; document.getElementById('flank-result-card').style.display='none'; document.getElementById('flank-game-card').style.display='block';
+  fkStats(); fkTimer(); fkRound(); clearInterval(FK.timer); FK.timer=setInterval(()=>{ FK.timeLeft--; fkTimer(); if(FK.timeLeft<=0) finishFlank(); },1000); }
+function finishFlank(){ clearInterval(FK.timer); FK.running=false;
+  const nr=bt_recordScore(FK.best,FK.diff,FK.score); bt_saveBest('brain.flank.best',FK.best); missionMark('flank');
+  document.getElementById('flank-game-card').style.display='none'; document.getElementById('flank-result-card').style.display='block';
+  document.getElementById('fk-result-emoji').textContent=nr?'🏆':'🎯'; document.getElementById('fk-result-title').textContent=nr?t('flank.newRecord'):t('flank.timeOver');
+  document.getElementById('fk-result-score').textContent=FK.score; document.getElementById('fk-r-diff').textContent=FK_DIFF_LABEL(FK.diff);
+  document.getElementById('fk-r-combo').textContent=FK.maxCombo; document.getElementById('fk-r-best').textContent=FK.best[FK.diff].all; fkUpdateBestLine(); }
+function leaveFlank(){ resetFlank(); showScreen('games'); }
+function resetFlank(){ clearInterval(FK.timer); FK.running=false; const g=document.getElementById('flank-game-card');if(g)g.style.display='none'; const r=document.getElementById('flank-result-card');if(r)r.style.display='none'; const i=document.getElementById('flank-intro-card');if(i)i.style.display='block'; fkUpdateBestLine(); }
+
+// ========== 어림 계산 (계산) ==========
+const GU_CFG={ easy:{mx:30}, normal:{mx:90}, hard:{mx:400} };
+const GU_TIME=60;
+const GU={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:GU_TIME, timer:null, running:false, lock:false, correct:0, best:bt_loadBest('brain.guess.best') };
+function GU_DIFF_LABEL(d){ return d==='easy'?t('guess.easy'):d==='hard'?t('guess.hard'):t('guess.normal'); }
+function guUpdateBestLine(){ const el=document.getElementById('gu-intro-best'); if(el) el.textContent=bt_bestLineText(GU.best,GU.diff); }
+function setGuessDiff(d){ GU.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('gu-diff-'+k).classList.toggle('active',k===d)); guUpdateBestLine(); }
+function guStats(){ document.getElementById('gu-score').textContent=GU.score; document.getElementById('gu-combo').textContent=GU.combo; }
+function guTimer(){ const el=document.getElementById('gu-timer'); const m=Math.floor(GU.timeLeft/60),s=GU.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=GU.timeLeft<=10?'var(--red)':''; }
+function guGen(mx){ const ops=['+','-','×'];
+  for(let tr=0;tr<60;tr++){ const op=ops[Math.floor(Math.random()*ops.length)]; let a=2+Math.floor(Math.random()*mx), b=2+Math.floor(Math.random()*mx); let T;
+    if(op==='+')T=a+b; else if(op==='-'){ if(a<b){const w=a;a=b;b=w;} T=a-b; } else T=a*b;
+    if(T<10) continue; const digits=String(Math.round(T)).length, unit=Math.pow(10,digits-1); const correct=Math.round(T/unit)*unit;
+    if(Math.abs(T-correct)>=unit*0.42) continue; const choices=[correct,correct-unit,correct+unit].filter(v=>v>0); if(new Set(choices).size<3) continue;
+    const dists=choices.map(v=>Math.abs(T-v)), mn=Math.min.apply(null,dists); if(dists.filter(x=>x===mn).length!==1) continue; if(choices[dists.indexOf(mn)]!==correct) continue;
+    return {a,b,op,correct,choices}; }
+  return {a:8,b:8,op:'×',correct:60,choices:[60,50,70]}; }
+function guRound(){ const g=guGen(GU_CFG[GU.diff].mx); GU.correct=g.correct;
+  document.getElementById('gu-q').textContent=g.a+' '+g.op+' '+g.b+' ≈ ?';
+  const box=document.getElementById('gu-choices'); box.innerHTML=''; const order=g.choices.slice().sort(()=>Math.random()-0.5);
+  order.forEach(v=>{ const b=document.createElement('button'); b.className='gu-choice'; b.textContent=v; b.onclick=()=>guAns(v,b); box.appendChild(b); }); GU.lock=false; }
+function guAns(v,el){ if(!GU.running||GU.lock) return;
+  if(v===GU.correct){ GU.lock=true; GU.combo++; GU.maxCombo=Math.max(GU.maxCombo,GU.combo); GU.score+=10+(GU.combo-1)*2; sfx('good'); guStats(); setTimeout(guRound,140); }
+  else{ GU.combo=0; sfx('bad'); GU.timeLeft=Math.max(0,GU.timeLeft-2); guTimer(); guStats(); el.classList.add('no'); setTimeout(()=>el.classList.remove('no'),300); if(GU.timeLeft<=0) finishGuess(); } }
+function startGuess(){ GU.score=0;GU.combo=0;GU.maxCombo=0;GU.timeLeft=GU_TIME;GU.running=true;
+  document.getElementById('guess-intro-card').style.display='none'; document.getElementById('guess-result-card').style.display='none'; document.getElementById('guess-game-card').style.display='block';
+  guStats(); guTimer(); guRound(); clearInterval(GU.timer); GU.timer=setInterval(()=>{ GU.timeLeft--; guTimer(); if(GU.timeLeft<=0) finishGuess(); },1000); }
+function finishGuess(){ clearInterval(GU.timer); GU.running=false;
+  const nr=bt_recordScore(GU.best,GU.diff,GU.score); bt_saveBest('brain.guess.best',GU.best); missionMark('guess');
+  document.getElementById('guess-game-card').style.display='none'; document.getElementById('guess-result-card').style.display='block';
+  document.getElementById('gu-result-emoji').textContent=nr?'🏆':'📊'; document.getElementById('gu-result-title').textContent=nr?t('guess.newRecord'):t('guess.timeOver');
+  document.getElementById('gu-result-score').textContent=GU.score; document.getElementById('gu-r-diff').textContent=GU_DIFF_LABEL(GU.diff);
+  document.getElementById('gu-r-combo').textContent=GU.maxCombo; document.getElementById('gu-r-best').textContent=GU.best[GU.diff].all; guUpdateBestLine(); }
+function leaveGuess(){ resetGuess(); showScreen('games'); }
+function resetGuess(){ clearInterval(GU.timer); GU.running=false; const g=document.getElementById('guess-game-card');if(g)g.style.display='none'; const r=document.getElementById('guess-result-card');if(r)r.style.display='none'; const i=document.getElementById('guess-intro-card');if(i)i.style.display='block'; guUpdateBestLine(); }
+
+// ========== 거꾸로 기억 (기억) ==========
+const RV_CFG={ easy:{start:3,speed:900}, normal:{start:4,speed:750}, hard:{start:4,speed:600} };
+const RV={ diff:'normal', len:3, seq:[], entry:[], score:0, lives:3, maxLen:0, phase:'idle', running:false, timers:[], best:bt_loadBest('brain.rev.best') };
+function RV_DIFF_LABEL(d){ return d==='easy'?t('rev.easy'):d==='hard'?t('rev.hard'):t('rev.normal'); }
+function rvUpdateBestLine(){ const el=document.getElementById('rv-intro-best'); if(el) el.textContent=bt_bestLineText(RV.best,RV.diff); }
+function setRevDiff(d){ RV.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('rv-diff-'+k).classList.toggle('active',k===d)); rvUpdateBestLine(); }
+function rvClear(){ RV.timers.forEach(clearTimeout); RV.timers=[]; }
+function rvStats(){ document.getElementById('rv-score').textContent=RV.score; document.getElementById('rv-level').textContent=RV.len; document.getElementById('rv-life').textContent='♥'.repeat(RV.lives)+'♡'.repeat(3-RV.lives); }
+function rvStatus(key,cls){ const el=document.getElementById('rv-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function startRev(){ RV.len=RV_CFG[RV.diff].start; RV.score=0; RV.lives=3; RV.maxLen=0; RV.running=true;
+  document.getElementById('rev-intro-card').style.display='none'; document.getElementById('rev-result-card').style.display='none'; document.getElementById('rev-game-card').style.display='block';
+  rvStats(); rvShow(); }
+function rvShow(){ rvClear(); RV.phase='show'; RV.seq=Array.from({length:RV.len},()=>Math.floor(Math.random()*10)); RV.entry=[];
+  document.getElementById('rv-entry').textContent=''; rvStatus('rev.watch'); rvStats(); const sp=RV_CFG[RV.diff].speed; const disp=document.getElementById('rv-display'); disp.textContent='';
+  RV.seq.forEach((d,i)=>{ RV.timers.push(setTimeout(()=>{ disp.textContent=d; RV.timers.push(setTimeout(()=>{ if(disp.textContent===String(d)) disp.textContent=''; }, sp*0.55)); }, 500+i*sp)); });
+  RV.timers.push(setTimeout(()=>{ RV.phase='input'; disp.textContent='?'; rvStatus('rev.input','turn'); }, 500+RV.seq.length*sp+150)); }
+function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
+function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
+function rvCheck(){ RV.phase='wait'; const target=RV.seq.slice().reverse(); const ok=RV.entry.every((v,i)=>v===target[i]);
+  if(ok){ RV.score+=RV.len*10; RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
+  else{ RV.lives--; sfx('bad'); rvStatus('rev.miss','bad'); rvStats(); if(RV.lives<=0) RV.timers.push(setTimeout(finishRev,900)); else RV.timers.push(setTimeout(rvShow,1100)); } }
+function finishRev(){ rvClear(); RV.running=false;
+  const nr=bt_recordScore(RV.best,RV.diff,RV.score); bt_saveBest('brain.rev.best',RV.best); missionMark('rev');
+  document.getElementById('rev-game-card').style.display='none'; document.getElementById('rev-result-card').style.display='block';
+  document.getElementById('rv-result-emoji').textContent=nr?'🏆':'🔁'; document.getElementById('rv-result-title').textContent=nr?t('rev.newRecord'):t('rev.gameOver');
+  document.getElementById('rv-result-score').textContent=RV.score; document.getElementById('rv-r-diff').textContent=RV_DIFF_LABEL(RV.diff);
+  document.getElementById('rv-r-level').textContent=RV.maxLen; document.getElementById('rv-r-best').textContent=RV.best[RV.diff].all; rvUpdateBestLine(); }
+function leaveRev(){ if(RV.running && !confirm(t('melody.confirmLeave'))) return; rvClear(); RV.running=false; resetRev(); }
+function resetRev(){ rvClear(); RV.running=false; document.getElementById('rev-result-card').style.display='none'; document.getElementById('rev-game-card').style.display='none'; document.getElementById('rev-intro-card').style.display='block'; rvUpdateBestLine(); }
+
+// ========== 리듬 따라하기 (청각) ==========
+const RH_CFG={ easy:{start:2,base:460}, normal:{start:3,base:400}, hard:{start:3,base:340} };
+const RH={ diff:'normal', len:2, pattern:[], taps:[], score:0, lives:3, maxLen:0, phase:'idle', running:false, timers:[], best:bt_loadBest('brain.rhythm.best') };
+function RH_DIFF_LABEL(d){ return d==='easy'?t('rhythm.easy'):d==='hard'?t('rhythm.hard'):t('rhythm.normal'); }
+function rhUpdateBestLine(){ const el=document.getElementById('rh-intro-best'); if(el) el.textContent=bt_bestLineText(RH.best,RH.diff); }
+function setRhythmDiff(d){ RH.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('rh-diff-'+k).classList.toggle('active',k===d)); rhUpdateBestLine(); }
+function rhClear(){ RH.timers.forEach(clearTimeout); RH.timers=[]; }
+function rhStats(){ document.getElementById('rh-score').textContent=RH.score; document.getElementById('rh-level').textContent=RH.len; document.getElementById('rh-life').textContent='♥'.repeat(RH.lives)+'♡'.repeat(3-RH.lives); }
+function rhStatus(key,cls){ const el=document.getElementById('rh-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function rhGenPattern(len){ let g; do{ g=Array.from({length:len-1},()=>Math.random()<0.5?1:2); }while(len>1 && !g.includes(1)); return g; }
+function rhFlash(){ const pad=document.getElementById('rh-pad'); if(!pad) return; pad.classList.add('lit'); if(sndOn()) _beep(392,0.12,'sine',0.16); RH.timers.push(setTimeout(()=>pad.classList.remove('lit'),140)); }
+function startRhythm(){ RH.len=RH_CFG[RH.diff].start; RH.score=0; RH.lives=3; RH.maxLen=0; RH.running=true;
+  document.getElementById('rhythm-intro-card').style.display='none'; document.getElementById('rhythm-result-card').style.display='none'; document.getElementById('rhythm-game-card').style.display='block';
+  rhStats(); rhPlay(); }
+function rhPlay(){ rhClear(); RH.phase='play'; RH.pattern=rhGenPattern(RH.len); RH.taps=[]; rhStatus('rhythm.listen'); rhStats();
+  const base=RH_CFG[RH.diff].base; const onsets=[0]; for(const g of RH.pattern) onsets.push(onsets[onsets.length-1]+g*base);
+  onsets.forEach(off=>{ RH.timers.push(setTimeout(rhFlash, 500+off)); });
+  RH.timers.push(setTimeout(()=>{ RH.phase='input'; rhStatus('rhythm.repeat','turn'); try{navigator.vibrate&&navigator.vibrate(40)}catch(_){} }, 500+onsets[onsets.length-1]+300)); }
+function rhTap(){ if(!RH.running||RH.phase!=='input') return; rhFlash(); RH.taps.push(performance.now()); if(RH.taps.length===RH.pattern.length+1) rhCheck(); }
+function rhCheck(){ RH.phase='wait'; const gaps=[]; for(let i=1;i<RH.taps.length;i++) gaps.push(RH.taps[i]-RH.taps[i-1]);
+  let ok; if(!gaps.length){ ok=true; } else { const mn=Math.min.apply(null,gaps); const cls=gaps.map(g=>g/mn<1.7?1:2); ok=cls.every((v,i)=>v===RH.pattern[i]); }
+  if(ok){ RH.score+=RH.len*10; RH.maxLen=Math.max(RH.maxLen,RH.len); RH.len++; sfx('good'); rhStatus('rhythm.good','good'); rhStats(); RH.timers.push(setTimeout(rhPlay,900)); }
+  else{ RH.lives--; sfx('bad'); rhStatus('rhythm.miss','bad'); rhStats(); if(RH.lives<=0) RH.timers.push(setTimeout(finishRhythm,900)); else RH.timers.push(setTimeout(rhPlay,1100)); } }
+function finishRhythm(){ rhClear(); RH.running=false;
+  const nr=bt_recordScore(RH.best,RH.diff,RH.score); bt_saveBest('brain.rhythm.best',RH.best); missionMark('rhythm');
+  document.getElementById('rhythm-game-card').style.display='none'; document.getElementById('rhythm-result-card').style.display='block';
+  document.getElementById('rh-result-emoji').textContent=nr?'🏆':'🥁'; document.getElementById('rh-result-title').textContent=nr?t('rhythm.newRecord'):t('rhythm.gameOver');
+  document.getElementById('rh-result-score').textContent=RH.score; document.getElementById('rh-r-diff').textContent=RH_DIFF_LABEL(RH.diff);
+  document.getElementById('rh-r-level').textContent=RH.maxLen; document.getElementById('rh-r-best').textContent=RH.best[RH.diff].all; rhUpdateBestLine(); }
+function leaveRhythm(){ if(RH.running && !confirm(t('melody.confirmLeave'))) return; rhClear(); RH.running=false; resetRhythm(); }
+function resetRhythm(){ rhClear(); RH.running=false; document.getElementById('rhythm-result-card').style.display='none'; document.getElementById('rhythm-game-card').style.display='none'; document.getElementById('rhythm-intro-card').style.display='block'; rhUpdateBestLine(); }
+
+// ========== 마시멜로 받기 (협응) ==========
+const CA_CFG={ easy:{spd:95,spawn:900,badP:0.18}, normal:{spd:135,spawn:720,badP:0.26}, hard:{spd:180,spawn:560,badP:0.34} };
+const CA_TIME=60, CA_LANES=4;
+const CA={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:CA_TIME, timer:null, tickT:null, spawnT:null, running:false, lane:1, items:[], best:bt_loadBest('brain.catch.best') };
+function CA_DIFF_LABEL(d){ return d==='easy'?t('catch.easy'):d==='hard'?t('catch.hard'):t('catch.normal'); }
+function caUpdateBestLine(){ const el=document.getElementById('ca-intro-best'); if(el) el.textContent=bt_bestLineText(CA.best,CA.diff); }
+function setCatchDiff(d){ CA.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ca-diff-'+k).classList.toggle('active',k===d)); caUpdateBestLine(); }
+function caStats(){ document.getElementById('ca-score').textContent=CA.score; document.getElementById('ca-combo').textContent=CA.combo; }
+function caTimer(){ const el=document.getElementById('ca-timer'); const m=Math.floor(CA.timeLeft/60),s=CA.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=CA.timeLeft<=10?'var(--red)':''; }
+function caArea(){ return document.getElementById('ca-area'); }
+function caPlaceBasket(){ const b=document.getElementById('ca-basket'); if(b) b.style.left=((CA.lane+0.5)/CA_LANES*100)+'%'; }
+function caMove(d){ if(!CA.running) return; CA.lane=Math.max(0,Math.min(CA_LANES-1,CA.lane+d)); caPlaceBasket(); }
+function caSpawn(){ if(!CA.running) return; const cfg=CA_CFG[CA.diff]; const lane=Math.floor(Math.random()*CA_LANES); const bad=Math.random()<cfg.badP;
+  const el=document.createElement('div'); el.className='ca-item'; el.textContent=bad?'🍴':'🍡'; el.style.left=((lane+0.5)/CA_LANES*100)+'%'; el.style.top='0px'; caArea().appendChild(el); CA.items.push({el,lane,y:0,bad}); }
+function caFlash(bad){ const a=caArea(); if(!a) return; a.style.background=bad?'#f8d7dd':''; if(bad) setTimeout(()=>{ const x=caArea(); if(x) x.style.background=''; },140); }
+function caTick(){ if(!CA.running) return; const a=caArea(); if(!a) return; const H=a.clientHeight||330, line=H-42, cfg=CA_CFG[CA.diff];
+  for(let i=CA.items.length-1;i>=0;i--){ const it=CA.items[i]; it.y+=cfg.spd*0.04; it.el.style.top=it.y+'px';
+    if(it.y>=line){ if(it.bad){ if(it.lane===CA.lane){ CA.combo=0; CA.timeLeft=Math.max(0,CA.timeLeft-3); caFlash(true); caStats(); caTimer(); sfx('bad'); } }
+      else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); CA.score+=10+(CA.combo-1)*2; sfx('good'); caStats(); } else { CA.combo=0; caStats(); } }
+      it.el.remove(); CA.items.splice(i,1); if(CA.timeLeft<=0){ finishCatch(); return; } } } }
+function startCatch(){ CA.score=0;CA.combo=0;CA.maxCombo=0;CA.timeLeft=CA_TIME;CA.lane=1;CA.running=true;CA.items=[];
+  document.getElementById('catch-intro-card').style.display='none'; document.getElementById('catch-result-card').style.display='none'; document.getElementById('catch-game-card').style.display='block';
+  const a=caArea(); a.style.background=''; a.innerHTML='<div class="ca-basket" id="ca-basket">🧺</div>'; caPlaceBasket(); caStats(); caTimer();
+  clearInterval(CA.timer);clearInterval(CA.tickT);clearInterval(CA.spawnT);
+  CA.timer=setInterval(()=>{ CA.timeLeft--; caTimer(); if(CA.timeLeft<=0) finishCatch(); },1000);
+  CA.tickT=setInterval(caTick,40); CA.spawnT=setInterval(caSpawn,CA_CFG[CA.diff].spawn); caSpawn(); }
+function finishCatch(){ if(!CA.running) return; clearInterval(CA.timer);clearInterval(CA.tickT);clearInterval(CA.spawnT); CA.running=false;
+  const nr=bt_recordScore(CA.best,CA.diff,CA.score); bt_saveBest('brain.catch.best',CA.best); missionMark('catch');
+  document.getElementById('catch-game-card').style.display='none'; document.getElementById('catch-result-card').style.display='block';
+  document.getElementById('ca-result-emoji').textContent=nr?'🏆':'🧺'; document.getElementById('ca-result-title').textContent=nr?t('catch.newRecord'):t('catch.timeOver');
+  document.getElementById('ca-result-score').textContent=CA.score; document.getElementById('ca-r-diff').textContent=CA_DIFF_LABEL(CA.diff);
+  document.getElementById('ca-r-combo').textContent=CA.maxCombo; document.getElementById('ca-r-best').textContent=CA.best[CA.diff].all; caUpdateBestLine(); }
+function leaveCatch(){ resetCatch(); showScreen('games'); }
+function resetCatch(){ clearInterval(CA.timer);clearInterval(CA.tickT);clearInterval(CA.spawnT); CA.running=false; CA.items=[]; const a=caArea(); if(a){ a.style.background=''; a.innerHTML=''; }
+  const g=document.getElementById('catch-game-card');if(g)g.style.display='none'; const r=document.getElementById('catch-result-card');if(r)r.style.display='none'; const i=document.getElementById('catch-intro-card');if(i)i.style.display='block'; caUpdateBestLine(); }
+
+// ========== 블록 채우기 (공간) ==========
+const FT_CFG={ easy:{n:6}, normal:{n:8}, hard:{n:10} };
+const FT_PIECES=[ [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[1,0]], [[0,0],[0,1],[1,1]], [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]], [[0,0],[0,1],[1,0],[1,1]], [[0,0],[0,1],[0,2],[1,0]], [[0,0],[0,1],[0,2],[0,3]] ];
+const FT={ diff:'normal', n:8, board:[], tray:[], sel:-1, score:0, over:false, running:false, best:bt_loadBest('brain.fit.best') };
+function FT_DIFF_LABEL(d){ return d==='easy'?t('fit.easy'):d==='hard'?t('fit.hard'):t('fit.normal'); }
+function ftUpdateBestLine(){ const el=document.getElementById('ft-intro-best'); if(el) el.textContent=bt_bestLineText(FT.best,FT.diff); }
+function setFitDiff(d){ FT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ft-diff-'+k).classList.toggle('active',k===d)); ftUpdateBestLine(); }
+function ftCanPlace(p,r,c){ for(const q of p){ const rr=r+q[0],cc=c+q[1]; if(rr<0||cc<0||rr>=FT.n||cc>=FT.n||FT.board[rr][cc]) return false; } return true; }
+function ftAnyFit(){ for(const item of FT.tray){ if(item.used) continue; for(let r=0;r<FT.n;r++)for(let c=0;c<FT.n;c++) if(ftCanPlace(item.p,r,c)) return true; } return false; }
+function ftNewTray(){ FT.tray=[0,1,2].map(()=>({p:FT_PIECES[Math.floor(Math.random()*FT_PIECES.length)],used:false})); FT.sel=-1; }
+function ftBounds(p){ let mr=0,mc=0; for(const q of p){ mr=Math.max(mr,q[0]); mc=Math.max(mc,q[1]); } return {mr,mc}; }
+function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; document.getElementById('ft-bestv').textContent=FT.best[FT.diff].all; }
+function ftRender(){
+  const bd=document.getElementById('ft-board'); const cs=Math.floor(340/FT.n); bd.style.gridTemplateColumns='repeat('+FT.n+','+cs+'px)'; bd.innerHTML='';
+  for(let r=0;r<FT.n;r++)for(let c=0;c<FT.n;c++){ const cell=document.createElement('div'); cell.className='ft-cell'+(FT.board[r][c]?' on':''); cell.onclick=()=>ftPlace(r,c); bd.appendChild(cell); }
+  const tray=document.getElementById('ft-tray'); tray.innerHTML='';
+  FT.tray.forEach((item,idx)=>{ const b=ftBounds(item.p); const pc=document.createElement('div'); pc.className='ft-piece'+(item.used?' used':'')+(FT.sel===idx?' sel':'');
+    pc.style.gridTemplateColumns='repeat('+(b.mc+1)+',15px)'; const set=new Set(item.p.map(q=>q[0]+'_'+q[1]));
+    for(let r=0;r<=b.mr;r++)for(let c=0;c<=b.mc;c++){ const d=document.createElement('div'); d.className='ft-pcell'+(set.has(r+'_'+c)?' on':''); pc.appendChild(d); }
+    pc.onclick=()=>{ if(!item.used){ FT.sel=idx; ftRender(); } }; tray.appendChild(pc); });
+  ftStatsBar();
+}
+function ftPlace(r,c){ if(FT.over||FT.sel<0||!FT.running) return; const item=FT.tray[FT.sel]; if(!item||item.used||!ftCanPlace(item.p,r,c)) return;
+  for(const q of item.p) FT.board[r+q[0]][c+q[1]]=1; FT.score+=item.p.length;
+  let full=[]; for(let i=0;i<FT.n;i++){ if(FT.board[i].every(v=>v)) full.push(['r',i]); let cf=true; for(let k=0;k<FT.n;k++) if(!FT.board[k][i]) cf=false; if(cf) full.push(['c',i]); }
+  for(const f of full){ if(f[0]==='r') for(let k=0;k<FT.n;k++) FT.board[f[1]][k]=0; else for(let k=0;k<FT.n;k++) FT.board[k][f[1]]=0; }
+  if(full.length) FT.score+=full.length*FT.n*4;
+  item.used=true; FT.sel=-1; sfx(full.length?'win':'good');
+  if(FT.tray.every(x=>x.used)) ftNewTray();
+  ftRender(); if(!ftAnyFit()) finishFit(); }
+function startFit(){ FT.n=FT_CFG[FT.diff].n; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0)); FT.score=0; FT.over=false; FT.running=true; ftNewTray();
+  document.getElementById('fit-intro-card').style.display='none'; document.getElementById('fit-result-card').style.display='none'; document.getElementById('fit-game-card').style.display='block'; ftRender(); }
+function finishFit(){ if(!FT.running) return; FT.over=true; FT.running=false;
+  const nr=bt_recordScore(FT.best,FT.diff,FT.score); bt_saveBest('brain.fit.best',FT.best); missionMark('fit');
+  document.getElementById('fit-game-card').style.display='none'; document.getElementById('fit-result-card').style.display='block';
+  document.getElementById('ft-result-emoji').textContent=nr?'🏆':'🧱'; document.getElementById('ft-result-title').textContent=nr?t('fit.newRecord'):t('fit.gameOver');
+  document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent=FT_DIFF_LABEL(FT.diff); document.getElementById('ft-r-best').textContent=FT.best[FT.diff].all; ftUpdateBestLine(); }
+function leaveFit(){ resetFit(); showScreen('games'); }
+function resetFit(){ FT.running=false; FT.over=false; const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
+
+// ========== 픽셀 로직 / 노노그램 (논리) ==========
+const NO_CFG={ easy:{n:5,dens:0.55,base:500}, normal:{n:8,dens:0.55,base:1100}, hard:{n:10,dens:0.55,base:1800} };
+const NO={ diff:'normal', n:8, sol:[], grid:[], mark:'fill', started:0, timer:null, running:false, best:bt_loadBest('brain.nono.best') };
+function NO_DIFF_LABEL(d){ return d==='easy'?t('nono.easy'):d==='hard'?t('nono.hard'):t('nono.normal'); }
+function noUpdateBestLine(){ const el=document.getElementById('no-intro-best'); if(el) el.textContent=bt_bestLineText(NO.best,NO.diff); }
+function setNonoDiff(d){ NO.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('no-diff-'+k).classList.toggle('active',k===d)); noUpdateBestLine(); }
+function noCluesOf(line){ const c=[]; let run=0; for(const v of line){ if(v===1) run++; else { if(run) c.push(run); run=0; } } if(run) c.push(run); return c; }
+function noLineSolve(clue,cells){ const n=cells.length; const placements=[];
+  function gen(idx,pos,cur){ if(idx===clue.length){ const arr=cur.slice(); for(let k=pos;k<n;k++) arr[k]=0; placements.push(arr); return; }
+    const block=clue[idx]; let remain=0; for(let j=idx+1;j<clue.length;j++) remain+=clue[j]+1;
+    for(let start=pos; start+block+remain<=n; start++){ const arr=cur.slice(); for(let k=pos;k<start;k++) arr[k]=0; for(let k=start;k<start+block;k++) arr[k]=1; let next=start+block; if(next<n){ arr[next]=0; next++; }
+      let ok=true; for(let k=0;k<next;k++){ if(cells[k]!==-1 && cells[k]!==arr[k]){ ok=false; break; } } if(ok) gen(idx+1,next,arr); } }
+  if(clue.length===0){ for(let k=0;k<n;k++){ if(cells[k]===1) return null; } return cells.map(()=>0); }
+  gen(0,0,cells.slice()); const valid=placements.filter(p=>{ for(let k=0;k<n;k++){ if(cells[k]!==-1 && cells[k]!==p[k]) return false; } return true; });
+  if(!valid.length) return null; const out=cells.slice(); for(let k=0;k<n;k++){ const v=valid[0][k]; out[k]= valid.every(p=>p[k]===v)? v : -1; } return out; }
+function noUnique(sol,n){ const rowC=sol.map(r=>noCluesOf(r)); const colC=[]; for(let c=0;c<n;c++){ const col=[]; for(let r=0;r<n;r++) col.push(sol[r][c]); colC.push(noCluesOf(col)); }
+  let grid=Array.from({length:n},()=>Array(n).fill(-1));
+  for(let iter=0; iter<n*n+5; iter++){ let changed=false;
+    for(let r=0;r<n;r++){ const res=noLineSolve(rowC[r],grid[r]); if(!res) return false; for(let c=0;c<n;c++) if(grid[r][c]!==res[c]){ grid[r][c]=res[c]; changed=true; } }
+    for(let c=0;c<n;c++){ const col=grid.map(row=>row[c]); const res=noLineSolve(colC[c],col); if(!res) return false; for(let r=0;r<n;r++) if(grid[r][c]!==res[r]){ grid[r][c]=res[r]; changed=true; } }
+    let done=true; for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(grid[r][c]===-1) done=false; if(done) return true; if(!changed) return false; } return false; }
+function noGen(n,dens){ const t0=Date.now();
+  while(Date.now()-t0<400){ const sol=Array.from({length:n},()=>Array.from({length:n},()=>Math.random()<dens?1:0)); let any=false; for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(sol[r][c]) any=true; if(!any) continue; if(noUnique(sol,n)) return sol; }
+  const sol=Array.from({length:n},()=>Array(n).fill(0)); for(let i=0;i<n;i++) sol[i][i]=1; return sol; }
+function noToggleMark(){ NO.mark=NO.mark==='fill'?'x':'fill'; const b=document.getElementById('no-mode-btn'); b.innerHTML=(NO.mark==='fill'?'🖌️ ':'❌ ')+'<span>'+t(NO.mark==='fill'?'nono.fillMode':'nono.markMode')+'</span>'; }
+function noTimer(){ if(!NO.running) return; const s=Math.floor((Date.now()-NO.started)/1000); const el=document.getElementById('no-timer'); if(el) el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+function noBuild(){ const n=NO.n; const rowC=NO.sol.map(r=>noCluesOf(r)); const colC=[]; for(let c=0;c<n;c++){ const col=[]; for(let r=0;r<n;r++) col.push(NO.sol[r][c]); colC.push(noCluesOf(col)); }
+  const cs=Math.max(20,Math.floor(232/n)), clueW=Math.round(cs*1.5); const wrap=document.getElementById('no-grid');
+  wrap.style.gridTemplateColumns=clueW+'px repeat('+n+','+cs+'px)'; wrap.style.gridTemplateRows=clueW+'px repeat('+n+','+cs+'px)'; wrap.innerHTML='';
+  const corner=document.createElement('div'); corner.className='no-corner'; wrap.appendChild(corner);
+  for(let c=0;c<n;c++){ const d=document.createElement('div'); d.className='no-clue col'; d.innerHTML=(colC[c].length?colC[c]:[0]).map(x=>'<span>'+x+'</span>').join(''); wrap.appendChild(d); }
+  for(let r=0;r<n;r++){ const rc=document.createElement('div'); rc.className='no-clue row'; rc.innerHTML=(rowC[r].length?rowC[r]:[0]).map(x=>'<span>'+x+'</span>').join(''); wrap.appendChild(rc);
+    for(let c=0;c<n;c++){ const cell=document.createElement('div'); cell.className='no-cell'; cell.onclick=()=>noTap(r,c,cell); wrap.appendChild(cell); } } }
+function noTap(r,c,cell){ if(!NO.running) return; if(NO.mark==='fill'){ NO.grid[r][c]=NO.grid[r][c]===1?0:1; } else { NO.grid[r][c]=NO.grid[r][c]===2?0:2; }
+  cell.classList.toggle('fill',NO.grid[r][c]===1); cell.textContent=NO.grid[r][c]===2?'✕':''; noCheck(); }
+function noCheck(){ for(let r=0;r<NO.n;r++)for(let c=0;c<NO.n;c++){ if((NO.grid[r][c]===1)!==(NO.sol[r][c]===1)) return; } finishNono(); }
+function startNono(){ const cfg=NO_CFG[NO.diff]; NO.n=cfg.n; NO.sol=noGen(cfg.n,cfg.dens); NO.grid=Array.from({length:NO.n},()=>Array(NO.n).fill(0)); NO.mark='fill'; NO.running=true; NO.started=Date.now();
+  document.getElementById('nono-intro-card').style.display='none'; document.getElementById('nono-result-card').style.display='none'; document.getElementById('nono-game-card').style.display='block';
+  const b=document.getElementById('no-mode-btn'); b.innerHTML='🖌️ <span>'+t('nono.fillMode')+'</span>'; noBuild(); noTimer(); clearInterval(NO.timer); NO.timer=setInterval(noTimer,1000); }
+function finishNono(){ if(!NO.running) return; clearInterval(NO.timer); NO.running=false; const secs=Math.floor((Date.now()-NO.started)/1000);
+  const score=Math.max(50, NO_CFG[NO.diff].base - secs*Math.round(NO.n*1.5)); sfx('win');
+  const nr=bt_recordScore(NO.best,NO.diff,score); bt_saveBest('brain.nono.best',NO.best); NO.score=score; missionMark('nono');
+  document.getElementById('nono-game-card').style.display='none'; document.getElementById('nono-result-card').style.display='block';
+  document.getElementById('no-result-emoji').textContent=nr?'🏆':'🖼️'; document.getElementById('no-result-title').textContent=nr?t('nono.newRecord'):t('nono.complete');
+  document.getElementById('no-result-score').textContent=score; document.getElementById('no-r-diff').textContent=NO_DIFF_LABEL(NO.diff);
+  document.getElementById('no-r-time').textContent=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0'); document.getElementById('no-r-best').textContent=NO.best[NO.diff].all; noUpdateBestLine(); }
+function leaveNono(){ resetNono(); showScreen('games'); }
+function resetNono(){ clearInterval(NO.timer); NO.running=false; const g=document.getElementById('nono-game-card');if(g)g.style.display='none'; const r=document.getElementById('nono-result-card');if(r)r.style.display='none'; const i=document.getElementById('nono-intro-card');if(i)i.style.display='block'; noUpdateBestLine(); }
+
+// ========== 글자 맞추기 / 애너그램 (언어) ==========
+const AG_WORDS={
+  ko:{ 3:['고양이','도서관','자전거','냉장고','컴퓨터','무지개','코끼리','바나나','호랑이','다람쥐','해바라기','원숭이','강아지','비행기','자동차','운동화','손수건','물고기','거북이','고구마'],
+       4:['말랑말랑','두근두근','반짝반짝','알록달록','새콤달콤','조물조물','몽글몽글','소곤소곤','간질간질','폭신폭신','도란도란','방글방글','싱글벙글','울퉁불퉁'] },
+  en:{ 3:['CAT','SUN','MAP','BOX','CUP','DOG','HAT','KEY','PEN','BUS','EGG','FOX','JAM','OWL','TOY'],
+       4:['STAR','MOON','TREE','FISH','CAKE','LION','BOOK','RAIN','SNOW','GOLD','WIND','LEAF','BEAR','SHIP','MILK'],
+       5:['APPLE','HOUSE','TIGER','MUSIC','LEMON','CLOUD','RIVER','PLANT','SUGAR','BREAD','HONEY','ROBOT','SMILE','OCEAN','PIANO'],
+       6:['GARDEN','ORANGE','FLOWER','PLANET','ROCKET','CASTLE','DRAGON','BASKET','PENCIL','WINTER'] } };
+const AG_LEN={ easy:{ko:[3],en:[3,4]}, normal:{ko:[3,4],en:[4,5]}, hard:{ko:[4],en:[5,6]} };
+const AG_TIME=60;
+const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, best:bt_loadBest('brain.anagram.best') };
+function AG_DIFF_LABEL(d){ return d==='easy'?t('anagram.easy'):d==='hard'?t('anagram.hard'):t('anagram.normal'); }
+function agUpdateBestLine(){ const el=document.getElementById('ag-intro-best'); if(el) el.textContent=bt_bestLineText(AG.best,AG.diff); }
+function setAnagramDiff(d){ AG.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ag-diff-'+k).classList.toggle('active',k===d)); agUpdateBestLine(); }
+function agStats(){ document.getElementById('ag-score').textContent=AG.score; document.getElementById('ag-combo').textContent=AG.combo; document.getElementById('ag-hint-n').textContent=AG.hints; }
+function agTimer(){ const el=document.getElementById('ag-timer'); const m=Math.floor(AG.timeLeft/60),s=AG.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=AG.timeLeft<=10?'var(--red)':''; }
+function agPick(){ const lang=(CURRENT_LANG==='ko')?'ko':'en'; const lens=AG_LEN[AG.diff][lang]; const len=lens[Math.floor(Math.random()*lens.length)]; const pool=AG_WORDS[lang][len]; AG.word=pool[Math.floor(Math.random()*pool.length)];
+  const chars=[...AG.word]; let order; do{ order=chars.map((c,i)=>i); for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=order[i]; order[i]=order[j]; order[j]=tmp; } }while(order.map(i=>chars[i]).join('')===AG.word && chars.length>1);
+  AG.tiles=order.map(i=>({ch:chars[i],used:false})); AG.slots=[]; }
+function agRender(){ const wl=[...AG.word].length; const ss=document.getElementById('ag-slots'); ss.innerHTML='';
+  for(let i=0;i<wl;i++){ const ti=AG.slots[i]; const d=document.createElement('div'); d.className='ag-slot'+(ti!=null?' filled':''); d.textContent=ti!=null?AG.tiles[ti].ch:''; if(ti!=null) d.onclick=()=>agUnplace(i); ss.appendChild(d); }
+  const ts=document.getElementById('ag-tiles'); ts.innerHTML='';
+  AG.tiles.forEach((tile,idx)=>{ const b=document.createElement('button'); b.className='ag-tile'+(tile.used?' used':''); b.textContent=tile.ch; b.onclick=()=>agTapTile(idx); ts.appendChild(b); }); agStats(); }
+function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; AG.slots.push(idx); tile.used=true; agRender();
+  if(AG.slots.length===[...AG.word].length) agSubmit(); }
+function agUnplace(i){ if(!AG.running||AG.slots[i]==null) return; const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
+function agSubmit(){ const asm=AG.slots.map(i=>AG.tiles[i].ch).join('');
+  if(asm===AG.word){ AG.combo++; AG.maxCombo=Math.max(AG.maxCombo,AG.combo); AG.score+=[...AG.word].length*5+(AG.combo-1)*3; sfx('good'); agStats(); agPick(); agRender(); }
+  else{ AG.combo=0; sfx('bad'); const ss=document.getElementById('ag-slots'); ss.classList.add('miss'); setTimeout(()=>ss.classList.remove('miss'),320); AG.tiles.forEach(t=>t.used=false); AG.slots=[]; agRender(); } }
+function agHint(){ if(!AG.running||AG.hints<=0) return; const wc=[...AG.word]; const p=AG.slots.length; if(p>=wc.length) return; const need=wc[p];
+  let found=-1; for(let i=0;i<AG.tiles.length;i++){ if(!AG.tiles[i].used && AG.tiles[i].ch===need){ found=i; break; } } if(found<0) return;
+  AG.hints--; AG.slots.push(found); AG.tiles[found].used=true; agRender(); if(AG.slots.length===wc.length) agSubmit(); }
+function startAnagram(){ AG.score=0;AG.combo=0;AG.maxCombo=0;AG.timeLeft=AG_TIME;AG.hints=3;AG.running=true;
+  document.getElementById('anagram-intro-card').style.display='none'; document.getElementById('anagram-result-card').style.display='none'; document.getElementById('anagram-game-card').style.display='block';
+  agPick(); agRender(); agTimer(); clearInterval(AG.timer); AG.timer=setInterval(()=>{ AG.timeLeft--; agTimer(); if(AG.timeLeft<=0) finishAnagram(); },1000); }
+function finishAnagram(){ clearInterval(AG.timer); AG.running=false;
+  const nr=bt_recordScore(AG.best,AG.diff,AG.score); bt_saveBest('brain.anagram.best',AG.best); missionMark('anagram');
+  document.getElementById('anagram-game-card').style.display='none'; document.getElementById('anagram-result-card').style.display='block';
+  document.getElementById('ag-result-emoji').textContent=nr?'🏆':'🔤'; document.getElementById('ag-result-title').textContent=nr?t('anagram.newRecord'):t('anagram.timeOver');
+  document.getElementById('ag-result-score').textContent=AG.score; document.getElementById('ag-r-diff').textContent=AG_DIFF_LABEL(AG.diff);
+  document.getElementById('ag-r-combo').textContent=AG.maxCombo; document.getElementById('ag-r-best').textContent=AG.best[AG.diff].all; agUpdateBestLine(); }
+function leaveAnagram(){ resetAnagram(); showScreen('games'); }
+function resetAnagram(){ clearInterval(AG.timer); AG.running=false; const g=document.getElementById('anagram-game-card');if(g)g.style.display='none'; const r=document.getElementById('anagram-result-card');if(r)r.style.display='none'; const i=document.getElementById('anagram-intro-card');if(i)i.style.display='block'; agUpdateBestLine(); }
 
 // INIT
 // 언어: URL ?lang= 우선 → 저장값 → 브라우저 언어 자동 감지(ko/th/기타=en)
