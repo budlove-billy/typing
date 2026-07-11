@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 게임 공략 — 코너 전략과 스네이크 배열 | Mallow</title>
+<meta name="description" content="2048을 매번 게임 오버로 끝낸다면: 최대 타일 코너 고정, 금지 방향, 스네이크 배열, 되돌리기 타이밍까지 2048 핵심 전략 총정리.">
+<meta property="og:title" content="2048 게임 공략 — 코너 전략과 스네이크 배열 | Mallow">
+<meta property="og:description" content="2048을 매번 게임 오버로 끝낸다면: 최대 타일 코너 고정, 금지 방향, 스네이크 배열, 되돌리기 타이밍까지 2048 핵심 전략 총정리.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://playmallow.com/guide/2048/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/guide/2048/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#f5f7fb;color:#182235;line-height:1.7}
+nav{background:#fff;border-bottom:1px solid #e4e9f2;height:54px;display:flex;align-items:center;padding:0 1.1rem;position:sticky;top:0;z-index:10}
+nav a{display:flex;align-items:baseline;gap:.45rem;font-weight:700;color:#4f7cff;text-decoration:none;font-size:1.05rem}
+nav img{height:28px;image-rendering:pixelated;align-self:center}
+nav a small{color:#21a67a;font-weight:600;font-size:.8rem}
+main{max-width:640px;margin:0 auto;padding:1.5rem 1.1rem 3rem}
+.crumb{font-size:.78rem;color:#94a0b8;margin-bottom:.8rem}
+.crumb a{color:#4f7cff;text-decoration:none}
+h1{font-size:1.45rem;margin-bottom:.35rem}
+.lede{color:#5a6683;font-size:.95rem;margin-bottom:1.2rem}
+article{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+h2{font-size:1.08rem;color:#4f7cff;margin:1.4rem 0 .6rem}
+h2:first-child{margin-top:0}
+h3{font-size:.95rem;margin:1rem 0 .4rem}
+p{font-size:.92rem;margin-bottom:.7rem}
+ul,ol{padding-left:1.2rem;margin-bottom:.7rem}
+li{font-size:.92rem;margin-bottom:.4rem}
+b{color:#182235}
+.tip{background:#e9f0ff;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.warn{background:#fbf0d8;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.cta-box{text-align:center;background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+.cta{display:inline-block;background:#4f7cff;color:#fff;font-weight:700;font-size:1rem;padding:.8rem 2rem;border-radius:12px;text-decoration:none}
+.cta-sub{font-size:.78rem;color:#94a0b8;margin-top:.5rem}
+.rel{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.2rem 1.4rem}
+.rel h2{margin-top:0}
+.rel a{color:#4f7cff;text-decoration:none;font-size:.9rem}
+.rel li{margin-bottom:.45rem}
+footer{text-align:center;padding:1.5rem;color:#94a0b8;font-size:.82rem}
+footer a{color:#4f7cff;text-decoration:none;margin:0 .35rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:.7rem}
+th,td{border:1px solid #e4e9f2;padding:.45rem .6rem;text-align:left}
+th{background:#f5f7fb}</style>
+</head>
+<body>
+<nav><a href="/"><img src="/mallow-chan.png" alt="Mallow 마스코트">Mallow <small>가볍게 즐기는 두뇌게임</small></a></nav>
+<main>
+  <div class="crumb"><a href="/">홈</a> › <a href="/guide/brain-games/">가이드</a> › 2048 공략 — 코너 전략이 전부다</div>
+  <h1>2048 공략 — 코너 전략이 전부다</h1>
+  <p class="lede">2048은 운이 아니라 규칙적인 습관의 게임입니다. 고수들의 플레이는 놀랄 만큼 단순한 원칙 몇 개로 이루어져 있습니다.</p>
+  <article>
+    <h2>원칙 1 — 최대 타일을 한 코너에 고정</h2>
+    <p>가장 큰 타일을 <b>한 구석(예: 왼쪽 아래)에 두고 절대 움직이지 않는 것</b>이 2048 전략의 전부라고 해도 과언이 아닙니다. 큰 타일이 판 가운데로 나오는 순간 합칠 경로가 꼬이기 시작합니다.</p>
+    <h2>원칙 2 — 두 방향은 봉인</h2>
+    <p>코너를 왼쪽 아래로 정했다면 <b>주로 왼쪽·아래만 사용</b>하세요. 오른쪽은 가끔, <b>위쪽은 사실상 금지</b>입니다. 위로 밀는 순간 코너의 큰 타일이 뜨고 그 자리에 작은 타일이 끼면서 판이 무너집니다. 어쩔 수 없이 금지 방향을 눌러야 한다면, 바로 다음 수로 원위치할 수 있는지 먼저 생각하세요.</p>
+    <h2>원칙 3 — 스네이크(뱀) 배열</h2>
+    <p>이상적인 판은 큰 수부터 <b>ㄹ자로 지그재그</b> 배열된 상태입니다: 아랫줄에 1024-512-256-128, 그 윗줄엔 반대 방향으로 16-32-64… 이렇게 만들면 새로 만든 타일이 자연스럽게 옆 타일과 연쇄 병합됩니다.</p>
+    <div class="tip">💡 <b>연쇄 병합</b> — 128을 만들면 옆의 128과 합쳐 256, 다시 옆의 256과 합쳐 512… 스네이크 배열이 되어 있으면 한 번의 스와이프로 도미노처럼 터집니다. 2048의 가장 짜릿한 순간!</div>
+    <h2>원칙 4 — 미리 두 수 읽기</h2>
+    <p>스와이프 전에 "이 방향으로 밀면 어떤 모양이 되고, 다음에 어떤 수가 가능한가"를 한 번만 생각하세요. 특히 판이 절반 이상 찼을 때는 <b>빈 칸 수를 유지하는 방향</b>이 정답인 경우가 많습니다.</p>
+    <h2>Mallow 2048만의 팁</h2>
+    <ul>
+      <li><b>되돌리기 1회</b>는 보험입니다. 습관적으로 쓰지 말고, 금지 방향을 실수로 눌렀거나 연쇄 계산이 어긋난 결정적 순간에 쓰세요.</li>
+      <li><b>쉬움(5×5)</b>은 공간이 넓어 전략 연습장으로 좋습니다. 코너 고정 습관을 여기서 만드세요.</li>
+      <li><b>어려움(3×3)</b>은 빈 칸이 순식간에 사라집니다. 매 수가 생존 문제라 최고의 두뇌 훈련이 됩니다 — 256만 만들어도 잘한 판!</li>
+    </ul>
+    <div class="warn">⚠️ <b>흔한 실수</b> — 급하게 아무 방향이나 연타하기. 2048에서 "일단 밀고 보자"는 곧 게임 오버입니다. 막힐수록 천천히.</div>
+  </article>
+  <div class="cta-box">
+    <a class="cta" href="/?game=merge">말랑 2048 바로 플레이 →</a>
+    <div class="cta-sub">가입 없음 · 설치 없음 · 100% 무료</div>
+  </div>
+  <div class="rel"><h2>함께 보면 좋은 가이드</h2><ul><li><a href="/guide/brain-games/">두뇌게임 22종 총정리</a></li><li><a href="/guide/slide-puzzle/">슬라이딩 퍼즐 공략</a></li><li><a href="/guide/sudoku/">스도쿠 공략</a></li></ul></div>
+</main>
+<footer><a href="/">Mallow 홈</a>·<a href="/guide/brain-games/">두뇌게임 총정리</a>·<a href="/sudoku/">스도쿠</a>·<a href="/iq-test/">IQ 테스트</a>·<a href="/moamoa/">모아모아</a><br>© Mallow · playmallow.com</footer>
+</body>
+</html>

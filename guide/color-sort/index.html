@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컬러 소트(워터 소트) 공략 — 막히지 않는 4가지 원칙 | Mallow</title>
+<meta name="description" content="워터 소트류 퍼즐이 자꾸 막힌다면: 빈 병 아끼기, 붓기 전 역산, 한 색 완성 우선, 막힌 판 판별법까지 컬러 소트 핵심 전략.">
+<meta property="og:title" content="컬러 소트(워터 소트) 공략 — 막히지 않는 4가지 원칙 | Mallow">
+<meta property="og:description" content="워터 소트류 퍼즐이 자꾸 막힌다면: 빈 병 아끼기, 붓기 전 역산, 한 색 완성 우선, 막힌 판 판별법까지 컬러 소트 핵심 전략.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://playmallow.com/guide/color-sort/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/guide/color-sort/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#f5f7fb;color:#182235;line-height:1.7}
+nav{background:#fff;border-bottom:1px solid #e4e9f2;height:54px;display:flex;align-items:center;padding:0 1.1rem;position:sticky;top:0;z-index:10}
+nav a{display:flex;align-items:baseline;gap:.45rem;font-weight:700;color:#4f7cff;text-decoration:none;font-size:1.05rem}
+nav img{height:28px;image-rendering:pixelated;align-self:center}
+nav a small{color:#21a67a;font-weight:600;font-size:.8rem}
+main{max-width:640px;margin:0 auto;padding:1.5rem 1.1rem 3rem}
+.crumb{font-size:.78rem;color:#94a0b8;margin-bottom:.8rem}
+.crumb a{color:#4f7cff;text-decoration:none}
+h1{font-size:1.45rem;margin-bottom:.35rem}
+.lede{color:#5a6683;font-size:.95rem;margin-bottom:1.2rem}
+article{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+h2{font-size:1.08rem;color:#4f7cff;margin:1.4rem 0 .6rem}
+h2:first-child{margin-top:0}
+h3{font-size:.95rem;margin:1rem 0 .4rem}
+p{font-size:.92rem;margin-bottom:.7rem}
+ul,ol{padding-left:1.2rem;margin-bottom:.7rem}
+li{font-size:.92rem;margin-bottom:.4rem}
+b{color:#182235}
+.tip{background:#e9f0ff;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.warn{background:#fbf0d8;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.cta-box{text-align:center;background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+.cta{display:inline-block;background:#4f7cff;color:#fff;font-weight:700;font-size:1rem;padding:.8rem 2rem;border-radius:12px;text-decoration:none}
+.cta-sub{font-size:.78rem;color:#94a0b8;margin-top:.5rem}
+.rel{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.2rem 1.4rem}
+.rel h2{margin-top:0}
+.rel a{color:#4f7cff;text-decoration:none;font-size:.9rem}
+.rel li{margin-bottom:.45rem}
+footer{text-align:center;padding:1.5rem;color:#94a0b8;font-size:.82rem}
+footer a{color:#4f7cff;text-decoration:none;margin:0 .35rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:.7rem}
+th,td{border:1px solid #e4e9f2;padding:.45rem .6rem;text-align:left}
+th{background:#f5f7fb}</style>
+</head>
+<body>
+<nav><a href="/"><img src="/mallow-chan.png" alt="Mallow 마스코트">Mallow <small>가볍게 즐기는 두뇌게임</small></a></nav>
+<main>
+  <div class="crumb"><a href="/">홈</a> › <a href="/guide/brain-games/">가이드</a> › 컬러 소트 공략 — 빈 병이 생명이다</div>
+  <h1>컬러 소트 공략 — 빈 병이 생명이다</h1>
+  <p class="lede">색깔 정렬 퍼즐(워터 소트)은 손 가는 대로 부으면 반드시 막힙니다. 원칙 4개만 지키면 어려움 난이도도 안정적으로 풀립니다.</p>
+  <article>
+    <h2>원칙 1 — 빈 병은 최후의 자원</h2>
+    <p>빈 병 2개는 "작업 공간"입니다. <b>둘 다 채워지는 순간 선택지가 급격히 줄어듭니다.</b> 빈 병에 붓는 건 (a) 병 하나를 완전히 비울 수 있을 때, (b) 다른 모든 이동이 막혔을 때만. 항상 최소 1개는 비워두는 걸 목표로 하세요.</p>
+    <h2>원칙 2 — 붓기 전에 한 수 역산</h2>
+    <p>붓기 전에 스스로에게 물으세요: <b>"이 이동이 다음 이동을 만들어주는가?"</b> 좋은 이동은 연쇄를 만듭니다 — 위를 덜어낸 병에서 다음 색이 드러나고, 그 색이 갈 곳이 이미 있는 이동. 갈 곳 없는 색을 드러내는 이동은 나쁜 이동입니다.</p>
+    <h2>원칙 3 — 같은 색이 3칸 모인 병부터 완성</h2>
+    <p>거의 완성된 색을 먼저 마무리하면 <b>완성 병은 더 이상 건드릴 필요가 없어져</b> 판이 단순해집니다. 반대로 여러 색을 동시에 조금씩 모으면 병이 전부 어중간해지며 막힙니다.</p>
+    <h2>원칙 4 — 깊이 묻힌 색을 먼저 파악</h2>
+    <p>시작할 때 10초만 투자해 <b>맨 바닥에 깔린 색들</b>을 확인하세요. 바닥 색은 위의 3칸을 전부 치워야 꺼낼 수 있으므로, 그 색의 나머지 조각들을 어디에 모을지 미리 정해두면 중반이 편해집니다.</p>
+    <div class="tip">💡 <b>Mallow 팁</b> — 되돌리기가 3회 있지만 이동 수에 포함됩니다. "방금 그 수가 연쇄를 끊었다" 싶은 즉시 쓰는 게 가장 효율적이고, 점수는 시간×2 + 이동×3으로 깎이니 신중하되 과감하게!</div>
+    <div class="warn">⚠️ <b>막힌 판의 신호</b> — 모든 병의 맨 위 색이 서로 다르고 빈 병이 없다면 그 판은 끝난 겁니다. Mallow는 애초에 풀 수 있는 판만 출제하니, 막혔다면 판이 아니라 중간 선택이 문제 — 되돌리거나 새 판으로 연습하세요.</div>
+  </article>
+  <div class="cta-box">
+    <a class="cta" href="/?game=sort">컬러 소트 바로 플레이 →</a>
+    <div class="cta-sub">가입 없음 · 설치 없음 · 100% 무료</div>
+  </div>
+  <div class="rel"><h2>함께 보면 좋은 가이드</h2><ul><li><a href="/guide/brain-games/">두뇌게임 22종 총정리</a></li><li><a href="/guide/sudoku/">스도쿠 공략</a></li><li><a href="/guide/2048/">2048 공략</a></li></ul></div>
+</main>
+<footer><a href="/">Mallow 홈</a>·<a href="/guide/brain-games/">두뇌게임 총정리</a>·<a href="/sudoku/">스도쿠</a>·<a href="/iq-test/">IQ 테스트</a>·<a href="/moamoa/">모아모아</a><br>© Mallow · playmallow.com</footer>
+</body>
+</html>

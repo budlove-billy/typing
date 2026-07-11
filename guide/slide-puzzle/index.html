@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>슬라이딩 퍼즐(15퍼즐) 공략 — 줄 단위 해법 | Mallow</title>
+<meta name="description" content="슬라이딩 퍼즐을 체계적으로 푸는 법: 윗줄부터 잠그는 줄 단위 해법, 마지막 두 조각 회전 테크닉, 5×5 확장까지.">
+<meta property="og:title" content="슬라이딩 퍼즐(15퍼즐) 공략 — 줄 단위 해법 | Mallow">
+<meta property="og:description" content="슬라이딩 퍼즐을 체계적으로 푸는 법: 윗줄부터 잠그는 줄 단위 해법, 마지막 두 조각 회전 테크닉, 5×5 확장까지.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://playmallow.com/guide/slide-puzzle/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/guide/slide-puzzle/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#f5f7fb;color:#182235;line-height:1.7}
+nav{background:#fff;border-bottom:1px solid #e4e9f2;height:54px;display:flex;align-items:center;padding:0 1.1rem;position:sticky;top:0;z-index:10}
+nav a{display:flex;align-items:baseline;gap:.45rem;font-weight:700;color:#4f7cff;text-decoration:none;font-size:1.05rem}
+nav img{height:28px;image-rendering:pixelated;align-self:center}
+nav a small{color:#21a67a;font-weight:600;font-size:.8rem}
+main{max-width:640px;margin:0 auto;padding:1.5rem 1.1rem 3rem}
+.crumb{font-size:.78rem;color:#94a0b8;margin-bottom:.8rem}
+.crumb a{color:#4f7cff;text-decoration:none}
+h1{font-size:1.45rem;margin-bottom:.35rem}
+.lede{color:#5a6683;font-size:.95rem;margin-bottom:1.2rem}
+article{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+h2{font-size:1.08rem;color:#4f7cff;margin:1.4rem 0 .6rem}
+h2:first-child{margin-top:0}
+h3{font-size:.95rem;margin:1rem 0 .4rem}
+p{font-size:.92rem;margin-bottom:.7rem}
+ul,ol{padding-left:1.2rem;margin-bottom:.7rem}
+li{font-size:.92rem;margin-bottom:.4rem}
+b{color:#182235}
+.tip{background:#e9f0ff;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.warn{background:#fbf0d8;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
+.cta-box{text-align:center;background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
+.cta{display:inline-block;background:#4f7cff;color:#fff;font-weight:700;font-size:1rem;padding:.8rem 2rem;border-radius:12px;text-decoration:none}
+.cta-sub{font-size:.78rem;color:#94a0b8;margin-top:.5rem}
+.rel{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.2rem 1.4rem}
+.rel h2{margin-top:0}
+.rel a{color:#4f7cff;text-decoration:none;font-size:.9rem}
+.rel li{margin-bottom:.45rem}
+footer{text-align:center;padding:1.5rem;color:#94a0b8;font-size:.82rem}
+footer a{color:#4f7cff;text-decoration:none;margin:0 .35rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:.7rem}
+th,td{border:1px solid #e4e9f2;padding:.45rem .6rem;text-align:left}
+th{background:#f5f7fb}</style>
+</head>
+<body>
+<nav><a href="/"><img src="/mallow-chan.png" alt="Mallow 마스코트">Mallow <small>가볍게 즐기는 두뇌게임</small></a></nav>
+<main>
+  <div class="crumb"><a href="/">홈</a> › <a href="/guide/brain-games/">가이드</a> › 슬라이딩 퍼즐 공략 — 윗줄부터 잠가라</div>
+  <h1>슬라이딩 퍼즐 공략 — 윗줄부터 잠가라</h1>
+  <p class="lede">15퍼즐은 감으로 밀면 끝이 없지만, 해법 절차를 알면 어떤 판이든 기계적으로 풀립니다.</p>
+  <article>
+    <h2>큰 그림 — 줄 단위로 잠근다</h2>
+    <p>슬라이딩 퍼즐의 표준 해법은 <b>윗줄부터 한 줄씩 완성하고 다시는 건드리지 않는 것</b>입니다. 4×4 기준: 1번 줄 완성 → 2번 줄 완성 → 남은 2×4는 왼쪽 세로 두 칸(9,13)을 완성 → 남은 2×3, 다시 왼쪽 세로(10,14) → 마지막 2×2는 빙글 돌리면 끝.</p>
+    <h2>핵심 테크닉 — 줄 끝 두 조각 회전 삽입</h2>
+    <p>각 줄에서 어려운 건 <b>마지막 두 조각</b>(예: 1번 줄의 3과 4)입니다. 요령:</p>
+    <ol>
+      <li>3을 <b>4가 갈 자리(오른쪽 끝)</b>에 임시로 넣는다.</li>
+      <li>4를 그 바로 아래 칸에 붙인다.</li>
+      <li>둘을 함께 <b>반시계로 회전</b>시키며 제자리에 밀어 넣는다.</li>
+    </ol>
+    <p>이 "두 조각 세워서 돌려 넣기"만 익히면 모든 줄이 같은 방식으로 풀립니다. 왼쪽 세로 열을 완성할 때도 똑같은 테크닉을 90도 돌려 쓰면 됩니다.</p>
+    <h2>조각을 옮기는 기본기</h2>
+    <p>조각은 직접 움직일 수 없고 <b>빈칸이 조각 주위를 돌아야</b> 움직입니다. 조각을 오른쪽으로 보내고 싶으면 빈칸을 조각의 오른쪽에 갖다 놓기 — "빈칸을 어디로 보낼까"로 생각을 전환하는 것이 이 퍼즐의 본질입니다. 이때 <b>이미 완성한 줄을 통과하지 않는 경로</b>로 빈칸을 돌리세요.</p>
+    <div class="tip">💡 <b>이동 수 줄이기</b> — 점수는 시간과 이동 수로 계산됩니다. 조각 하나를 잡고 "빈칸 경로"를 머릿속으로 그린 뒤 한 번에 실행하면, 손 가는 대로 밀 때보다 이동 수가 절반으로 줄어듭니다.</div>
+    <h2>3×3 → 5×5 확장</h2>
+    <table><tr><th>난이도</th><th>접근</th></tr>
+    <tr><td>3×3 (8퍼즐)</td><td>1번 줄 → 왼쪽 열 → 남은 2×2 회전. 30수 안팎이면 우수</td></tr>
+    <tr><td>4×4 (15퍼즐)</td><td>표준 절차 그대로. 120수 이하 도전</td></tr>
+    <tr><td>5×5 (24퍼즐)</td><td>같은 절차의 반복이 길어질 뿐. 집중력 지구력 테스트!</td></tr></table>
+    <div class="warn">⚠️ <b>흔한 실수</b> — 완성한 줄을 "잠깐만" 깨서 지름길을 만들려는 것. 거의 항상 더 많은 수를 쓰게 됩니다. 막히면 차라리 🔀 다시 섞기로 새 판을 받으세요.</div>
+  </article>
+  <div class="cta-box">
+    <a class="cta" href="/?game=slide">슬라이딩 퍼즐 바로 플레이 →</a>
+    <div class="cta-sub">가입 없음 · 설치 없음 · 100% 무료</div>
+  </div>
+  <div class="rel"><h2>함께 보면 좋은 가이드</h2><ul><li><a href="/guide/brain-games/">두뇌게임 22종 총정리</a></li><li><a href="/guide/2048/">2048 공략</a></li><li><a href="/guide/color-sort/">컬러 소트 공략</a></li></ul></div>
+</main>
+<footer><a href="/">Mallow 홈</a>·<a href="/guide/brain-games/">두뇌게임 총정리</a>·<a href="/sudoku/">스도쿠</a>·<a href="/iq-test/">IQ 테스트</a>·<a href="/moamoa/">모아모아</a><br>© Mallow · playmallow.com</footer>
+</body>
+</html>
