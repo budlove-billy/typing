@@ -6882,20 +6882,17 @@ function renderHome(){
 function renderGames(){
   const body=document.getElementById('games-body'); if(!body) return;
   body.innerHTML='';
-  let curGrp=null, grid=null;
-  HOME_GAMES.filter(g=>(!g.koOnly||CURRENT_LANG==='ko')&&(!g.langs||g.langs.includes(CURRENT_LANG))).forEach(g=>{
-    if(g.grp!==curGrp){
-      curGrp=g.grp;
-      const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(g.grp);
-      body.appendChild(h);
-      grid=document.createElement('div'); grid.className='home-grid';
-      body.appendChild(grid);
-    }
-    const card=document.createElement('button');
-    card.className='home-card';
-    card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
-    card.innerHTML=gameCardHTML(g);
-    grid.appendChild(card);
+  const vis=HOME_GAMES.filter(g=>(!g.koOnly||CURRENT_LANG==='ko')&&(!g.langs||g.langs.includes(CURRENT_LANG)));
+  const order=[], byGrp={};                     // 같은 카테고리를 한 섹션으로 모음(HOME_GAMES에 흩어져 있어도)
+  vis.forEach(g=>{ if(!byGrp[g.grp]){ byGrp[g.grp]=[]; order.push(g.grp); } byGrp[g.grp].push(g); });
+  order.forEach(grp=>{
+    const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(grp); body.appendChild(h);
+    const grid=document.createElement('div'); grid.className='home-grid'; body.appendChild(grid);
+    byGrp[grp].forEach(g=>{
+      const card=document.createElement('button'); card.className='home-card';
+      card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
+      card.innerHTML=gameCardHTML(g); grid.appendChild(card);
+    });
   });
 }
 // 내 기록
@@ -6996,14 +6993,17 @@ function renderRecords(){
   renderAbility();
   const body=document.getElementById('records-body'); if(!body) return;
   body.innerHTML='';
-  HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external).forEach(g=>{
+  const recVis=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external);
+  const recOrder=[], recByGrp={};               // 같은 카테고리끼리 인접 표시
+  recVis.forEach(g=>{ if(!recByGrp[g.grp]){ recByGrp[g.grp]=[]; recOrder.push(g.grp); } recByGrp[g.grp].push(g); });
+  recOrder.forEach(grp=>recByGrp[grp].forEach(g=>{
     const mx=gameBestVal(g.id);
     const row=document.createElement('div'); row.className='rec-row';
     row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+
       '<span class="rec-cat">'+t(g.grp)+'</span>'+
       '<span class="rec-best">'+(mx>0?('🏆 '+mx):'—')+'</span>';
     body.appendChild(row);
-  });
+  }));
 }
 
 // ========== 규칙 바꾸기 (Rule Switch / 과제 전환) ==========
