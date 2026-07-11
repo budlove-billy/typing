@@ -73,6 +73,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **도전장 링크(2026-07-10)**: 아케이드 11종 결과에 sendChallenge(game) 버튼 → `?c=game.score.diff` URL 공유.
   수신 chReceive()(파라미터 검증+난이도 세터+인트로 배너+화면 직행), 판정 chCheck(id)는 missionMark 관문에서 호출(이기면 CH=null).
   GA: challenge_send/open/result.
+- **가이드 페이지(2026-07-11)**: `/guide/` 6종 — brain-games(허브)/sudoku/2048/iq-test/color-sort/slide-puzzle.
+  실전 공략 콘텐츠(양산형 아님), 생성기 .logs/gen_guides.py(gitignore), 랜딩과 동일 스타일+crumb.
+  홈 푸터·랜딩 3종에서 링크, sitemap 등재. 신규 게임 추가 시 검색 수요 있으면 가이드도 함께 검토.
 - **키워드 랜딩(2026-07-10)**: `/sudoku/` `/iq-test/` `/braintype/` 정적 페이지(특징·방법·FAQ·canonical·GA4).
   본체 진입은 `?game=<id>` 딥링크(screen-<id> 존재 검증). 홈 하단 .site-footer 내부링크(ko에서만 표시). sitemap 등재.
 - **공유카드 v2(2026-07-10)**: makeShareCard = 그라데이션 배경+흰 카드+다크 텍스트, 상단 마스코트(_mascotImg 프리로드,
