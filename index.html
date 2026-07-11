@@ -780,7 +780,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-size="40" aria-label="Mallow 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="success" data-mallow-variant="pink" data-mallow-size="40" aria-label="Mallow 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
@@ -5921,7 +5921,7 @@ function btWrapText(g,text,cx,y,maxW,lh){
   return yy;
 }
 // 공용 카드 생성: {emoji, title, subtitle, lines[], desc, note, from, to} → canvas
-const _mascotImg=new Image(); _mascotImg.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(mallowSVG('happy',{size:120,standalone:true})); // 공유카드용 SVG 프리로드
+const _mascotImg=new Image(); _mascotImg.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(mallowSVG('success',{size:240,variant:'pink',standalone:true})); // 공유카드용 SVG 프리로드(핑크·웃는)
 function makeShareCard(o){
   const c=document.createElement('canvas'); c.width=600; c.height=800;
   const W=c.width, H=c.height, g=c.getContext('2d');
@@ -5936,11 +5936,10 @@ function makeShareCard(o){
   // 상단 브랜드: 마스코트 + Mallow + 태그라인
   if(_mascotImg.complete && _mascotImg.naturalWidth){
     g.imageSmoothingEnabled=true;
-    g.drawImage(_mascotImg, W/2-32, 48, 64, 64);
-    g.imageSmoothingEnabled=true;
+    g.drawImage(_mascotImg, W/2-50, 20, 100, 100);
   }
-  g.fillStyle='#fff'; g.font='800 36px sans-serif'; g.fillText('Mallow', W/2, 152);
-  if(o.subtitle){ g.font='500 21px sans-serif'; g.fillStyle='rgba(255,255,255,0.85)'; g.fillText(o.subtitle, W/2, 188); }
+  g.fillStyle='#fff'; g.font='800 38px sans-serif'; g.fillText('Mallow', W/2, 162);
+  if(o.subtitle){ g.font='500 21px sans-serif'; g.fillStyle='rgba(255,255,255,0.85)'; g.fillText(o.subtitle, W/2, 196); }
   // 흰 카드
   g.save();
   g.shadowColor='rgba(0,0,0,0.22)'; g.shadowBlur=30; g.shadowOffsetY=10;
