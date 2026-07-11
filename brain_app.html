@@ -299,7 +299,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .mg-stat-divider{width:1px;height:42px;background:var(--border2)}
 
 .mg-timer{display:inline-block;background:#ffe4ec;color:#d05577;font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;padding:.5rem 1.6rem;border-radius:var(--radius2);letter-spacing:.03em;box-shadow:0 2px 8px rgba(240,80,110,.14)}
-.mg-timer.warn{background:linear-gradient(135deg,#d61f3c,#e64a4a);animation:mgPulse .6s infinite}
+.mg-timer.warn{background:linear-gradient(135deg,#d61f3c,#e64a4a);color:#fff;text-shadow:0 1px 2px rgba(120,0,20,.35);box-shadow:0 3px 10px rgba(214,31,60,.35);animation:mgPulse .6s infinite}
 @keyframes mgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
 .mg-board{background:var(--bg3);border-radius:var(--radius2);padding:1.5rem;border:1px solid var(--border)}
@@ -736,6 +736,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
 .ab-val{width:26px;text-align:right;font-size:.82rem;font-weight:700;color:var(--text)}
 .ab-delta{width:34px;font-size:.66rem;font-weight:700;color:var(--teal2)}
+@keyframes abPop{0%{transform:scale(1)}28%{transform:scale(1.55)}100%{transform:scale(1)}}
+.ab-val.up{display:inline-block;color:var(--teal2);animation:abPop .75s ease}
+.ab-delta.up{display:inline-block;animation:abPop .75s ease .05s both}
+.ab-fill.up{box-shadow:0 0 9px rgba(33,166,122,.55)}
+.ab-head-val.up{display:inline-block;animation:abPop .9s ease}
+.rec-row.isnew{border-color:#ffcf87;background:linear-gradient(90deg,#fff8ea,#fff);box-shadow:0 2px 12px rgba(230,160,60,.18)}
+.rec-new-badge{display:inline-block;font-size:.58rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff8a5b,#ff5f9e);padding:.12rem .42rem;border-radius:999px;margin-left:.45rem;vertical-align:middle;letter-spacing:.04em;box-shadow:0 2px 6px rgba(255,95,158,.35);animation:abPop .85s ease}
 @media (max-width:640px){
   .home-hi{font-size:1.15rem}
   .hf-emoji{font-size:2.6rem}
@@ -3780,6 +3787,22 @@ function fxScorePop(x,y,text,color){ if(fxReduced()) return; const layer=_fxLaye
 function fxCombo(text){ if(fxReduced()) return; const b=document.createElement('div'); b.className='fx-combo'; b.textContent=text; document.body.appendChild(b); b.addEventListener('animationend',()=>b.remove()); }
 /* 요소 중심에서 축하 연출 */
 function fxCelebrate(el,text,color){ if(!el||!el.getBoundingClientRect) return; const r=el.getBoundingClientRect(); const x=r.left+r.width/2,y=r.top+r.height/2; fxBurst(x,y); if(text) fxScorePop(x,y-r.height*0.35,text,color); }
+/* 신기록 결과 화면: 점수 주변에 지속적으로 팡팡 */
+let _recordFxTimer=null;
+function stopRecordFx(){ if(_recordFxTimer){ clearInterval(_recordFxTimer); _recordFxTimer=null; } }
+function celebrateRecordScreen(){
+  stopRecordFx(); if(fxReduced()) return;
+  let scoreEl=null;
+  document.querySelectorAll('[id$="-result-card"]').forEach(c=>{ if(c.offsetParent!==null){ const s=c.querySelector('.iq-result-score'); if(s) scoreEl=s; } });
+  if(!scoreEl) return;
+  const emit=()=>{ if(!scoreEl.offsetParent){ stopRecordFx(); return; } const r=scoreEl.getBoundingClientRect(); const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    for(let k=0;k<2;k++){ const ox=(Math.random()-0.5)*r.width*1.25, oy=(Math.random()-0.5)*r.height*1.0; fxBurst(cx+ox,cy+oy,{count:7,spread:40}); } };
+  emit(); _recordFxTimer=setInterval(emit,620);
+}
+/* 신기록 게임 추적(내 기록 NEW 배지) */
+function _markNewRecord(id){ try{ const s=new Set(JSON.parse(localStorage.getItem('brain.newRecords')||'[]')); s.add(id); localStorage.setItem('brain.newRecords',JSON.stringify([...s])); }catch(e){} }
+function _getNewRecords(){ try{ return new Set(JSON.parse(localStorage.getItem('brain.newRecords')||'[]')); }catch(e){ return new Set(); } }
+function _clearNewRecords(){ try{ localStorage.removeItem('brain.newRecords'); }catch(e){} }
 
 function sfx(kind){
   if(kind==='good') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
@@ -3802,6 +3825,7 @@ function _audioUnlock(){
 ['pointerdown','touchend','keydown'].forEach(ev=>{ try{ document.addEventListener(ev,_audioUnlock,{passive:true}); }catch(e){} });
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
+  stopRecordFx();
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram','resetWordsearch','resetDiff','resetPitch','resetTrace'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
@@ -3827,7 +3851,7 @@ function showScreen(id){
   if(id==='vocab' && typeof renderLevelTabs==='function') renderLevelTabs();
   if(id==='home' && typeof renderHome==='function') renderHome();
   if(id==='games' && typeof renderGames==='function') renderGames();
-  if(id==='records' && typeof renderRecords==='function') renderRecords();
+  if(id==='records' && typeof renderRecords==='function'){ renderRecords(); markRecordsSeen(); }
   track('screen_open', {screen:id});
   window.scrollTo(0,0);
 }
@@ -5291,12 +5315,19 @@ function bt_loadBest(key){
     return o;
   }catch(e){ return empty; }
 }
-function bt_saveBest(key,obj){ try{ localStorage.setItem(key,JSON.stringify(obj)); }catch(e){} }
+function bt_saveBest(key,obj){
+  try{ const m=/^brain\.([a-z0-9]+)\.best$/.exec(key);
+    if(m){ const old=bt_loadBest(key); const oldMax=Math.max(old.easy.all,old.normal.all,old.hard.all);
+      const nm=Math.max((obj.easy&&obj.easy.all)||0,(obj.normal&&obj.normal.all)||0,(obj.hard&&obj.hard.all)||0);
+      if(nm>oldMax) _markNewRecord(m[1]);
+    } }catch(e){}
+  try{ localStorage.setItem(key,JSON.stringify(obj)); }catch(e){}
+}
 function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기록(전체)이면 true
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
   let newAll=false;
-  if(score>b.all){ b.all=score; newAll=true; sfx('win'); }
+  if(score>b.all){ b.all=score; newAll=true; sfx('win'); setTimeout(celebrateRecordScreen,140); }
   if(score>b.day){ b.day=score; }
   return newAll;
 }
@@ -7150,28 +7181,38 @@ function abilityContributors(a){
     .sort((x,y)=>y.w-x.w);
 }
 function toggleAbility(a){ const el=document.getElementById('abd-'+a); if(el) el.style.display=(el.style.display==='none'?'block':'none'); }
+function _abilitySeen(){ try{ return JSON.parse(localStorage.getItem('brain.ability.seen')||'{}'); }catch(e){ return {}; } }
+function _abilitySaveSeen(scores,overall){ try{ localStorage.setItem('brain.ability.seen',JSON.stringify({scores:scores,overall:overall})); }catch(e){} }
+function markRecordsSeen(){
+  try{ const sc=abilityScores(); const played=ABILITIES.filter(a=>sc[a]>0); const overall=played.length?Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length):0; _abilitySaveSeen(sc,overall); }catch(e){}
+  _clearNewRecords();
+}
 function renderAbility(){
   const wrap=document.getElementById('ability-graph'); if(!wrap) return;
   const sc=abilityScores(); const dl=abilityDelta(sc);
+  const seenObj=_abilitySeen(); const seen=seenObj.scores||{}; const seenOverall=seenObj.overall||0;
   const played=ABILITIES.filter(a=>sc[a]>0);
   const overall = played.length? Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length) : 0;
   setTxt('ability-overall', overall);
+  const ov=document.getElementById('ability-overall'); if(ov && overall>seenOverall){ ov.classList.remove('up'); void ov.offsetWidth; ov.classList.add('up'); }
   if(typeof drawRadar==='function') drawRadar(sc);
   wrap.innerHTML='';
   ABILITIES.forEach(a=>{
     const v=sc[a]||0, d=dl[a]||0;
+    const pv=seen[a]||0, justUp=v>pv;
     const cons=abilityContributors(a);
     const detail = cons.length ? cons.map(x=>gameMeta(x.id).emoji+' '+t(gameMeta(x.id).key)+' lv.'+x.lvl).join(' · ') : t('records.noData');
     const row=document.createElement('div'); row.className='ab-row';
     row.innerHTML='<div class="ab-line" onclick="toggleAbility(\''+a+'\')">'+
         '<span class="ab-name">'+t(ABILITY_CAT[a])+'</span>'+
-        '<div class="ab-bar"><div class="ab-fill" style="width:'+v+'%"></div></div>'+
-        '<span class="ab-val">'+(v>0?v:'—')+'</span>'+
-        (d>0?'<span class="ab-delta">▲'+d+'</span>':'<span class="ab-delta"></span>')+
+        '<div class="ab-bar"><div class="ab-fill'+(justUp?' up':'')+'" data-tw="'+v+'" style="width:'+(justUp?pv:v)+'%"></div></div>'+
+        '<span class="ab-val'+(justUp?' up':'')+'">'+(v>0?v:'—')+'</span>'+
+        (d>0?'<span class="ab-delta'+(justUp?' up':'')+'">▲'+d+'</span>':'<span class="ab-delta"></span>')+
       '</div>'+
       '<div class="ab-detail" id="abd-'+a+'" style="display:none">'+detail+'</div>';
     wrap.appendChild(row);
   });
+  requestAnimationFrame(()=>{ wrap.querySelectorAll('.ab-fill.up').forEach(f=>{ f.style.width=(f.getAttribute('data-tw')||0)+'%'; }); });
 }
 function drawRadar(sc){
   const c=document.getElementById('ability-radar'); if(!c||!c.getContext) return;
@@ -7201,12 +7242,14 @@ function renderRecords(){
   const recVis=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external);
   const recOrder=[], recByGrp={};               // 같은 카테고리끼리 인접 표시
   recVis.forEach(g=>{ if(!recByGrp[g.grp]){ recByGrp[g.grp]=[]; recOrder.push(g.grp); } recByGrp[g.grp].push(g); });
+  const newSet=_getNewRecords();
   recOrder.forEach(grp=>recByGrp[grp].forEach(g=>{
     const mx=gameBestVal(g.id);
-    const row=document.createElement('div'); row.className='rec-row';
+    const isNew=newSet.has(g.id) && mx>0;
+    const row=document.createElement('div'); row.className='rec-row'+(isNew?' isnew':'');
     row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+
       '<span class="rec-cat">'+t(g.grp)+'</span>'+
-      '<span class="rec-best">'+(mx>0?('🏆 '+mx):'—')+'</span>';
+      '<span class="rec-best'+(isNew?' up':'')+'">'+(mx>0?('🏆 '+mx):'—')+(isNew?'<span class="rec-new-badge">NEW</span>':'')+'</span>';
     body.appendChild(row);
   }));
 }
