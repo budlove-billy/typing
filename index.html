@@ -467,6 +467,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ft-ghost .ft-gon{background:var(--purple);border-radius:4px}
 .ft-ghost.bad{opacity:.75}
 .ft-ghost.bad .ft-gon{background:#e0475a}
+#fit-game-card{position:relative}
+.ft-over{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(24,34,53,.5);border-radius:inherit;z-index:20;animation:ftFade .18s ease}
+.ft-over-box{background:#fff;border-radius:16px;padding:1.5rem 1.8rem;text-align:center;box-shadow:0 10px 34px rgba(0,0,0,.22)}
+@keyframes ftFade{from{opacity:0}to{opacity:1}}
 .ft-cell.pre{background:var(--teal)}
 .ft-cell.prebad{background:#ef9aa8}
 .no-wrap{text-align:center;overflow-x:auto;padding-bottom:.3rem}
@@ -2306,6 +2310,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="gm-status" data-i18n="fit.guide">조각을 고른 뒤 놓을 칸을 누르세요</div>
     <div class="ft-board" id="ft-board"></div>
     <div class="ft-tray" id="ft-tray"></div>
+    <div class="ft-over" id="ft-over" style="display:none"><div class="ft-over-box"><div style="font-size:2.6rem;margin-bottom:.2rem">🧱</div><h3 style="margin:.2rem 0" data-i18n="fit.gameOver">게임 종료!</h3><p style="color:var(--text2);font-size:.9rem;margin:0" data-i18n="fit.noSpace">더 이상 블록을 놓을 수 없어요</p></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveFit()" data-i18n="fit.leave">나가기</button></div>
   </div>
   <div class="card" id="fit-result-card" style="display:none;text-align:center">
@@ -2742,7 +2747,7 @@ const I18N = {
   "fit.guide": {ko:"조각을 고른 뒤 놓을 칸을 누르세요", en:"Pick a piece, then tap a cell to place", th:"เลือกชิ้นแล้วแตะช่องเพื่อวาง"},
   "fit.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "fit.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "fit.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
-  "fit.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "fit.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "fit.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "fit.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "fit.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "fit.noSpace": {ko:"더 이상 블록을 놓을 수 없어요", en:"No more moves — the board is stuck!", th:"วางบล็อกไม่ได้แล้ว — กระดานตัน!"}, "fit.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.nono": {ko:"픽셀 로직", en:"Pixel Logic", th:"พิกเซลลอจิก"},
   "nono.title": {ko:"픽셀 로직", en:"Pixel Logic", th:"พิกเซลลอจิก"},
   "nono.intro": {ko:"가장자리 <b>숫자 힌트</b>로 어떤 칸을 칠할지 추리하세요. 줄마다 연속으로 칠할 칸 수입니다.<br>찍지 않고 <b>논리</b>로만 풀 수 있게 만들어집니다.", en:"Use the <b>number clues</b> on the edges to deduce which cells to fill — each is a run of filled cells.<br>Every puzzle is solvable by <b>pure logic</b>, no guessing.", th:"ใช้<b>เลขใบ้</b>ที่ขอบเพื่อหาช่องที่ต้องระบาย แต่ละเลขคือจำนวนช่องต่อเนื่อง<br>ทุกด่านแก้ได้ด้วย<b>ตรรกะ</b>ล้วนๆ ไม่ต้องเดา"},
@@ -7966,8 +7971,10 @@ function ftDoPlace(idx,r,c){ if(FT.over||!FT.running) return; const item=FT.tray
   if(full.length) FT.score+=full.length*FT.n*4;
   item.used=true; sfx(full.length?'win':'good');
   if(FT.tray.every(x=>x.used)) ftNewTray();
-  ftRender(); if(!ftAnyFit()) finishFit(); }
-function startFit(){ FT.n=FT_CFG[FT.diff].n; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0)); FT.score=0; FT.over=false; FT.running=true; ftNewTray();
+  ftRender(); if(!ftAnyFit()) ftGameOver(); }
+function ftGameOver(){ if(FT.over) return; FT.over=true; sfx('bad'); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='flex';
+  clearTimeout(FT.overT); FT.overT=setTimeout(()=>{ const o=document.getElementById('ft-over'); if(o) o.style.display='none'; if(FT.running) finishFit(); }, 1300); }
+function startFit(){ FT.n=FT_CFG[FT.diff].n; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0)); FT.score=0; FT.over=false; FT.running=true; ftNewTray(); clearTimeout(FT.overT); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none';
   document.getElementById('fit-intro-card').style.display='none'; document.getElementById('fit-result-card').style.display='none'; document.getElementById('fit-game-card').style.display='block'; ftRender(); }
 function finishFit(){ if(!FT.running) return; FT.over=true; FT.running=false;
   const nr=bt_recordScore(FT.best,FT.diff,FT.score); bt_saveBest('brain.fit.best',FT.best); missionMark('fit');
@@ -7975,7 +7982,7 @@ function finishFit(){ if(!FT.running) return; FT.over=true; FT.running=false;
   document.getElementById('ft-result-emoji').textContent=nr?'🏆':'🧱'; document.getElementById('ft-result-title').textContent=nr?t('fit.newRecord'):t('fit.gameOver');
   document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent=FT_DIFF_LABEL(FT.diff); document.getElementById('ft-r-best').textContent=FT.best[FT.diff].all; ftUpdateBestLine(); }
 function leaveFit(){ resetFit(); showScreen('games'); }
-function resetFit(){ FT.running=false; FT.over=false; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
+function resetFit(){ FT.running=false; FT.over=false; clearTimeout(FT.overT); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none'; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
 
 // ========== 픽셀 로직 / 노노그램 (논리) ==========
 const NO_CFG={ easy:{n:5,dens:0.55,base:500}, normal:{n:8,dens:0.55,base:1100}, hard:{n:10,dens:0.55,base:1800} };
