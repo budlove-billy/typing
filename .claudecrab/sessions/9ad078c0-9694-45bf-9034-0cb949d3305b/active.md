@@ -1,16 +1,14 @@
 # Active Session State
 
 ## Current task
-Wave2-3 신규 7종 일괄 구현 완료(odd 포함 총 8종 이번 세션). 활성 30종.
-문법 컴파일 PASS, 배선/i18n 정합성 PASS(about.p1/p2는 숫자키 오탐). index=brain_app 동기화 후 커밋+push 배포 진행.
+2차 신규 4종(wordsearch/diff/pitch/trace) 구현 완료 → 활성 33종. 검증 PASS 후 배포.
+모든 인지 영역 ≥2종 달성(언어 anagram+wordsearch=2, 관찰 spot+odd+diff=3, 청각 melody+rhythm+pitch=3, 협응 whack+catch+trace=3).
 
 ## Decisions
-- flank/guess/rev/rhythm/catch/fit/nono/anagram 전부 기존 패턴 미러링 + 생성형 선검증(.logs/gen_sim.mjs) 후 이식.
-- anagram = 언어 축(vocab/typing 대체). ko+en 동시, th 숨김(langs 필터). vocab/typing 소스 보존.
-- nono 라인솔버 유일해 생성(5/8/10 즉시). fit 폴리오미노 탭배치. catch 4레인 낙하. rhythm 템포정규화(1.7 임계).
-- 미션풀 A+rev,rhythm / B+flank,catch / C+fit. 능력치 8종 ABILITY_MAP/GAME_REF 추가.
+- 생성 선검증은 반드시 실제 앱 shuffleArr 의미(비변형)로(.logs/gen_sim2.mjs). wsPlace 500/500·tcWalk 안정.
+- wordsearch=ko+en(langs 필터, th 숨김), AG_WORDS 재활용. pointer 드래그+elementFromPoint.
+- 검증 3종 통과: 문법 컴파일 / wire_check(배선·chState·i18n, about.p1/p2는 숫자키 오탐) / runtime_probe(4종 start 무예외).
 
 ## Open questions
-- ⚠️ 라이브 스모크 테스트(실제 플레이) 미완 — 이 환경 playwright/webread 없음. 배포 후 사용자 확인 필요:
-  nono 클루 레이아웃/판정, catch 낙하·바구니 타이밍, rhythm 오디오 첫탭 resume, fit 배치 감도, anagram ko 음절 타일.
-- 튜닝 레버(난이도 수치)는 플레이 후 조정 대상.
+- ⚠️ 라이브 스모크: ws/trace 모바일 드래그 정밀도, pitch 오디오 첫재생, diff 큰 판 가독성. 배포 후 확인.
+- 후속 후보: ko 전용 언어게임(끝말잇기/속담), 개인정보처리방침(로그인 시).

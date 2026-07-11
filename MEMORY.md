@@ -124,7 +124,13 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **결과 화면 추천(2026-07-12)**: 모든 게임 결과카드 하단에 **약점 보완 추천 3종**. `missionMark(id)`에서 `renderRecs(id)` 호출(공통 훅) →
   `recommendGames(cur,3)`: need = 0.55*(100-gameLevel) + 0.45*(약한 능력축 가중) + 미플레이 가점22 + 소량 랜덤. 자기자신/external/braintype/lang필터 제외, ABILITY_MAP 있는 게임만.
   `<id>-result-card`에 `.rec-box` append(중복 제거). i18n `rec.title`. 결과카드 없는 게임(iq/math 등 일부)은 자동 skip. 검증 `.logs/runtime_probe.mjs`.
-- 다음 후보: 어림 계산(완료), 개인정보처리방침(로그인 도입 시 필수).
+- **신규(2026-07-12): 얇은 영역 4종(2차) 배포** → 활성 **33종**. 모든 인지 영역 ≥2종 달성.
+  - **wordsearch(숨은 단어 찾기/언어)**: 글자 격자서 단어 드래그 탐색(anagram=재배열과 구분). AG_WORDS 재활용, ko+en(langs), th 숨김. pointer 드래그+elementFromPoint. wsPlace 500/500 검증. WS. {lang:55,focus:30,space:15}. 미션B.
+  - **diff(틀린 그림 찾기/관찰)**: 두 이모지 격자 비교, 다른 칸 모두 탭(spot 색·odd 회전과 구분). 60s·오답-2s. DF. {focus:45,space:30,speed:25}. 미션B.
+  - **pitch(높은음 찾기/청각)**: n패드 중 살짝 높은 음 찾기(melody 순서·rhythm 박자와 구분=변별). 순차 자동재생+다시듣기. cents 축소 난이도. PT. {focus:50,memory:30,speed:20}. 미션A. 소리 필수.
+  - **trace(길 따라가기/협응)**: 초록점→빨간점 경로 이탈 없이 드래그(whack 탭·catch 이동과 구분=연속 정밀). SVG path+point-segment 히트테스트, tol=폭/2+11. lives3·레벨↑. TC. {focus:40,space:35,speed:25}. 미션C.
+  - 선검증 `.logs/gen_sim2.mjs`(wsPlace 배치·tcWalk 경로, **실제 shuffleArr 의미**), 배선 `.logs/wire_check.mjs`, 런타임 `.logs/runtime_probe.mjs`(4종 start 무예외). 라이브 스모크 필요(특히 ws/trace 드래그 모바일, pitch 오디오).
+- 다음 후보: 개인정보처리방침(로그인 도입 시 필수), ko 전용 언어게임(끝말잇기/속담) 후보.
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.
   braintype 언어가형 추천은 anagram으로 갱신 예정. `ABILITY_MAP.anagram={lang:70,memory:20,focus:10}`. 상세: **`신규게임-기획-능력영역별.md`** §4.

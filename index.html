@@ -486,6 +486,26 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .rec-card:active{transform:scale(.96)}
 .rec-emoji{font-size:1.7rem;line-height:1}
 .rec-name{font-size:.72rem;color:var(--text);text-align:center;line-height:1.2}
+/* ===== 신규 4종 (2차): wordsearch/diff/pitch/trace ===== */
+.ws-wrap{text-align:center;overflow-x:auto;padding-bottom:.3rem}
+.ws-grid{display:inline-grid;gap:3px;margin:0 auto;touch-action:none;user-select:none}
+.ws-cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:var(--bg3);border-radius:6px;font-weight:700;color:var(--text)}
+.ws-cell.sel{background:var(--purple);color:#fff}
+.ws-cell.found{background:var(--teal);color:#fff}
+.ws-words{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:.8rem}
+.ws-word{padding:.25rem .6rem;border-radius:999px;background:var(--bg3);font-size:.85rem;font-weight:600;color:var(--text)}
+.ws-word.done{background:var(--teal);color:#fff;text-decoration:line-through}
+.df-grids{display:flex;flex-direction:column;gap:.7rem;align-items:center}
+.df-grid{display:inline-grid;gap:4px}
+.df-cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:var(--bg3);border-radius:8px;font-size:1.4rem;cursor:pointer}
+.df-cell.found{box-shadow:0 0 0 3px var(--teal);background:#d8f3e6}
+.df-cell.miss{animation:bbShake .3s ease 1}
+.pt-pads{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;max-width:330px;margin:1.1rem auto}
+.pt-pad{width:74px;height:74px;border:none;border-radius:16px;background:#7e57f0;opacity:.58;cursor:pointer;font-size:1.5rem;color:#fff;transition:opacity .1s,transform .08s}
+.pt-pad.lit{opacity:1;box-shadow:0 0 18px rgba(126,87,240,.5)}
+.pt-pad:active{transform:scale(.95)}
+.tc-area{position:relative;width:100%;max-width:360px;margin:0 auto;background:var(--bg3);border-radius:var(--radius2);touch-action:none;user-select:none}
+.tc-area svg{display:block;width:100%;height:auto}
 /* 슬라이딩 퍼즐 */
 .sl-board{position:relative;width:100%;max-width:380px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
 .sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
@@ -2370,6 +2390,166 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
+<!-- ==================== WORDSEARCH SCREEN (숨은 단어 찾기 / 언어) ==================== -->
+<div class="screen" id="screen-wordsearch">
+  <div class="card" id="wordsearch-intro-card">
+    <div class="section-head"><h2 data-i18n="wordsearch.title">숨은 단어 찾기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="wordsearch.intro">
+      글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>
+      60초 동안 최대한 많은 단어를 찾아보세요.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="ws-diff-easy" onclick="setWordsearchDiff('easy')"><h3>🌱 <span data-i18n="wordsearch.easy">쉬움</span></h3><p data-i18n="wordsearch.easyDesc">6×6·3단어</p></div>
+      <div class="diff-btn active" id="ws-diff-normal" onclick="setWordsearchDiff('normal')"><h3>⚡ <span data-i18n="wordsearch.normal">보통</span></h3><p data-i18n="wordsearch.normalDesc">8×8·4단어</p></div>
+      <div class="diff-btn" id="ws-diff-hard" onclick="setWordsearchDiff('hard')"><h3>🔥 <span data-i18n="wordsearch.hard">어려움</span></h3><p data-i18n="wordsearch.hardDesc">9×9·대각선</p></div>
+    </div>
+    <button class="btn" onclick="startWordsearch()" data-i18n="wordsearch.startGame">게임 시작</button>
+    <div class="best-line" id="ws-intro-best"></div>
+  </div>
+  <div class="card" id="wordsearch-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="wordsearch.score">SCORE</div><div class="mg-stat-value" id="ws-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="wordsearch.combo">COMBO</div><div class="mg-stat-value" id="ws-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="ws-timer">01:00</div></div>
+    <div class="ws-words" id="ws-words"></div>
+    <div class="ws-wrap"><div class="ws-grid" id="ws-grid"></div></div>
+    <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveWordsearch()" data-i18n="wordsearch.leave">나가기</button></div>
+  </div>
+  <div class="card" id="wordsearch-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="ws-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="ws-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="ws-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="wordsearch.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="wordsearch.difficulty">난이도</span><span id="ws-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="wordsearch.maxCombo">최고 콤보</span><span id="ws-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="wordsearch.best">최고 기록</span><span id="ws-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetWordsearch()" data-i18n="wordsearch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('wordsearch')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('wordsearch')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== DIFF SCREEN (틀린 그림 찾기 / 관찰) ==================== -->
+<div class="screen" id="screen-diff">
+  <div class="card" id="diff-intro-card">
+    <div class="section-head"><h2 data-i18n="diff.title">틀린 그림 찾기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="diff.intro">
+      위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>
+      레벨이 오를수록 판이 커지고 차이가 많아집니다. 60초 타임어택.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="df-diff-easy" onclick="setDiffDiff('easy')"><h3>🌱 <span data-i18n="diff.easy">쉬움</span></h3><p data-i18n="diff.easyDesc">작은 판</p></div>
+      <div class="diff-btn active" id="df-diff-normal" onclick="setDiffDiff('normal')"><h3>⚡ <span data-i18n="diff.normal">보통</span></h3><p data-i18n="diff.normalDesc">기본</p></div>
+      <div class="diff-btn" id="df-diff-hard" onclick="setDiffDiff('hard')"><h3>🔥 <span data-i18n="diff.hard">어려움</span></h3><p data-i18n="diff.hardDesc">큰 판</p></div>
+    </div>
+    <button class="btn" onclick="startDiff()" data-i18n="diff.startGame">게임 시작</button>
+    <div class="best-line" id="df-intro-best"></div>
+  </div>
+  <div class="card" id="diff-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="diff.score">SCORE</div><div class="mg-stat-value" id="df-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="diff.combo">COMBO</div><div class="mg-stat-value" id="df-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="df-timer">01:00</div></div>
+    <div class="gm-status" id="df-status" data-i18n="diff.guide">다른 칸을 모두 찾으세요</div>
+    <div class="df-grids"><div class="df-grid" id="df-grid1"></div><div class="df-grid" id="df-grid2"></div></div>
+    <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveDiff()" data-i18n="diff.leave">나가기</button></div>
+  </div>
+  <div class="card" id="diff-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="df-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="df-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="df-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="diff.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="diff.difficulty">난이도</span><span id="df-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="diff.maxCombo">최고 콤보</span><span id="df-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="diff.best">최고 기록</span><span id="df-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetDiff()" data-i18n="diff.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('diff')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('diff')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== PITCH SCREEN (높은음 찾기 / 청각) ==================== -->
+<div class="screen" id="screen-pitch">
+  <div class="card" id="pitch-intro-card">
+    <div class="section-head"><h2 data-i18n="pitch.title">높은음 찾기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="pitch.intro">
+      패드들이 소리를 냅니다. 그중 <b>딱 하나만 살짝 높은 음</b>이에요. 잘 듣고 그 패드를 누르세요!<br>
+      🔊 소리를 꼭 켜주세요. 레벨이 오를수록 음 차이가 미세해집니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="pt-diff-easy" onclick="setPitchDiff('easy')"><h3>🌱 <span data-i18n="pitch.easy">쉬움</span></h3><p data-i18n="pitch.easyDesc">차이 큼</p></div>
+      <div class="diff-btn active" id="pt-diff-normal" onclick="setPitchDiff('normal')"><h3>⚡ <span data-i18n="pitch.normal">보통</span></h3><p data-i18n="pitch.normalDesc">기본</p></div>
+      <div class="diff-btn" id="pt-diff-hard" onclick="setPitchDiff('hard')"><h3>🔥 <span data-i18n="pitch.hard">어려움</span></h3><p data-i18n="pitch.hardDesc">차이 작음</p></div>
+    </div>
+    <button class="btn" onclick="startPitch()" data-i18n="pitch.startGame">게임 시작</button>
+    <div class="best-line" id="pt-intro-best"></div>
+  </div>
+  <div class="card" id="pitch-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="pitch.score">SCORE</div><div class="mg-stat-value" id="pt-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="pitch.combo">COMBO</div><div class="mg-stat-value" id="pt-combo">0</div></div>
+    </div>
+    <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="pt-timer">01:00</div></div>
+    <div class="gm-status" id="pt-status" data-i18n="pitch.listen">잘 들어보세요…</div>
+    <div class="pt-pads" id="pt-pads"></div>
+    <div style="display:flex;justify-content:center;gap:.5rem;margin-top:1rem">
+      <button class="btn btn-outline" onclick="ptReplay()">🔁 <span data-i18n="pitch.replay">다시 듣기</span></button>
+      <button class="btn btn-outline" onclick="leavePitch()" data-i18n="pitch.leave">나가기</button>
+    </div>
+  </div>
+  <div class="card" id="pitch-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="pt-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="pt-result-title">타임 오버!</h2>
+    <div class="iq-result-score" id="pt-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="pitch.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="pitch.difficulty">난이도</span><span id="pt-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="pitch.maxCombo">최고 콤보</span><span id="pt-r-combo">0</span></div>
+    <div class="result-row"><span data-i18n="pitch.best">최고 기록</span><span id="pt-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetPitch()" data-i18n="pitch.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('pitch')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('pitch')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
+<!-- ==================== TRACE SCREEN (길 따라가기 / 협응) ==================== -->
+<div class="screen" id="screen-trace">
+  <div class="card" id="trace-intro-card">
+    <div class="section-head"><h2 data-i18n="trace.title">길 따라가기</h2></div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="trace.intro">
+      <b>초록 점</b>에서 출발해 길을 벗어나지 않고 손가락(마우스)으로 <b>빨간 점</b>까지 이어보세요!<br>
+      길을 벗어나면 생명이 줄어요. 레벨이 오를수록 길이 좁고 길어집니다.
+    </p>
+    <div class="difficulty-row">
+      <div class="diff-btn" id="tc-diff-easy" onclick="setTraceDiff('easy')"><h3>🌱 <span data-i18n="trace.easy">쉬움</span></h3><p data-i18n="trace.easyDesc">넓고 짧음</p></div>
+      <div class="diff-btn active" id="tc-diff-normal" onclick="setTraceDiff('normal')"><h3>⚡ <span data-i18n="trace.normal">보통</span></h3><p data-i18n="trace.normalDesc">기본</p></div>
+      <div class="diff-btn" id="tc-diff-hard" onclick="setTraceDiff('hard')"><h3>🔥 <span data-i18n="trace.hard">어려움</span></h3><p data-i18n="trace.hardDesc">좁고 긺</p></div>
+    </div>
+    <button class="btn" onclick="startTrace()" data-i18n="trace.startGame">게임 시작</button>
+    <div class="best-line" id="tc-intro-best"></div>
+  </div>
+  <div class="card" id="trace-game-card" style="display:none">
+    <div class="mg-top-stats">
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trace.score">SCORE</div><div class="mg-stat-value" id="tc-score">0</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trace.life">LIFE</div><div class="mg-stat-value" id="tc-life">♥♥♥</div></div>
+      <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="trace.level">LEVEL</div><div class="mg-stat-value" id="tc-level">1</div></div>
+    </div>
+    <div class="gm-status" id="tc-status" data-i18n="trace.guide">초록 점에서 시작하세요</div>
+    <div class="tc-area" id="tc-area"></div>
+    <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveTrace()" data-i18n="trace.leave">나가기</button></div>
+  </div>
+  <div class="card" id="trace-result-card" style="display:none;text-align:center">
+    <div style="font-size:3rem;margin-bottom:.25rem" id="tc-result-emoji">🎉</div>
+    <h2 style="margin-bottom:.5rem" id="tc-result-title">게임 종료!</h2>
+    <div class="iq-result-score" id="tc-result-score">0</div>
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="trace.finalScore">최종 점수</div>
+    <div class="result-row"><span data-i18n="trace.difficulty">난이도</span><span id="tc-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="trace.maxLevel">도달 레벨</span><span id="tc-r-level">1</span></div>
+    <div class="result-row"><span data-i18n="trace.best">최고 기록</span><span id="tc-r-best">0</span></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetTrace()" data-i18n="trace.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('trace')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('trace')" data-i18n="ch.send">🎯 도전장</button></div>
+  </div>
+</div>
+
 <!-- RESULT OVERLAY (typing) -->
 <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
   <div class="result-card" onclick="event.stopPropagation()">
@@ -2579,6 +2759,53 @@ const I18N = {
   "anagram.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "anagram.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "anagram.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "anagram.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "anagram.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "anagram.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "rec.title": {ko:"💪 이 게임으로 약점을 채워보세요", en:"💪 Train your weak spots", th:"💪 ฝึกจุดที่ยังอ่อน"},
+  "nav.wordsearch": {ko:"숨은 단어 찾기", en:"Word Search", th:"หาคำที่ซ่อน"},
+  "wordsearch.title": {ko:"숨은 단어 찾기", en:"Word Search", th:"หาคำที่ซ่อน"},
+  "wordsearch.intro": {ko:"글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>60초 동안 최대한 많은 단어를 찾아보세요.", en:"Drag to find the <b>hidden words</b> in the letter grid! They hide across and down (diagonally on Hard).<br>Find as many as you can in 60 seconds.", th:"ลากเพื่อหา<b>คำที่ซ่อน</b>ในตารางอักษร! ซ่อนแนวนอน·ตั้ง (ยาก=ทแยง)<br>หาให้ได้มากที่สุดใน 60 วินาที"},
+  "wordsearch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "wordsearch.easyDesc": {ko:"6×6·3단어", en:"6×6 · 3 words", th:"6×6 · 3 คำ"},
+  "wordsearch.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "wordsearch.normalDesc": {ko:"8×8·4단어", en:"8×8 · 4 words", th:"8×8 · 4 คำ"},
+  "wordsearch.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "wordsearch.hardDesc": {ko:"9×9·대각선", en:"9×9 · diagonal", th:"9×9 · ทแยง"},
+  "wordsearch.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "wordsearch.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "wordsearch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "wordsearch.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "wordsearch.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "wordsearch.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "wordsearch.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "wordsearch.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "wordsearch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "wordsearch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "wordsearch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.diff": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
+  "diff.title": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
+  "diff.intro": {ko:"위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 차이가 많아집니다. 60초 타임어택.", en:"Compare the two boards and tap <b>every cell that differs</b>!<br>Higher levels bring bigger boards and more differences. 60-second time attack.", th:"เทียบสองกระดานแล้วแตะ<b>ทุกช่องที่ต่าง</b>!<br>เลเวลสูงขึ้น กระดานใหญ่ขึ้นและต่างมากขึ้น จับเวลา 60 วินาที"},
+  "diff.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "diff.easyDesc": {ko:"작은 판", en:"Small", th:"เล็ก"},
+  "diff.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "diff.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "diff.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "diff.hardDesc": {ko:"큰 판", en:"Large", th:"ใหญ่"},
+  "diff.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "diff.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "diff.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "diff.guide": {ko:"다른 칸을 모두 찾으세요", en:"Find every differing cell", th:"หาช่องที่ต่างทั้งหมด"},
+  "diff.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "diff.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "diff.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "diff.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "diff.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "diff.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "diff.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "diff.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.pitch": {ko:"높은음 찾기", en:"Pitch Finder", th:"หาเสียงสูง"},
+  "pitch.title": {ko:"높은음 찾기", en:"Pitch Finder", th:"หาเสียงสูง"},
+  "pitch.intro": {ko:"패드들이 소리를 냅니다. 그중 <b>딱 하나만 살짝 높은 음</b>이에요. 잘 듣고 그 패드를 누르세요!<br>🔊 소리를 꼭 켜주세요. 레벨이 오를수록 음 차이가 미세해집니다.", en:"The pads play tones — <b>just one is slightly higher</b>. Listen and tap it!<br>🔊 Turn sound on. Higher levels make the difference tinier.", th:"แป้นจะส่งเสียง <b>มีเพียงอันเดียวที่สูงกว่าเล็กน้อย</b> ฟังแล้วแตะเลย!<br>🔊 เปิดเสียงด้วย เลเวลสูงขึ้นความต่างจะน้อยลง"},
+  "pitch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "pitch.easyDesc": {ko:"차이 큼", en:"Big gap", th:"ต่างมาก"},
+  "pitch.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "pitch.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "pitch.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "pitch.hardDesc": {ko:"차이 작음", en:"Small gap", th:"ต่างน้อย"},
+  "pitch.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "pitch.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "pitch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
+  "pitch.listen": {ko:"잘 들어보세요…", en:"Listen…", th:"ฟังให้ดี…"}, "pitch.find": {ko:"다른 음을 찾으세요!", en:"Find the odd tone!", th:"หาเสียงที่ต่าง!"}, "pitch.replay": {ko:"다시 듣기", en:"Replay", th:"ฟังอีก"},
+  "pitch.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "pitch.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "pitch.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "pitch.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "pitch.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "pitch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "pitch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "pitch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "nav.trace": {ko:"길 따라가기", en:"Path Trace", th:"ลากตามทาง"},
+  "trace.title": {ko:"길 따라가기", en:"Path Trace", th:"ลากตามทาง"},
+  "trace.intro": {ko:"<b>초록 점</b>에서 출발해 길을 벗어나지 않고 손가락(마우스)으로 <b>빨간 점</b>까지 이어보세요!<br>길을 벗어나면 생명이 줄어요. 레벨이 오를수록 길이 좁고 길어집니다.", en:"Start at the <b>green dot</b> and drag to the <b>red dot</b> without leaving the path!<br>Straying costs a life. Higher levels make the path narrower and longer.", th:"เริ่มที่<b>จุดเขียว</b> แล้วลากไปยัง<b>จุดแดง</b>โดยไม่ออกนอกทาง!<br>ออกนอกทางเสียชีวิต เลเวลสูงขึ้นทางแคบและยาวขึ้น"},
+  "trace.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "trace.easyDesc": {ko:"넓고 짧음", en:"Wide & short", th:"กว้าง·สั้น"},
+  "trace.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "trace.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
+  "trace.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "trace.hardDesc": {ko:"좁고 긺", en:"Narrow & long", th:"แคบ·ยาว"},
+  "trace.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
+  "trace.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "trace.life": {ko:"LIFE", en:"LIFE", th:"ชีวิต"}, "trace.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "trace.guide": {ko:"초록 점에서 시작하세요", en:"Start at the green dot", th:"เริ่มที่จุดเขียว"}, "trace.stray": {ko:"길을 벗어났어요!", en:"Off the path!", th:"ออกนอกทาง!"}, "trace.clear": {ko:"통과! 다음 레벨", en:"Cleared! Next level", th:"ผ่าน! เลเวลถัดไป"},
+  "trace.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "trace.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
+  "trace.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "trace.maxLevel": {ko:"도달 레벨", en:"Level reached", th:"เลเวลที่ถึง"}, "trace.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
+  "trace.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "trace.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "trace.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.slide": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.title": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.intro": {ko:"빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>빠르게, 적은 이동으로 완성할수록 점수가 높아집니다. 판은 항상 풀 수 있게 섞여요!", en:"Slide tiles into the empty space to <b>arrange numbers in order</b>.<br>Finish faster with fewer moves for a higher score. Boards are always solvable!", th:"เลื่อนกระเบื้องเข้าช่องว่างเพื่อ<b>เรียงตัวเลขตามลำดับ</b><br>ยิ่งเร็วและเลื่อนน้อย คะแนนยิ่งสูง กระดานสับแบบแก้ได้เสมอ!"},
@@ -3392,7 +3619,7 @@ function _audioUnlock(){
 ['pointerdown','touchend','keydown'].forEach(ev=>{ try{ document.addEventListener(ev,_audioUnlock,{passive:true}); }catch(e){} });
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
-  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram'].forEach(fn=>{
+  ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram','resetWordsearch','resetDiff','resetPitch','resetTrace'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
 }
@@ -5545,6 +5772,10 @@ function gameShare(game){
   else if(game==='fit')   o={emoji:'🧱', title:t('fit.title'),    from:'#21a67a', to:'#4f7cff', lines:[t('fit.finalScore')+'  '+FT.score, FT_DIFF_LABEL(FT.diff)]};
   else if(game==='nono')  o={emoji:'🖼️', title:t('nono.title'),   from:'#4f7cff', to:'#182235', lines:[t('nono.finalScore')+'  '+(NO.score||0), NO_DIFF_LABEL(NO.diff)]};
   else if(game==='anagram')o={emoji:'🔤',title:t('anagram.title'),from:'#a06ef8', to:'#5aa7f0', lines:[t('anagram.score')+'  '+AG.score, t('anagram.maxCombo')+'  '+AG.maxCombo]};
+  else if(game==='wordsearch')o={emoji:'🔠',title:t('wordsearch.title'),from:'#5aa7f0', to:'#21a67a', lines:[t('wordsearch.score')+'  '+WS.score, t('wordsearch.maxCombo')+'  '+WS.maxCombo]};
+  else if(game==='diff')  o={emoji:'👀', title:t('diff.title'),   from:'#f0b429', to:'#7e57f0', lines:[t('diff.score')+'  '+DF.score, t('diff.maxCombo')+'  '+DF.maxCombo]};
+  else if(game==='pitch') o={emoji:'🎧', title:t('pitch.title'),  from:'#7e57f0', to:'#f06292', lines:[t('pitch.score')+'  '+PT.score, t('pitch.maxCombo')+'  '+PT.maxCombo]};
+  else if(game==='trace') o={emoji:'✏️', title:t('trace.title'),  from:'#4f7cff', to:'#21a67a', lines:[t('trace.finalScore')+'  '+TC.score, t('trace.maxLevel')+'  '+TC.level]};
   else if(game==='slide') o={emoji:'🧊', title:t('slide.title'),  from:'#42a5f5', to:'#7e57f0', lines:[t('slide.finalScore')+'  '+SL.score, t('slide.movesUsed')+'  '+SL.moves]};
   else if(game==='merge') o={emoji:'🍭', title:t('merge.title'),  from:'#f48fb1', to:'#7e57f0', lines:[t('merge.score')+'  '+MR.score, t('merge.maxTile')+'  '+MR.maxTile]};
   else if(game==='chop')  o={emoji:'🍡', title:t('chop.title'),   from:'#ff8a80', to:'#f06292', lines:[t('chop.score')+'  '+CP.score, CP_DIFF_LABEL(CP.diff)]};
@@ -6443,8 +6674,8 @@ function backupImport(){
 }
 
 // ========== 도전장 (서버 없는 1:1 점수 대결) ==========
-const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','odd','slide','merge','chop','sort','flank','guess','rev','rhythm','catch','fit','nono','anagram'];
-function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,odd:OD,slide:SL,merge:MR,chop:CP,sort:SO,flank:FK,guess:GU,rev:RV,rhythm:RH,catch:CA,fit:FT,nono:NO,anagram:AG}[id]; }
+const CH_GAMES=['flash','count','stroop','trail','switch','nback','rotate','cards','react','whack','melody','bubble','spot','odd','slide','merge','chop','sort','flank','guess','rev','rhythm','catch','fit','nono','anagram','wordsearch','diff','pitch','trace'];
+function chState(id){ return {flash:FM,count:HC,stroop:ST,trail:TR,switch:SW,nback:NB,rotate:RT,cards:CM,react:RC,whack:WK,melody:ML,bubble:BB,spot:SP,odd:OD,slide:SL,merge:MR,chop:CP,sort:SO,flank:FK,guess:GU,rev:RV,rhythm:RH,catch:CA,fit:FT,nono:NO,anagram:AG,wordsearch:WS,diff:DF,pitch:PT,trace:TC}[id]; }
 let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
@@ -6516,6 +6747,10 @@ const HOME_GAMES=[
   {id:'guess',  emoji:'📊', key:'nav.guess',  best:'brain.guess.best',  grp:'cat.calc'},
   {id:'nono',   emoji:'🖼️', key:'nav.nono',   best:'brain.nono.best',   grp:'cat.logic'},
   {id:'anagram',emoji:'🔤', key:'nav.anagram',best:'brain.anagram.best',grp:'cat.lang', langs:['ko','en']},
+  {id:'wordsearch',emoji:'🔠',key:'nav.wordsearch',best:'brain.wordsearch.best',grp:'cat.lang', langs:['ko','en']},
+  {id:'diff',   emoji:'👀', key:'nav.diff',   best:'brain.diff.best',   grp:'cat.sight'},
+  {id:'pitch',  emoji:'🎧', key:'nav.pitch',  best:'brain.pitch.best',  grp:'cat.sound'},
+  {id:'trace',  emoji:'✏️', key:'nav.trace',  best:'brain.trace.best',  grp:'cat.coord'},
   // 비활성화(출시 범위 제외 — 한국어 전용·두뇌게임 포지셔닝과 불일치): vocab, typing
   // {id:'vocab',  emoji:'📚', key:'nav.vocab',  grp:'cat.lang'},
   // {id:'typing', emoji:'⌨️', key:'nav.typing', grp:'cat.lang'},
@@ -6537,9 +6772,9 @@ function homeVisit(){
   return v;
 }
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
-const MISSION_A=['flash','count','nback','cards','melody','rev','rhythm'];   // 기억·청각
-const MISSION_B=['stroop','trail','react','whack','spot','odd','chop','flank','catch'];          // 주의·속도·협응
-const MISSION_C=['switch','rotate','slide','fit'];                 // 유연성·공간
+const MISSION_A=['flash','count','nback','cards','melody','rev','rhythm','pitch'];   // 기억·청각
+const MISSION_B=['stroop','trail','react','whack','spot','odd','chop','flank','catch','diff','wordsearch'];          // 주의·속도·협응·관찰·언어탐색
+const MISSION_C=['switch','rotate','slide','fit','trace'];                 // 유연성·공간·협응
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
   return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
@@ -6674,10 +6909,11 @@ const ABILITY_MAP={
   rotate:{space:70,logic:20,focus:10}, math:{calc:70,speed:20,focus:10}, iq:{logic:60,calc:20,lang:20}, vocab:{lang:90,memory:10},
   sudoku:{logic:70,calc:20,focus:10}, typing:{lang:50,speed:40,focus:10},
   whack:{speed:60,focus:40}, melody:{memory:70,focus:30}, bubble:{calc:60,logic:25,speed:15}, spot:{focus:50,speed:30,space:20}, odd:{focus:40,space:30,speed:30}, slide:{space:60,logic:25,focus:15}, merge:{calc:50,logic:30,space:20}, chop:{speed:70,focus:30}, sort:{logic:60,space:20,focus:20},
-  flank:{focus:60,speed:30,logic:10}, guess:{calc:70,speed:20,focus:10}, rev:{memory:70,focus:30}, rhythm:{memory:50,focus:30,speed:20}, catch:{speed:50,focus:30,space:20}, fit:{space:60,logic:25,focus:15}, nono:{logic:60,focus:25,space:15}, anagram:{lang:70,memory:20,focus:10}
+  flank:{focus:60,speed:30,logic:10}, guess:{calc:70,speed:20,focus:10}, rev:{memory:70,focus:30}, rhythm:{memory:50,focus:30,speed:20}, catch:{speed:50,focus:30,space:20}, fit:{space:60,logic:25,focus:15}, nono:{logic:60,focus:25,space:15}, anagram:{lang:70,memory:20,focus:10},
+  wordsearch:{lang:55,focus:30,space:15}, diff:{focus:45,space:30,speed:25}, pitch:{focus:50,memory:30,speed:20}, trace:{focus:40,space:35,speed:25}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:6000,chop:130,sort:650,flank:650,guess:600,rev:130,rhythm:130,catch:450,fit:800,nono:1300,anagram:350};
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:6000,chop:130,sort:650,flank:650,guess:600,rev:130,rhythm:130,catch:450,fit:800,nono:1300,anagram:350,wordsearch:400,diff:600,pitch:500,trace:600};
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
@@ -7783,6 +8019,192 @@ function finishAnagram(){ clearInterval(AG.timer); AG.running=false;
   document.getElementById('ag-r-combo').textContent=AG.maxCombo; document.getElementById('ag-r-best').textContent=AG.best[AG.diff].all; agUpdateBestLine(); }
 function leaveAnagram(){ resetAnagram(); showScreen('games'); }
 function resetAnagram(){ clearInterval(AG.timer); AG.running=false; const g=document.getElementById('anagram-game-card');if(g)g.style.display='none'; const r=document.getElementById('anagram-result-card');if(r)r.style.display='none'; const i=document.getElementById('anagram-intro-card');if(i)i.style.display='block'; agUpdateBestLine(); }
+
+// ========== 숨은 단어 찾기 (언어) ==========
+const WS_CFG={ easy:{n:6,k:3,lens:{ko:[3],en:[3,4]},diag:false}, normal:{n:8,k:4,lens:{ko:[3,4],en:[4,5]},diag:false}, hard:{n:9,k:5,lens:{ko:[4],en:[5]},diag:true} };
+const WS_TIME=60;
+const WS_FILL_KO='가나다라마바사아자차카타파하고노도로모보소오조기니디리미비시이지구누두루무부수우주';
+const WS={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:WS_TIME, timer:null, running:false, n:8, grid:[], targets:[], drag:null, best:bt_loadBest('brain.wordsearch.best') };
+function WS_DIFF_LABEL(d){ return d==='easy'?t('wordsearch.easy'):d==='hard'?t('wordsearch.hard'):t('wordsearch.normal'); }
+function wsUpdateBestLine(){ const el=document.getElementById('ws-intro-best'); if(el) el.textContent=bt_bestLineText(WS.best,WS.diff); }
+function setWordsearchDiff(d){ WS.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ws-diff-'+k).classList.toggle('active',k===d)); wsUpdateBestLine(); }
+function wsStats(){ document.getElementById('ws-score').textContent=WS.score; document.getElementById('ws-combo').textContent=WS.combo; }
+function wsTimer(){ const el=document.getElementById('ws-timer'); const m=Math.floor(WS.timeLeft/60),s=WS.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=WS.timeLeft<=10?'var(--red)':''; }
+function wsFill(lang){ if(lang==='ko'){ return WS_FILL_KO[Math.floor(Math.random()*WS_FILL_KO.length)]; } return String.fromCharCode(65+Math.floor(Math.random()*26)); }
+function wsPlace(n, words, diag){
+  const grid=Array.from({length:n},()=>Array(n).fill(null)); const dirs=diag?[[0,1],[1,0],[1,1],[1,-1]]:[[0,1],[1,0]];
+  for(const w of words){ const cells=[...w], len=cells.length; let placed=false;
+    for(let tryn=0;tryn<120&&!placed;tryn++){ const d=dirs[Math.floor(Math.random()*dirs.length)];
+      const rMin=d[0]<0?len-1:0, rMax=d[0]>0?n-len:n-1, cMin=d[1]<0?len-1:0, cMax=d[1]>0?n-len:n-1; if(rMax<rMin||cMax<cMin) continue;
+      const r0=rMin+Math.floor(Math.random()*(rMax-rMin+1)), c0=cMin+Math.floor(Math.random()*(cMax-cMin+1));
+      let ok=true; for(let i=0;i<len;i++){ const cur=grid[r0+d[0]*i][c0+d[1]*i]; if(cur!==null&&cur!==cells[i]){ok=false;break;} }
+      if(!ok) continue; for(let i=0;i<len;i++){ grid[r0+d[0]*i][c0+d[1]*i]=cells[i]; } placed=true; }
+    if(!placed) return null; }
+  return grid;
+}
+function wsBuild(){
+  const cfg=WS_CFG[WS.diff], lang=(CURRENT_LANG==='ko')?'ko':'en', n=cfg.n; WS.n=n;
+  let pool=[]; cfg.lens[lang].forEach(L=>{ if(AG_WORDS[lang][L]) pool=pool.concat(AG_WORDS[lang][L]); }); pool=pool.filter(w=>[...w].length<=n);
+  for(let attempt=0;attempt<50;attempt++){ const words=shuffleArr(pool).slice(0,cfg.k); if(words.length<cfg.k) break;
+    const grid=wsPlace(n, words, cfg.diag);
+    if(grid){ for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(grid[r][c]===null) grid[r][c]=wsFill(lang); WS.grid=grid; WS.targets=words.map(w=>({word:w,found:false})); return true; } }
+  return false;
+}
+function wsCellEl(r,c){ const g=document.getElementById('ws-grid'); return g.children[r*WS.n+c]; }
+function wsRenderWords(){ document.getElementById('ws-words').innerHTML=WS.targets.map(tt=>'<span class="ws-word'+(tt.found?' done':'')+'">'+tt.word+'</span>').join(''); }
+function wsRender(){ const cs=Math.max(26,Math.floor(300/WS.n)); const g=document.getElementById('ws-grid');
+  g.style.gridTemplateColumns='repeat('+WS.n+','+cs+'px)'; g.style.fontSize=Math.max(12,Math.round(cs*0.42))+'px'; g.innerHTML='';
+  for(let r=0;r<WS.n;r++)for(let c=0;c<WS.n;c++){ const d=document.createElement('div'); d.className='ws-cell'; d.dataset.r=r; d.dataset.c=c; d.style.height=cs+'px'; d.textContent=WS.grid[r][c]; g.appendChild(d); }
+  wsRenderWords();
+}
+function wsCellAt(x,y){ const el=document.elementFromPoint(x,y); if(el&&el.classList.contains('ws-cell')) return {r:+el.dataset.r,c:+el.dataset.c}; return null; }
+function wsLine(a,b){ const dr=b.r-a.r,dc=b.c-a.c; if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))) return [a]; const len=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc); const out=[]; for(let i=0;i<=len;i++) out.push({r:a.r+sr*i,c:a.c+sc*i}); return out; }
+function wsHighlight(cells){ document.querySelectorAll('.ws-cell.sel').forEach(e=>e.classList.remove('sel')); cells.forEach(p=>{ const el=wsCellEl(p.r,p.c); if(el&&!el.classList.contains('found')) el.classList.add('sel'); }); }
+function wsCommit(){ if(!WS.drag) return; const cells=wsLine(WS.drag.start,WS.drag.cur); document.querySelectorAll('.ws-cell.sel').forEach(e=>e.classList.remove('sel'));
+  const str=cells.map(p=>WS.grid[p.r][p.c]).join(''), rev=cells.slice().reverse().map(p=>WS.grid[p.r][p.c]).join(''); WS.drag=null;
+  const tt=WS.targets.find(t=>!t.found&&(t.word===str||t.word===rev));
+  if(tt){ tt.found=true; WS.combo++; WS.maxCombo=Math.max(WS.maxCombo,WS.combo); WS.score+=[...tt.word].length*4+(WS.combo-1)*2; sfx('good');
+    cells.forEach(p=>{ const el=wsCellEl(p.r,p.c); if(el) el.classList.add('found'); }); wsRenderWords(); wsStats();
+    if(WS.targets.every(t=>t.found)){ WS.score+=20; sfx('win'); if(wsBuild()) wsRender(); wsStats(); } }
+  else { WS.combo=0; wsStats(); }
+}
+function startWordsearch(){ WS.score=0;WS.combo=0;WS.maxCombo=0;WS.timeLeft=WS_TIME;WS.running=true;WS.drag=null;
+  document.getElementById('wordsearch-intro-card').style.display='none'; document.getElementById('wordsearch-result-card').style.display='none'; document.getElementById('wordsearch-game-card').style.display='block';
+  if(!wsBuild()){ WS.grid=Array.from({length:WS.n},()=>Array(WS.n).fill('?')); WS.targets=[]; } wsRender(); wsStats(); wsTimer();
+  const g=document.getElementById('ws-grid');
+  g.onpointerdown=e=>{ if(!WS.running)return; const p=wsCellAt(e.clientX,e.clientY); if(p){ WS.drag={start:p,cur:p}; wsHighlight(wsLine(p,p)); e.preventDefault(); } };
+  g.onpointermove=e=>{ if(!WS.drag)return; const p=wsCellAt(e.clientX,e.clientY); if(p){ WS.drag.cur=p; wsHighlight(wsLine(WS.drag.start,p)); } };
+  if(!WS._up){ document.addEventListener('pointerup',()=>{ if(WS.drag&&WS.running) wsCommit(); }); WS._up=true; }
+  clearInterval(WS.timer); WS.timer=setInterval(()=>{ WS.timeLeft--; wsTimer(); if(WS.timeLeft<=0) finishWordsearch(); },1000);
+}
+function finishWordsearch(){ clearInterval(WS.timer); WS.running=false; WS.drag=null;
+  const nr=bt_recordScore(WS.best,WS.diff,WS.score); bt_saveBest('brain.wordsearch.best',WS.best); missionMark('wordsearch');
+  document.getElementById('wordsearch-game-card').style.display='none'; document.getElementById('wordsearch-result-card').style.display='block';
+  document.getElementById('ws-result-emoji').textContent=nr?'🏆':'🔠'; document.getElementById('ws-result-title').textContent=nr?t('wordsearch.newRecord'):t('wordsearch.timeOver');
+  document.getElementById('ws-result-score').textContent=WS.score; document.getElementById('ws-r-diff').textContent=WS_DIFF_LABEL(WS.diff);
+  document.getElementById('ws-r-combo').textContent=WS.maxCombo; document.getElementById('ws-r-best').textContent=WS.best[WS.diff].all; wsUpdateBestLine(); }
+function leaveWordsearch(){ resetWordsearch(); showScreen('games'); }
+function resetWordsearch(){ clearInterval(WS.timer); WS.running=false; WS.drag=null; const g=document.getElementById('wordsearch-game-card');if(g)g.style.display='none'; const r=document.getElementById('wordsearch-result-card');if(r)r.style.display='none'; const i=document.getElementById('wordsearch-intro-card');if(i)i.style.display='block'; wsUpdateBestLine(); }
+
+// ========== 틀린 그림 찾기 (관찰) ==========
+const DF_POOL=['🍎','🍊','🍋','🍇','🍓','🫐','🥝','🍑','🍒','🥥','🌸','🌼','🌻','🌷','⭐','⚡','❤️','💙','💚','🧡','🐶','🐱','🐰','🐸','🐵','🦊','🐢','🐬','🦋','🐝','🚗','🚀','⚽','🏀','🎈','🎁','🔔','🍀','🌈','🌟'];
+const DF_CFG={ easy:{nStart:3,nMax:5}, normal:{nStart:4,nMax:6}, hard:{nStart:5,nMax:7} };
+const DF_TIME=60;
+const DF={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:DF_TIME, timer:null, running:false, lock:false, n:4, g1:[], g2:[], diffs:[], foundSet:null, found:0, best:bt_loadBest('brain.diff.best') };
+function DF_DIFF_LABEL(d){ return d==='easy'?t('diff.easy'):d==='hard'?t('diff.hard'):t('diff.normal'); }
+function dfUpdateBestLine(){ const el=document.getElementById('df-intro-best'); if(el) el.textContent=bt_bestLineText(DF.best,DF.diff); }
+function setDiffDiff(d){ DF.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('df-diff-'+k).classList.toggle('active',k===d)); dfUpdateBestLine(); }
+function dfStats(){ document.getElementById('df-score').textContent=DF.score; document.getElementById('df-combo').textContent=DF.combo; }
+function dfTimer(){ const el=document.getElementById('df-timer'); const m=Math.floor(DF.timeLeft/60),s=DF.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=DF.timeLeft<=10?'var(--red)':''; }
+function dfParams(){ const cfg=DF_CFG[DF.diff]; const n=Math.min(cfg.nMax,cfg.nStart+Math.floor((DF.level-1)/3)); const k=Math.max(1,Math.min(Math.floor(n*n/4), 1+Math.floor((DF.level-1)/2))); return {n,k}; }
+function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
+  const base=Array.from({length:total},()=>DF_POOL[Math.floor(Math.random()*DF_POOL.length)]); const g2=base.slice();
+  const idx=shuffleArr(base.map((_,i)=>i)).slice(0,p.k); DF.diffs=idx.slice(); DF.foundSet=new Set(); DF.found=0;
+  idx.forEach(i=>{ let e; do{ e=DF_POOL[Math.floor(Math.random()*DF_POOL.length)]; }while(e===base[i]); g2[i]=e; });
+  DF.g1=base; DF.g2=g2; dfRender();
+}
+function dfRender(){ const cs=Math.max(34,Math.floor(300/DF.n));
+  [['df-grid1',DF.g1],['df-grid2',DF.g2]].forEach(pair=>{ const g=document.getElementById(pair[0]); g.style.gridTemplateColumns='repeat('+DF.n+','+cs+'px)'; g.innerHTML='';
+    for(let i=0;i<pair[1].length;i++){ const d=document.createElement('div'); d.className='df-cell'+(DF.foundSet.has(i)?' found':''); d.style.width=cs+'px'; d.style.height=cs+'px'; d.textContent=pair[1][i]; d.onclick=()=>dfTap(i,d); g.appendChild(d); } });
+}
+function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
+function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
+  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=10+(DF.combo-1)*2; sfx('good'); dfMark(i); dfStats();
+    if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
+  else { DF.combo=0; sfx('bad'); DF.timeLeft=Math.max(0,DF.timeLeft-2); dfTimer(); dfStats(); el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320); if(DF.timeLeft<=0) finishDiff(); }
+}
+function startDiff(){ DF.score=0;DF.combo=0;DF.maxCombo=0;DF.level=1;DF.timeLeft=DF_TIME;DF.running=true;DF.lock=false;
+  document.getElementById('diff-intro-card').style.display='none'; document.getElementById('diff-result-card').style.display='none'; document.getElementById('diff-game-card').style.display='block';
+  dfBuild(); dfStats(); dfTimer(); clearInterval(DF.timer); DF.timer=setInterval(()=>{ DF.timeLeft--; dfTimer(); if(DF.timeLeft<=0) finishDiff(); },1000); }
+function finishDiff(){ clearInterval(DF.timer); DF.running=false;
+  const nr=bt_recordScore(DF.best,DF.diff,DF.score); bt_saveBest('brain.diff.best',DF.best); missionMark('diff');
+  document.getElementById('diff-game-card').style.display='none'; document.getElementById('diff-result-card').style.display='block';
+  document.getElementById('df-result-emoji').textContent=nr?'🏆':'👀'; document.getElementById('df-result-title').textContent=nr?t('diff.newRecord'):t('diff.timeOver');
+  document.getElementById('df-result-score').textContent=DF.score; document.getElementById('df-r-diff').textContent=DF_DIFF_LABEL(DF.diff);
+  document.getElementById('df-r-combo').textContent=DF.maxCombo; document.getElementById('df-r-best').textContent=DF.best[DF.diff].all; dfUpdateBestLine(); }
+function leaveDiff(){ resetDiff(); showScreen('games'); }
+function resetDiff(){ clearInterval(DF.timer); DF.running=false; const g=document.getElementById('diff-game-card');if(g)g.style.display='none'; const r=document.getElementById('diff-result-card');if(r)r.style.display='none'; const i=document.getElementById('diff-intro-card');if(i)i.style.display='block'; dfUpdateBestLine(); }
+
+// ========== 높은음 찾기 (청각) ==========
+const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:26}, hard:{nStart:4,nMax:7,c0:62,cStep:5,cMin:18} };
+const PT_TIME=60;
+const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME, timer:null, running:false, lock:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
+function PT_DIFF_LABEL(d){ return d==='easy'?t('pitch.easy'):d==='hard'?t('pitch.hard'):t('pitch.normal'); }
+function ptUpdateBestLine(){ const el=document.getElementById('pt-intro-best'); if(el) el.textContent=bt_bestLineText(PT.best,PT.diff); }
+function setPitchDiff(d){ PT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('pt-diff-'+k).classList.toggle('active',k===d)); ptUpdateBestLine(); }
+function ptStats(){ document.getElementById('pt-score').textContent=PT.score; document.getElementById('pt-combo').textContent=PT.combo; }
+function ptTimer(){ const el=document.getElementById('pt-timer'); const m=Math.floor(PT.timeLeft/60),s=PT.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=PT.timeLeft<=10?'var(--red)':''; }
+function ptStatus(key,cls){ const el=document.getElementById('pt-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function ptClear(){ PT.timers.forEach(clearTimeout); PT.timers=[]; }
+function ptPads(){ return document.getElementById('pt-pads'); }
+function ptFlash(i,freq,durMs){ const pad=ptPads().children[i]; if(pad){ pad.classList.add('lit'); PT.timers.push(setTimeout(()=>{ const p=ptPads().children[i]; if(p) p.classList.remove('lit'); }, durMs*0.8)); } if(sndOn()) _beep(freq,durMs/1000,'sine',0.16); }
+function ptRenderPads(n){ const box=ptPads(); box.innerHTML=''; for(let i=0;i<n;i++){ const b=document.createElement('button'); b.className='pt-pad'; b.textContent='🎵'; b.onclick=()=>ptTap(i); box.appendChild(b); } }
+function ptPlaySeq(done){ ptClear(); const n=PT.freqs.length, gap=470; PT.freqs.forEach((f,i)=>{ PT.timers.push(setTimeout(()=>ptFlash(i,f,360), 300+i*gap)); }); PT.timers.push(setTimeout(done, 300+n*gap)); }
+function ptRound(){ const cfg=PT_CFG[PT.diff]; const n=Math.min(cfg.nMax,cfg.nStart+Math.floor((PT.level-1)/3)); const cents=Math.max(cfg.cMin,cfg.c0-(PT.level-1)*cfg.cStep);
+  const base=320+Math.random()*150; PT.odd=Math.floor(Math.random()*n); PT.freqs=[]; for(let i=0;i<n;i++) PT.freqs.push(i===PT.odd? base*Math.pow(2,cents/1200) : base);
+  ptRenderPads(n); PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
+function ptReplay(){ if(!PT.running||PT.lock) return; PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
+function ptTap(i){ if(!PT.running||PT.lock) return; ptFlash(i,PT.freqs[i],300);
+  if(i===PT.odd){ PT.lock=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=10+(PT.combo-1)*2; PT.level++; sfx('good'); ptStats(); PT.timers.push(setTimeout(ptRound,450)); }
+  else { PT.combo=0; sfx('bad'); PT.timeLeft=Math.max(0,PT.timeLeft-2); ptTimer(); ptStats(); if(PT.timeLeft<=0) finishPitch(); } }
+function startPitch(){ PT.score=0;PT.combo=0;PT.maxCombo=0;PT.level=1;PT.timeLeft=PT_TIME;PT.running=true;
+  document.getElementById('pitch-intro-card').style.display='none'; document.getElementById('pitch-result-card').style.display='none'; document.getElementById('pitch-game-card').style.display='block';
+  ptStats(); ptTimer(); ptRound(); clearInterval(PT.timer); PT.timer=setInterval(()=>{ PT.timeLeft--; ptTimer(); if(PT.timeLeft<=0) finishPitch(); },1000); }
+function finishPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false;
+  const nr=bt_recordScore(PT.best,PT.diff,PT.score); bt_saveBest('brain.pitch.best',PT.best); missionMark('pitch');
+  document.getElementById('pitch-game-card').style.display='none'; document.getElementById('pitch-result-card').style.display='block';
+  document.getElementById('pt-result-emoji').textContent=nr?'🏆':'🎧'; document.getElementById('pt-result-title').textContent=nr?t('pitch.newRecord'):t('pitch.timeOver');
+  document.getElementById('pt-result-score').textContent=PT.score; document.getElementById('pt-r-diff').textContent=PT_DIFF_LABEL(PT.diff);
+  document.getElementById('pt-r-combo').textContent=PT.maxCombo; document.getElementById('pt-r-best').textContent=PT.best[PT.diff].all; ptUpdateBestLine(); }
+function leavePitch(){ resetPitch(); showScreen('games'); }
+function resetPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false; const g=document.getElementById('pitch-game-card');if(g)g.style.display='none'; const r=document.getElementById('pitch-result-card');if(r)r.style.display='none'; const i=document.getElementById('pitch-intro-card');if(i)i.style.display='block'; ptUpdateBestLine(); }
+
+// ========== 길 따라가기 (협응) ==========
+const TC_CFG={ easy:{steps:7,w:32}, normal:{steps:12,w:24}, hard:{steps:17,w:19} };
+const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, best:bt_loadBest('brain.trace.best') };
+function TC_DIFF_LABEL(d){ return d==='easy'?t('trace.easy'):d==='hard'?t('trace.hard'):t('trace.normal'); }
+function tcUpdateBestLine(){ const el=document.getElementById('tc-intro-best'); if(el) el.textContent=bt_bestLineText(TC.best,TC.diff); }
+function setTraceDiff(d){ TC.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('tc-diff-'+k).classList.toggle('active',k===d)); tcUpdateBestLine(); }
+function tcStats(){ document.getElementById('tc-score').textContent=TC.score; document.getElementById('tc-level').textContent=TC.level; document.getElementById('tc-life').textContent='♥'.repeat(TC.lives)+'♡'.repeat(3-TC.lives); }
+function tcStatus(key,cls){ const el=document.getElementById('tc-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+function tcWalk(steps){ const pts=[[0,0]], seen=new Set(['0,0']); let cur=[0,0], last=null; const dirs=[[0,1],[0,-1],[1,0],[-1,0]];
+  for(let i=0;i<steps;i++){ const opts=dirs.filter(d=>{ if(last&&d[0]===-last[0]&&d[1]===-last[1])return false; const nx=cur[0]+d[0],ny=cur[1]+d[1]; return !seen.has(nx+','+ny); }); if(!opts.length)break;
+    const d=opts[Math.floor(Math.random()*opts.length)]; cur=[cur[0]+d[0],cur[1]+d[1]]; seen.add(cur[0]+','+cur[1]); pts.push(cur); last=d; } return pts; }
+function tcGenPath(steps){ let pts,tr=0; do{ pts=tcWalk(steps); tr++; }while(pts.length-1<Math.max(4,Math.floor(steps*0.65))&&tr<25);
+  let minr=0,maxr=0,minc=0,maxc=0; pts.forEach(p=>{minr=Math.min(minr,p[0]);maxr=Math.max(maxr,p[0]);minc=Math.min(minc,p[1]);maxc=Math.max(maxc,p[1]);});
+  const rows=maxr-minr, cols=maxc-minc, m=32, W=TC.W, H=TC.H; const sx=cols>0?(W-2*m)/cols:1e9, sy=rows>0?(H-2*m)/rows:1e9; let s=Math.min(sx,sy); if(!isFinite(s)||s<=0) s=40;
+  const offx=(W-2*m-cols*s)/2, offy=(H-2*m-rows*s)/2;
+  return pts.map(p=>({ x:m+offx+(p[1]-minc)*s, y:m+offy+(p[0]-minr)*s })); }
+function segDist(p,a,b){ const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy; let tt=l2?((p.x-a.x)*dx+(p.y-a.y)*dy)/l2:0; tt=Math.max(0,Math.min(1,tt)); return Math.hypot(p.x-(a.x+tt*dx),p.y-(a.y+tt*dy)); }
+function tcDist(p){ let md=1e9; for(let i=0;i<TC.path.length-1;i++) md=Math.min(md,segDist(p,TC.path[i],TC.path[i+1])); return md; }
+function tcPoint(e){ const r=document.getElementById('tc-area').getBoundingClientRect(); return { x:(e.clientX-r.left)/r.width*TC.W, y:(e.clientY-r.top)/r.height*TC.H }; }
+function tcRender(){ const cfg=TC_CFG[TC.diff]; const steps=cfg.steps+(TC.level-1)*2; const w=Math.max(12, cfg.w-(TC.level-1)*1.2); TC.tol=w/2+11; TC.path=tcGenPath(steps);
+  const d='M'+TC.path.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' L'); const s=TC.path[0], e=TC.path[TC.path.length-1];
+  const area=document.getElementById('tc-area'); area.style.height=TC.H+'px';
+  area.innerHTML='<svg viewBox="0 0 '+TC.W+' '+TC.H+'" preserveAspectRatio="xMidYMid meet">'
+    +'<path d="'+d+'" fill="none" stroke="#c7cde0" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"/>'
+    +'<path d="'+d+'" fill="none" stroke="#f0f2f9" stroke-width="'+Math.max(2,w-7)+'" stroke-linecap="round" stroke-linejoin="round"/>'
+    +'<circle cx="'+s.x.toFixed(1)+'" cy="'+s.y.toFixed(1)+'" r="13" fill="#21a67a"/>'
+    +'<circle cx="'+e.x.toFixed(1)+'" cy="'+e.y.toFixed(1)+'" r="13" fill="#e0475a"/></svg>';
+  TC.active=false; tcStatus('trace.guide'); }
+function tcStray(){ if(!TC.active) return; TC.active=false; TC.lives--; sfx('bad'); tcStats(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
+function tcClearLevel(){ TC.active=false; TC.level++; TC.score+=30+TC.level*10; sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
+function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.active=false;
+  document.getElementById('trace-intro-card').style.display='none'; document.getElementById('trace-result-card').style.display='none'; document.getElementById('trace-game-card').style.display='block';
+  tcStats(); tcRender();
+  const area=document.getElementById('tc-area');
+  area.onpointerdown=e=>{ if(!TC.running)return; const p=tcPoint(e); const s=TC.path[0]; if(Math.hypot(p.x-s.x,p.y-s.y)<=28){ TC.active=true; try{area.setPointerCapture(e.pointerId);}catch(_){} tcStatus('trace.guide'); e.preventDefault(); } };
+  area.onpointermove=e=>{ if(!TC.running||!TC.active)return; const p=tcPoint(e); const en=TC.path[TC.path.length-1]; if(Math.hypot(p.x-en.x,p.y-en.y)<=22){ tcClearLevel(); return; } if(tcDist(p)>TC.tol){ tcStray(); } };
+  area.onpointerup=()=>{ TC.active=false; };
+}
+function finishTrace(){ if(!TC.running) return; TC.running=false; TC.active=false;
+  const nr=bt_recordScore(TC.best,TC.diff,TC.score); bt_saveBest('brain.trace.best',TC.best); missionMark('trace');
+  document.getElementById('trace-game-card').style.display='none'; document.getElementById('trace-result-card').style.display='block';
+  document.getElementById('tc-result-emoji').textContent=nr?'🏆':'✏️'; document.getElementById('tc-result-title').textContent=nr?t('trace.newRecord'):t('trace.gameOver');
+  document.getElementById('tc-result-score').textContent=TC.score; document.getElementById('tc-r-diff').textContent=TC_DIFF_LABEL(TC.diff);
+  document.getElementById('tc-r-level').textContent=TC.level; document.getElementById('tc-r-best').textContent=TC.best[TC.diff].all; tcUpdateBestLine(); }
+function leaveTrace(){ resetTrace(); showScreen('games'); }
+function resetTrace(){ TC.running=false; TC.active=false; const g=document.getElementById('trace-game-card');if(g)g.style.display='none'; const r=document.getElementById('trace-result-card');if(r)r.style.display='none'; const i=document.getElementById('trace-intro-card');if(i)i.style.display='block'; tcUpdateBestLine(); }
 
 // INIT
 // 언어: URL ?lang= 우선 → 저장값 → 브라우저 언어 자동 감지(ko/th/기타=en)

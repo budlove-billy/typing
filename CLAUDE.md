@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-12 — **얇은 영역 4종(2차) 배포** → 활성 33종, 모든 인지 영역 ≥2종. wordsearch(언어·단어탐색)/diff(관찰·틀린그림)/pitch(청각·음높이변별)/trace(협응·경로드래그).
+  선검증은 **실제 앱 헬퍼 의미**로(shuffleArr 교훈): `.logs/gen_sim2.mjs`+`wire_check.mjs`+`runtime_probe.mjs`. 능력치/공유/도전장/미션풀/추천 연동.
+
 - 2026-07-12 — **신규 7종 일괄 배포(Wave2-3)** → 활성 30종. flank(집중·플랭커)/guess(계산·어림)/rev(기억·역순)/rhythm(청각·박자)/catch(협응·받기)/fit(공간·블록)/nono(논리·노노그램)/anagram(언어·글자맞추기, vocab·typing 대체 ko+en).
   생성형은 선검증(nono 라인솔버 유일해·fit 데드락·guess 보기·rhythm 판정·anagram 셔플, `.logs/gen_sim.mjs`) + 배선 정합성(`.logs/wire_check.mjs`). 능력치/공유/도전장/미션풀 연동. 라이브 스모크 테스트 필요.
 
