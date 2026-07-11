@@ -6,6 +6,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 디자인 시스템 (2026-07-12 상용화 리프트 — 캐릭터/오브젝트/손맛/입체/테마)
 - **Mallow 마스코트 = 인라인 SVG**. `mallowSVG(mood,{size,variant,cls,attrs,standalone})` → SVG 문자열.
   mood: `default|happy|success|sad|focus`. variant(몸통색): `cream(기본)|pink|mint|sky|lemon|grape` (MALLOW_VARIANTS).
+  **얼굴 = 원본 mallow-chan.png 마시멜로 감성**(네모 둥근사각 눈 `_EYES` + 작은 'w' 입 + 핑크 볼 `_mCheeks`). 동그란 아기눈은 "무섭다" 피드백으로 폐기(2026-07-12). 몸통=살짝 눌린 필로우형.
   공유 그라데이션 defs는 `_mgDefs()`가 body에 1회 주입(id=`mg_<variant>`). **캔버스/데이터URL용은 `standalone:true`**(defs 인라인). 픽셀 PNG(mallow-chan.png)는 **폐기**.
   HTML 자리표시는 `data-mallow="happy" data-mallow-size="30" data-mallow-variant="mint"` → `initMallowUI()`가 렌더. 로고/공유카드/bubble·catch·chop·whack·count 전부 SVG.
 - **오브젝트 헬퍼**: `forkSVG(size)`(catch 장애물·금속 포크), `basketSVG(size)`(catch 바구니·위커). whack 팝업/count 인원=Mallow SVG.
