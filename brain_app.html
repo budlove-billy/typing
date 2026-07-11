@@ -34,7 +34,7 @@
 :root{
   --bg:#f5f7fb;--bg2:#ffffff;--bg3:#eef1f7;--bg4:#e2e7f0;
   --border:#e4e9f2;--border2:#cdd5e5;
-  --text:#182235;--text2:#5a6683;--text3:#94a0b8;
+  --text:#182235;--text2:#5a6683;--text3:#6b7794;
   --purple:#4f7cff;--purple2:#6e92ff;--purple3:#e9f0ff;
   --teal:#21a67a;--teal2:#178a63;--teal3:#daf3ea;
   --amber:#c7891f;--amber2:#9c6912;--amber3:#fbf0d8;
@@ -47,15 +47,11 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui
 h1,h2,h3{font-weight:600}
 
 /* NAV */
+:focus-visible{outline:2px solid var(--purple);outline-offset:2px;border-radius:4px}
 nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
 .nav-logo{display:flex;align-items:baseline;gap:.45rem;font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.25rem;flex-shrink:0;cursor:pointer}
 .nav-mascot{height:30px;width:auto;image-rendering:pixelated;align-self:center}
 .nav-logo span{color:var(--teal)}
-.nav-menu{display:flex;align-items:center;gap:.25rem;overflow-x:auto;overflow-y:hidden;flex:1;padding:0 1rem 0 0;scrollbar-width:none;-ms-overflow-style:none;height:100%}
-.nav-menu::-webkit-scrollbar{display:none}
-.nav-btn{background:none;border:none;color:var(--text2);padding:.3rem .55rem;border-radius:var(--radius);cursor:pointer;transition:.15s;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;white-space:nowrap;flex-shrink:0;min-width:58px}
-.nav-btn:hover{background:var(--bg3);color:var(--text)}
-.nav-btn.active{background:var(--purple3);color:var(--purple)}
 .nav-ico{font-size:1.4rem;line-height:1;flex-shrink:0}
 .nav-label{font-size:.64rem;line-height:1;font-weight:600}
 
@@ -63,7 +59,6 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   nav{height:60px}
   .nav-logo{font-size:.9rem;padding:0 .5rem 0 .8rem;gap:.35rem}
   .nav-mascot{height:26px}
-  .nav-btn{padding:.25rem .45rem;min-width:52px;gap:.12rem}
   .nav-ico{font-size:1.3rem}
   .nav-label{font-size:.58rem}
 
@@ -275,7 +270,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .mg-stat-value{font-size:2rem;font-weight:700;color:var(--text)}
 .mg-stat-divider{width:1px;height:42px;background:var(--border2)}
 
-.mg-timer{display:inline-block;background:linear-gradient(135deg,#f0506a,#f06ab0);color:#fff;font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;padding:.5rem 1.6rem;border-radius:var(--radius2);letter-spacing:.03em;box-shadow:0 4px 14px rgba(240,80,110,.3)}
+.mg-timer{display:inline-block;background:#ffe4ec;color:#d05577;font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;padding:.5rem 1.6rem;border-radius:var(--radius2);letter-spacing:.03em;box-shadow:0 2px 8px rgba(240,80,110,.14)}
 .mg-timer.warn{background:linear-gradient(135deg,#d61f3c,#e64a4a);animation:mgPulse .6s infinite}
 @keyframes mgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
@@ -522,7 +517,6 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 }
 @media (max-width:360px){
   .home-grid{grid-template-columns:repeat(3,1fr)}
-  .nav-btn{padding:.35rem .5rem}
 }
 /* ===== N-back (엔백) ===== */
 .nb-stim{display:flex;align-items:center;justify-content:center;height:150px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);font-size:clamp(4rem,22vw,6.5rem);font-weight:800;color:var(--purple);margin-bottom:1.25rem;user-select:none;transition:.1s}

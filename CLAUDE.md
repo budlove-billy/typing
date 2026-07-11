@@ -115,15 +115,15 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8025-8029** (5 ports total).
+This project is allocated the port range **8045-8049** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8025-8029`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8045-8049`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8025`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8029`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8045`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8049`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -358,3 +358,8 @@ project working directory, use descriptive filenames, and after saving tell the
 user the relative path so they can preview/download it in the file browser.
 <!-- MDBOX_MULTIMODAL_END -->
 
+<!-- ROLE_REF_BEGIN -->
+## Your role
+
+Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first** before responding, and let it shape your tone, focus, and what you proactively bring up.
+<!-- ROLE_REF_END -->
