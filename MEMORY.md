@@ -108,6 +108,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
   +시작부터 완성된 병 배제. 되돌리기 3회(undo도 move+1), 점수=base(500/1000/1600)−초×2−이동×3.
   `SO` 객체, `brain.sort.best`, 도전장·공유·능력치(logic60/space20/focus20, REF 650) 연동. 미션 풀 제외. 활성 21종.
 - 다음 후보: 어림 계산, 개인정보처리방침(로그인 도입 시 필수).
+- **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
+  ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.
+  braintype 언어가형 추천은 anagram으로 갱신 예정. `ABILITY_MAP.anagram={lang:70,memory:20,focus:10}`. 상세: **`신규게임-기획-능력영역별.md`** §4.
+- **능력영역별 신규 기획(2026-07-11)**: `신규게임-기획-능력영역별.md` — 얇은 축(관찰·협응·청각) + 언어(대체) + 논리/공간/집중/계산/기억 각 1종.
+  Wave 배포(1:odd/catch/rhythm → 2:fit/flank → 3:anagram/nono/guess/rev), 1종씩 배포·확인. 순발력은 신규 보류(3종 충분).
 - 설계 상세: **`기억축-게임-스펙.md`**, **`주의속도-게임-스펙.md`**, **`바이럴-게임-스펙.md`**, **`유연성-게임-스펙.md`**.
 
 ## 서비스 운영 (LIVE)
