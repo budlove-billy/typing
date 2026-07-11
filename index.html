@@ -463,10 +463,12 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ft-pcell.on{background:var(--teal)}
 .ft-piece{touch-action:none}
 .ft-piece.drag{opacity:.3}
-.ft-ghost{position:fixed;display:grid;gap:2px;z-index:999;pointer-events:none;opacity:.9;left:0;top:0}
+.ft-ghost{position:fixed;display:grid;gap:2px;z-index:999;pointer-events:none;opacity:.6;left:0;top:0}
 .ft-ghost .ft-gon{background:var(--purple);border-radius:4px}
+.ft-ghost.bad{opacity:.75}
+.ft-ghost.bad .ft-gon{background:#e0475a}
 .ft-cell.pre{background:var(--teal)}
-.ft-cell.prebad{background:#f0b6c0}
+.ft-cell.prebad{background:#ef9aa8}
 .no-wrap{text-align:center;overflow-x:auto;padding-bottom:.3rem}
 .no-grid{display:inline-grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;padding:1px}
 .no-cell{background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text3)}
@@ -7920,24 +7922,36 @@ function ftRender(){
 // 드래그: 조각을 집어 플레이 화면으로 끌기 + 착지 그림자 미리보기 (모바일 터치/마우스 공통)
 function ftDragStart(e, idx){
   if(!FT.running||FT.over||FT.drag) return; const item=FT.tray[idx]; if(!item||item.used) return;
-  const cs=ftCellPx(), gap=2, b=ftBounds(item.p);
+  const c0el=ftCellEl(0,0); const cs=c0el?Math.round(c0el.getBoundingClientRect().width):ftCellPx(); const gap=2, b=ftBounds(item.p);
   const ghost=document.createElement('div'); ghost.className='ft-ghost'; ghost.style.gridTemplateColumns='repeat('+(b.mc+1)+','+cs+'px)';
   const set=new Set(item.p.map(q=>q[0]+'_'+q[1]));
   for(let r=0;r<=b.mr;r++)for(let c=0;c<=b.mc;c++){ const d=document.createElement('div'); d.style.width=cs+'px'; d.style.height=cs+'px'; if(set.has(r+'_'+c)) d.className='ft-gon'; ghost.appendChild(d); }
   document.body.appendChild(ghost);
-  FT.drag={ idx, piece:item.p, ghost, cs, offX:(b.mc+1)*(cs+gap)/2, offY:(b.mr+1)*(cs+gap)+26, anchor:null, valid:false };
+  // 그랩 기준칸: 커서는 조각 바로 아래 중앙 → 조각이 손가락 위로 뜸(가림 방지). 보드 위에선 격자에 스냅.
+  FT.drag={ idx, piece:item.p, ghost, cs, grabR:(b.mr+1), grabC:Math.floor((b.mc+1)/2), offX:(b.mc+1)*(cs+gap)/2, offY:(b.mr+1)*(cs+gap)+22, anchor:null, valid:false };
   document.addEventListener('pointermove', ftDragMove); document.addEventListener('pointerup', ftDragEnd); document.addEventListener('pointercancel', ftDragEnd);
   ftRender(); ftDragMove(e); e.preventDefault();
 }
-function ftDragMove(e){ if(!FT.drag) return; const d=FT.drag; const x=e.clientX-d.offX, y=e.clientY-d.offY;
-  d.ghost.style.left=x+'px'; d.ghost.style.top=y+'px';
-  const el=document.elementFromPoint(x+d.cs/2, y+d.cs/2);   // 조각 [0,0]칸 중심 아래의 보드 셀 = 착지 앵커
-  let anchor=null; if(el&&el.classList&&el.classList.contains('ft-cell')) anchor={r:+el.dataset.r, c:+el.dataset.c};
-  ftPreview(anchor); if(e.cancelable) e.preventDefault();
+function ftDragMove(e){ if(!FT.drag) return; const d=FT.drag; const c0=ftCellEl(0,0); if(!c0){ return; }
+  const first=c0.getBoundingClientRect();
+  const stepX = FT.n>1 ? (ftCellEl(0,1).getBoundingClientRect().left - first.left) : first.width;
+  const stepY = FT.n>1 ? (ftCellEl(1,0).getBoundingClientRect().top - first.top) : first.height;
+  const br=document.getElementById('ft-board').getBoundingClientRect();
+  const overBoard = e.clientX>=br.left-6 && e.clientX<=br.right+6 && e.clientY>=br.top-6 && e.clientY<=br.bottom+40;
+  if(overBoard){
+    const curC=Math.floor((e.clientX-first.left)/stepX), curR=Math.floor((e.clientY-first.top)/stepY);
+    const anchor={ r:curR-d.grabR, c:curC-d.grabC };
+    d.ghost.style.left=(first.left+anchor.c*stepX)+'px'; d.ghost.style.top=(first.top+anchor.r*stepY)+'px';   // 격자에 스냅
+    ftPreview(anchor);
+  } else {
+    d.ghost.style.left=(e.clientX-d.offX)+'px'; d.ghost.style.top=(e.clientY-d.offY)+'px'; ftPreview(null);   // 보드 밖: 자유 이동
+  }
+  if(e.cancelable) e.preventDefault();
 }
 function ftClearPreview(){ document.querySelectorAll('.ft-cell.pre,.ft-cell.prebad').forEach(x=>x.classList.remove('pre','prebad')); }
-function ftPreview(anchor){ ftClearPreview(); const d=FT.drag; if(!d) return; d.anchor=anchor; if(!anchor){ d.valid=false; return; }
-  const ok=ftCanPlace(d.piece, anchor.r, anchor.c); d.valid=ok;
+function ftPreview(anchor){ ftClearPreview(); const d=FT.drag; if(!d) return; d.anchor=anchor;
+  if(!anchor){ d.valid=false; if(d.ghost) d.ghost.classList.remove('bad'); return; }
+  const ok=ftCanPlace(d.piece, anchor.r, anchor.c); d.valid=ok; if(d.ghost) d.ghost.classList.toggle('bad', !ok);
   d.piece.forEach(q=>{ const rr=anchor.r+q[0], cc=anchor.c+q[1]; if(rr>=0&&cc>=0&&rr<FT.n&&cc<FT.n){ const cell=ftCellEl(rr,cc); if(cell) cell.classList.add(ok?'pre':'prebad'); } });
 }
 function ftDragEnd(){ if(!FT.drag) return; const d=FT.drag; FT.drag=null;
