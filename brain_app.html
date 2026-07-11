@@ -8230,12 +8230,12 @@ function resetNono(){ clearInterval(NO.timer); NO.running=false; const g=documen
 
 // ========== 글자 맞추기 / 애너그램 (언어) ==========
 const AG_WORDS={
-  ko:{ 3:['고양이','도서관','자전거','냉장고','컴퓨터','무지개','코끼리','바나나','호랑이','다람쥐','해바라기','원숭이','강아지','비행기','자동차','운동화','손수건','물고기','거북이','고구마'],
-       4:['말랑말랑','두근두근','반짝반짝','알록달록','새콤달콤','조물조물','몽글몽글','소곤소곤','간질간질','폭신폭신','도란도란','방글방글','싱글벙글','울퉁불퉁'] },
-  en:{ 3:['CAT','SUN','MAP','BOX','CUP','DOG','HAT','KEY','PEN','BUS','EGG','FOX','JAM','OWL','TOY'],
-       4:['STAR','MOON','TREE','FISH','CAKE','LION','BOOK','RAIN','SNOW','GOLD','WIND','LEAF','BEAR','SHIP','MILK'],
-       5:['APPLE','HOUSE','TIGER','MUSIC','LEMON','CLOUD','RIVER','PLANT','SUGAR','BREAD','HONEY','ROBOT','SMILE','OCEAN','PIANO'],
-       6:['GARDEN','ORANGE','FLOWER','PLANET','ROCKET','CASTLE','DRAGON','BASKET','PENCIL','WINTER'] } };
+  ko:{ 3:['고양이','강아지','코끼리','원숭이','다람쥐','호랑이','거북이','물고기','도서관','자전거','냉장고','컴퓨터','자동차','비행기','운동화','손수건','무지개','바나나','고구마','개구리','병아리','두더지','진달래','개나리','민들레','무궁화','떡볶이','순두부','도토리','보름달'],
+       4:['말랑말랑','두근두근','반짝반짝','알록달록','새콤달콤','조물조물','몽글몽글','소곤소곤','간질간질','폭신폭신','도란도란','방글방글','싱글벙글','울퉁불퉁','보들보들','모락모락','꼬물꼬물','토닥토닥','쫀득쫀득','말캉말캉','해바라기','고슴도치','무당벌레','코스모스'] },
+  en:{ 3:['CAT','SUN','MAP','BOX','CUP','DOG','HAT','KEY','PEN','BUS','EGG','FOX','JAM','OWL','TOY','BEE','ANT','COW','PIG','BAT','CAP','FAN','ICE','LEG','NUT','POT','VAN','WEB','ZIP','SKY'],
+       4:['STAR','MOON','TREE','FISH','CAKE','LION','BOOK','RAIN','SNOW','GOLD','WIND','LEAF','BEAR','SHIP','MILK','FROG','DUCK','BIRD','DOOR','LAMP','RING','KITE','DESK','ROSE','CORN','WOLF','BOAT','SALT','MASK','MOTH'],
+       5:['APPLE','HOUSE','TIGER','MUSIC','LEMON','CLOUD','RIVER','PLANT','SUGAR','BREAD','HONEY','ROBOT','SMILE','OCEAN','PIANO','GRAPE','TRAIN','CANDY','BEACH','LIGHT','WATCH','ZEBRA','PANDA','MANGO','OLIVE','PEARL','STORM','TOAST','CROWN','GHOST'],
+       6:['GARDEN','ORANGE','FLOWER','PLANET','ROCKET','CASTLE','DRAGON','BASKET','PENCIL','WINTER','GUITAR','MONKEY','TURTLE','BRIDGE','CANDLE','ISLAND','JUNGLE','MIRROR','PEPPER','YELLOW','PURPLE','BUTTON','COOKIE','DONKEY'] } };
 const AG_LEN={ easy:{ko:[3],en:[3,4]}, normal:{ko:[3,4],en:[4,5]}, hard:{ko:[4],en:[5,6]} };
 const AG_TIME=60;
 const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, best:bt_loadBest('brain.anagram.best') };
@@ -8297,9 +8297,12 @@ function wsPlace(n, words, diag){
 function wsBuild(){
   const cfg=WS_CFG[WS.diff], lang=(CURRENT_LANG==='ko')?'ko':'en', n=cfg.n; WS.n=n;
   let pool=[]; cfg.lens[lang].forEach(L=>{ if(AG_WORDS[lang][L]) pool=pool.concat(AG_WORDS[lang][L]); }); pool=pool.filter(w=>[...w].length<=n);
-  for(let attempt=0;attempt<50;attempt++){ const words=shuffleArr(pool).slice(0,cfg.k); if(words.length<cfg.k) break;
+  if(!WS.recent) WS.recent=[];
+  const fresh=pool.filter(w=>!WS.recent.includes(w)); const usePool=(fresh.length>=cfg.k)?fresh:pool;   // 최근 쓴 단어 제외(부족하면 전체)
+  for(let attempt=0;attempt<50;attempt++){ const words=shuffleArr(usePool).slice(0,cfg.k); if(words.length<cfg.k) break;
     const grid=wsPlace(n, words, cfg.diag);
-    if(grid){ for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(grid[r][c]===null) grid[r][c]=wsFill(lang); WS.grid=grid; WS.targets=words.map(w=>({word:w,found:false})); return true; } }
+    if(grid){ for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(grid[r][c]===null) grid[r][c]=wsFill(lang); WS.grid=grid; WS.targets=words.map(w=>({word:w,found:false}));
+      WS.recent=WS.recent.concat(words).slice(-Math.max(cfg.k*3,12)); return true; } }
   return false;
 }
 function wsCellEl(r,c){ const g=document.getElementById('ws-grid'); return g.children[r*WS.n+c]; }
