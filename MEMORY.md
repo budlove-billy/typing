@@ -3,6 +3,18 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## 디자인 시스템 (2026-07-12 상용화 리프트 — 캐릭터/오브젝트/손맛/입체/테마)
+- **Mallow 마스코트 = 인라인 SVG**. `mallowSVG(mood,{size,variant,cls,attrs,standalone})` → SVG 문자열.
+  mood: `default|happy|success|sad|focus`. variant(몸통색): `cream(기본)|pink|mint|sky|lemon|grape` (MALLOW_VARIANTS).
+  공유 그라데이션 defs는 `_mgDefs()`가 body에 1회 주입(id=`mg_<variant>`). **캔버스/데이터URL용은 `standalone:true`**(defs 인라인). 픽셀 PNG(mallow-chan.png)는 **폐기**.
+  HTML 자리표시는 `data-mallow="happy" data-mallow-size="30" data-mallow-variant="mint"` → `initMallowUI()`가 렌더. 로고/공유카드/bubble·catch·chop·whack·count 전부 SVG.
+- **오브젝트 헬퍼**: `forkSVG(size)`(catch 장애물·금속 포크), `basketSVG(size)`(catch 바구니·위커). whack 팝업/count 인원=Mallow SVG.
+- **손맛 FX 레이어**(음소거와 무관): `sfx('good')`/`sfx('win')`가 **sndOn() 게이트 앞에서** `fxBurst(_fxXY,...)` 호출 → **정답 시 sfx 부르는 38개 지점 전 게임 자동 파티클**. `_fxXY`=마지막 pointerdown 좌표.
+  API: `fxBurst(x,y,{count,spread,color})` `fxScorePop(x,y,'+N',color)` `fxCombo('xN COMBO!')` `fxCelebrate(el,text,color)`. prefers-reduced-motion 존중. whack·catch는 +점수/콤보 배지 명시 호출.
+- **입체 토큰**: `.btn/.ca-btn/.fk-btn`=그라데이션+그림자+누름, `.diff-btn`=화이트 그라데 카드+호버 리프트, `.fm-cell/.df-cell`=타일감. **텍스트 격자(sudoku/nono/wordsearch)·색구분(spot/odd)은 평면 유지**(가독성).
+- **축별 테마 배경**: `body[data-axis="<axis>"]` 상단 글로우 그라데(--glow). `showScreen`이 `_gameAxis(id)`(HOME_GAMES grp 기반+vocab/typing/braintype/moamoa 보정)로 설정. 홈/게임/기록=`home`(브랜드 틴트). 12축: memory/focus/speed/coord/sound/sight/space/calc/logic/lang/daily/fun.
+- 검증: `.logs/errcheck.mjs`(playwright, 34종 start 후 pageerror 0 확인), `.logs/shots.mjs`+`sheet.mjs`(콘택트시트). playwright는 npx캐시 경로 import(`_npx/e41f203.../playwright`).
+
 ## 앱 구조
 - **`index.html` = `brain_app.html`** (바이트 동일 유지). "말랑말랑 두뇌체조" — **서버 없는 단일 HTML SPA**.
   게임 수정 시 **두 파일 모두 동기화**할 것 (`cp index.html brain_app.html`).

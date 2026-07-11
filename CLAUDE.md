@@ -59,6 +59,10 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-12 — **디자인 상용화 리프트(캐릭터·오브젝트·손맛·입체·테마)**: 전 34종 화면 검토 후 5단계 보완.
+  ① Mallow 인라인 SVG 마스코트(표정 5종·몸통 6색, `mallowSVG()`)로 통일·픽셀PNG 폐기 ② whack 굴/catch Mallow·포크·바구니 SVG/count 인원=Mallow(이모지 제거)
+  ③ 공통 손맛 FX(`sfx('good'/'win')`→파티클 자동, 38지점) +점수팝·콤보배지 ④ 버튼·타일 입체화(그라데+그림자) ⑤ 축별 테마 배경(`body[data-axis]`). 검증 `.logs/errcheck.mjs`(34종 pageerror 0). 상세=MEMORY.md 디자인 시스템.
+
 - 2026-07-12 — **얇은 영역 4종(2차) 배포** → 활성 33종, 모든 인지 영역 ≥2종. wordsearch(언어·단어탐색)/diff(관찰·틀린그림)/pitch(청각·음높이변별)/trace(협응·경로드래그).
   선검증은 **실제 앱 헬퍼 의미**로(shuffleArr 교훈): `.logs/gen_sim2.mjs`+`wire_check.mjs`+`runtime_probe.mjs`. 능력치/공유/도전장/미션풀/추천 연동.
 
@@ -124,15 +128,15 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8065-8069** (5 ports total).
+This project is allocated the port range **8081-8085** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8065-8069`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8081-8085`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8065`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8069`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8081`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8085`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
