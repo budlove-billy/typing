@@ -150,6 +150,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 기각된 제안(재론 불필요): 픽셀 마스코트↔플랫 UI 통일론(의도된 개성), 간격/타이포 전면 토큰화(회귀 리스크), 홈 밀도(레이더·백업은 이미 내기록 탭).
 
 ## 운영 메모
+- **⚠️ 시뮬 교훈(2026-07-12)**: 로직 시뮬은 **앱의 실제 헬퍼 의미**를 그대로 써야 함. sort 멈춤 버그(soGen이 `shuffleArr` 반환값 미사용 → 정렬된 완성판 생성)를
+  초기 시뮬이 *제자리 변형* shuffleArr로 대체해 놓쳐 false pass. `shuffleArr(arr)`는 **원본 불변, 섞인 새 배열 반환** — 반드시 반환값 사용. 재현: `.logs/sort_fix_check.mjs`.
 - 포트 범위 **8025-8029**. 정적 프리뷰 서버는 8025 사용(테스트용 일회성).
 - 이 환경 Git Bash엔 `setsid`/`webread`/로컬 `playwright`가 **없음**. 정적 서버 기동:
   `nohup python -m http.server 8025 --bind 127.0.0.1 >.logs/x.log 2>&1 </dev/null & disown`.
