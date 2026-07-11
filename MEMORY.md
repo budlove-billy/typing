@@ -121,6 +121,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   - **anagram(글자 맞추기/언어)**: vocab/typing 대체(언어 축 0→채움). 셔플 글자 재배열, 정답선지정→사전검증불요. **ko+en 동시**(음절/알파벳 타일), th 숨김(langs:['ko','en'] 필터). 힌트3. 60s. AG. {lang:70,memory:20,focus:10}. 미션 제외.
   - 선검증: `.logs/gen_sim.mjs`(nono유일해/fit생존/guess보기/rhythm판정/anagram셔플), 배선정합성 `.logs/wire_check.mjs`. 미션풀 A+rev,rhythm / B+flank,catch / C+fit.
   - ⚠️ 라이브 스모크 테스트 미완(이 환경 playwright/webread 없음) — 각 게임 실제 플레이 확인 필요(특히 nono 클루 레이아웃, catch 낙하 타이밍, rhythm 오디오 resume).
+- **결과 화면 추천(2026-07-12)**: 모든 게임 결과카드 하단에 **약점 보완 추천 3종**. `missionMark(id)`에서 `renderRecs(id)` 호출(공통 훅) →
+  `recommendGames(cur,3)`: need = 0.55*(100-gameLevel) + 0.45*(약한 능력축 가중) + 미플레이 가점22 + 소량 랜덤. 자기자신/external/braintype/lang필터 제외, ABILITY_MAP 있는 게임만.
+  `<id>-result-card`에 `.rec-box` append(중복 제거). i18n `rec.title`. 결과카드 없는 게임(iq/math 등 일부)은 자동 skip. 검증 `.logs/runtime_probe.mjs`.
 - 다음 후보: 어림 계산(완료), 개인정보처리방침(로그인 도입 시 필수).
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.

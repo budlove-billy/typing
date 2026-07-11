@@ -479,6 +479,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .ag-tile{min-width:44px;height:44px;padding:0 .4rem;border:none;border-radius:8px;background:var(--purple);color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer}
 .ag-tile:active{transform:scale(.95)}
 .ag-tile.used{visibility:hidden}
+.rec-box{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem}
+.rec-title{font-size:.85rem;color:var(--text2);margin-bottom:.7rem;font-weight:600;text-align:center}
+.rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem}
+.rec-card{display:flex;flex-direction:column;align-items:center;gap:.35rem;padding:.75rem .3rem;border:1.5px solid var(--border);border-radius:var(--radius2);background:var(--bg);cursor:pointer;font-family:inherit}
+.rec-card:active{transform:scale(.96)}
+.rec-emoji{font-size:1.7rem;line-height:1}
+.rec-name{font-size:.72rem;color:var(--text);text-align:center;line-height:1.2}
 /* 슬라이딩 퍼즐 */
 .sl-board{position:relative;width:100%;max-width:380px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
 .sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
@@ -2571,6 +2578,7 @@ const I18N = {
   "anagram.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "anagram.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "anagram.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "anagram.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "anagram.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "anagram.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "anagram.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
+  "rec.title": {ko:"💪 이 게임으로 약점을 채워보세요", en:"💪 Train your weak spots", th:"💪 ฝึกจุดที่ยังอ่อน"},
   "nav.slide": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.title": {ko:"슬라이딩 퍼즐", en:"Slide Puzzle", th:"พัซเซิลเลื่อน"},
   "slide.intro": {ko:"빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>빠르게, 적은 이동으로 완성할수록 점수가 높아집니다. 판은 항상 풀 수 있게 섞여요!", en:"Slide tiles into the empty space to <b>arrange numbers in order</b>.<br>Finish faster with fewer moves for a higher score. Boards are always solvable!", th:"เลื่อนกระเบื้องเข้าช่องว่างเพื่อ<b>เรียงตัวเลขตามลำดับ</b><br>ยิ่งเร็วและเลื่อนน้อย คะแนนยิ่งสูง กระดานสับแบบแก้ได้เสมอ!"},
@@ -6542,6 +6550,7 @@ function missionSave(o){ try{ localStorage.setItem('brain.mission', JSON.stringi
 function missionMark(id){
   track('game_finish', {game:id}); // 아케이드 9종 finish가 모두 여기를 거침
   if(typeof chCheck==='function') chCheck(id);
+  if(typeof renderRecs==='function') renderRecs(id); // 결과 화면 하단 약점 보완 추천
   if(!missionToday().includes(id)) return;
   const m=missionLoad();
   if(!m.done.includes(id)){
@@ -6550,6 +6559,31 @@ function missionMark(id){
   }
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
+// 결과 화면 추천: 내 약한 능력축 + 덜 한(낮은 레벨·미플레이) 게임을 가중해 상위 3개
+function recommendGames(cur, n){
+  const sc = (typeof abilityScores==='function') ? abilityScores() : {};
+  const cand = HOME_GAMES.filter(g=> g.id!==cur && !g.external && g.id!=='braintype'
+      && (!g.koOnly||CURRENT_LANG==='ko') && (!g.langs||g.langs.includes(CURRENT_LANG)) && ABILITY_MAP[g.id]);
+  function need(id){
+    const lvl = gameLevel(id);                 // 0~100 (높을수록 숙련)
+    const w = ABILITY_MAP[id]; let num=0, den=0;
+    Object.keys(w).forEach(a=>{ num += (100-(sc[a]||0))*w[a]; den += w[a]; });
+    const axisNeed = den ? num/den : 50;       // 0~100 (높을수록 그 게임이 쓰는 축이 약함)
+    let s = 0.55*(100-lvl) + 0.45*axisNeed;
+    if(gameBestVal(id)<=0) s += 22;            // 안 해본 게임은 새 영역 유도로 가점
+    return s + Math.random()*4;                // 근소차는 매번 조금씩 다르게(다양성)
+  }
+  return cand.map(g=>({g, s:need(g.id)})).sort((a,b)=> b.s-a.s).slice(0,n).map(x=>x.g);
+}
+function renderRecs(cur){
+  const card = document.getElementById(cur+'-result-card'); if(!card) return;
+  const old = card.querySelector('.rec-box'); if(old) old.remove();
+  const recs = recommendGames(cur, 3); if(!recs.length) return;
+  let html = '<div class="rec-box"><div class="rec-title">'+t('rec.title')+'</div><div class="rec-grid">';
+  recs.forEach(g=>{ html += '<button class="rec-card" onclick="showScreen(\''+g.id+'\')"><span class="rec-emoji">'+g.emoji+'</span><span class="rec-name">'+t(g.key)+'</span></button>'; });
+  html += '</div></div>';
+  card.insertAdjacentHTML('beforeend', html);
+}
 // 통일 게임 카드(홈·게임화면 공용): 이모지 / 이름 / 카테고리 / 🏆기록
 function gameCardHTML(g){
   let best='';
