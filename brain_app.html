@@ -3372,6 +3372,16 @@ function sfx(kind){
   else if(kind==='bad'){ _beep(180,0.16,'square',0.10); vib([40,30,40]); }
   else if(kind==='win'){ _beep(660,0.09); _beep(880,0.09,'sine',0.12,0.10); _beep(1174,0.16,'sine',0.12,0.20); vib([20,40,20,40,60]); }
 }
+// 오디오 언락: AudioContext를 첫 사용자 제스처 안에서 생성·resume(+iOS 무음버퍼)해야 이후 setTimeout 사운드(멜로디/리듬)가 확실히 남.
+function _audioUnlock(){
+  try{
+    if(!_AC) _AC=new (window.AudioContext||window.webkitAudioContext)();
+    if(_AC.state==='running') return;
+    _AC.resume();
+    const b=_AC.createBuffer(1,1,22050), s=_AC.createBufferSource(); s.buffer=b; s.connect(_AC.destination); s.start(0);
+  }catch(e){}
+}
+['pointerdown','touchend','keydown'].forEach(ev=>{ try{ document.addEventListener(ev,_audioUnlock,{passive:true}); }catch(e){} });
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram'].forEach(fn=>{
