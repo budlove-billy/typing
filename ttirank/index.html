@@ -40,9 +40,11 @@ main{width:100%;max-width:480px;padding:8px 14px 40px;}
 .pick .pe{font-size:22px;line-height:1;} .pick .pn{font-size:10.5px;color:var(--sub);margin-top:2px;}
 .pick.sel{border-color:var(--p);background:#efe9ff;}
 .pick.sel .pn{color:var(--p);font-weight:800;}
-.rank{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;margin-bottom:8px;background:#fbfaff;border:1.5px solid transparent;}
-.rank.me{border-color:var(--p);background:#f2ecff;box-shadow:0 4px 14px rgba(139,111,240,.15);}
+.rank{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;margin-bottom:8px;background:#fbfaff;border:1.5px solid transparent;transition:box-shadow .2s;}
+.rank.me{border-color:var(--p);background:linear-gradient(135deg,#f2ecff,#faf7ff);box-shadow:0 4px 16px rgba(139,111,240,.22);position:relative;}
+.rank.me::before{content:'';position:absolute;left:-1.5px;top:-1.5px;bottom:-1.5px;width:4px;border-radius:14px 0 0 14px;background:linear-gradient(var(--p),var(--pink));}
 .rank.top1{background:linear-gradient(135deg,#fff6da,#fff);border-color:#f3d888;}
+.rank.me.top1{background:linear-gradient(135deg,#fff2ea,#f5efff);}
 .rank .no{font-size:17px;font-weight:800;width:34px;text-align:center;color:var(--sub);}
 .rank.top1 .no,.rank.top2 .no,.rank.top3 .no{color:var(--gold);}
 .rank .em{font-size:30px;line-height:1;}
@@ -90,9 +92,10 @@ const ZODIAC=[
  {n:'쥐',e:'🐭'},{n:'소',e:'🐮'},{n:'범',e:'🐯'},{n:'토끼',e:'🐰'},{n:'용',e:'🐲'},{n:'뱀',e:'🐍'},
  {n:'말',e:'🐴'},{n:'양',e:'🐑'},{n:'원숭이',e:'🐵'},{n:'닭',e:'🐔'},{n:'개',e:'🐶'},{n:'돼지',e:'🐷'}
 ];
-const CM_HI=['막힘없이 트이는 하루! 자신 있게 밀어붙여요.','귀인이 돕는 날. 기분 좋은 소식이 와요.','하는 일마다 술술. 오늘의 주인공은 나!','작은 행운이 겹쳐요. 로또 같은 하루.','자신감이 빛나요. 도전엔 최고의 날.'];
-const CM_MID=['무난하고 편안한 하루. 리듬만 지켜요.','기복 없이 흘러가요. 기본에 충실하게.','오후로 갈수록 흐름이 좋아져요.','소소한 재미를 챙기면 만족스러워요.','한 박자 쉬어가도 좋은 날이에요.'];
-const CM_LO=['서두르면 탈. 천천히 가면 무탈해요.','오늘은 정리·마무리가 잘 맞아요.','지출과 약속은 한 번 더 확인해요.','무리 대신 나를 먼저 챙기는 하루로.','말 한마디 아끼면 오해가 줄어요.'];
+// 순위 구간별 문구 풀 — 12띠에 겹치지 않게 배정(각 12개 이상)
+const CM_HI=['막힘없이 트이는 하루! 자신 있게 밀어붙여요.','귀인이 돕는 날. 기분 좋은 소식이 와요.','하는 일마다 술술. 오늘의 주인공은 나!','작은 행운이 겹쳐요. 로또 같은 하루.','자신감이 빛나요. 도전엔 최고의 날.','미뤄둔 일이 술술 풀리는 쾌조의 하루.','노력한 만큼 결실이 눈에 보여요.','좋은 사람과의 인연이 반짝이는 날.','기회가 먼저 손 내미는 흐뭇한 하루.','마음먹은 대로 착착, 컨디션 최상!','작은 시도가 큰 보상으로 돌아와요.','주변의 응원까지 더해 날개 다는 날.'];
+const CM_MID=['무난하고 편안한 하루. 리듬만 지켜요.','기복 없이 흘러가요. 기본에 충실하게.','오후로 갈수록 흐름이 좋아져요.','소소한 재미를 챙기면 만족스러워요.','한 박자 쉬어가도 좋은 날이에요.','평범 속에 작은 행운이 숨어 있어요.','서두르지 않으면 원하는 결과에 닿아요.','익숙한 일에서 안정감을 느끼는 하루.','작은 습관 하나가 기분을 살려줘요.','무리 없이 딱 알맞게 흘러가는 날.','주변을 살피면 뜻밖의 힌트가 와요.','오늘의 나에게 작은 선물을 줘 봐요.'];
+const CM_LO=['서두르면 탈. 천천히 가면 무탈해요.','오늘은 정리·마무리가 잘 맞아요.','지출과 약속은 한 번 더 확인해요.','무리 대신 나를 먼저 챙기는 하루로.','말 한마디 아끼면 오해가 줄어요.','컨디션 관리가 최고의 재테크인 날.','욕심을 내려두면 마음이 가벼워져요.','작은 실수는 웃어넘기며 여유롭게.','조용히 재충전하기 좋은 하루예요.','급한 결정은 내일로 미뤄도 좋아요.','따뜻한 물 한 잔으로 페이스 조절.','기대를 낮추면 뜻밖의 만족이 와요.'];
 const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'},{n:'하양',x:'#f2f2f7'},{n:'남색',x:'#5b6b9e'}];
 const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','텀블러','이어폰','손수건','종이 노트','귤 하나','우산','열쇠고리','머그컵','책갈피','작은 초콜릿','손목시계'];
 
@@ -103,7 +106,8 @@ function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
 
 let RANKED=[], MYZ=-1;
 
-// 오늘 날짜 시드로 12띠에 점수 부여 → 순위 확정(하루 고정)
+// 오늘 날짜 시드로 12띠에 점수 부여 → 순위 확정(하루 고정), 문구·행운은 겹치지 않게 배정
+function seededShuffle(arr,rng){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function computeToday(){
   const day=kstDate();
   const rows=ZODIAC.map((z,i)=>{
@@ -112,12 +116,18 @@ function computeToday(){
     return {i,z,score,rng};
   });
   rows.sort((a,b)=>b.score-a.score);
+  // 그날 하루 고정 시드로 풀을 섞어 순위 순서대로 겹치지 않게 배분
+  const dayRng=mulberry32(hashStr(day+'|tti-assign'));
+  const hi=seededShuffle(CM_HI,dayRng), mid=seededShuffle(CM_MID,dayRng), lo=seededShuffle(CM_LO,dayRng);
+  const colors=seededShuffle(LUCK_COLORS,dayRng), items=seededShuffle(LUCK_ITEMS,dayRng);
+  let hiN=0,midN=0,loN=0;
   RANKED=rows.map((r,rank)=>{
     const starN=5-Math.floor(rank/2.6); // 1~2등 5별 … 하위 2~3별
     const s=Math.max(2,Math.min(5,starN));
-    const cmArr=rank<4?CM_HI:rank<9?CM_MID:CM_LO;
-    const cm=pick(r.rng,cmArr);
-    const lc=pick(r.rng,LUCK_COLORS), ln=1+Math.floor(r.rng()*45), li=pick(r.rng,LUCK_ITEMS);
+    let cm;
+    if(rank<4) cm=hi[hiN++]; else if(rank<9) cm=mid[midN++]; else cm=lo[loN++];
+    const lc=colors[rank%colors.length], li=items[rank%items.length];
+    const ln=1+Math.floor(r.rng()*45);
     return {...r, rank, star:s, cm, lc, ln, li};
   });
   render();
