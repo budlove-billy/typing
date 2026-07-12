@@ -152,6 +152,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-12): 띠별 운세(ttirank)** — `/ttirank/index.html`. 오늘 날짜 시드로 12띠 점수→정렬(유일 순위, 하루 고정), 메달/별점/코멘트/행운. 내 띠 선택 시 하이라이트+행운 표시. Top5 공유카드.
   생일 입력 불필요(띠만 선택). HOME_GAMES `{id:'ttirank',emoji:'🐭',grp:'cat.fun',koOnly:true,external:'ttirank/'}`, 홈 뱃지(`ttirank_seen`), sitemap. 검증 `.logs/ttirank_check.mjs`.
   → 재미(cat.fun) 5종: braintype·unse(사주)·zodiac(별자리)·ttirank(띠랭킹) + moamoa(별도 daily).
+- **신규(2026-07-12): 타로(tarot)** — `/tarot/index.html`. 메이저 아르카나 22장(정/역 의미). **오늘의 카드**(날짜 시드, 하루 고정) + **3카드 스프레드**(연애/일/재물 → 과거·현재·미래, 매번 새로). 카드 뒤집기 CtoR 애니메이션, Top 요약, 공유카드. 계산 없어 사주보다 경량.
+  HOME_GAMES `{id:'tarot',emoji:'🃏',grp:'cat.fun',koOnly:true,external:'tarot/'}`, 홈 뱃지(`tarot_seen`), sitemap. 검증 `.logs/tarot_check.mjs`.
+- **홈 '재미로 보는 운세' 섹션(2026-07-12)**: renderHome, 인기 게임 밑 `#home-fun`(ko 전용). funIds=`['unse','zodiac','ttirank','tarot']`(두뇌유형 제외, 인기게임 유지). 제목 아이콘 없음(`home.fun`).
 - 다음 후보: 개인정보처리방침(로그인 도입 시 필수), ko 전용 언어게임(끝말잇기/속담) 후보.
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>말로우 타로 — 오늘의 카드 & 3카드 타로 | Mallow</title>
+<meta name="description" content="오늘의 타로 한 장과 과거·현재·미래를 보는 3카드 스프레드. 연애·일·재물 고민을 카드에 물어보세요. 재미로 보는 말로우 타로.">
+<meta property="og:title" content="말로우 타로 — 오늘의 카드 & 3카드 타로">
+<meta property="og:description" content="오늘의 타로 카드와 3카드 스프레드로 보는 나의 하루. 친구와 결과를 공유해 보세요!">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playmallow.com/tarot/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/tarot/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>
+:root{ --bg:#f4f2fb; --text:#2a2140; --sub:#7d7495; --card:#ffffff; --line:#ece7f6;
+  --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a; --radius:18px;
+  --tarot:#3a2f6e; --tarot2:#5b4b9e; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #e6e0ff 0%, var(--bg) 55%);color:var(--text);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
+#backHome{position:absolute;left:12px;top:18px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:4px 6px;}
+#backHome:active{opacity:.6;}
+h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px;}
+h1 .sp{color:var(--p);}
+.tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
+main{width:100%;max-width:480px;padding:8px 14px 40px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
+.tabs{display:flex;gap:8px;margin-bottom:14px;}
+.tab{flex:1;padding:11px 0;text-align:center;font-size:14px;font-weight:800;border:1.5px solid var(--line);border-radius:13px;background:#fbfaff;color:var(--sub);cursor:pointer;}
+.tab.on{background:var(--p);color:#fff;border-color:var(--p);}
+.q-label{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:9px;text-align:center;}
+.q-cats{display:flex;gap:7px;margin-bottom:14px;}
+.q-cat{flex:1;padding:10px 0;text-align:center;font-size:13.5px;font-weight:700;border:1.5px solid var(--line);border-radius:12px;background:#fbfaff;cursor:pointer;}
+.q-cat.on{border-color:var(--p);background:#efe9ff;color:var(--p);}
+.btn{display:block;width:100%;margin-top:4px;padding:14px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
+.btn:active{transform:translateY(1px);}
+.btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+.hint{font-size:12px;color:var(--sub);text-align:center;margin-top:10px;line-height:1.6;}
+/* 카드 */
+.spread{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px 0 4px;}
+.tcard{width:98px;perspective:800px;cursor:pointer;}
+.tcard .inner{position:relative;width:100%;aspect-ratio:2/3.1;transition:transform .55s;transform-style:preserve-3d;}
+.tcard.flip .inner{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.back{background:linear-gradient(150deg,var(--tarot),var(--tarot2));color:#f0e9ff;border:2px solid #c9bcff;}
+.back .bico{font-size:30px;} .back .bt{font-size:9px;letter-spacing:1px;margin-top:5px;opacity:.85;}
+.front{background:#fff;border:2px solid var(--p2);transform:rotateY(180deg);padding:6px 4px;text-align:center;}
+.front.rev .fico{transform:rotate(180deg);}
+.front .fico{font-size:30px;line-height:1;}
+.front .fnm{font-size:11px;font-weight:800;margin-top:4px;line-height:1.2;}
+.front .fpos{font-size:9px;color:var(--sub);margin-top:2px;}
+.front .frv{font-size:8.5px;color:var(--pink);font-weight:800;margin-top:2px;}
+.pos-cap{font-size:10.5px;color:var(--sub);text-align:center;margin-top:5px;font-weight:700;}
+.readings{margin-top:8px;}
+.reading{background:#faf8ff;border-radius:12px;padding:12px 14px;margin-bottom:9px;}
+.reading .rh{font-size:13.5px;font-weight:800;}
+.reading .rh .rv{font-size:11px;color:var(--pink);font-weight:800;margin-left:5px;}
+.reading .rp{font-size:11.5px;color:var(--sub);margin-top:1px;}
+.reading .rt{font-size:13.5px;line-height:1.65;margin-top:6px;color:var(--text);}
+.summary{margin-top:10px;text-align:center;font-size:14px;font-weight:700;line-height:1.7;color:var(--p);background:#f2ecff;border-radius:12px;padding:13px;}
+.btns{display:flex;gap:10px;margin-top:14px;} .btns .btn{margin-top:0;}
+.disc{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.6;}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
+</style>
+</head>
+<body>
+<header>
+  <a id="backHome" href="/">← 홈</a>
+  <h1>🃏 말로우 <span class="sp">타로</span></h1>
+  <div class="tagline">오늘의 카드 · 3카드 타로</div>
+</header>
+<main>
+  <div class="card">
+    <div class="tabs">
+      <div class="tab on" id="tab-today" onclick="setMode('today')">오늘의 카드</div>
+      <div class="tab" id="tab-three" onclick="setMode('three')">3카드 타로</div>
+    </div>
+
+    <!-- 오늘의 카드 -->
+    <div id="pane-today">
+      <div class="q-label">오늘 하루, 나에게 온 한 장의 카드는? 🌙</div>
+      <div class="spread"><div class="tcard" id="todayCard"><div class="inner"><div class="face back"><div class="bico">🌙</div><div class="bt">MALLOW TAROT</div></div><div class="face front" id="todayFront"></div></div></div></div>
+      <button class="btn" id="todayBtn">오늘의 카드 뽑기</button>
+      <div class="hint">오늘의 카드는 <b>하루 동안 같은 카드</b>예요. 내일 또 만나요!</div>
+    </div>
+
+    <!-- 3카드 -->
+    <div id="pane-three" style="display:none">
+      <div class="q-label">무엇이 궁금한가요? 마음속으로 질문을 떠올려 보세요 🔮</div>
+      <div class="q-cats">
+        <div class="q-cat on" data-c="love" onclick="setCat('love')">💗 연애</div>
+        <div class="q-cat" data-c="work" onclick="setCat('work')">📚 일·학업</div>
+        <div class="q-cat" data-c="money" onclick="setCat('money')">💰 재물</div>
+      </div>
+      <div class="spread" id="threeSpread"></div>
+      <button class="btn" id="threeBtn">카드 3장 뽑기</button>
+      <div class="hint">과거 · 현재 · 미래를 알려주는 <b>3장 스프레드</b>예요.</div>
+    </div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="card" id="resultCard" style="display:none">
+    <div id="readings" class="readings"></div>
+    <div class="summary" id="summary"></div>
+    <div class="btns">
+      <button class="btn" id="shareBtn">📷 결과 공유</button>
+      <button class="btn sub" id="againBtn">다시 뽑기</button>
+    </div>
+    <div class="disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙</div>
+  </div>
+</main>
+<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
+<script>
+"use strict";
+// 메이저 아르카나 22장 — up(정방향)/rev(역방향) 의미
+const DECK=[
+ {n:'0 광대',e:'🃏',up:'새로운 시작과 자유로운 도전. 겁내지 말고 첫발을 내딛어요.',rev:'무모함은 잠깐 접어두고 계획을 챙길 때.'},
+ {n:'1 마법사',e:'🪄',up:'가진 재능을 발휘할 타이밍. 원하는 걸 만들어내요.',rev:'준비가 덜 됐어요. 기본기를 다시 점검해요.'},
+ {n:'2 여사제',e:'🌙',up:'직관과 내면의 목소리에 귀 기울여요. 답은 이미 알고 있어요.',rev:'감정에 휩쓸리지 말고 한 발 물러서 봐요.'},
+ {n:'3 여황제',e:'👑',up:'풍요와 사랑이 넘치는 시기. 마음이 넉넉해져요.',rev:'나를 먼저 돌보는 여유가 필요해요.'},
+ {n:'4 황제',e:'🏛️',up:'안정과 리더십. 주도적으로 이끌면 잘 풀려요.',rev:'고집은 잠깐 내려두고 유연하게.'},
+ {n:'5 교황',e:'📜',up:'믿을 만한 조언과 배움. 전통적인 방식이 통해요.',rev:'남의 기준보다 나만의 길을 믿어봐요.'},
+ {n:'6 연인',e:'💞',up:'좋은 인연과 조화로운 관계. 마음이 통해요.',rev:'선택 앞에서 우유부단은 금물. 솔직해져요.'},
+ {n:'7 전차',e:'🏇',up:'추진력과 승리. 밀어붙이면 원하는 곳에 닿아요.',rev:'속도 조절이 필요해요. 방향부터 확인해요.'},
+ {n:'8 힘',e:'🦁',up:'부드러운 용기로 상황을 다스려요. 인내가 빛나요.',rev:'조급함과 자기의심은 잠시 내려두기.'},
+ {n:'9 은둔자',e:'🔦',up:'혼자만의 시간이 지혜를 줘요. 내면을 살펴요.',rev:'너무 고립되지 말고 마음을 열어봐요.'},
+ {n:'10 운명의 수레바퀴',e:'🎡',up:'흐름이 바뀌는 전환점. 좋은 변화가 찾아와요.',rev:'예상 밖 변수엔 여유 있게 대응해요.'},
+ {n:'11 정의',e:'⚖️',up:'공정한 결과와 균형. 정직함이 보상받아요.',rev:'한쪽에 치우친 건 아닌지 돌아봐요.'},
+ {n:'12 매달린 사람',e:'🙃',up:'잠시 멈춤이 새 관점을 줘요. 기다림도 전략.',rev:'붙잡고 있던 걸 놓으면 편해져요.'},
+ {n:'13 죽음',e:'🦋',up:'끝이자 새 시작. 낡은 걸 비우면 새것이 와요.',rev:'변화가 두렵겠지만 놓아줄 때가 됐어요.'},
+ {n:'14 절제',e:'🧪',up:'균형과 조화. 서두르지 않는 절제가 복이 돼요.',rev:'과하거나 부족한 부분의 균형을 맞춰요.'},
+ {n:'15 악마',e:'😈',up:'욕망과 집착을 자각할 때. 무엇에 묶여 있나요?',rev:'묶인 사슬을 끊고 자유로워지는 날.'},
+ {n:'16 탑',e:'🗼',up:'예상 밖 변화. 무너진 자리에 더 단단한 게 서요.',rev:'충격은 지나가요. 곧 안정을 찾아요.'},
+ {n:'17 별',e:'⭐',up:'희망과 치유. 바라던 일이 이루어질 조짐이에요.',rev:'잠시 흐린 마음, 다시 희망을 챙겨요.'},
+ {n:'18 달',e:'🌕',up:'상상력과 감수성이 풍부해요. 직관을 믿어요.',rev:'막연한 불안은 내려두고 사실을 봐요.'},
+ {n:'19 태양',e:'☀️',up:'기쁨과 성공! 밝은 에너지가 가득한 최고의 날.',rev:'작은 그늘, 곧 다시 환해질 거예요.'},
+ {n:'20 심판',e:'📯',up:'다시 일어설 기회. 지난 노력이 결실을 봐요.',rev:'자책은 그만. 스스로를 용서하고 나아가요.'},
+ {n:'21 세계',e:'🌍',up:'완성과 성취. 한 챕터를 멋지게 마무리해요.',rev:'거의 다 왔어요. 마지막 한 걸음만 더!'}
+];
+const POS3={ love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['과거의 재물운','현재의 흐름','다가올 기회'] };
+const CATNAME={love:'💗 연애',work:'📚 일·학업',money:'💰 재물'};
+const SUM_UP=['카드들이 밝은 기운을 전해요. 오늘의 나를 믿어봐요! ✨','좋은 흐름이 보여요. 한 걸음씩 나아가면 돼요 🌈','마음이 향하는 대로, 지금이 좋은 타이밍이에요 💫'];
+const SUM_MID=['잔잔한 흐름 속에 기회가 숨어 있어요. 차분하게 🌙','서두르지 않으면 원하는 답에 가까워져요 🍀','오늘은 나를 돌보는 것부터 시작해요 🤗'];
+
+function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);}
+function draw(rng,count){ const idx=DECK.map((_,i)=>i); for(let i=idx.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));const t=idx[i];idx[i]=idx[j];idx[j]=t;} return idx.slice(0,count).map(i=>({card:DECK[i], rev:rng()<0.42})); }
+
+let MODE='today', CAT='love', LAST=null;
+function setMode(m){ MODE=m; document.getElementById('tab-today').classList.toggle('on',m==='today'); document.getElementById('tab-three').classList.toggle('on',m==='three');
+  document.getElementById('pane-today').style.display=m==='today'?'':'none'; document.getElementById('pane-three').style.display=m==='three'?'':'none';
+  document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
+function setCat(c){ CAT=c; document.querySelectorAll('.q-cat').forEach(e=>e.classList.toggle('on',e.dataset.c===c)); }
+function frontHTML(pick){ return '<div class="fico">'+pick.card.e+'</div><div class="fnm">'+pick.card.n+'</div>'+(pick.rev?'<div class="frv">역방향</div>':'<div class="fpos">정방향</div>'); }
+
+function resetTodayCard(){ const el=document.getElementById('todayCard'); el.classList.remove('flip'); }
+function drawToday(){
+  const rng=mulberry32(hashStr('tarot-today|'+kstDate()));
+  const pick=draw(rng,1)[0];
+  const fr=document.getElementById('todayFront'); fr.className='face front'+(pick.rev?' rev':''); fr.innerHTML=frontHTML(pick);
+  document.getElementById('todayCard').classList.add('flip');
+  gtag('event','tarot_today',{});
+  const meaning=pick.rev?pick.card.rev:pick.card.up;
+  LAST={mode:'today',cards:[pick],cat:null};
+  setTimeout(()=>{
+    document.getElementById('readings').innerHTML='<div class="reading"><div class="rh">'+pick.card.e+' '+pick.card.n+(pick.rev?'<span class="rv">역방향</span>':'')+'</div><div class="rt">'+meaning+'</div></div>';
+    document.getElementById('summary').textContent='오늘의 한마디 — '+meaning;
+    document.getElementById('resultCard').style.display='block';
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'center'});
+  },560);
+}
+
+function renderThreeBacks(){
+  const sp=document.getElementById('threeSpread'); if(!sp) return;
+  sp.innerHTML=[0,1,2].map(i=>'<div style="text-align:center"><div class="tcard" id="tc'+i+'"><div class="inner"><div class="face back"><div class="bico">🃏</div><div class="bt">'+(i+1)+'</div></div><div class="face front" id="tf'+i+'"></div></div></div><div class="pos-cap" id="cap'+i+'"></div></div>').join('');
+}
+function drawThree(){
+  const seed='tarot3|'+CAT+'|'+kstDate()+'|'+Math.floor(Date.now()/1000); // 매번 새로
+  const rng=mulberry32(hashStr(seed));
+  const picks=draw(rng,3); const pos=POS3[CAT];
+  gtag('event','tarot_three',{cat:CAT});
+  picks.forEach((p,i)=>{ setTimeout(()=>{
+    const fr=document.getElementById('tf'+i); fr.className='face front'+(p.rev?' rev':''); fr.innerHTML=frontHTML(p);
+    document.getElementById('cap'+i).textContent=pos[i];
+    document.getElementById('tc'+i).classList.add('flip');
+  }, 250+i*260); });
+  LAST={mode:'three',cards:picks,cat:CAT};
+  setTimeout(()=>{
+    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const m=p.rev?p.card.rev:p.card.up;
+      return '<div class="reading"><div class="rh">'+p.card.e+' '+p.card.n+(p.rev?'<span class="rv">역</span>':'')+'</div><div class="rp">'+pos[i]+'</div><div class="rt">'+m+'</div></div>'; }).join('');
+    const good=picks.filter(p=>!p.rev).length; const sr=mulberry32(hashStr(seed+'|s'));
+    document.getElementById('summary').textContent=(good>=2?SUM_UP:SUM_MID)[Math.floor(sr()*3)];
+    document.getElementById('resultCard').style.display='block';
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'center'});
+  }, 250+3*260+400);
+}
+
+/* 공유 카드 */
+const logoImg=new Image(); logoImg.src='/icon-192.png';
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
+function drawCard(){
+  const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#5b4b9e'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();
+  c.textAlign='center'; c.textBaseline='alphabetic';
+  c.font='800 34px "Apple SD Gothic Neo",Arial,sans-serif';
+  const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=72;
+  if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
+  c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
+  if(L.mode==='today'){ const p=L.cards[0];
+    c.font='700 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 오늘의 타로',W/2,172);
+    c.font='96px sans-serif'; c.fillText(p.card.e,W/2,300);
+    c.font='800 30px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.n+(p.rev?' (역)':''),W/2,350);
+    c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,(p.rev?p.card.rev:p.card.up),W/2,410,W-150,34);
+  } else { const pos=POS3[L.cat];
+    c.font='700 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 3카드 타로 · '+CATNAME[L.cat],W/2,166);
+    L.cards.forEach((p,i)=>{ const y=230+i*150;
+      c.font='54px sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.e,W/2-180,y+14);
+      c.textAlign='left'; c.font='800 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(pos[i],W/2-130,y-10);
+      c.font='700 18px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.n+(p.rev?' (역)':''),W/2-130,y+14);
+      c.textAlign='center'; });
+  }
+  c.textAlign='center'; c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
+  return cv;
+}
+function share(){ if(!LAST) return; gtag('event','tarot_share',{}); const cv=drawCard();
+  cv.toBlob(function(blob){ const file=new File([blob],'mallow-tarot.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'오늘의 타로 🃏 playmallow.com/tarot'}).catch(()=>{}); }
+    else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-tarot.png'; a.click(); } },'image/png'); }
+
+document.getElementById('todayBtn').onclick=drawToday;
+document.getElementById('threeBtn').onclick=drawThree;
+document.getElementById('shareBtn').onclick=share;
+document.getElementById('againBtn').onclick=function(){ document.getElementById('resultCard').style.display='none'; if(MODE==='today') resetTodayCard(); else renderThreeBacks(); window.scrollTo({top:0,behavior:'smooth'}); };
+renderThreeBacks();
+try{ localStorage.setItem('tarot_seen',kstDate()); }catch(e){}
+</script>
+</body>
+</html>

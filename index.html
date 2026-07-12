@@ -810,7 +810,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
   <div class="home-grid" id="home-popular"></div>
   <div id="home-fun-wrap" style="display:none">
-    <div class="home-section-title" data-i18n="home.fun">🔮 재미로 보는 운세</div>
+    <div class="home-section-title" data-i18n="home.fun">재미로 보는 운세</div>
     <div class="home-grid" id="home-fun"></div>
   </div>
   <div class="home-about">
@@ -3320,6 +3320,7 @@ const I18N = {
   "nav.unse": {ko:"오늘의 운세", en:"Fortune", th:"ดวงวันนี้"},
   "nav.zodiac": {ko:"별자리 운세", en:"Horoscope", th:"ดวงราศี"},
   "nav.ttirank": {ko:"띠별 운세", en:"Zodiac Rank", th:"อันดับนักษัตร"},
+  "nav.tarot": {ko:"타로 점", en:"Tarot", th:"ไพ่ทาโรต์"},
   "nav.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
   "home.greeting": {ko:"오늘도 두뇌 체조 한 판!", en:"Time for today's brain workout!", th:"ได้เวลาบริหารสมองวันนี้!"},
   "home.sub": {ko:"매일 조금씩, 뇌가 말랑말랑해집니다.", en:"A little each day keeps your brain sharp.", th:"ทำทุกวันทีละนิด สมองก็เฉียบคม"},
@@ -3343,7 +3344,7 @@ const I18N = {
   "home.about1min": {ko:"약 1분", en:"about 1 min", th:"ประมาณ 1 นาที"},
   "home.browse": {ko:"게임 모음", en:"Browse", th:"หมวดเกม"},
   "home.popular": {ko:"인기 게임", en:"Popular", th:"เกมยอดนิยม"},
-  "home.fun": {ko:"🔮 재미로 보는 운세", en:"🔮 Just for Fun", th:"🔮 ดูดวงสนุก ๆ"},
+  "home.fun": {ko:"재미로 보는 운세", en:"Just for Fun", th:"ดูดวงสนุก ๆ"},
   "feature.start": {ko:"시작하기 →", en:"Start →", th:"เริ่ม →"},
   "feature.allDone": {ko:"미션 완료! 🎉", en:"All done! 🎉", th:"ครบแล้ว! 🎉"},
   "feature.browseHint": {ko:"다른 게임도 즐겨보세요", en:"Enjoy other games too", th:"ลองเกมอื่นดูสิ"},
@@ -7009,6 +7010,7 @@ const HOME_GAMES=[
   {id:'unse', emoji:'🌙', key:'nav.unse', grp:'cat.fun', koOnly:true, external:'unse/'},
   {id:'zodiac', emoji:'⭐', key:'nav.zodiac', grp:'cat.fun', koOnly:true, external:'zodiac/'},
   {id:'ttirank', emoji:'🐭', key:'nav.ttirank', grp:'cat.fun', koOnly:true, external:'ttirank/'},
+  {id:'tarot', emoji:'🃏', key:'nav.tarot', grp:'cat.fun', koOnly:true, external:'tarot/'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
@@ -7084,6 +7086,7 @@ function gameCardHTML(g){
   if(g.id==='unse'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('unse_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='zodiac'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('zodiac_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='ttirank'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('ttirank_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
+  if(g.id==='tarot'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('tarot_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
     '<div class="home-card-cat">'+t(g.grp)+'</div>';
@@ -7137,7 +7140,7 @@ function renderHome(){
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
     fun.innerHTML='';
-    const funIds=(CURRENT_LANG==='ko')?['unse','zodiac','ttirank']:[];
+    const funIds=(CURRENT_LANG==='ko')?['unse','zodiac','ttirank','tarot']:[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
       card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
       card.innerHTML=gameCardHTML(g); fun.appendChild(card); });
