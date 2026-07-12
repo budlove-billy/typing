@@ -607,7 +607,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .home-install:hover{background:var(--purple3)}
 .home-ios-hint{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);padding:.8rem 1rem}
 .ios-hint-x{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.9rem;margin-left:auto;flex-shrink:0}
-.home-grp{font-size:.82rem;font-weight:700;color:var(--text2);margin:1.1rem .25rem .6rem}
+.home-grp{font-size:.82rem;font-weight:700;color:var(--text2);margin:1.1rem .25rem .6rem;scroll-margin-top:64px}
 .home-grp:first-child{margin-top:.25rem}
 /* ===== Rule switch (규칙 바꾸기) ===== */
 .sw-rule{display:inline-block;font-size:1.05rem;font-weight:700;padding:.45rem 1.2rem;border-radius:999px;margin-bottom:1rem;transition:.18s}
@@ -1017,8 +1017,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </div>
     <div class="iq-domain-grid" id="iq-domain-grid"></div>
     <div class="exam-list" id="iq-review-list" style="margin-top:1rem"></div>
-    <div style="margin-top:1.25rem;text-align:center">
-      <button class="btn" onclick="resetIQTest()" data-i18n="iq.retry">다시 풀기</button>
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn" onclick="resetIQTest()" data-i18n="iq.retry">다시 풀기</button><button class="btn btn-outline" onclick="gameShare('iq')" data-i18n="share.button">📷 결과 공유</button>
     </div>
   </div>
 </div>
@@ -1033,13 +1033,13 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     </p>
     <div class="difficulty-row">
       <div class="diff-btn active" id="sk-diff-easy" onclick="setSudokuDiff('easy')">
-        <h3>🟢 <span data-i18n="sudoku.easy">쉬움</span></h3><p data-i18n="sudoku.easyDesc">빈칸 36개</p>
+        <h3>🌱 <span data-i18n="sudoku.easy">쉬움</span></h3><p data-i18n="sudoku.easyDesc">빈칸 36개</p>
       </div>
       <div class="diff-btn" id="sk-diff-medium" onclick="setSudokuDiff('medium')">
-        <h3>🟡 <span data-i18n="sudoku.medium">보통</span></h3><p data-i18n="sudoku.mediumDesc">빈칸 46개</p>
+        <h3>⚡ <span data-i18n="sudoku.medium">보통</span></h3><p data-i18n="sudoku.mediumDesc">빈칸 46개</p>
       </div>
       <div class="diff-btn" id="sk-diff-expert" onclick="setSudokuDiff('expert')">
-        <h3>🔴 <span data-i18n="sudoku.expert">전문가</span></h3><p data-i18n="sudoku.expertDesc">빈칸 56개</p>
+        <h3>🔥 <span data-i18n="sudoku.expert">전문가</span></h3><p data-i18n="sudoku.expertDesc">빈칸 56개</p>
       </div>
     </div>
     <button class="btn" onclick="startSudoku()" data-i18n="sudoku.startNew">새 게임 시작</button>
@@ -3146,6 +3146,7 @@ const I18N = {
   "iq.submit": {ko:"제출하기", en:"Submit", th:"ส่งคำตอบ"},
   "iq.estimatedScore": {ko:"예상 IQ 점수", en:"Estimated IQ Score", th:"คะแนนไอคิวโดยประมาณ"},
   "iq.retry": {ko:"다시 풀기", en:"Try Again", th:"ลองใหม่"},
+  "iq.shareNote": {ko:"게임 기반 재미용 지표 · 실제 지능 측정 아님", en:"For fun · not a real IQ measurement", th:"เพื่อความสนุก · ไม่ใช่การวัดไอคิวจริง"},
   "iq.unanswered": {ko:"미응답", en:"No answer", th:"ไม่ได้ตอบ"},
   "iq.resultSummary": {ko:"{total}문항 중 {correct}개 정답 ({pct}%) · 소요 시간 {time}", en:"{correct} out of {total} correct ({pct}%) · Time: {time}", th:"ถูก {correct} จาก {total} ข้อ ({pct}%) · เวลาที่ใช้ {time}"},
   "iq.minSec": {ko:"{m}분 {s}초", en:"{m}m {s}s", th:"{m} นาที {s} วินาที"},
@@ -4615,6 +4616,7 @@ function finishIQTest(){
   // 게임 점수(실제 IQ 아님): 정답률 곡선(^1.3) + 남은 시간 속도 보너스, 55~145로 분산
   const speedF=Math.max(0, Math.min(1, IQS.timeLeft/IQ_TIME_LIMIT));
   const iqScore=Math.round(Math.max(55, Math.min(145, 55 + Math.pow(wRate,1.3)*75 + speedF*15)));
+  IQS.lastScore=iqScore;
   if(typeof saveFlatBest==='function') saveFlatBest('iq', iqScore);
 
   document.getElementById('iq-test-card').style.display='none';
@@ -6030,6 +6032,7 @@ function gameShare(game){
   else if(game==='merge') o={emoji:'🍭', title:t('merge.title'),  from:'#f48fb1', to:'#7e57f0', lines:[t('merge.score')+'  '+MR.score, t('merge.maxTile')+'  '+MR.maxTile]};
   else if(game==='chop')  o={emoji:'🍡', title:t('chop.title'),   from:'#ff8a80', to:'#f06292', lines:[t('chop.score')+'  '+CP.score, CP_DIFF_LABEL(CP.diff)]};
   else if(game==='sort')  o={emoji:'🧪', title:t('sort.title'),   from:'#8fd9a8', to:'#7fb3ff', lines:[t('sort.finalScore')+'  '+SO.score, t('sort.movesUsed')+'  '+SO.moves]};
+  else if(game==='iq'){ o={emoji:'🧠', title:t('iq.title'), from:'#5b4ff0', to:'#2255d0', lines:[t('iq.estimatedScore')+'  '+(IQS.lastScore||'-')], note:t('iq.shareNote')}; }
   else return;
   o.subtitle=t('share.myScore');
   const c=makeShareCard(o);
@@ -7029,7 +7032,7 @@ function homeVisit(){
 // ---- 오늘의 미션 (Daily Workout) : 매일 축 섞은 3게임을 날짜 시드로 ----
 const MISSION_A=['flash','count','nback','cards','melody','rev','rhythm','pitch'];   // 기억·청각
 const MISSION_B=['stroop','trail','react','whack','spot','odd','chop','flank','catch','diff','wordsearch'];          // 주의·속도·협응·관찰·언어탐색
-const MISSION_C=['switch','rotate','slide','fit','trace'];                 // 유연성·공간·협응
+const MISSION_C=['switch','rotate','slide','fit','trace','bubble','guess']; // 유연성·공간·계산
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
   return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
@@ -7130,7 +7133,7 @@ function renderHome(){
   // 게임 모음: 카테고리 칩
   const cats=[]; HOME_GAMES.forEach(g=>{ if(g.koOnly&&CURRENT_LANG!=='ko') return; if(g.langs&&!g.langs.includes(CURRENT_LANG)) return; if(!cats.includes(g.grp)) cats.push(g.grp); });
   const catWrap=document.getElementById('home-cats');
-  if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>showScreen('games'); catWrap.appendChild(b); }); }
+  if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>{ showScreen('games'); setTimeout(()=>{ const el=document.getElementById('grp-'+c.replace('.','-')); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },60); }; catWrap.appendChild(b); }); }
   // 랜딩 내부링크 푸터는 ko에서만
   const ftr=document.getElementById('site-footer'); if(ftr) ftr.style.display=(CURRENT_LANG==='ko')?'':'none';
   // 인기 게임(큐레이션)
@@ -7156,7 +7159,7 @@ function renderGames(){
   const order=[], byGrp={};                     // 같은 카테고리를 한 섹션으로 모음(HOME_GAMES에 흩어져 있어도)
   vis.forEach(g=>{ if(!byGrp[g.grp]){ byGrp[g.grp]=[]; order.push(g.grp); } byGrp[g.grp].push(g); });
   order.forEach(grp=>{
-    const h=document.createElement('div'); h.className='home-grp'; h.textContent=t(grp); body.appendChild(h);
+    const h=document.createElement('div'); h.className='home-grp'; h.id='grp-'+grp.replace('.','-'); h.textContent=t(grp); body.appendChild(h);
     const grid=document.createElement('div'); grid.className='home-grid'; body.appendChild(grid);
     byGrp[grp].forEach(g=>{
       const card=document.createElement('button'); card.className='home-card';
