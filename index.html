@@ -7137,7 +7137,7 @@ function renderHome(){
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
     fun.innerHTML='';
-    const funIds=(CURRENT_LANG==='ko')?['unse','zodiac','ttirank','braintype']:[];
+    const funIds=(CURRENT_LANG==='ko')?['unse','zodiac','ttirank']:[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
       card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
       card.innerHTML=gameCardHTML(g); fun.appendChild(card); });
