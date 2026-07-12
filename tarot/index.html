@@ -200,7 +200,8 @@ let MODE='today', CAT='love', LAST=null;
 function setMode(m){ MODE=m; document.getElementById('tab-today').classList.toggle('on',m==='today'); document.getElementById('tab-three').classList.toggle('on',m==='three');
   document.getElementById('pane-today').style.display=m==='today'?'':'none'; document.getElementById('pane-three').style.display=m==='three'?'':'none';
   document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
-function setCat(c){ CAT=c; document.querySelectorAll('.q-cat').forEach(e=>e.classList.toggle('on',e.dataset.c===c)); }
+function setCat(c){ CAT=c; document.querySelectorAll('.q-cat').forEach(e=>e.classList.toggle('on',e.dataset.c===c));
+  renderThreeBacks(); document.getElementById('resultCard').style.display='none'; }   // 카테고리 바꾸면 카드 다시 덮고 결과 닫기
 function frontHTML(pick){ return cardArtSVG(pick.card)+(pick.rev?'<div class="frv">역방향</div>':''); }
 
 function resetTodayCard(){ const el=document.getElementById('todayCard'); el.classList.remove('flip'); }
