@@ -59,6 +59,9 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-13 — **운세 다국어 마감**: ① 홈→운세 정적페이지 이동 시 현재 앱 언어를 `?lang=`로 전달(`goExternal`) → 별자리 영어 자동 적용 문제 해소.
+  ② **타로 태국어(ko/th)** 전면 이식: `TX`(ko/th UI)+`CARD_TH`(78장 태국어=메이저22 개별+마이너56 슈트·랭크 조합)+언어 선택기+`detectLang`(?lang→brain.lang)+`CF(pick)` 언어별 카드. 별자리는 ko/en/th 기완비. 타로 en은 저작권 신중으로 제외.
+
 - 2026-07-12 — **말로우 운세(`/unse/`)**: 재미(cat.fun) 게임 — 생년월일→띠·오행(양력 연주 기반 라이트) + 오늘 날짜 시드 데일리 운세(총운/애정·금전·건강·일/행운색·숫자·아이템/한마디)+공유카드.
   moamoa식 별도 정적 페이지(koOnly·external, 기록/능력치/미션 제외), 재미 톤·면책 문구. HOME_GAMES/sitemap 등재. 기획=`재미게임-운세-기획.md`.
 
@@ -131,15 +134,15 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8081-8085** (5 ports total).
+This project is allocated the port range **8086-8090** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8081-8085`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8086-8090`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8081`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8085`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8086`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8090`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->

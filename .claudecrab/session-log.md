@@ -3326,3 +3326,179 @@ _This file is automatically injected into Claude's context at the start of every
 
 (none)
 
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T07:51:22.862141+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-12T07:55:06.557460+00:00
+
+
+# Active Session State
+
+## Current task
+2차 신규 4종(wordsearch/diff/pitch/trace) 구현 완료 → 활성 33종. 검증 PASS 후 배포.
+모든 인지 영역 ≥2종 달성(언어 anagram+wordsearch=2, 관찰 spot+odd+diff=3, 청각 melody+rhythm+pitch=3, 협응 whack+catch+trace=3).
+
+## Decisions
+- 생성 선검증은 반드시 실제 앱 shuffleArr 의미(비변형)로(.logs/gen_sim2.mjs). wsPlace 500/500·tcWalk 안정.
+- wordsearch=ko+en(langs 필터, th 숨김), AG_WORDS 재활용. pointer 드래그+elementFromPoint.
+- 검증 3종 통과: 문법 컴파일 / wire_check(배선·chState·i18n, about.p1/p2는 숫자키 오탐) / runtime_probe(4종 start 무예외).
+
+## Open questions
+- ⚠️ 라이브 스모크: ws/trace 모바일 드래그 정밀도, pitch 오디오 첫재생, diff 큰 판 가독성. 배포 후 확인.
+- 후속 후보: ko 전용 언어게임(끝말잇기/속담), 개인정보처리방침(로그인 시).
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-12T08:03:07.618725+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 정합 패키지(138acb4) + i18n 누락 100키 보충(07fee07) 배포·라이브 확인.
+- 스도쿠 아이콘 통일 / IQ 공유버튼(+면책) / 홈 칩→게임탭 섹션 점프 / MISSION_C+=bubble,guess
+- Wave2-3 게임 12종의 en/th 미번역 라벨(easyDesc·combo·best 등 100키) 일괄 번역 추가
+
+## Decisions
+- 라인업 분석 결론: 수량 확장 종료, 데이터 기반 품질 단계로. 점술류(fun)는 4종 동결.
+- 잔여 백로그: th 사용자 lang 레이더 표시 보정, GAME_REF 실측 보정(GA 후), 색약 ✓/✗ 점진.
+
+## Open questions
+- 모아모아 퍼즐 D+25(8월 초). 개인정보처리방침(로그인/애드센스 전).
+
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-12T22:37:23.939215+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 정합 패키지(138acb4) + i18n 누락 100키 보충(07fee07) 배포·라이브 확인.
+- 스도쿠 아이콘 통일 / IQ 공유버튼(+면책) / 홈 칩→게임탭 섹션 점프 / MISSION_C+=bubble,guess
+- Wave2-3 게임 12종의 en/th 미번역 라벨(easyDesc·combo·best 등 100키) 일괄 번역 추가
+
+## Decisions
+- 라인업 분석 결론: 수량 확장 종료, 데이터 기반 품질 단계로. 점술류(fun)는 4종 동결.
+- 잔여 백로그: th 사용자 lang 레이더 표시 보정, GAME_REF 실측 보정(GA 후), 색약 ✓/✗ 점진.
+
+## Open questions
+- 모아모아 퍼즐 D+25(8월 초). 개인정보처리방침(로그인/애드센스 전).
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-12T22:50:55.227595+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-12T23:05:25.735979+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-12T23:07:09.945863+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+

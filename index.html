@@ -7157,6 +7157,8 @@ function missionMark(id){
   }
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
+// external(운세 정적페이지)로 이동 시 현재 앱 언어를 ?lang= 로 전달(별자리/타로 다국어 자동 적용)
+function goExternal(g){ track('screen_open',{screen:g.id}); const langs=g.langs||['ko']; const l=langs.includes(CURRENT_LANG)?CURRENT_LANG:'ko'; const sep=g.external.includes('?')?'&':'?'; location.href=g.external+(l!=='ko'?(sep+'lang='+l):''); }
 // 결과 화면 추천: 내 약한 능력축 + 덜 한(낮은 레벨·미플레이) 게임을 가중해 상위 3개
 function recommendGames(cur, n){
   const sc = (typeof abilityScores==='function') ? abilityScores() : {};
@@ -7248,7 +7250,7 @@ function renderHome(){
     const funByLang={ ko:['unse','zodiac','ttirank','tarot'], en:['zodiac'], th:['zodiac','tarot'] };
     const funIds=funByLang[CURRENT_LANG]||[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
-      card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
+      card.onclick=()=>{ if(g.external){ goExternal(g); return; } showScreen(g.id); };
       card.innerHTML=gameCardHTML(g); fun.appendChild(card); });
     if(funWrap) funWrap.style.display=funIds.length?'':'none';
   }
@@ -7265,7 +7267,7 @@ function renderGames(){
     const grid=document.createElement('div'); grid.className='home-grid'; body.appendChild(grid);
     byGrp[grp].forEach(g=>{
       const card=document.createElement('button'); card.className='home-card';
-      card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
+      card.onclick=()=>{ if(g.external){ goExternal(g); return; } showScreen(g.id); };
       card.innerHTML=gameCardHTML(g); grid.appendChild(card);
     });
   });

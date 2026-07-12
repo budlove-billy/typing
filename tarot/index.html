@@ -82,9 +82,10 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 </head>
 <body>
 <header>
-  <a id="backHome" href="/">← 홈</a>
-  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">타로</span></h1>
-  <div class="tagline">오늘의 카드 · 3카드 타로 · 정통 78장</div>
+  <a id="backHome" href="/">← <span id="t-home">홈</span></a>
+  <select id="langSel" onchange="setLang(this.value)" style="position:absolute;right:12px;top:14px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--sub);padding:4px 6px;font-family:inherit"><option value="ko">한국어</option><option value="th">ไทย</option></select>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span>Mallow <span class="sp" id="t-title">타로</span></h1>
+  <div class="tagline" id="t-tagline">오늘의 카드 · 3카드 타로 · 정통 78장</div>
 </header>
 <main>
   <div class="card">
@@ -95,23 +96,23 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 
     <!-- 오늘의 카드 -->
     <div id="pane-today">
-      <div class="q-label">오늘 하루, 나에게 온 한 장의 카드는? 🌙</div>
+      <div class="q-label" id="t-todayQ">오늘 하루, 나에게 온 한 장의 카드는? 🌙</div>
       <div class="spread"><div class="tcard" id="todayCard"><div class="inner"><div class="face back"><div class="cback"><div class="cback-moon">🌙</div><div class="cback-t">MALLOW<br>TAROT</div></div></div><div class="face front" id="todayFront"></div></div></div></div>
       <button class="btn" id="todayBtn">오늘의 카드 뽑기</button>
-      <div class="hint">오늘의 카드는 <b>하루 동안 같은 카드</b>예요. 내일 또 만나요!</div>
+      <div class="hint" id="t-todayHint">오늘의 카드는 <b>하루 동안 같은 카드</b>예요. 내일 또 만나요!</div>
     </div>
 
     <!-- 3카드 -->
     <div id="pane-three" style="display:none">
-      <div class="q-label">무엇이 궁금한가요? 마음속으로 질문을 떠올려 보세요 🔮</div>
+      <div class="q-label" id="t-threeQ">무엇이 궁금한가요? 마음속으로 질문을 떠올려 보세요 🔮</div>
       <div class="q-cats">
-        <div class="q-cat on" data-c="love" onclick="setCat('love')">💗 연애</div>
-        <div class="q-cat" data-c="work" onclick="setCat('work')">📚 일·학업</div>
-        <div class="q-cat" data-c="money" onclick="setCat('money')">💰 재물</div>
+        <div class="q-cat on" data-c="love" onclick="setCat('love')" id="qc-love">💗 연애</div>
+        <div class="q-cat" data-c="work" onclick="setCat('work')" id="qc-work">📚 일·학업</div>
+        <div class="q-cat" data-c="money" onclick="setCat('money')" id="qc-money">💰 재물</div>
       </div>
       <div class="spread" id="threeSpread"></div>
       <button class="btn" id="threeBtn">카드 3장 뽑기</button>
-      <div class="hint">과거 · 현재 · 미래를 알려주는 <b>3장 스프레드</b>예요.</div>
+      <div class="hint" id="t-threeHint">과거 · 현재 · 미래를 알려주는 <b>3장 스프레드</b>예요.</div>
     </div>
   </div>
 
@@ -123,13 +124,112 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
       <button class="btn" id="shareBtn">📷 결과 공유</button>
       <button class="btn sub" id="againBtn">다시 뽑기</button>
     </div>
-    <div class="disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909), Pamela Colman Smith · 퍼블릭 도메인</span></div>
+    <div class="disc" id="t-disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909), Pamela Colman Smith · 퍼블릭 도메인</span></div>
   </div>
 </main>
-<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
 <script>
 "use strict";
+/* ===== 다국어(ko/th) ===== */
+const TX={
+ ko:{ home:'홈', title:'타로', tagline:'오늘의 카드 · 3카드 타로 · 정통 78장',
+  tabToday:'오늘의 카드', tabThree:'3카드 타로',
+  todayQ:'오늘 하루, 나에게 온 한 장의 카드는? 🌙', todayBtn:'오늘의 카드 뽑기', todayHint:'오늘의 카드는 <b>하루 동안 같은 카드</b>예요. 내일 또 만나요!',
+  threeQ:'무엇이 궁금한가요? 마음속으로 질문을 떠올려 보세요 🔮', threeBtn:'카드 3장 뽑기', threeHint:'과거 · 현재 · 미래를 알려주는 <b>3장 스프레드</b>예요.',
+  share:'📷 결과 공유', again:'다시 뽑기', reversed:'역방향', revShort:'역', sayLabel:'오늘의 한마디',
+  disc:'본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909) · 퍼블릭 도메인</span>',
+  footer:'가볍게 즐기는 두뇌게임', cardTitleToday:'🃏 오늘의 타로', cardTitleThree:'🃏 3카드 타로', shareText:'오늘의 타로 🃏 playmallow.com/tarot',
+  catName:{love:'💗 연애',work:'📚 일·학업',money:'💰 재물'},
+  pos:{love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['과거의 재물운','현재의 흐름','다가올 기회']},
+  sumUp:['카드들이 밝은 기운을 전해요. 오늘의 나를 믿어봐요! ✨','좋은 흐름이 보여요. 한 걸음씩 나아가면 돼요 🌈','마음이 향하는 대로, 지금이 좋은 타이밍이에요 💫'],
+  sumMid:['잔잔한 흐름 속에 기회가 숨어 있어요. 차분하게 🌙','서두르지 않으면 원하는 답에 가까워져요 🍀','오늘은 나를 돌보는 것부터 시작해요 🤗'] },
+ th:{ home:'หน้าแรก', title:'ทาโรต์', tagline:'ไพ่วันนี้ · ไพ่ 3 ใบ · ครบ 78 ใบ',
+  tabToday:'ไพ่วันนี้', tabThree:'ไพ่ 3 ใบ',
+  todayQ:'วันนี้ ไพ่ใบไหนมาหาคุณ? 🌙', todayBtn:'เปิดไพ่วันนี้', todayHint:'ไพ่วันนี้จะ<b>เหมือนกันทั้งวัน</b> พรุ่งนี้มาเปิดใหม่นะ!',
+  threeQ:'อยากรู้เรื่องอะไร? นึกคำถามในใจไว้ 🔮', threeBtn:'เปิดไพ่ 3 ใบ', threeHint:'ไพ่ 3 ใบบอก <b>อดีต · ปัจจุบัน · อนาคต</b>',
+  share:'📷 แชร์ผล', again:'เปิดใหม่', reversed:'กลับหัว', revShort:'กลับ', sayLabel:'คำพูดของวันนี้',
+  disc:'ไพ่นี้เป็น <b>คอนเทนต์เพื่อความสนุก</b> ไม่ควรใช้ตัดสินใจใด ๆ เป็นเพียงคำใบ้ให้ใจเบา ๆ 🌙<br><span style="opacity:.75">ภาพไพ่: Rider–Waite–Smith Tarot (1909) · สาธารณสมบัติ</span>',
+  footer:'เกมสมองเบา ๆ', cardTitleToday:'🃏 ไพ่วันนี้', cardTitleThree:'🃏 ไพ่ 3 ใบ', shareText:'ไพ่ทาโรต์วันนี้ 🃏 playmallow.com/tarot',
+  catName:{love:'💗 ความรัก',work:'📚 งาน/เรียน',money:'💰 การเงิน'},
+  pos:{love:['ความสัมพันธ์ที่ผ่านมา','ใจในตอนนี้','ความรักที่กำลังมา'], work:['ความพยายามที่ผ่านมา','สถานการณ์ปัจจุบัน','แนวโน้มข้างหน้า'], money:['การเงินที่ผ่านมา','กระแสตอนนี้','โอกาสที่กำลังมา']},
+  sumUp:['ไพ่ส่งพลังสดใส เชื่อมั่นในตัวเองวันนี้! ✨','เห็นกระแสดี ค่อย ๆ ก้าวไปทีละก้าว 🌈','ทำตามใจ ตอนนี้คือจังหวะที่ดี 💫'],
+  sumMid:['ในความเงียบมีโอกาสซ่อนอยู่ ใจเย็น ๆ 🌙','ไม่รีบก็จะใกล้คำตอบที่ต้องการ 🍀','วันนี้เริ่มจากดูแลตัวเองก่อน 🤗'] }
+};
+// 78장 태국어 카드(DECK 인덱스와 동일 순서). 메이저 22 + 마이너 56(완드·컵·소드·펜타클)
+const MAJOR_TH=[
+ {n:'0 คนโง่',up:'การเริ่มต้นใหม่และอิสระ ก้าวแรกอย่างกล้าหาญ',rev:'อย่าบุ่มบ่าม วางแผนให้พร้อมก่อน',tip:'ลองสิ่งใหม่โดยไม่กลัว',rtip:'คิดให้รอบคอบก่อนลงมือ'},
+ {n:'1 นักมายากล',up:'ถึงเวลาแสดงความสามารถ สร้างสิ่งที่ต้องการ',rev:'ยังไม่พร้อม ทบทวนพื้นฐานอีกครั้ง',tip:'ใช้จุดแข็งของตัวเองวันนี้',rtip:'เตรียมตัวให้ดีกว่านี้'},
+ {n:'2 นักบวชหญิง',up:'ฟังสัญชาตญาณและเสียงในใจ คำตอบอยู่ในตัวคุณ',rev:'อย่าให้อารมณ์พาไป ถอยมามองภาพรวม',tip:'เชื่อลางสังหรณ์ของคุณ',rtip:'สงบใจแล้วค่อยตัดสินใจ'},
+ {n:'3 จักรพรรดินี',up:'ความอุดมสมบูรณ์และความรัก ใจเปี่ยมสุข',rev:'ดูแลตัวเองก่อน ให้เวลากับใจ',tip:'โอบกอดความอบอุ่นรอบตัว',rtip:'พักและเติมพลังให้ตัวเอง'},
+ {n:'4 จักรพรรดิ',up:'ความมั่นคงและภาวะผู้นำ นำทางได้ดี',rev:'ลดความดื้อ ยืดหยุ่นมากขึ้น',tip:'จัดระเบียบและนำอย่างมั่นใจ',rtip:'เปิดใจรับความเห็นต่าง'},
+ {n:'5 สันตะปาปา',up:'คำแนะนำที่ไว้ใจได้และการเรียนรู้ วิธีดั้งเดิมได้ผล',rev:'เชื่อทางของตัวเองมากกว่ากรอบเดิม',tip:'ขอคำปรึกษาจากผู้รู้',rtip:'กล้าเลือกทางของตัวเอง'},
+ {n:'6 คู่รัก',up:'ความสัมพันธ์ที่กลมเกลียวและใจตรงกัน',rev:'อย่าลังเลกับการเลือก จริงใจเข้าไว้',tip:'บอกความรู้สึกอย่างจริงใจ',rtip:'ตัดสินใจให้ชัดเจน'},
+ {n:'7 ราชรถ',up:'พลังขับเคลื่อนและชัยชนะ ผลักดันถึงเป้าได้',rev:'ควบคุมความเร็ว เช็กทิศทางก่อน',tip:'มุ่งไปข้างหน้าอย่างมั่นใจ',rtip:'ตั้งเป้าให้ชัดก่อนออกตัว'},
+ {n:'8 พลัง',up:'ความกล้าที่อ่อนโยน ความอดทนเปล่งประกาย',rev:'วางความรีบร้อนและความสงสัยในตัวเอง',tip:'ใจเย็นแล้วค่อย ๆ จัดการ',rtip:'ให้กำลังใจตัวเอง'},
+ {n:'9 ฤๅษี',up:'เวลาส่วนตัวนำมาซึ่งปัญญา สำรวจภายใน',rev:'อย่าปิดกั้นตัวเอง เปิดใจบ้าง',tip:'ใช้เวลากับตัวเองสักครู่',rtip:'ลองเปิดใจให้คนรอบข้าง'},
+ {n:'10 กงล้อแห่งโชคชะตา',up:'จุดเปลี่ยน การเปลี่ยนแปลงที่ดีมาถึง',rev:'รับมือเรื่องไม่คาดฝันด้วยใจนิ่ง',tip:'พร้อมรับโอกาสใหม่',rtip:'ยืดหยุ่นกับความเปลี่ยนแปลง'},
+ {n:'11 ความยุติธรรม',up:'ผลลัพธ์ที่เป็นธรรมและสมดุล ความซื่อสัตย์ได้ผล',rev:'ทบทวนว่ามีอะไรเอนเอียงไหม',tip:'ตัดสินอย่างเป็นธรรม',rtip:'มองทั้งสองด้านให้รอบ'},
+ {n:'12 คนแขวนคอ',up:'การหยุดพักให้มุมมองใหม่ การรอก็เป็นกลยุทธ์',rev:'ปล่อยสิ่งที่ยึดไว้แล้วจะเบาขึ้น',tip:'ลองมองต่างมุม',rtip:'ปล่อยวางสิ่งที่ยึดติด'},
+ {n:'13 ความตาย',up:'การสิ้นสุดที่เป็นการเริ่มต้นใหม่ ปล่อยของเก่า',rev:'การเปลี่ยนแปลงน่ากลัว แต่ถึงเวลาปล่อย',tip:'ปิดเรื่องเก่าให้เรียบร้อย',rtip:'ยอมรับการเปลี่ยนแปลง'},
+ {n:'14 ความพอดี',up:'สมดุลและความกลมกลืน ความพอดีคือพร',rev:'ปรับส่วนที่มากไปหรือน้อยไป',tip:'ทำทุกอย่างแต่พอดี',rtip:'หาจุดสมดุลใหม่'},
+ {n:'15 ปีศาจ',up:'รู้ทันความอยากและการยึดติด อะไรผูกมัดคุณอยู่',rev:'ตัดโซ่ที่ผูกไว้ เป็นอิสระ',tip:'ปล่อยสิ่งที่ฉุดรั้ง',rtip:'ปลดปล่อยตัวเองวันนี้'},
+ {n:'16 หอคอย',up:'ความเปลี่ยนแปลงกะทันหัน ที่พังลงจะแข็งแรงกว่าเดิม',rev:'แรงกระแทกจะผ่านไป ความสงบใกล้เข้ามา',tip:'ตั้งรับความเปลี่ยนแปลง',rtip:'ใจเย็น เดี๋ยวก็ผ่านไป'},
+ {n:'17 ดวงดาว',up:'ความหวังและการเยียวยา สิ่งที่หวังใกล้เป็นจริง',rev:'ใจขุ่นมัวชั่วคราว เติมความหวังใหม่',tip:'มีความหวังไว้',rtip:'อย่าเพิ่งหมดหวัง'},
+ {n:'18 พระจันทร์',up:'จินตนาการและความรู้สึกไว เชื่อสัญชาตญาณ',rev:'วางความกังวลเลื่อนลอย มองความจริง',tip:'ฟังเสียงในใจ',rtip:'แยกแยะจริงกับจินตนาการ'},
+ {n:'19 พระอาทิตย์',up:'ความสุขและความสำเร็จ! วันที่สดใสที่สุด',rev:'เมฆบางเบา เดี๋ยวก็สว่างอีกครั้ง',tip:'ยิ้มและสนุกกับวันนี้',rtip:'มองหาแง่ดีเล็ก ๆ'},
+ {n:'20 การพิพากษา',up:'โอกาสลุกขึ้นใหม่ ความพยายามออกดอกผล',rev:'เลิกโทษตัวเอง ให้อภัยแล้วก้าวต่อ',tip:'เริ่มใหม่อีกครั้ง',rtip:'ให้อภัยตัวเอง'},
+ {n:'21 โลก',up:'ความสมบูรณ์และความสำเร็จ ปิดบทอย่างสวยงาม',rev:'ใกล้ถึงแล้ว อีกก้าวเดียว!',tip:'ปิดงานให้เรียบร้อยวันนี้',rtip:'อีกนิดเดียว สู้ต่อ'}
+];
+const SUIT_TH={완드:{n:'ไม้เท้า',th:'พลัง·การงาน·การลงมือ'},컵:{n:'ถ้วย',th:'อารมณ์·ความรัก·ความสัมพันธ์'},소드:{n:'ดาบ',th:'ความคิด·ความขัดแย้ง·การตัดสินใจ'},펜타클:{n:'เหรียญ',th:'ความจริง·เงิน·ความสำเร็จ'}};
+const RANK_TH_NAME=['เอซ','2','3','4','5','6','7','8','9','10','เพจ','อัศวิน','ราชินี','ราชา'];
+const RANK_TH=[
+ ['การเริ่มต้นใหม่และความเป็นไปได้บริสุทธิ์','การเริ่มต้นล่าช้าหรือพลาดโอกาส'],
+ ['สมดุล การเลือก และความร่วมมือ','ลังเล ผัดผ่อนการตัดสินใจ'],
+ ['การเติบโตและผลแรก ความสุขร่วมกัน','จังหวะไม่ลงตัว ปรับแผนใหม่'],
+ ['ความมั่นคงและการพักผ่อน ฐานที่แน่น','หยุดนิ่ง ถึงเวลาต้องเปลี่ยน'],
+ ['ความขัดแย้งและบททดสอบ แต่มีบทเรียน','เค้าลางการฟื้นตัว ความขัดแย้งคลี่คลาย'],
+ ['ความกลมเกลียวและการแบ่งปัน สงบหลังผ่านพ้น','ติดอยู่กับอดีต ถึงเวลาก้าวต่อ'],
+ ['ความอดทนและทบทวน หยุดมองสักครู่','ใจร้อน ต้องกำหนดทิศทางใหม่'],
+ ['ความเร็วและสมาธิ ไหลไปกับกระแส','วุ่นวายจนต้องหาสมดุล'],
+ ['ผลลัพธ์ที่ใกล้ถึง พึ่งพาตัวเองและพอใจ','ความกังวลชั่วคราว เดี๋ยวก็มั่นคง'],
+ ['ความสมบูรณ์และปิดฉาก จบขั้นตอนหนึ่ง','วางภาระลงแล้วเปิดบทใหม่'],
+ ['การเรียนรู้และความอยากรู้ ข่าวน่ายินดี','ยังอ่อนหัด ค่อย ๆ เรียนรู้'],
+ ['พลังขับเคลื่อนและการท้าทาย มุ่งไปข้างหน้า','ระวังเร็วเกินไป เช็กทิศทางก่อน'],
+ ['ดูแลและโอบอุ้มด้วยใจที่เติบโต','ต้องดูแลตัวเองก่อน'],
+ ['ภาวะผู้นำและความสามารถที่สมบูรณ์','ลดความดื้อ ยืดหยุ่นเข้าไว้']
+];
+const CARD_TH=MAJOR_TH.slice();
+['완드','컵','소드','펜타클'].forEach(suit=>{ const m=SUIT_TH[suit]; RANK_TH.forEach((r,i)=>{
+  CARD_TH.push({ n:m.n+' '+RANK_TH_NAME[i], up:'['+m.th+'] '+r[0], rev:'['+m.th+'] '+r[1], tip:r[0], rtip:r[1] }); }); });
+
+let LANG='ko';
+function detectLang(){ let l=null; try{l=new URLSearchParams(location.search).get('lang');}catch(e){} if(!l){try{l=localStorage.getItem('brain.lang');}catch(e){}} return l==='th'?'th':'ko'; }
+function CF(pick){ return (LANG==='th' && CARD_TH[pick.idx]) ? CARD_TH[pick.idx] : pick.card; }
+function setLang(l){ LANG=(l==='th')?'th':'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang();
+  document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
+function applyLang(){ const d=TX[LANG];
+  document.getElementById('langSel').value=LANG;
+  document.getElementById('t-home').textContent=d.home;
+  document.getElementById('t-title').textContent=d.title;
+  document.getElementById('t-tagline').textContent=d.tagline;
+  document.getElementById('tab-today').textContent=d.tabToday;
+  document.getElementById('tab-three').textContent=d.tabThree;
+  document.getElementById('t-todayQ').textContent=d.todayQ;
+  document.getElementById('todayBtn').textContent=d.todayBtn;
+  document.getElementById('t-todayHint').innerHTML=d.todayHint;
+  document.getElementById('t-threeQ').textContent=d.threeQ;
+  document.getElementById('qc-love').textContent=d.catName.love;
+  document.getElementById('qc-work').textContent=d.catName.work;
+  document.getElementById('qc-money').textContent=d.catName.money;
+  document.getElementById('threeBtn').textContent=d.threeBtn;
+  document.getElementById('t-threeHint').innerHTML=d.threeHint;
+  document.getElementById('shareBtn').textContent=d.share;
+  document.getElementById('againBtn').textContent=d.again;
+  document.getElementById('t-disc').innerHTML=d.disc;
+  document.getElementById('t-footer').textContent=d.footer;
+  document.title=(LANG==='th')?'Mallow ทาโรต์ — ไพ่วันนี้ & ไพ่ 3 ใบ':'말로우 타로 — 오늘의 카드 & 3카드 타로 | Mallow';
+}
 /* Mallow 마스코트(핑크·웃는) — 브랜드 통일 */
 const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
 (function(){ var el=document.getElementById('mhead'); if(el) el.innerHTML=MHEAD_SVG; })();
@@ -260,7 +360,7 @@ function setMode(m){ MODE=m; document.getElementById('tab-today').classList.togg
   document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
 function setCat(c){ CAT=c; document.querySelectorAll('.q-cat').forEach(e=>e.classList.toggle('on',e.dataset.c===c));
   renderThreeBacks(); document.getElementById('resultCard').style.display='none'; }   // 카테고리 바꾸면 카드 다시 덮고 결과 닫기
-function frontHTML(pick){ return cardImgHTML(pick)+(pick.rev?'<div class="frv">역방향</div>':''); }
+function frontHTML(pick){ return cardImgHTML(pick)+(pick.rev?'<div class="frv">'+TX[LANG].reversed+'</div>':''); }
 
 function resetTodayCard(){ const el=document.getElementById('todayCard'); el.classList.remove('flip'); }
 function drawToday(){
@@ -269,12 +369,13 @@ function drawToday(){
   const fr=document.getElementById('todayFront'); fr.className='face front'+(pick.rev?' rev':''); fr.innerHTML=frontHTML(pick);
   document.getElementById('todayCard').classList.add('flip');
   gtag('event','tarot_today',{});
-  const meaning=pick.rev?pick.card.rev:pick.card.up;
-  const tip=pick.rev?(pick.card.rtip||pick.card.tip):pick.card.tip;
+  const cf=CF(pick);
+  const meaning=pick.rev?cf.rev:cf.up;
+  const tip=pick.rev?(cf.rtip||cf.tip):cf.tip;
   LAST={mode:'today',cards:[pick],cat:null};
   setTimeout(()=>{
-    document.getElementById('readings').innerHTML='<div class="reading"><div class="rh">'+pick.card.e+' '+pick.card.n+(pick.rev?'<span class="rv">역방향</span>':'')+'</div><div class="rt">'+meaning+'</div></div>';
-    document.getElementById('summary').innerHTML='<span class="sum-label">오늘의 한마디</span>'+tip;
+    document.getElementById('readings').innerHTML='<div class="reading"><div class="rh">'+pick.card.e+' '+cf.n+(pick.rev?'<span class="rv">'+TX[LANG].reversed+'</span>':'')+'</div><div class="rt">'+meaning+'</div></div>';
+    document.getElementById('summary').innerHTML='<span class="sum-label">'+TX[LANG].sayLabel+'</span>'+tip;
     document.getElementById('resultCard').style.display='block';
     document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'center'});
   },560);
@@ -287,7 +388,7 @@ function renderThreeBacks(){
 function drawThree(){
   const seed='tarot3|'+CAT+'|'+kstDate()+'|'+Math.floor(Date.now()/1000); // 매번 새로
   const rng=mulberry32(hashStr(seed));
-  const picks=draw(rng,3); const pos=POS3[CAT];
+  const picks=draw(rng,3); const pos=TX[LANG].pos[CAT];
   gtag('event','tarot_three',{cat:CAT});
   picks.forEach((p,i)=>{ setTimeout(()=>{
     const fr=document.getElementById('tf'+i); fr.className='face front'+(p.rev?' rev':''); fr.innerHTML=frontHTML(p);
@@ -296,10 +397,10 @@ function drawThree(){
   }, 250+i*260); });
   LAST={mode:'three',cards:picks,cat:CAT};
   setTimeout(()=>{
-    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const m=p.rev?p.card.rev:p.card.up;
-      return '<div class="reading"><div class="rh">'+p.card.e+' '+p.card.n+(p.rev?'<span class="rv">역</span>':'')+'</div><div class="rp">'+pos[i]+'</div><div class="rt">'+m+'</div></div>'; }).join('');
+    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const cf=CF(p); const m=p.rev?cf.rev:cf.up;
+      return '<div class="reading"><div class="rh">'+p.card.e+' '+cf.n+(p.rev?'<span class="rv">'+TX[LANG].revShort+'</span>':'')+'</div><div class="rp">'+pos[i]+'</div><div class="rt">'+m+'</div></div>'; }).join('');
     const good=picks.filter(p=>!p.rev).length; const sr=mulberry32(hashStr(seed+'|s'));
-    document.getElementById('summary').textContent=(good>=2?SUM_UP:SUM_MID)[Math.floor(sr()*3)];
+    document.getElementById('summary').textContent=(good>=2?TX[LANG].sumUp:TX[LANG].sumMid)[Math.floor(sr()*3)];
     document.getElementById('resultCard').style.display='block';
     document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'center'});
   }, 250+3*260+400);
@@ -331,22 +432,22 @@ async function drawCard(){
   const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=72;
   if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
-  if(L.mode==='today'){ const p=L.cards[0];
-    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 오늘의 타로',W/2,178);
+  if(L.mode==='today'){ const p=L.cards[0]; const cf=CF(p);
+    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(TX[LANG].cardTitleToday,W/2,178);
     const im=await loadCardImg(p); const cw=214,ch=Math.round(cw*1.7),cx=(W-cw)/2,cy=214;
     drawCardImg(c,im,cx,cy,cw,ch,p.rev);
-    c.font='800 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.n+(p.rev?' (역)':''),W/2,cy+ch+44);
+    c.font='800 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(cf.n+(p.rev?' ('+TX[LANG].revShort+')':''),W/2,cy+ch+44);
     const ty=cy+ch+82;
-    c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('오늘의 한마디',W/2,ty);
-    c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,(p.rev?(p.card.rtip||p.card.tip):p.card.tip),W/2,ty+34,W-150,32);
-  } else { const pos=POS3[L.cat];
-    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 3카드 타로 · '+CATNAME[L.cat],W/2,196);
+    c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(TX[LANG].sayLabel,W/2,ty);
+    c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,(p.rev?(cf.rtip||cf.tip):cf.tip),W/2,ty+34,W-150,32);
+  } else { const pos=TX[LANG].pos[L.cat];
+    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(TX[LANG].cardTitleThree+' · '+TX[LANG].catName[L.cat],W/2,196);
     const cw=150,ch=Math.round(cw*1.7),gapX=16,totalW=cw*3+gapX*2,startX=(W-totalW)/2,cy=250;
     const ims=await Promise.all(L.cards.map(p=>loadCardImg(p)));
-    L.cards.forEach((p,i)=>{ const cx=startX+i*(cw+gapX);
+    L.cards.forEach((p,i)=>{ const cx=startX+i*(cw+gapX); const cf=CF(p);
       drawCardImg(c,ims[i],cx,cy,cw,ch,p.rev);
       c.font='800 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(pos[i],cx+cw/2,cy+ch+34);
-      c.font='700 15px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(shortName(p.card.n)+(p.rev?'(역)':''),cx+cw/2,cy+ch+56);
+      c.font='700 15px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(shortName(cf.n)+(p.rev?'('+TX[LANG].revShort+')':''),cx+cw/2,cy+ch+56);
     });
     c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,document.getElementById('summary').textContent,W/2,cy+ch+108,W-130,32);
   }
@@ -355,13 +456,14 @@ async function drawCard(){
 }
 async function share(){ if(!LAST) return; gtag('event','tarot_share',{}); const cv=await drawCard();
   cv.toBlob(function(blob){ const file=new File([blob],'mallow-tarot.png',{type:'image/png'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'오늘의 타로 🃏 playmallow.com/tarot'}).catch(()=>{}); }
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:TX[LANG].shareText}).catch(()=>{}); }
     else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-tarot.png'; a.click(); } },'image/png'); }
 
 document.getElementById('todayBtn').onclick=drawToday;
 document.getElementById('threeBtn').onclick=drawThree;
 document.getElementById('shareBtn').onclick=share;
 document.getElementById('againBtn').onclick=function(){ document.getElementById('resultCard').style.display='none'; if(MODE==='today') resetTodayCard(); else renderThreeBacks(); window.scrollTo({top:0,behavior:'smooth'}); };
+LANG=detectLang(); document.documentElement.lang=LANG; applyLang();
 renderThreeBacks();
 try{ localStorage.setItem('tarot_seen',kstDate()); }catch(e){}
 </script>
