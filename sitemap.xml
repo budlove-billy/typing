@@ -49,6 +49,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://playmallow.com/2048/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://playmallow.com/reaction-time/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://playmallow.com/memory-game/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://playmallow.com/nonogram/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://playmallow.com/water-sort/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://playmallow.com/guide/brain-games/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

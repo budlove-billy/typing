@@ -91,6 +91,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   홈 푸터·랜딩 3종에서 링크, sitemap 등재. 신규 게임 추가 시 검색 수요 있으면 가이드도 함께 검토.
 - **키워드 랜딩(2026-07-10)**: `/sudoku/` `/iq-test/` `/braintype/` 정적 페이지(특징·방법·FAQ·canonical·GA4).
   본체 진입은 `?game=<id>` 딥링크(screen-<id> 존재 검증). 홈 하단 .site-footer 내부링크(ko에서만 표시). sitemap 등재.
+- **게임 랜딩 P1 확장(2026-07-13)**: 검색 수요 큰 5종 추가 — `/2048/`(merge)·`/reaction-time/`(react)·`/memory-game/`(cards)·`/nonogram/`(nono)·`/water-sort/`(sort).
+  sudoku 랜딩 템플릿 복제(동일 style/GA4/nav/footer), 내용은 게임별 실제 메커니즘 기반 수작성(양산형 아님). CTA=`/?game=<id>`, 상호 내부링크+홈 .site-footer 링크 확장, sitemap 20개로 등재.
+  ⚠️ 딥링크 핸들러(index.html ~8700)는 `?game` 값이 `/^[a-z]+$/`만 통과 → 새 랜딩 slug와 무관(slug는 URL, 딥링크는 게임 id). 다음 배치는 **2주 GA game_finish/screen_open 데이터로 인기·완주 상위 게임** 선정 후 결정.
 - **공유카드 v2(2026-07-10)**: makeShareCard = 그라데이션 배경+흰 카드+다크 텍스트, 상단 마스코트(_mascotImg 프리로드,
   pixelated)+Mallow, lines[0]=포인트색 대형 점수, 하단 playmallow.com 워터마크 강조. API(o.emoji/title/lines/desc/note) 불변.
 - **신규(2026-07-10): 버블 톡톡(bubble)** → 계산 축(cat.calc) 2호. 파스텔 버블 탭으로 목표 합 만들기(Number Sum류, 토스 금고팡 참고).
