@@ -187,3 +187,10 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 이 환경 Git Bash엔 `setsid`/`webread`/로컬 `playwright`가 **없음**. 정적 서버 기동:
   `nohup python -m http.server 8025 --bind 127.0.0.1 >.logs/x.log 2>&1 </dev/null & disown`.
 - 검증: `node --check`(JS문법) + 순수 로직 불변식 테스트(`.logs/logic.mjs` 패턴). `.logs/`는 gitignore.
+
+## 타로(tarot/) 카드 이미지
+- **라이더-웨이트-스미스 원본(1909, Pamela Colman Smith) 78장** = `tarot/cards/0.jpg`~`77.jpg`. 퍼블릭 도메인(저작권 만료). U.S.Games "Universal Waite"(리컬러)는 저작권 살아있어 사용 금지 — 반드시 1909 원본.
+- 출처: Wikimedia Commons Special:FilePath. 메이저=`RWS_Tarot_NN_Name.jpg`, 마이너=`Wands/Cups/Swords/Pents + 01~14`(11페이지·12나이트·13퀸·14킹). rate limit(429) 심해 간격 크게.
+- DECK 인덱스=이미지 파일번호: 0~21 메이저, 22~35 완드, 36~49 컵, 50~63 소드, 64~77 펜타클. `draw()`가 `idx` 반환 → `cards/<idx>.jpg`.
+- 웹 최적화 400px q0.82(~82KB/장, 총 6.4MB). 역방향=CSS/canvas 180도 회전. 재최적화 스크립트 `.logs/optimize78.mjs`.
+- 마이너 56장 텍스트는 SUITS×RANKS 생성형(다른 세션 추가). 이미지는 원본이라 정확.
