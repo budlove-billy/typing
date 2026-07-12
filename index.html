@@ -809,6 +809,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="home-cats" id="home-cats"></div>
   <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
   <div class="home-grid" id="home-popular"></div>
+  <div id="home-fun-wrap" style="display:none">
+    <div class="home-section-title" data-i18n="home.fun">🔮 재미로 보는 운세</div>
+    <div class="home-grid" id="home-fun"></div>
+  </div>
   <div class="home-about">
     <p data-i18n="about.p1">Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 기억력(순간기억·카드 짝·엔백), 집중력(스트룹·규칙 바꾸기), 순발력(반응 속도·말로우 타워), 관찰력(다른 색 찾기), 공간감각(도형 회전·슬라이딩 퍼즐), 계산(암산·버블 톡톡·말랑 2048), 논리(스도쿠·컬러 소트·IQ 테스트)까지 20가지 미니게임에 두뇌 유형 테스트, 매일 새 문제가 나오는 낱말 퍼즐 '모아모아'까지 제공합니다.</p>
     <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
@@ -3339,6 +3343,7 @@ const I18N = {
   "home.about1min": {ko:"약 1분", en:"about 1 min", th:"ประมาณ 1 นาที"},
   "home.browse": {ko:"게임 모음", en:"Browse", th:"หมวดเกม"},
   "home.popular": {ko:"인기 게임", en:"Popular", th:"เกมยอดนิยม"},
+  "home.fun": {ko:"🔮 재미로 보는 운세", en:"🔮 Just for Fun", th:"🔮 ดูดวงสนุก ๆ"},
   "feature.start": {ko:"시작하기 →", en:"Start →", th:"เริ่ม →"},
   "feature.allDone": {ko:"미션 완료! 🎉", en:"All done! 🎉", th:"ครบแล้ว! 🎉"},
   "feature.browseHint": {ko:"다른 게임도 즐겨보세요", en:"Enjoy other games too", th:"ลองเกมอื่นดูสิ"},
@@ -7128,6 +7133,16 @@ function renderHome(){
   // 인기 게임(큐레이션)
   const pop=document.getElementById('home-popular');
   if(pop){ pop.innerHTML=''; ['iq','sudoku','braintype'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
+  // 재미로 보는 운세(ko 전용) — 인기 게임 밑에 모아서
+  const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
+  if(fun){
+    fun.innerHTML='';
+    const funIds=(CURRENT_LANG==='ko')?['unse','zodiac','ttirank','braintype']:[];
+    funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
+      card.onclick=()=>{ if(g.external){ track('screen_open',{screen:g.id}); location.href=g.external; return; } showScreen(g.id); };
+      card.innerHTML=gameCardHTML(g); fun.appendChild(card); });
+    if(funWrap) funWrap.style.display=funIds.length?'':'none';
+  }
 }
 // 전체 게임: 카테고리별 통일 카드
 function renderGames(){
