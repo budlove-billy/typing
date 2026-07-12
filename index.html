@@ -3234,6 +3234,7 @@ const I18N = {
   "pitch.hardDesc": {ko:"차이 작음", en:"Small gap", th:"ต่างน้อย"},
   "pitch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "pitch.replay": {ko:"다시 듣기", en:"Replay", th:"ฟังอีกครั้ง"},
+  "pitch.nextRound": {ko:"정답! 잠시 후 다음 문제 🎵", en:"Correct! Next one coming up 🎵", th:"ถูกต้อง! ข้อต่อไปกำลังมา 🎵"},
   "pitch.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "pitch.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"},
   "pitch.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
@@ -8588,7 +8589,7 @@ function resetDiff(){ clearInterval(DF.timer); DF.running=false; const g=documen
 // ========== 높은음 찾기 (청각) ==========
 const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:26}, hard:{nStart:4,nMax:7,c0:62,cStep:5,cMin:18} };
 const PT_TIME=60;
-const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME, timer:null, running:false, lock:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
+const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME, timer:null, running:false, lock:false, pause:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
 function PT_DIFF_LABEL(d){ return d==='easy'?t('pitch.easy'):d==='hard'?t('pitch.hard'):t('pitch.normal'); }
 function ptUpdateBestLine(){ const el=document.getElementById('pt-intro-best'); if(el) el.textContent=bt_bestLineText(PT.best,PT.diff); }
 function setPitchDiff(d){ PT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('pt-diff-'+k).classList.toggle('active',k===d)); ptUpdateBestLine(); }
@@ -8602,14 +8603,14 @@ function ptRenderPads(n){ const box=ptPads(); box.innerHTML=''; for(let i=0;i<n;
 function ptPlaySeq(done){ ptClear(); const n=PT.freqs.length, gap=470; PT.freqs.forEach((f,i)=>{ PT.timers.push(setTimeout(()=>ptFlash(i,f,360), 300+i*gap)); }); PT.timers.push(setTimeout(done, 300+n*gap)); }
 function ptRound(){ const cfg=PT_CFG[PT.diff]; const n=Math.min(cfg.nMax,cfg.nStart+Math.floor((PT.level-1)/3)); const cents=Math.max(cfg.cMin,cfg.c0-(PT.level-1)*cfg.cStep);
   const base=320+Math.random()*150; PT.odd=Math.floor(Math.random()*n); PT.freqs=[]; for(let i=0;i<n;i++) PT.freqs.push(i===PT.odd? base*Math.pow(2,cents/1200) : base);
-  ptRenderPads(n); PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
+  ptRenderPads(n); PT.lock=true; ptStatus('pitch.listen'); PT.timers.push(setTimeout(()=>{ PT.pause=false; },300)); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptReplay(){ if(!PT.running||PT.lock) return; PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptTap(i){ if(!PT.running||PT.lock) return; ptFlash(i,PT.freqs[i],300);
-  if(i===PT.odd){ PT.lock=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=10+(PT.combo-1)*2; PT.level++; sfx('good'); ptStats(); PT.timers.push(setTimeout(ptRound,450)); }
+  if(i===PT.odd){ PT.lock=true; PT.pause=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=10+(PT.combo-1)*2; PT.level++; sfx('good'); ptStats(); ptStatus('pitch.nextRound','good'); PT.timers.push(setTimeout(ptRound,1100)); }
   else { PT.combo=0; sfx('bad'); PT.timeLeft=Math.max(0,PT.timeLeft-2); ptTimer(); ptStats(); if(PT.timeLeft<=0) finishPitch(); } }
-function startPitch(){ PT.score=0;PT.combo=0;PT.maxCombo=0;PT.level=1;PT.timeLeft=PT_TIME;PT.running=true;
+function startPitch(){ PT.score=0;PT.combo=0;PT.maxCombo=0;PT.level=1;PT.timeLeft=PT_TIME;PT.running=true;PT.pause=false;
   document.getElementById('pitch-intro-card').style.display='none'; document.getElementById('pitch-result-card').style.display='none'; document.getElementById('pitch-game-card').style.display='block';
-  ptStats(); ptTimer(); ptRound(); clearInterval(PT.timer); PT.timer=setInterval(()=>{ PT.timeLeft--; ptTimer(); if(PT.timeLeft<=0) finishPitch(); },1000); }
+  ptStats(); ptTimer(); ptRound(); clearInterval(PT.timer); PT.timer=setInterval(()=>{ if(PT.pause) return; PT.timeLeft--; ptTimer(); if(PT.timeLeft<=0) finishPitch(); },1000); }
 function finishPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false;
   const nr=bt_recordScore(PT.best,PT.diff,PT.score); bt_saveBest('brain.pitch.best',PT.best); missionMark('pitch');
   document.getElementById('pitch-game-card').style.display='none'; document.getElementById('pitch-result-card').style.display='block';
