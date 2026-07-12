@@ -26,8 +26,10 @@
 body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #efe7ff 0%, var(--bg) 55%);color:var(--text);
   font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
 header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
-#backHome{position:absolute;left:12px;top:18px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:4px 6px;}
+#backHome{position:absolute;left:12px;top:16px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);}
 #backHome:active{opacity:.6;}
+.h1row{display:flex;align-items:center;justify-content:center;gap:8px;}
+.h1row .mhead{width:30px;height:30px;flex-shrink:0;}
 h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px;}
 h1 .sp{color:var(--p);}
 .tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
@@ -66,7 +68,7 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 <body>
 <header>
   <a id="backHome" href="/">← 홈</a>
-  <h1>🐭 말로우 <span class="sp">띠별 운세</span></h1>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">띠별 운세</span></h1>
   <div class="tagline">오늘 운 좋은 띠는? 12간지 오늘의 순위</div>
 </header>
 <main>
@@ -88,6 +90,9 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
 <script>
 "use strict";
+/* Mallow 마스코트(핑크·웃는) — 브랜드 통일 */
+const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
+(function(){ var el=document.getElementById('mhead'); if(el) el.innerHTML=MHEAD_SVG; })();
 const ZODIAC=[
  {n:'쥐',e:'🐭'},{n:'소',e:'🐮'},{n:'범',e:'🐯'},{n:'토끼',e:'🐰'},{n:'용',e:'🐲'},{n:'뱀',e:'🐍'},
  {n:'말',e:'🐴'},{n:'양',e:'🐑'},{n:'원숭이',e:'🐵'},{n:'닭',e:'🐔'},{n:'개',e:'🐶'},{n:'돼지',e:'🐷'}
@@ -150,7 +155,7 @@ function render(){
     const medal=r.rank===0?'🥇':r.rank===1?'🥈':r.rank===2?'🥉':(r.rank+1)+'';
     return '<div class="'+cls+'"><div class="no">'+medal+'</div><div class="em">'+r.z.e+'</div>'+
       '<div class="info"><div class="nm">'+r.z.n+'띠'+(r.i===MYZ?'<span class="metag">MY</span>':'')+'</div><div class="cm">'+r.cm+'</div></div>'+
-      '<div class="st">'+stars(r.star)+'</div></div>';
+      '<div class="st" role="img" aria-label="5점 만점에 '+r.star+'점">'+stars(r.star)+'</div></div>';
   }).join('');
   try{localStorage.setItem('ttirank_seen',kstDate());}catch(e){}
 }
