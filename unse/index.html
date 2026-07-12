@@ -243,24 +243,31 @@ function compute(){
 
 /* ---------- 공유 카드 ---------- */
 function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
+const logoImg=new Image(); logoImg.src='/icon-192.png';   // 공유카드 로고(핑크 웃는 마스코트)
 function drawCard(){
   const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
   const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#b79bf5'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
-  // 흰 카드
-  c.fillStyle='#fff'; roundRect(c,40,60,W-80,H-140,28); c.fill();
+  c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();   // 흰 카드 50~720
+  c.textAlign='center'; c.textBaseline='alphabetic';
+  // 상단 브랜드: 마스코트 로고 + Mallow
+  c.font='800 36px "Apple SD Gothic Neo",Arial,sans-serif';
+  const mw=54, gap=12, bw=c.measureText('Mallow').width, x0=(W-(mw+gap+bw))/2, topY=76;
+  if(logoImg.complete && logoImg.naturalWidth>0){ c.drawImage(logoImg, x0, topY, mw, mw); }
+  c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow', x0+mw+gap, topY+mw*0.72);
   c.textAlign='center';
-  c.font='700 26px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🔮 오늘의 운세',W/2,130);
-  c.font='96px sans-serif'; c.fillText(L.z.e,W/2,250);
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.z.n+'띠 · '+L.el+'('+ELEM[L.el].h+')',W/2,300);
-  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,350);
-  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,398,W-160,34);
+  // 띠
+  c.font='94px sans-serif'; c.fillText(L.z.e,W/2,246);
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.z.n+'띠 · '+L.el+'('+ELEM[L.el].h+')',W/2,298);
+  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,344);
+  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,392,W-150,34);
   // 행운
   c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495';
-  c.fillText('행운의 색',W/2-120,560); c.fillText('행운의 숫자',W/2+120,560);
-  c.beginPath(); c.arc(W/2-120,600,18,0,7); c.fillStyle=L.lc.x; c.fill();
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,612);
-  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,680,W-160,30);
-  c.font='600 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#b0a8c8'; c.fillText('playmallow.com/unse',W/2,H-40);
+  c.fillText('행운의 색',W/2-120,516); c.fillText('행운의 숫자',W/2+120,516);
+  c.beginPath(); c.arc(W/2-120,560,18,0,7); c.fillStyle=L.lc.x; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,572);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,636,W-150,30);
+  // 하단 URL — 흰 카드 안 진한 글자로 또렷하게
+  c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
   return cv;
 }
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
