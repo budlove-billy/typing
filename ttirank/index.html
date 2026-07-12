@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>말로우 띠별 운세 — 오늘의 띠 순위 | Mallow</title>
+<meta name="description" content="오늘 운이 좋은 띠는? 12간지 띠별 오늘의 운세 순위와 총운·행운 정보를 매일 확인하세요. 재미로 보는 말로우 띠별 운세.">
+<meta property="og:title" content="말로우 띠별 운세 — 오늘의 띠 순위">
+<meta property="og:description" content="오늘 운이 좋은 띠 순위! 내 띠는 몇 등일까요? 매일 바뀌는 띠별 운세를 친구와 공유해 보세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playmallow.com/ttirank/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/ttirank/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>
+:root{ --bg:#f6f4fb; --text:#2a2140; --sub:#7d7495; --card:#ffffff; --line:#ece7f6;
+  --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a; --radius:18px; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #efe7ff 0%, var(--bg) 55%);color:var(--text);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
+#backHome{position:absolute;left:12px;top:18px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:4px 6px;}
+#backHome:active{opacity:.6;}
+h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px;}
+h1 .sp{color:var(--p);}
+.tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
+main{width:100%;max-width:480px;padding:8px 14px 40px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
+.datebar{text-align:center;font-size:13px;font-weight:800;color:var(--p);margin-bottom:4px;}
+.pick-label{font-size:13px;font-weight:700;color:var(--sub);text-align:center;margin-bottom:10px;}
+.picker{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+.pick{border:1.5px solid var(--line);border-radius:12px;background:#fbfaff;padding:8px 0 6px;text-align:center;cursor:pointer;font-family:inherit;}
+.pick .pe{font-size:22px;line-height:1;} .pick .pn{font-size:10.5px;color:var(--sub);margin-top:2px;}
+.pick.sel{border-color:var(--p);background:#efe9ff;}
+.pick.sel .pn{color:var(--p);font-weight:800;}
+.rank{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;margin-bottom:8px;background:#fbfaff;border:1.5px solid transparent;}
+.rank.me{border-color:var(--p);background:#f2ecff;box-shadow:0 4px 14px rgba(139,111,240,.15);}
+.rank.top1{background:linear-gradient(135deg,#fff6da,#fff);border-color:#f3d888;}
+.rank .no{font-size:17px;font-weight:800;width:34px;text-align:center;color:var(--sub);}
+.rank.top1 .no,.rank.top2 .no,.rank.top3 .no{color:var(--gold);}
+.rank .em{font-size:30px;line-height:1;}
+.rank .info{flex:1;} .rank .nm{font-size:15px;font-weight:800;}
+.rank .cm{font-size:12.5px;color:var(--sub);margin-top:2px;line-height:1.5;}
+.rank .st{font-size:14px;color:var(--gold);white-space:nowrap;letter-spacing:1px;}
+.rank .metag{font-size:10.5px;font-weight:800;color:#fff;background:var(--p);border-radius:999px;padding:2px 7px;margin-left:6px;}
+.mybox{text-align:center;padding:14px;background:#f7f4ff;border-radius:14px;margin-bottom:12px;}
+.mybox .big{font-size:15px;font-weight:800;} .mybox .lucky{font-size:12.5px;color:var(--sub);margin-top:5px;}
+.swatch{width:13px;height:13px;border-radius:50%;display:inline-block;vertical-align:-1px;border:1px solid rgba(0,0,0,.1);}
+.btns{display:flex;gap:10px;margin-top:6px;}
+.btn{flex:1;padding:13px 0;font-size:15px;font-weight:800;border:none;border-radius:13px;background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
+.btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+.btn:active{transform:translateY(1px);}
+.disc{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.6;}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
+</style>
+</head>
+<body>
+<header>
+  <a id="backHome" href="/">← 홈</a>
+  <h1>🐭 말로우 <span class="sp">띠별 운세</span></h1>
+  <div class="tagline">오늘 운 좋은 띠는? 12간지 오늘의 순위</div>
+</header>
+<main>
+  <div class="card">
+    <div class="datebar" id="dateBar"></div>
+    <div class="pick-label">내 띠를 골라 순위에서 확인해 보세요 👇</div>
+    <div class="picker" id="picker"></div>
+  </div>
+  <div class="card">
+    <div id="myBox"></div>
+    <div id="ranks"></div>
+    <div class="btns">
+      <button class="btn" id="shareBtn">📷 순위 공유</button>
+    </div>
+    <div class="disc">본 운세는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 🌙 순위는 매일 자정(KST)에 새로 정해져요!</div>
+  </div>
+</main>
+<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
+<script>
+"use strict";
+const ZODIAC=[
+ {n:'쥐',e:'🐭'},{n:'소',e:'🐮'},{n:'범',e:'🐯'},{n:'토끼',e:'🐰'},{n:'용',e:'🐲'},{n:'뱀',e:'🐍'},
+ {n:'말',e:'🐴'},{n:'양',e:'🐑'},{n:'원숭이',e:'🐵'},{n:'닭',e:'🐔'},{n:'개',e:'🐶'},{n:'돼지',e:'🐷'}
+];
+const CM_HI=['막힘없이 트이는 하루! 자신 있게 밀어붙여요.','귀인이 돕는 날. 기분 좋은 소식이 와요.','하는 일마다 술술. 오늘의 주인공은 나!','작은 행운이 겹쳐요. 로또 같은 하루.','자신감이 빛나요. 도전엔 최고의 날.'];
+const CM_MID=['무난하고 편안한 하루. 리듬만 지켜요.','기복 없이 흘러가요. 기본에 충실하게.','오후로 갈수록 흐름이 좋아져요.','소소한 재미를 챙기면 만족스러워요.','한 박자 쉬어가도 좋은 날이에요.'];
+const CM_LO=['서두르면 탈. 천천히 가면 무탈해요.','오늘은 정리·마무리가 잘 맞아요.','지출과 약속은 한 번 더 확인해요.','무리 대신 나를 먼저 챙기는 하루로.','말 한마디 아끼면 오해가 줄어요.'];
+const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'},{n:'하양',x:'#f2f2f7'},{n:'남색',x:'#5b6b9e'}];
+const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','텀블러','이어폰','손수건','종이 노트','귤 하나','우산','열쇠고리','머그컵','책갈피','작은 초콜릿','손목시계'];
+
+function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);}
+function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
+
+let RANKED=[], MYZ=-1;
+
+// 오늘 날짜 시드로 12띠에 점수 부여 → 순위 확정(하루 고정)
+function computeToday(){
+  const day=kstDate();
+  const rows=ZODIAC.map((z,i)=>{
+    const rng=mulberry32(hashStr(day+'|tti|'+i));
+    const score=rng(); // 0~1
+    return {i,z,score,rng};
+  });
+  rows.sort((a,b)=>b.score-a.score);
+  RANKED=rows.map((r,rank)=>{
+    const starN=5-Math.floor(rank/2.6); // 1~2등 5별 … 하위 2~3별
+    const s=Math.max(2,Math.min(5,starN));
+    const cmArr=rank<4?CM_HI:rank<9?CM_MID:CM_LO;
+    const cm=pick(r.rng,cmArr);
+    const lc=pick(r.rng,LUCK_COLORS), ln=1+Math.floor(r.rng()*45), li=pick(r.rng,LUCK_ITEMS);
+    return {...r, rank, star:s, cm, lc, ln, li};
+  });
+  render();
+}
+function stars(n){return '★★★★★☆☆☆☆☆'.slice(5-n,10-n);}
+function render(){
+  document.getElementById('dateBar').textContent='📅 '+kstDate()+' 오늘의 띠 순위';
+  // picker
+  document.getElementById('picker').innerHTML=ZODIAC.map((z,i)=>
+    '<button class="pick'+(i===MYZ?' sel':'')+'" onclick="selZ('+i+')"><div class="pe">'+z.e+'</div><div class="pn">'+z.n+'</div></button>').join('');
+  // my box
+  const mb=document.getElementById('myBox');
+  if(MYZ>=0){ const me=RANKED.find(r=>r.i===MYZ);
+    mb.innerHTML='<div class="mybox"><div class="big">'+me.z.e+' '+me.z.n+'띠 · 오늘 <b style="color:var(--p)">'+(me.rank+1)+'등</b> '+stars(me.star)+'</div>'+
+      '<div class="lucky">🎁 행운의 색 <span class="swatch" style="background:'+me.lc.x+'"></span> '+me.lc.n+' · 숫자 '+me.ln+' · '+me.li+'</div></div>';
+  } else mb.innerHTML='';
+  // list
+  document.getElementById('ranks').innerHTML=RANKED.map(r=>{
+    const cls='rank'+(r.i===MYZ?' me':'')+(r.rank===0?' top1':r.rank===1?' top2':r.rank===2?' top3':'');
+    const medal=r.rank===0?'🥇':r.rank===1?'🥈':r.rank===2?'🥉':(r.rank+1)+'';
+    return '<div class="'+cls+'"><div class="no">'+medal+'</div><div class="em">'+r.z.e+'</div>'+
+      '<div class="info"><div class="nm">'+r.z.n+'띠'+(r.i===MYZ?'<span class="metag">MY</span>':'')+'</div><div class="cm">'+r.cm+'</div></div>'+
+      '<div class="st">'+stars(r.star)+'</div></div>';
+  }).join('');
+  try{localStorage.setItem('ttirank_seen',kstDate());}catch(e){}
+}
+function selZ(i){ MYZ=i; try{localStorage.setItem('ttirank_z',String(i));}catch(e){} gtag('event','ttirank_pick',{z:ZODIAC[i].n}); render(); document.getElementById('myBox').scrollIntoView({behavior:'smooth',block:'center'}); }
+
+/* 공유 카드 — Top5 + 내 띠 */
+const logoImg=new Image(); logoImg.src='/icon-192.png';
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function drawCard(){
+  const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#b79bf5'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();
+  c.textAlign='center'; c.textBaseline='alphabetic';
+  c.font='800 34px "Apple SD Gothic Neo",Arial,sans-serif';
+  const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=72;
+  if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
+  c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
+  c.font='700 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🐭 오늘의 띠 순위',W/2,168);
+  c.font='600 15px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText(kstDate(),W/2,192);
+  const medal=['🥇','🥈','🥉','4','5'];
+  for(let i=0;i<5;i++){ const r=RANKED[i], y=250+i*74;
+    c.textAlign='left'; c.font='700 26px sans-serif'; c.fillStyle='#f0b429'; c.fillText(medal[i],80,y);
+    c.font='40px sans-serif'; c.fillText(r.z.e,130,y+4);
+    c.font='800 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(r.z.n+'띠',192,y);
+    c.textAlign='right'; c.font='22px sans-serif'; c.fillStyle='#f0b429'; c.fillText(stars(r.star),W-80,y); }
+  if(MYZ>=0){ const me=RANKED.find(r=>r.i===MYZ); c.textAlign='center';
+    c.font='800 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0';
+    c.fillText('내 '+me.z.n+'띠는 오늘 '+(me.rank+1)+'등! '+me.z.e,W/2,646); }
+  c.textAlign='center'; c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
+  return cv;
+}
+function share(){ gtag('event','ttirank_share',{}); const cv=drawCard();
+  cv.toBlob(function(blob){ const file=new File([blob],'mallow-ttirank.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'오늘의 띠 순위 🐭 playmallow.com/ttirank'}).catch(()=>{}); }
+    else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-ttirank.png'; a.click(); } },'image/png'); }
+
+document.getElementById('shareBtn').onclick=share;
+(function(){try{const z=localStorage.getItem('ttirank_z');if(z!==null)MYZ=+z;}catch(e){} computeToday();})();
+</script>
+</body>
+</html>

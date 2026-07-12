@@ -149,6 +149,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   - 2차(2026-07-12): **일주(60갑자)** 추가 — 앵커 1900-01-01=갑술(index10, `iljuIdx`), 일간=STEM_DESC 10성격, 결과에 일주 뱃지+공유카드 일주. 홈 카드 **오늘 미확인 ● 뱃지**(gameCardHTML unse: `unse_seen`≠KST). 문구 템플릿 확장(각 10~12). **별점별 배경**(body[data-star]) + 5별 별 반짝임. 공유카드 별점별 그라데이션. 잘 맞는 띠(삼합).
 - **신규(2026-07-12): 별자리 운세(zodiac)** — unse와 동일 구조의 별도 정적 페이지 `/zodiac/index.html`. 생년월일→12별자리(signIndex 경계표)·원소(불흙공기물) + 오늘 운세(별자리+날짜 시드, 같은 별자리는 하루 동일). 잘 맞는 별자리=같은 원소.
   Mallow 로고 공유카드·별점 배경·홈 미확인 뱃지(`zodiac_seen`). HOME_GAMES `{id:'zodiac',emoji:'⭐',grp:'cat.fun',koOnly:true,external:'zodiac/'}`, sitemap 등재. 검증 `.logs/zodiac_check.mjs`.
+- **신규(2026-07-12): 띠별 운세(ttirank)** — `/ttirank/index.html`. 오늘 날짜 시드로 12띠 점수→정렬(유일 순위, 하루 고정), 메달/별점/코멘트/행운. 내 띠 선택 시 하이라이트+행운 표시. Top5 공유카드.
+  생일 입력 불필요(띠만 선택). HOME_GAMES `{id:'ttirank',emoji:'🐭',grp:'cat.fun',koOnly:true,external:'ttirank/'}`, 홈 뱃지(`ttirank_seen`), sitemap. 검증 `.logs/ttirank_check.mjs`.
+  → 재미(cat.fun) 5종: braintype·unse(사주)·zodiac(별자리)·ttirank(띠랭킹) + moamoa(별도 daily).
 - 다음 후보: 개인정보처리방침(로그인 도입 시 필수), ko 전용 언어게임(끝말잇기/속담) 후보.
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.
