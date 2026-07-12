@@ -168,7 +168,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
   git push origin master:main → Vercel 자동 배포. www는 308→apex. DNS TXT 추가는 Vercel 대시보드 DNS Records에서.
 - 배포 트러블슈팅 교훈: 네임서버 위임 후 Vercel이 'DNS zone not enabled'면 기다려도 안 됨 —
   팀 레벨 Domains에서 존 활성화 또는 도메인 재추가로 해결(레지스트리 상태는 RDAP rdap.verisign.com으로 확인).
-- 남은 출시 후속: Search Console·네이버 서치어드바이저 등록(TXT), GA4, 블로그 시딩.
+- 남은 출시 후속: 블로그 시딩. (GA4·서치콘솔·네이버 서치어드바이저·sitemap·robots는 완료됨 2026-07-13 확인)
+- **GA4 측정(2026-07-13 점검)**: id `G-9EQEH5BF0C`. 이벤트 래퍼 `track(name,params)`(line~3862). 발생 이벤트: screen_open{screen}, game_finish, mission_complete, braintype_result, share_card, challenge_send/open, backup_export/import.
+  **game_finish 2경로(겹침 없음)**: ① missionMark(아케이드 31종, `{game,level,best}`) ② saveFlatBest(math/iq/sudoku/vocab/typing, `{game,score}`). 완주율=game_finish/screen_open(게임별). 향후 인기게임 판단 근거. 메타 description=33종+운세 키워드(사주·타로·별자리)로 최신화.
 
 ## 조사 자료
 - NDS 두뇌 트레이닝 웹구현 판정 요약은 `기억축-게임-스펙.md` §4에 통합(핵심: 음성/카메라 전제 게임은
