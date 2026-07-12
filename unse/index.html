@@ -48,6 +48,14 @@ input[type=date],select{width:100%;padding:13px 12px;font-size:16px;border:1.5px
 .hero .zname{font-size:22px;font-weight:800;margin-top:6px;}
 .hero .zsub{font-size:13px;color:var(--sub);margin-top:3px;}
 .elem-badge{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:999px;font-size:13.5px;font-weight:700;}
+.ilju{display:inline-block;margin:10px 5px 0;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#2a2140;color:#fff;letter-spacing:.3px;}
+/* 별점에 따른 배경 연출 */
+body[data-star="5"]{background:radial-gradient(130% 95% at 50% 0%, #ffeab0 0%, #fbe3ef 40%, var(--bg) 72%);}
+body[data-star="4"]{background:radial-gradient(130% 95% at 50% 0%, #ffd9ea 0%, #efe7ff 45%, var(--bg) 74%);}
+body[data-star="3"]{background:radial-gradient(120% 90% at 50% 0%, #efe7ff 0%, var(--bg) 55%);}
+body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dce6ff 0%, var(--bg) 60%);}
+.stars.smax{animation:starGlow 1.3s ease-in-out infinite;text-shadow:0 0 10px rgba(240,180,41,.55);}
+@keyframes starGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
 .trait{margin-top:14px;font-size:14.5px;line-height:1.7;color:var(--text);background:#f7f4ff;border-radius:12px;padding:12px 14px;}
 .stars{font-size:26px;letter-spacing:3px;color:var(--gold);text-align:center;margin:2px 0 6px;}
 .total{text-align:center;font-size:15px;line-height:1.7;font-weight:600;}
@@ -105,6 +113,7 @@ footer a{color:var(--sub);}
       <div class="zname" id="zName">용띠</div>
       <div class="zsub" id="zSub"></div>
       <div class="elem-badge" id="elemBadge"></div>
+      <div class="ilju" id="ilju"></div>
       <div class="trait" id="trait"></div>
     </div>
 
@@ -155,6 +164,12 @@ const ZODIAC=[
 ];
 // 천간(year-4)%10 → 오행
 const STEM_ELEM=['목','목','화','화','토','토','금','금','수','수'];
+// 60갑자(일주) 계산용 — 앵커: 1900-01-01 = 갑술(甲戌, index 10). (1900-01-31=갑진 교차검증)
+const STEMS=[{k:'갑',h:'甲'},{k:'을',h:'乙'},{k:'병',h:'丙'},{k:'정',h:'丁'},{k:'무',h:'戊'},{k:'기',h:'己'},{k:'경',h:'庚'},{k:'신',h:'辛'},{k:'임',h:'壬'},{k:'계',h:'癸'}];
+const BRANCHES=[{k:'자',h:'子'},{k:'축',h:'丑'},{k:'인',h:'寅'},{k:'묘',h:'卯'},{k:'진',h:'辰'},{k:'사',h:'巳'},{k:'오',h:'午'},{k:'미',h:'未'},{k:'신',h:'申'},{k:'유',h:'酉'},{k:'술',h:'戌'},{k:'해',h:'亥'}];
+// 일간(태어난 날의 천간)=사주에서 '나 자신' → 성격 한 줄
+const STEM_DESC=['곧게 뻗는 큰 나무처럼 소신과 리더십이 뚜렷해요.','부드러운 풀꽃처럼 유연하고 섬세해요.','환한 태양처럼 밝고 열정적이에요.','따뜻한 촛불처럼 다정하고 세심해요.','넓은 산처럼 듬직하고 포용력이 커요.','기름진 밭처럼 성실하고 실속이 있어요.','단단한 무쇠처럼 결단력 있고 의리파예요.','빛나는 보석처럼 예민하고 감각적이에요.','넓은 바다처럼 포부가 크고 지혜로워요.','맑은 이슬처럼 온화하고 상상력이 풍부해요.'];
+function iljuIdx(Y,M,D){ const diff=Math.floor((Date.UTC(Y,M-1,D)-Date.UTC(1900,0,1))/86400000); return ((10+diff)%60+60)%60; }
 const ELEM={
  목:{h:'木',adj:'따뜻하게 자라나는',color:'#7fb3ff',bg:'#eaf2ff',fc:'#3d6fd6'},
  화:{h:'火',adj:'열정적으로 빛나는',color:'#ff7a7a',bg:'#ffecec',fc:'#d64a4a'},
@@ -169,16 +184,16 @@ const TIME_FLAVOR={
  '저녁':'노을 지는 저녁 기운으로 감성과 여유가 있어요.',
  '밤':'깊은 밤 기운을 품어 집중력과 뚝심이 강해요.'
 };
-const TOTAL_HI=['오늘은 흐름이 시원하게 트이는 날. 미뤄둔 일을 밀어붙여요.','기분 좋은 일이 겹치는 하루. 웃을 일이 자주 생겨요.','원하던 소식이 들려올 수 있어요. 기대해도 좋아요.','작은 행운이 큰 기쁨으로 이어지는 날이에요.','자신감이 빛나는 날. 하고 싶던 걸 시도해 보세요.','주변의 도움으로 일이 술술 풀려요.'];
-const TOTAL_MID=['무난하고 안정적인 하루. 큰 욕심보다 리듬 유지가 좋아요.','평범해 보여도 알찬 하루. 기본에 충실하면 만족스러워요.','서두르지 않으면 오후로 갈수록 흐름이 좋아져요.','잔잔하지만 나쁘지 않아요. 컨디션 관리에 신경 쓰세요.','기복 없이 흘러가는 날. 익숙한 일이 편안해요.','작은 선택 하나가 기분을 바꿔줄 수 있어요.'];
-const TOTAL_LO=['조급함은 잠시 내려두세요. 천천히 가면 무탈해요.','오늘은 새 일보다 정리·마무리가 잘 맞아요.','예상 밖 변수가 있을 수 있으니 여유 있게 움직여요.','무리하지 말고 나를 먼저 챙기는 하루로.','작은 실수는 웃어넘기면 그만. 마음을 가볍게.','속도를 늦추면 오히려 놓친 게 보여요.'];
-const LOVE=['따뜻한 말 한마디가 관계를 데워요.','반가운 연락이 올 수 있어요.','솔직함이 매력으로 통하는 날.','작은 챙김이 오래 기억돼요.','혼자여도 마음이 넉넉한 하루.','인연은 익숙한 곳 가까이에.','오늘은 듣는 쪽이 더 사랑받아요.','설레는 순간이 스칠 수 있어요.'];
-const MONEY=['불필요한 지출만 줄여도 이득.','뜻밖의 굳히기 찬스가 있어요.','작은 절약이 큰 만족으로.','충동구매는 잠시 참기.','정보가 곧 돈. 잘 챙겨두세요.','나눔이 복으로 돌아와요.','계획한 소비는 오히려 기분전환.','장부를 한 번 들여다볼 때.'];
-const HEALTH=['물 자주 마시고 스트레칭 한 번.','가벼운 산책이 컨디션을 살려요.','눈과 어깨에 휴식을 주세요.','잘 자는 게 최고의 보약.','따뜻한 음식으로 속을 달래요.','심호흡 세 번, 마음이 가라앉아요.','오늘은 무리 대신 회복.','햇빛 조금이 기분을 밝혀요.'];
-const WORK=['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','작은 성취를 칭찬해 주세요.','미룬 일 하나만 처리해도 개운.','새 배움이 도움이 되는 날.','꼼꼼함이 실수를 막아줘요.','도움을 청하면 빨라져요.'];
-const SAY=['오늘도 말랑말랑하게, 파이팅! 🍡','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 ✨','웃는 하루가 좋은 하루 😊','천천히 가도 괜찮아요 🐢','좋은 일은 곧 찾아와요 🍀','스스로를 꼭 안아주기 🤗','오늘의 나, 충분히 멋져요 💫'];
-const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'}];
-const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','포스트잇','텀블러','이어폰','손수건','반짝이는 것','종이 노트','작은 인형','귤 하나','우산','열쇠고리'];
+const TOTAL_HI=['오늘은 흐름이 시원하게 트이는 날. 미뤄둔 일을 밀어붙여요.','기분 좋은 일이 겹치는 하루. 웃을 일이 자주 생겨요.','원하던 소식이 들려올 수 있어요. 기대해도 좋아요.','작은 행운이 큰 기쁨으로 이어지는 날이에요.','자신감이 빛나는 날. 하고 싶던 걸 시도해 보세요.','주변의 도움으로 일이 술술 풀려요.','귀인이 손 내미는 날. 부탁도 통해요.','노력한 만큼 결실이 보이기 시작해요.','좋은 타이밍이 겹쳐요. 과감히 밀어봐요.','오늘의 선택이 두고두고 잘한 일이 돼요.'];
+const TOTAL_MID=['무난하고 안정적인 하루. 큰 욕심보다 리듬 유지가 좋아요.','평범해 보여도 알찬 하루. 기본에 충실하면 만족스러워요.','서두르지 않으면 오후로 갈수록 흐름이 좋아져요.','잔잔하지만 나쁘지 않아요. 컨디션 관리에 신경 쓰세요.','기복 없이 흘러가는 날. 익숙한 일이 편안해요.','작은 선택 하나가 기분을 바꿔줄 수 있어요.','한 박자 쉬어가도 좋은 하루예요.','예상대로 흘러가요. 무리만 안 하면 OK.','소소한 재미를 챙기면 만족도가 올라가요.','계획을 점검하기 딱 좋은 날이에요.'];
+const TOTAL_LO=['조급함은 잠시 내려두세요. 천천히 가면 무탈해요.','오늘은 새 일보다 정리·마무리가 잘 맞아요.','예상 밖 변수가 있을 수 있으니 여유 있게 움직여요.','무리하지 말고 나를 먼저 챙기는 하루로.','작은 실수는 웃어넘기면 그만. 마음을 가볍게.','속도를 늦추면 오히려 놓친 게 보여요.','오늘은 지출·약속을 한 번 더 확인해요.','기대를 조금 낮추면 마음이 편해져요.','말 한마디를 아끼면 오해가 줄어요.','휴식이 곧 내일의 운을 채워줘요.'];
+const LOVE=['따뜻한 말 한마디가 관계를 데워요.','반가운 연락이 올 수 있어요.','솔직함이 매력으로 통하는 날.','작은 챙김이 오래 기억돼요.','혼자여도 마음이 넉넉한 하루.','인연은 익숙한 곳 가까이에.','오늘은 듣는 쪽이 더 사랑받아요.','설레는 순간이 스칠 수 있어요.','먼저 웃으면 분위기가 부드러워져요.','추억 하나가 관계를 다시 이어줘요.','표현을 아끼지 마요. 지금이 타이밍.','작은 다툼은 오늘 풀면 개운해요.'];
+const MONEY=['불필요한 지출만 줄여도 이득.','뜻밖의 굳히기 찬스가 있어요.','작은 절약이 큰 만족으로.','충동구매는 잠시 참기.','정보가 곧 돈. 잘 챙겨두세요.','나눔이 복으로 돌아와요.','계획한 소비는 오히려 기분전환.','장부를 한 번 들여다볼 때.','작은 부수입의 기회가 있어요.','비교하고 사면 후회가 줄어요.','오래된 물건이 값을 할 수도.','영수증은 꼭 챙겨두세요.'];
+const HEALTH=['물 자주 마시고 스트레칭 한 번.','가벼운 산책이 컨디션을 살려요.','눈과 어깨에 휴식을 주세요.','잘 자는 게 최고의 보약.','따뜻한 음식으로 속을 달래요.','심호흡 세 번, 마음이 가라앉아요.','오늘은 무리 대신 회복.','햇빛 조금이 기분을 밝혀요.','카페인은 조금 줄여봐요.','목·허리를 자주 펴주세요.','따뜻한 물 한 잔으로 시작해요.','일찍 자면 내일이 가벼워요.'];
+const WORK=['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','작은 성취를 칭찬해 주세요.','미룬 일 하나만 처리해도 개운.','새 배움이 도움이 되는 날.','꼼꼼함이 실수를 막아줘요.','도움을 청하면 빨라져요.','메모 습관이 오늘 빛을 봐요.','한 가지에 집중하면 성과가 커요.','피드백을 열어두면 더 좋아져요.','마감을 앞당기면 마음이 편해요.'];
+const SAY=['오늘도 말랑말랑하게, 파이팅! 🍡','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 ✨','웃는 하루가 좋은 하루 😊','천천히 가도 괜찮아요 🐢','좋은 일은 곧 찾아와요 🍀','스스로를 꼭 안아주기 🤗','오늘의 나, 충분히 멋져요 💫','한 걸음이면 충분해요 👟','좋아하는 걸 하나 챙겨요 🎵','오늘의 미소, 잊지 마요 🙂','내일은 더 좋아질 거예요 🌈'];
+const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'},{n:'하양',x:'#f2f2f7'},{n:'남색',x:'#5b6b9e'}];
+const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','포스트잇','텀블러','이어폰','손수건','반짝이는 것','종이 노트','작은 인형','귤 하나','우산','열쇠고리','머그컵','책갈피','스티커','작은 초콜릿','안경닦이','손목시계','미니 선인장'];
 
 /* ---------- 유틸 ---------- */
 function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
@@ -200,9 +215,13 @@ function compute(){
 
   const zi=((Y-4)%12+12)%12, z=ZODIAC[zi];
   const elemKey=STEM_ELEM[((Y-4)%10+10)%10], el=ELEM[elemKey];
+  // 일주(60갑자) + 일간(나 자신)
+  const ij=iljuIdx(Y,M,D), ds=STEMS[ij%10], db=BRANCHES[ij%12];
+  const iljuName=ds.k+db.k, iljuHanja=ds.h+db.h, dayElem=STEM_ELEM[ij%10];
 
-  // 타고난 기질
-  let traitTxt='<b>'+z.t+'</b> 기질에, '+el.adj+' <b>'+elemKey+'('+el.h+')</b>의 기운을 타고났어요.';
+  // 타고난 기질 (연주 띠·오행 + 일간)
+  let traitTxt='<b>'+z.n+'띠</b>('+z.t+') · 태어난 해의 기운 <b>'+elemKey+'('+el.h+')</b><br>'+
+    '날의 기운 <b>일간 '+ds.k+'('+ds.h+')·'+dayElem+'</b> — '+STEM_DESC[ij%10];
   if(time) traitTxt+='<br>'+TIME_FLAVOR[time];
 
   // 오늘의 운세(생일+오늘 시드)
@@ -224,9 +243,12 @@ function compute(){
   document.getElementById('zName').textContent=z.n+'띠';
   document.getElementById('zSub').textContent=Y+'년생 · '+M+'월 '+D+'일';
   const eb=document.getElementById('elemBadge'); eb.textContent=elemKey+'('+el.h+') 기운'; eb.style.background=el.bg; eb.style.color=el.fc;
+  document.getElementById('ilju').textContent='일주 '+iljuName+'('+iljuHanja+')';
   document.getElementById('trait').innerHTML=traitTxt;
   document.getElementById('todayLabel').textContent='· '+kstDate();
-  document.getElementById('stars').textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN);
+  const starEl=document.getElementById('stars'); starEl.textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN);
+  starEl.classList.toggle('smax', starN===5);
+  document.body.setAttribute('data-star', String(starN));
   document.getElementById('total').textContent=totalTxt;
   document.getElementById('fields').innerHTML=fields.map(f=>
     '<div class="frow"><div class="fi">'+f.i+'</div><div class="ft"><div class="fn">'+f.n+'</div><div class="fc">'+f.c+'</div></div><div class="fv '+f.v.c+'">'+f.v.t+'</div></div>').join('');
@@ -238,7 +260,7 @@ function compute(){
   document.getElementById('inputCard').style.display='none';
   document.getElementById('result').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
-  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,lc,ln,li,say,Y};
+  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,lc,ln,li,say,Y,ij:iljuName,ijh:iljuHanja};
 }
 
 /* ---------- 공유 카드 ---------- */
@@ -246,26 +268,28 @@ function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y
 const logoImg=new Image(); logoImg.src='/icon-192.png';   // 공유카드 로고(핑크 웃는 마스코트)
 function drawCard(){
   const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
-  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#b79bf5'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  const GRAD={5:['#f7c65a','#ff8aa0'],4:['#c79bf5','#ff8aa0'],3:['#b79bf5','#ff8aa0'],2:['#8fb2f0','#b79bf5']}[L.starN]||['#b79bf5','#ff8aa0'];
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,GRAD[0]); g.addColorStop(1,GRAD[1]); c.fillStyle=g; c.fillRect(0,0,W,H);
   c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();   // 흰 카드 50~720
   c.textAlign='center'; c.textBaseline='alphabetic';
   // 상단 브랜드: 마스코트 로고 + Mallow
   c.font='800 36px "Apple SD Gothic Neo",Arial,sans-serif';
-  const mw=54, gap=12, bw=c.measureText('Mallow').width, x0=(W-(mw+gap+bw))/2, topY=76;
+  const mw=54, gap=12, bw=c.measureText('Mallow').width, x0=(W-(mw+gap+bw))/2, topY=74;
   if(logoImg.complete && logoImg.naturalWidth>0){ c.drawImage(logoImg, x0, topY, mw, mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow', x0+mw+gap, topY+mw*0.72);
   c.textAlign='center';
   // 띠
-  c.font='94px sans-serif'; c.fillText(L.z.e,W/2,246);
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.z.n+'띠 · '+L.el+'('+ELEM[L.el].h+')',W/2,298);
-  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,344);
-  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,392,W-150,34);
+  c.font='90px sans-serif'; c.fillText(L.z.e,W/2,238);
+  c.font='800 33px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.z.n+'띠 · '+L.el+'('+ELEM[L.el].h+')',W/2,288);
+  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText('일주 '+L.ij+'('+L.ijh+')',W/2,318);
+  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,360);
+  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,406,W-150,34);
   // 행운
   c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495';
-  c.fillText('행운의 색',W/2-120,516); c.fillText('행운의 숫자',W/2+120,516);
-  c.beginPath(); c.arc(W/2-120,560,18,0,7); c.fillStyle=L.lc.x; c.fill();
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,572);
-  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,636,W-150,30);
+  c.fillText('행운의 색',W/2-120,522); c.fillText('행운의 숫자',W/2+120,522);
+  c.beginPath(); c.arc(W/2-120,566,18,0,7); c.fillStyle=L.lc.x; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,578);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,640,W-150,30);
   // 하단 URL — 흰 카드 안 진한 글자로 또렷하게
   c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
   return cv;

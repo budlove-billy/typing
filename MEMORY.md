@@ -146,6 +146,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **신규(2026-07-12): 말로우 운세(unse)** — 재미(cat.fun) 게임. **moamoa식 별도 정적 페이지** `/unse/index.html`(자체 header·GA4·canonical, 기록/능력치/미션 제외).
   생년월일→띠((year-4)%12)·오행(STEM_ELEM[(year-4)%10]) 라이트 사주 + **오늘 날짜 시드**(mulberry32) 데일리 운세(총운★·분야4·행운색/숫자/아이템·한마디)+canvas 공유카드. koOnly, 면책 문구.
   HOME_GAMES `{id:'unse',emoji:'🌙',grp:'cat.fun',koOnly:true,external:'unse/'}`, sitemap 등재. 콘텐츠=템플릿 배열(내장). 기획=`재미게임-운세-기획.md`. 검증 `.logs/unse_check.mjs`.
+  - 2차(2026-07-12): **일주(60갑자)** 추가 — 앵커 1900-01-01=갑술(index10, `iljuIdx`), 일간=STEM_DESC 10성격, 결과에 일주 뱃지+공유카드 일주. 홈 카드 **오늘 미확인 ● 뱃지**(gameCardHTML unse: `unse_seen`≠KST). 문구 템플릿 확장(각 10~12). **별점별 배경**(body[data-star]) + 5별 별 반짝임. 공유카드 별점별 그라데이션.
 - 다음 후보: 개인정보처리방침(로그인 도입 시 필수), ko 전용 언어게임(끝말잇기/속담) 후보.
 - **언어 축 결정(2026-07-11)**: vocab/typing은 **재활성 안 함**(소스 보존, 주석 비활성 유지). 언어감각(lang) 축은 **신규 anagram(글자 맞추기)로 대체** —
   ko=음절 타일·en=알파벳 타일 동일 엔진(**ko+en 동시 출시**로 vocab/typing의 ko전용 한계 해결), th 보류. 정답 선지정→오픈사전/욕설 리스크 0·콘텐츠 파이프라인 불필요.

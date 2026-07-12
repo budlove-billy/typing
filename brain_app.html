@@ -7072,6 +7072,7 @@ function gameCardHTML(g){
   const mx = (g.id==='braintype'||g.external) ? 0 : gameBestVal(g.id);
   if(mx>0) best='<div class="home-card-best">🏆 '+mx+'</div>';
   if(g.id==='moamoa'){ try{ const st=JSON.parse(localStorage.getItem('moamoa_state_v1')||'null'); const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(!(st&&st.date===kst&&st.done)) best+='<div class="home-card-dot"></div>'; }catch(e){} }
+  if(g.id==='unse'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('unse_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
     '<div class="home-card-cat">'+t(g.grp)+'</div>';
