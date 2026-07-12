@@ -57,6 +57,7 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dce6ff 0%, v
 .stars.smax{animation:starGlow 1.3s ease-in-out infinite;text-shadow:0 0 10px rgba(240,180,41,.55);}
 @keyframes starGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
 .trait{margin-top:14px;font-size:14.5px;line-height:1.7;color:var(--text);background:#f7f4ff;border-radius:12px;padding:12px 14px;}
+.match{margin-top:12px;font-size:14px;font-weight:800;color:var(--pink);}
 .stars{font-size:26px;letter-spacing:3px;color:var(--gold);text-align:center;margin:2px 0 6px;}
 .total{text-align:center;font-size:15px;line-height:1.7;font-weight:600;}
 .sect-title{font-size:12.5px;font-weight:800;color:var(--sub);margin:18px 2px 8px;letter-spacing:.3px;}
@@ -115,6 +116,7 @@ footer a{color:var(--sub);}
       <div class="elem-badge" id="elemBadge"></div>
       <div class="ilju" id="ilju"></div>
       <div class="trait" id="trait"></div>
+      <div class="match" id="match"></div>
     </div>
 
     <div class="card">
@@ -170,6 +172,9 @@ const BRANCHES=[{k:'자',h:'子'},{k:'축',h:'丑'},{k:'인',h:'寅'},{k:'묘',h
 // 일간(태어난 날의 천간)=사주에서 '나 자신' → 성격 한 줄
 const STEM_DESC=['곧게 뻗는 큰 나무처럼 소신과 리더십이 뚜렷해요.','부드러운 풀꽃처럼 유연하고 섬세해요.','환한 태양처럼 밝고 열정적이에요.','따뜻한 촛불처럼 다정하고 세심해요.','넓은 산처럼 듬직하고 포용력이 커요.','기름진 밭처럼 성실하고 실속이 있어요.','단단한 무쇠처럼 결단력 있고 의리파예요.','빛나는 보석처럼 예민하고 감각적이에요.','넓은 바다처럼 포부가 크고 지혜로워요.','맑은 이슬처럼 온화하고 상상력이 풍부해요.'];
 function iljuIdx(Y,M,D){ const diff=Math.floor((Date.UTC(Y,M-1,D)-Date.UTC(1900,0,1))/86400000); return ((10+diff)%60+60)%60; }
+// 삼합(잘 맞는 띠 그룹): 신자진(水)·인오술(火)·사유축(金)·해묘미(木)
+const SAMHAP=[[8,0,4],[2,6,10],[5,9,1],[11,3,7]];
+function goodZodiac(zi){ const g=SAMHAP.find(a=>a.includes(zi))||[]; return g.filter(x=>x!==zi).map(i=>ZODIAC[i].n).join('띠·')+'띠'; }
 const ELEM={
  목:{h:'木',adj:'따뜻하게 자라나는',color:'#7fb3ff',bg:'#eaf2ff',fc:'#3d6fd6'},
  화:{h:'火',adj:'열정적으로 빛나는',color:'#ff7a7a',bg:'#ffecec',fc:'#d64a4a'},
@@ -245,6 +250,7 @@ function compute(){
   const eb=document.getElementById('elemBadge'); eb.textContent=elemKey+'('+el.h+') 기운'; eb.style.background=el.bg; eb.style.color=el.fc;
   document.getElementById('ilju').textContent='일주 '+iljuName+'('+iljuHanja+')';
   document.getElementById('trait').innerHTML=traitTxt;
+  document.getElementById('match').textContent='🤝 잘 맞는 띠: '+goodZodiac(zi);
   document.getElementById('todayLabel').textContent='· '+kstDate();
   const starEl=document.getElementById('stars'); starEl.textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN);
   starEl.classList.toggle('smax', starN===5);
