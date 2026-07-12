@@ -41,16 +41,17 @@ main{width:100%;max-width:480px;padding:18px 14px 56px;}
 .tab.on{background:var(--p);color:#fff;border-color:var(--p);}
 .q-label{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:9px;text-align:center;}
 .q-cats{display:flex;gap:7px;margin-bottom:14px;}
+.spread{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 6px;}
 .q-cat{flex:1;padding:10px 0;text-align:center;font-size:13.5px;font-weight:700;border:1.5px solid var(--line);border-radius:12px;background:#fbfaff;cursor:pointer;}
 .q-cat.on{border-color:var(--p);background:#efe9ff;color:var(--p);}
-.btn{display:block;width:100%;margin-top:4px;padding:14px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
+.btn{display:block;width:100%;margin-top:8px;padding:15px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
   background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
 .btn:active{transform:translateY(1px);}
 .btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
 .hint{font-size:12px;color:var(--sub);text-align:center;margin-top:10px;line-height:1.6;}
 /* 카드 */
-.spread{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 6px;}
-.tcard{width:118px;perspective:900px;cursor:pointer;}
+.spread{display:flex;justify-content:center;gap:12px;flex-wrap:nowrap;margin:28px 0 30px;}
+.tcard{width:132px;perspective:900px;cursor:pointer;}
 .tcard .inner{position:relative;width:100%;aspect-ratio:2/3.05;transition:transform .55s;transform-style:preserve-3d;}
 .tcard.flip .inner{transform:rotateY(180deg);}
 .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
@@ -63,8 +64,9 @@ main{width:100%;max-width:480px;padding:18px 14px 56px;}
 .front.rev .cimg{transform:rotate(180deg);}
 .front .frv{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:9.5px;color:#fff;background:var(--pink);font-weight:800;padding:1px 8px;border-radius:8px;z-index:2;box-shadow:0 2px 5px rgba(255,111,156,.4);}
 .pos-cap{font-size:11.5px;color:var(--sub);text-align:center;margin-top:7px;font-weight:700;}
-#threeSpread .tcard{width:104px;}
-@media (max-width:400px){ #threeSpread{gap:7px;} #threeSpread .tcard{width:96px;} .tcard{width:110px;} }
+#threeSpread .tcard{width:106px;}
+@media (max-width:400px){ #threeSpread{gap:8px;} #threeSpread .tcard{width:98px;} .tcard{width:120px;} }
+@media (max-width:340px){ #threeSpread .tcard{width:90px;} }
 .readings{margin-top:8px;}
 .reading{background:#faf8ff;border-radius:12px;padding:12px 14px;margin-bottom:9px;}
 .reading .rh{font-size:13.5px;font-weight:800;}
@@ -278,23 +280,23 @@ async function drawCard(){
   if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
   if(L.mode==='today'){ const p=L.cards[0];
-    c.font='700 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 오늘의 타로',W/2,162);
-    const im=await loadCardImg(p); const cw=192,ch=Math.round(cw*1.7),cx=(W-cw)/2,cy=180;
+    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 오늘의 타로',W/2,178);
+    const im=await loadCardImg(p); const cw=214,ch=Math.round(cw*1.7),cx=(W-cw)/2,cy=214;
     drawCardImg(c,im,cx,cy,cw,ch,p.rev);
-    c.font='800 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.n+(p.rev?' (역)':''),W/2,cy+ch+34);
-    const ty=cy+ch+66;
-    c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('오늘의 한마디',W/2,ty);
-    c.font='600 21px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,(p.rev?(p.card.rtip||p.card.tip):p.card.tip),W/2,ty+30,W-160,30);
+    c.font='800 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(p.card.n+(p.rev?' (역)':''),W/2,cy+ch+44);
+    const ty=cy+ch+82;
+    c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('오늘의 한마디',W/2,ty);
+    c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,(p.rev?(p.card.rtip||p.card.tip):p.card.tip),W/2,ty+34,W-150,32);
   } else { const pos=POS3[L.cat];
-    c.font='700 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 3카드 타로 · '+CATNAME[L.cat],W/2,150);
-    const cw=140,ch=Math.round(cw*1.7),gapX=18,totalW=cw*3+gapX*2,startX=(W-totalW)/2,cy=178;
+    c.font='700 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('🃏 3카드 타로 · '+CATNAME[L.cat],W/2,196);
+    const cw=150,ch=Math.round(cw*1.7),gapX=16,totalW=cw*3+gapX*2,startX=(W-totalW)/2,cy=250;
     const ims=await Promise.all(L.cards.map(p=>loadCardImg(p)));
     L.cards.forEach((p,i)=>{ const cx=startX+i*(cw+gapX);
       drawCardImg(c,ims[i],cx,cy,cw,ch,p.rev);
-      c.font='800 16px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(pos[i],cx+cw/2,cy+ch+24);
-      c.font='700 13px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(shortName(p.card.n)+(p.rev?'(역)':''),cx+cw/2,cy+ch+42);
+      c.font='800 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(pos[i],cx+cw/2,cy+ch+34);
+      c.font='700 15px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(shortName(p.card.n)+(p.rev?'(역)':''),cx+cw/2,cy+ch+56);
     });
-    c.font='600 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,document.getElementById('summary').textContent,W/2,cy+ch+72,W-140,30);
+    c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,document.getElementById('summary').textContent,W/2,cy+ch+108,W-130,32);
   }
   c.textAlign='center'; c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,H-58);
   return cv;
