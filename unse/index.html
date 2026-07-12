@@ -277,7 +277,7 @@ function compute(){
 
 /* ---------- 공유 카드 ---------- */
 function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
-const logoImg=new Image(); logoImg.src='/icon-192.png';   // 공유카드 로고(핑크 웃는 마스코트)
+const logoImg=new Image(); logoImg.src='/mallow-logo.svg';   // 공유카드 로고(핑크 웃는 마스코트)
 function drawCard(){
   const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
   const GRAD={5:['#f7c65a','#ff8aa0'],4:['#c79bf5','#ff8aa0'],3:['#b79bf5','#ff8aa0'],2:['#8fb2f0','#b79bf5']}[L.starN]||['#b79bf5','#ff8aa0'];

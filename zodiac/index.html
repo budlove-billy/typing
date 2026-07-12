@@ -236,7 +236,7 @@ function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0
 function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
 function lvl(rng){const r=rng();const d=L[LANG];return r<0.5?{c:'lv-good',t:d.lv[0]}:r<0.85?{c:'lv-mid',t:d.lv[1]}:{c:'lv-low',t:d.lv[2]};}
 let LAST=null;
-const logoImg=new Image(); logoImg.src='/icon-192.png';
+const logoImg=new Image(); logoImg.src='/mallow-logo.svg';
 
 function compute(){
   const d=L[LANG];
