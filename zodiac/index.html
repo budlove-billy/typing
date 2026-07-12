@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow</title>
-<meta name="description" content="생년월일로 내 별자리 확인! 12별자리 성격과 매일 바뀌는 오늘의 별자리 운세 — 총운·애정·금전·건강, 행운의 색과 숫자, 잘 맞는 별자리까지. 재미로 보는 말로우 별자리 운세.">
-<meta property="og:title" content="말로우 별자리 운세 — 오늘의 별자리 운세">
-<meta property="og:description" content="내 별자리로 보는 오늘의 운세. 매일 바뀌는 운세를 친구와 공유해 보세요!">
+<title>Mallow Horoscope — Today's Zodiac Fortune</title>
+<meta name="description" content="Your daily horoscope by birth date. 12 zodiac signs, love·money·health·work luck, lucky color & number. Just-for-fun Mallow horoscope.">
+<meta property="og:title" content="Mallow Horoscope — Today's Zodiac Fortune">
+<meta property="og:description" content="Daily horoscope for your star sign. Share your fortune with friends!">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://playmallow.com/zodiac/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
@@ -24,12 +24,11 @@
   --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a; --radius:18px; }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #e7ecff 0%, var(--bg) 55%);color:var(--text);
-  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Noto Sans Thai',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
 header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
-#backHome{position:absolute;left:12px;top:16px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);}
+#backHome{position:absolute;left:12px;top:18px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:4px 6px;}
 #backHome:active{opacity:.6;}
-.h1row{display:flex;align-items:center;justify-content:center;gap:8px;}
-.h1row .mhead{width:30px;height:30px;flex-shrink:0;}
+#langSel{position:absolute;right:12px;top:14px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--sub);padding:4px 6px;font-family:inherit;}
 h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px;}
 h1 .sp{color:var(--p);}
 .tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
@@ -75,136 +74,218 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
 </head>
 <body>
 <header>
-  <a id="backHome" href="/">← 홈</a>
-  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">별자리 운세</span></h1>
-  <div class="tagline">생년월일로 보는 오늘의 별자리 운세</div>
+  <a id="backHome" href="/">← <span id="t-home">홈</span></a>
+  <select id="langSel" onchange="setLang(this.value)"><option value="ko">한국어</option><option value="en">English</option><option value="th">ไทย</option></select>
+  <h1>⭐ <span class="sp" id="t-title">별자리 운세</span></h1>
+  <div class="tagline" id="t-tagline"></div>
 </header>
 <main>
   <div class="card" id="inputCard">
-    <label for="birth">생년월일</label>
+    <label id="t-birthLabel" for="birth">생년월일</label>
     <input type="date" id="birth" min="1900-01-01">
-    <button class="btn" id="goBtn">내 별자리 운세 보기</button>
+    <button class="btn" id="goBtn"></button>
   </div>
   <div id="result" style="display:none">
     <div class="card hero">
       <div class="sym" id="zSym">♌</div>
-      <div class="zname" id="zName">사자자리</div>
+      <div class="zname" id="zName"></div>
       <div class="zsub" id="zSub"></div>
       <div class="elem-badge" id="elemBadge"></div>
       <div class="trait" id="trait"></div>
       <div class="match" id="match"></div>
     </div>
     <div class="card">
-      <div class="sect-title">🌟 오늘의 총운 <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
+      <div class="sect-title"><span id="t-todayTotal"></span> <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
       <div class="stars" id="stars">★★★★☆</div>
       <div class="total" id="total"></div>
-      <div class="sect-title">🍀 분야별 운세</div>
+      <div class="sect-title" id="t-byField"></div>
       <div id="fields"></div>
-      <div class="sect-title">🎁 오늘의 행운</div>
+      <div class="sect-title" id="t-luck"></div>
       <div class="lucky">
-        <div><div class="lk">행운의 색</div><div class="lv" id="luckColor"></div></div>
-        <div><div class="lk">행운의 숫자</div><div class="lv" id="luckNum"></div></div>
-        <div><div class="lk">행운의 아이템</div><div class="lv" id="luckItem" style="font-size:13.5px"></div></div>
+        <div><div class="lk" id="t-lkColor"></div><div class="lv" id="luckColor"></div></div>
+        <div><div class="lk" id="t-lkNum"></div><div class="lv" id="luckNum"></div></div>
+        <div><div class="lk" id="t-lkItem"></div><div class="lv" id="luckItem" style="font-size:13.5px"></div></div>
       </div>
       <div class="say" id="say"></div>
       <div class="btns">
-        <button class="btn" id="shareBtn">📷 결과 공유</button>
-        <button class="btn sub" id="againBtn">다시 입력</button>
+        <button class="btn" id="shareBtn"></button>
+        <button class="btn sub" id="againBtn"></button>
       </div>
-      <div class="disc">본 운세는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 🌙 내일도 새로운 운세로 만나요!</div>
+      <div class="disc" id="t-disc"></div>
     </div>
   </div>
 </main>
-<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<footer><a href="/">playmallow.com</a> · <span id="t-footer"></span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
 <script>
 "use strict";
-/* Mallow 마스코트(핑크·웃는) — 브랜드 통일 */
-const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
-(function(){ var el=document.getElementById('mhead'); if(el) el.innerHTML=MHEAD_SVG; })();
-const SIGNS=[
- {n:'물병자리',s:'♒',el:'공기',from:[1,20],t:'자유롭고 독창적인'},
- {n:'물고기자리',s:'♓',el:'물',from:[2,19],t:'감성적이고 다정한'},
- {n:'양자리',s:'♈',el:'불',from:[3,21],t:'열정적이고 도전적인'},
- {n:'황소자리',s:'♉',el:'흙',from:[4,20],t:'끈기 있고 안정적인'},
- {n:'쌍둥이자리',s:'♊',el:'공기',from:[5,21],t:'재치 있고 호기심 많은'},
- {n:'게자리',s:'♋',el:'물',from:[6,22],t:'따뜻하고 가족적인'},
- {n:'사자자리',s:'♌',el:'불',from:[7,23],t:'당당하고 카리스마 있는'},
- {n:'처녀자리',s:'♍',el:'흙',from:[8,23],t:'꼼꼼하고 분석적인'},
- {n:'천칭자리',s:'♎',el:'공기',from:[9,23],t:'균형 잡히고 사교적인'},
- {n:'전갈자리',s:'♏',el:'물',from:[10,24],t:'집중력 있고 매력적인'},
- {n:'사수자리',s:'♐',el:'불',from:[11,23],t:'낙천적이고 모험적인'},
- {n:'염소자리',s:'♑',el:'흙',from:[12,22],t:'성실하고 책임감 있는'}
+/* ===== 언어별 콘텐츠 ===== */
+// 별자리 12: 기호 공통, 이름/성격은 언어별
+const SIGN_META=[ // from = 시작 월,일 (판정용)
+ {s:'♒',from:[1,20],el:'air'},{s:'♓',from:[2,19],el:'water'},{s:'♈',from:[3,21],el:'fire'},
+ {s:'♉',from:[4,20],el:'earth'},{s:'♊',from:[5,21],el:'air'},{s:'♋',from:[6,22],el:'water'},
+ {s:'♌',from:[7,23],el:'fire'},{s:'♍',from:[8,23],el:'earth'},{s:'♎',from:[9,23],el:'air'},
+ {s:'♏',from:[10,24],el:'water'},{s:'♐',from:[11,23],el:'fire'},{s:'♑',from:[12,22],el:'earth'}
 ];
-const ELEM={ 불:{adj:'열정적으로 타오르는',bg:'#ffecec',fc:'#d64a4a'}, 흙:{adj:'단단하게 다져진',bg:'#fff5da',fc:'#b9821a'},
-  공기:{adj:'자유롭게 흐르는',bg:'#eaf2ff',fc:'#3d6fd6'}, 물:{adj:'깊고 잔잔한',bg:'#e4f6f5',fc:'#1f8f89'} };
-const ELGROUP={불:[2,6,10],흙:[3,7,11],공기:[0,4,8],물:[1,5,9]};
-function signIndex(M,D){ const md=M*100+D; const cuts=[[120,0],[219,1],[321,2],[420,3],[521,4],[622,5],[723,6],[823,7],[923,8],[1024,9],[1123,10],[1222,11]]; let idx=11; for(let i=0;i<cuts.length;i++){ if(md>=cuts[i][0]) idx=cuts[i][1]; } return idx; }
-function goodSign(idx){ const g=ELGROUP[SIGNS[idx].el]; return g.filter(x=>x!==idx).map(i=>SIGNS[i].n).join(' · '); }
-function dateRangeText(idx){ const cur=SIGNS[idx].from, nx=SIGNS[(idx+1)%12].from; const d=x=>x[0]+'/'+x[1]; const end=nx[1]===1?[nx[0]-1||12,'말']:[nx[0],nx[1]-1]; return d(cur)+' ~ '+(end[1]==='말'?end[0]+'월 말':d(end)); }
+const ELGROUP={fire:[2,6,10],earth:[3,7,11],air:[0,4,8],water:[1,5,9]};
+const L={
+ ko:{
+  home:'홈', title:'별자리 운세', tagline:'생년월일로 보는 오늘의 별자리 운세', birthLabel:'생년월일',
+  go:'내 별자리 운세 보기', todayTotal:'🌟 오늘의 총운', byField:'🍀 분야별 운세', luck:'🎁 오늘의 행운',
+  lkColor:'행운의 색', lkNum:'행운의 숫자', lkItem:'행운의 아이템', share:'📷 결과 공유', again:'다시 입력',
+  disc:'본 운세는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 🌙 내일도 새로운 운세로 만나요!',
+  footer:'가볍게 즐기는 두뇌게임', bornIn:'년생', matchLabel:'🤝 잘 맞는 별자리: ',
+  needBirth:'생년월일을 입력해 주세요 🙂', noFuture:'미래 날짜는 볼 수 없어요 😅', shareText:'오늘의 내 별자리 운세 ⭐ playmallow.com/zodiac',
+  fields:['애정운','금전운','건강운','학업·일운'], lv:['좋음','보통','주의'], todayCardTitle:'오늘의 운세', luckHdr:['행운의 색','행운의 숫자'],
+  names:['물병자리','물고기자리','양자리','황소자리','쌍둥이자리','게자리','사자자리','처녀자리','천칭자리','전갈자리','사수자리','염소자리'],
+  traits:['자유롭고 독창적인','감성적이고 다정한','열정적이고 도전적인','끈기 있고 안정적인','재치 있고 호기심 많은','따뜻하고 가족적인','당당하고 카리스마 있는','꼼꼼하고 분석적인','균형 잡히고 사교적인','집중력 있고 매력적인','낙천적이고 모험적인','성실하고 책임감 있는'],
+  elem:{fire:'불',earth:'흙',air:'공기',water:'물'}, elemAdj:{fire:'열정적으로 타오르는',earth:'단단하게 다져진',air:'자유롭게 흐르는',water:'깊고 잔잔한'},
+  traitTpl:(t,n,adj,el)=>'<b>'+t+'</b> 성격의 <b>'+n+'</b>. '+adj+' <b>'+el+'</b>의 기운을 지녔어요.',
+  elemBadge:(el)=>el+' 별자리',
+  totalHi:['오늘은 흐름이 시원하게 트이는 날. 미뤄둔 일을 밀어붙여요.','기분 좋은 일이 겹치는 하루. 웃을 일이 자주 생겨요.','원하던 소식이 들려올 수 있어요. 기대해도 좋아요.','작은 행운이 큰 기쁨으로 이어지는 날이에요.','자신감이 빛나는 날. 하고 싶던 걸 시도해 보세요.','주변의 도움으로 일이 술술 풀려요.'],
+  totalMid:['무난하고 안정적인 하루. 큰 욕심보다 리듬 유지가 좋아요.','평범해 보여도 알찬 하루. 기본에 충실하면 만족스러워요.','서두르지 않으면 오후로 갈수록 흐름이 좋아져요.','기복 없이 흘러가는 날. 익숙한 일이 편안해요.','작은 선택 하나가 기분을 바꿔줄 수 있어요.','한 박자 쉬어가도 좋은 하루예요.'],
+  totalLo:['조급함은 잠시 내려두세요. 천천히 가면 무탈해요.','오늘은 새 일보다 정리·마무리가 잘 맞아요.','무리하지 말고 나를 먼저 챙기는 하루로.','작은 실수는 웃어넘기면 그만. 마음을 가볍게.','말 한마디를 아끼면 오해가 줄어요.','휴식이 곧 내일의 운을 채워줘요.'],
+  love:['따뜻한 말 한마디가 관계를 데워요.','반가운 연락이 올 수 있어요.','솔직함이 매력으로 통하는 날.','혼자여도 마음이 넉넉한 하루.','오늘은 듣는 쪽이 더 사랑받아요.','설레는 순간이 스칠 수 있어요.'],
+  money:['불필요한 지출만 줄여도 이득.','뜻밖의 굳히기 찬스가 있어요.','충동구매는 잠시 참기.','정보가 곧 돈. 잘 챙겨두세요.','작은 부수입의 기회가 있어요.','계획한 소비는 오히려 기분전환.'],
+  health:['물 자주 마시고 스트레칭 한 번.','가벼운 산책이 컨디션을 살려요.','잘 자는 게 최고의 보약.','심호흡 세 번, 마음이 가라앉아요.','오늘은 무리 대신 회복.','따뜻한 물 한 잔으로 시작해요.'],
+  work:['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','미룬 일 하나만 처리해도 개운.','한 가지에 집중하면 성과가 커요.','도움을 청하면 빨라져요.'],
+  say:['오늘도 반짝반짝 빛나요 ✨','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 💫','웃는 하루가 좋은 하루 😊','좋은 일은 곧 찾아와요 🍀','오늘의 나, 충분히 멋져요 ⭐'],
+  colors:[['코랄 핑크','#ff8aa0'],['라벤더','#b79bf5'],['민트','#5ec6b0'],['하늘','#7fb3ff'],['레몬','#f5d64a'],['살구','#ffb877'],['로즈','#f06292'],['올리브','#9fb35a'],['하양','#f2f2f7'],['남색','#5b6b9e']],
+  items:['따뜻한 커피','손거울','작은 화분','파란 펜','향초','텀블러','이어폰','손수건','종이 노트','작은 초콜릿','책갈피','머그컵']
+ },
+ en:{
+  home:'Home', title:'Horoscope', tagline:'Your daily horoscope by birth date', birthLabel:'Date of birth',
+  go:'See my horoscope', todayTotal:'🌟 Overall Luck', byField:'🍀 Luck by Area', luck:'🎁 Lucky Charms',
+  lkColor:'Lucky Color', lkNum:'Lucky Number', lkItem:'Lucky Item', share:'📷 Share', again:'Try again',
+  disc:'This horoscope is <b>just for fun</b> and should not guide any decision. 🌙 Come back tomorrow for a new one!',
+  footer:'light brain games', bornIn:'', matchLabel:'🤝 Best match: ',
+  needBirth:'Please enter your birth date 🙂', noFuture:"Can't read a future date 😅", shareText:'My horoscope today ⭐ playmallow.com/zodiac',
+  fields:['Love','Money','Health','Work/Study'], lv:['Good','Fair','Care'], todayCardTitle:"Today's Horoscope", luckHdr:['Lucky Color','Lucky Number'],
+  names:['Aquarius','Pisces','Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn'],
+  traits:['free-spirited & original','sensitive & caring','passionate & bold','steady & grounded','witty & curious','warm & family-loving','confident & charismatic','precise & analytical','balanced & sociable','focused & magnetic','optimistic & adventurous','diligent & responsible'],
+  elem:{fire:'Fire',earth:'Earth',air:'Air',water:'Water'}, elemAdj:{fire:'burning with passion',earth:'firmly grounded',air:'flowing freely',water:'deep and calm'},
+  traitTpl:(t,n,adj,el)=>'<b>'+n+'</b> — '+t+'. Carrying the '+adj+' energy of <b>'+el+'</b>.',
+  elemBadge:(el)=>el+' sign',
+  totalHi:['Everything flows your way today. Push forward on what you paused.','Good things come together — plenty to smile about.','News you hoped for may arrive. Stay hopeful.','A small stroke of luck brings big joy.','Your confidence shines. Try what you wished to.','Help from others makes things go smoothly.'],
+  totalMid:['A calm, steady day. Keep your rhythm over ambition.','Ordinary yet fulfilling — stick to the basics.','Don\'t rush; the flow improves in the afternoon.','A smooth, familiar day. Comfort in routine.','One small choice can lift your mood.','Taking a breather is perfectly fine today.'],
+  totalLo:['Set impatience aside. Slow and steady stays safe.','Better for tidying up than starting new things.','Don\'t overdo it — put yourself first today.','Laugh off small mistakes. Keep it light.','Save your words to avoid misunderstandings.','Rest now fuels tomorrow\'s luck.'],
+  love:['A warm word warms the whole bond.','A welcome message may arrive.','Honesty is your charm today.','Content on your own, heart full.','Listening earns more love today.','A fluttering moment may brush by.'],
+  money:['Cutting needless spending already helps.','An unexpected chance to lock in gains.','Hold off on impulse buys.','Info is money — keep it handy.','A little side income may show up.','Planned spending is a nice refresh.'],
+  health:['Drink water and stretch once.','A light walk revives you.','Good sleep is the best medicine.','Three deep breaths calm the mind.','Recover today instead of pushing.','Start with a warm glass of water.'],
+  work:['Focus and you\'ll finish fast.','Great ideas come from teamwork.','Set priorities and it flows.','Clearing one delayed task feels great.','One thing at a time brings results.','Ask for help to speed up.'],
+  say:['Shine bright today ✨','Be yourself, don\'t overwork 🌷','Don\'t miss small joys 💫','A smiling day is a good day 😊','Good things are coming 🍀','You today — plenty awesome ⭐'],
+  colors:[['Coral Pink','#ff8aa0'],['Lavender','#b79bf5'],['Mint','#5ec6b0'],['Sky Blue','#7fb3ff'],['Lemon','#f5d64a'],['Apricot','#ffb877'],['Rose','#f06292'],['Olive','#9fb35a'],['White','#f2f2f7'],['Navy','#5b6b9e']],
+  items:['a warm coffee','a hand mirror','a small plant','a blue pen','a candle','a tumbler','earphones','a handkerchief','a paper notebook','a small chocolate','a bookmark','a mug']
+ },
+ th:{
+  home:'หน้าแรก', title:'ดวงราศี', tagline:'ดูดวงราศีประจำวันจากวันเกิด', birthLabel:'วันเดือนปีเกิด',
+  go:'ดูดวงราศีของฉัน', todayTotal:'🌟 ดวงรวมวันนี้', byField:'🍀 ดวงแยกด้าน', luck:'🎁 ของนำโชควันนี้',
+  lkColor:'สีนำโชค', lkNum:'เลขนำโชค', lkItem:'ของนำโชค', share:'📷 แชร์ผล', again:'กรอกใหม่',
+  disc:'ดวงนี้เป็น <b>คอนเทนต์เพื่อความสนุก</b> ไม่ควรใช้ตัดสินใจใด ๆ 🌙 พรุ่งนี้มาดูดวงใหม่กันนะ!',
+  footer:'เกมสมองเบา ๆ', bornIn:'', matchLabel:'🤝 ราศีที่เข้ากัน: ',
+  needBirth:'กรุณากรอกวันเกิด 🙂', noFuture:'ดูวันในอนาคตไม่ได้นะ 😅', shareText:'ดวงราศีของฉันวันนี้ ⭐ playmallow.com/zodiac',
+  fields:['ความรัก','การเงิน','สุขภาพ','งาน/เรียน'], lv:['ดี','ปานกลาง','ระวัง'], todayCardTitle:'ดวงวันนี้', luckHdr:['สีนำโชค','เลขนำโชค'],
+  names:['กุมภ์','มีน','เมษ','พฤษภ','เมถุน','กรกฎ','สิงห์','กันย์','ตุลย์','พิจิก','ธนู','มังกร'],
+  traits:['อิสระและมีเอกลักษณ์','อ่อนไหวและใจดี','กระตือรือร้นและกล้าหาญ','หนักแน่นและมั่นคง','ไหวพริบดีและช่างสงสัย','อบอุ่นและรักครอบครัว','มั่นใจและมีเสน่ห์','ละเอียดและช่างวิเคราะห์','สมดุลและเข้าสังคมเก่ง','จดจ่อและมีเสน่ห์ดึงดูด','มองโลกแง่ดีและชอบผจญภัย','ขยันและมีความรับผิดชอบ'],
+  elem:{fire:'ไฟ',earth:'ดิน',air:'ลม',water:'น้ำ'}, elemAdj:{fire:'ลุกโชนด้วยพลัง',earth:'มั่นคงหนักแน่น',air:'ไหลลื่นอิสระ',water:'ลึกและสงบ'},
+  traitTpl:(t,n,adj,el)=>'<b>ราศี'+n+'</b> — '+t+' มีพลังธาตุ<b>'+el+'</b>ที่'+adj,
+  elemBadge:(el)=>'ธาตุ'+el,
+  totalHi:['วันนี้ทุกอย่างลื่นไหล ลงมือเรื่องที่ค้างไว้เลย','เรื่องดี ๆ เข้ามาพร้อมกัน มีเรื่องให้ยิ้มบ่อย','ข่าวที่รออาจมาถึง มีความหวังไว้ได้','โชคเล็ก ๆ นำมาซึ่งความสุขใหญ่','ความมั่นใจเปล่งประกาย ลองทำสิ่งที่อยากทำ','คนรอบข้างช่วยให้ทุกอย่างราบรื่น'],
+  totalMid:['วันสงบและมั่นคง รักษาจังหวะดีกว่าโลภ','ธรรมดาแต่ได้เนื้อ ทำพื้นฐานให้ดี','อย่ารีบ ช่วงบ่ายจะดีขึ้น','วันราบเรียบ สบายใจกับสิ่งที่คุ้นเคย','ทางเลือกเล็ก ๆ เปลี่ยนอารมณ์ได้','พักสักหน่อยก็ดีนะวันนี้'],
+  totalLo:['วางความรีบร้อนไว้ก่อน ช้าแต่ชัวร์','วันนี้เหมาะเก็บกวาดมากกว่าเริ่มใหม่','อย่าฝืน ดูแลตัวเองก่อนนะ','เรื่องเล็กหัวเราะทิ้งไป ทำใจให้เบา','พูดน้อยลงหน่อยลดความเข้าใจผิด','พักผ่อนตอนนี้เติมดวงพรุ่งนี้'],
+  love:['คำพูดอุ่น ๆ ทำให้ความสัมพันธ์อบอุ่น','อาจมีข้อความน่ายินดีเข้ามา','ความจริงใจคือเสน่ห์ของวันนี้','อยู่คนเดียวก็ใจเต็ม','วันนี้คนที่รับฟังจะได้รับรักมากกว่า','ช่วงเวลาน่าตื่นเต้นอาจผ่านมา'],
+  money:['แค่ลดรายจ่ายไม่จำเป็นก็ได้เปรียบ','มีจังหวะทำกำไรแบบไม่คาดคิด','ชะลอการซื้อตามอารมณ์ไว้ก่อน','ข้อมูลคือเงิน เก็บไว้ให้ดี','อาจมีรายได้เสริมเล็ก ๆ','ใช้จ่ายตามแผนช่วยผ่อนคลาย'],
+  health:['ดื่มน้ำบ่อย ๆ และยืดเส้นสักครั้ง','เดินเบา ๆ ช่วยให้สดชื่น','นอนหลับดีคือยาวิเศษ','หายใจลึก ๆ สามครั้งใจจะสงบ','วันนี้พักฟื้นแทนการฝืน','เริ่มด้วยน้ำอุ่นหนึ่งแก้ว'],
+  work:['จดจ่อแล้วจะเสร็จไว','ไอเดียดี ๆ มาจากการร่วมมือ','จัดลำดับความสำคัญแล้วจะลื่น','สะสางงานที่ค้างสักชิ้นก็โล่ง','ทำทีละอย่างได้ผลมากกว่า','ขอความช่วยเหลือจะเร็วขึ้น'],
+  say:['วันนี้ก็เปล่งประกายนะ ✨','เป็นตัวเอง อย่าฝืนมาก 🌷','อย่าพลาดความสุขเล็ก ๆ 💫','วันที่ยิ้มคือวันที่ดี 😊','เรื่องดี ๆ กำลังจะมา 🍀','ตัวคุณวันนี้ เจ๋งพอแล้ว ⭐'],
+  colors:[['ชมพูคอรัล','#ff8aa0'],['ลาเวนเดอร์','#b79bf5'],['เขียวมิ้นต์','#5ec6b0'],['ฟ้า','#7fb3ff'],['เหลืองมะนาว','#f5d64a'],['ส้มแอปริคอต','#ffb877'],['กุหลาบ','#f06292'],['เขียวมะกอก','#9fb35a'],['ขาว','#f2f2f7'],['กรมท่า','#5b6b9e']],
+  items:['กาแฟอุ่น ๆ','กระจกพก','ต้นไม้เล็ก','ปากกาสีน้ำเงิน','เทียนหอม','กระบอกน้ำ','หูฟัง','ผ้าเช็ดหน้า','สมุดโน้ต','ช็อกโกแลตชิ้นเล็ก','ที่คั่นหนังสือ','แก้วมัค']
+ }
+};
 
-const TOTAL_HI=['오늘은 흐름이 시원하게 트이는 날. 미뤄둔 일을 밀어붙여요.','기분 좋은 일이 겹치는 하루. 웃을 일이 자주 생겨요.','원하던 소식이 들려올 수 있어요. 기대해도 좋아요.','작은 행운이 큰 기쁨으로 이어지는 날이에요.','자신감이 빛나는 날. 하고 싶던 걸 시도해 보세요.','주변의 도움으로 일이 술술 풀려요.','귀인이 손 내미는 날. 부탁도 통해요.','노력한 만큼 결실이 보이기 시작해요.','좋은 타이밍이 겹쳐요. 과감히 밀어봐요.','오늘의 선택이 두고두고 잘한 일이 돼요.'];
-const TOTAL_MID=['무난하고 안정적인 하루. 큰 욕심보다 리듬 유지가 좋아요.','평범해 보여도 알찬 하루. 기본에 충실하면 만족스러워요.','서두르지 않으면 오후로 갈수록 흐름이 좋아져요.','잔잔하지만 나쁘지 않아요. 컨디션 관리에 신경 쓰세요.','기복 없이 흘러가는 날. 익숙한 일이 편안해요.','작은 선택 하나가 기분을 바꿔줄 수 있어요.','한 박자 쉬어가도 좋은 하루예요.','예상대로 흘러가요. 무리만 안 하면 OK.','소소한 재미를 챙기면 만족도가 올라가요.','계획을 점검하기 딱 좋은 날이에요.'];
-const TOTAL_LO=['조급함은 잠시 내려두세요. 천천히 가면 무탈해요.','오늘은 새 일보다 정리·마무리가 잘 맞아요.','예상 밖 변수가 있을 수 있으니 여유 있게 움직여요.','무리하지 말고 나를 먼저 챙기는 하루로.','작은 실수는 웃어넘기면 그만. 마음을 가볍게.','속도를 늦추면 오히려 놓친 게 보여요.','오늘은 지출·약속을 한 번 더 확인해요.','기대를 조금 낮추면 마음이 편해져요.','말 한마디를 아끼면 오해가 줄어요.','휴식이 곧 내일의 운을 채워줘요.'];
-const LOVE=['따뜻한 말 한마디가 관계를 데워요.','반가운 연락이 올 수 있어요.','솔직함이 매력으로 통하는 날.','작은 챙김이 오래 기억돼요.','혼자여도 마음이 넉넉한 하루.','인연은 익숙한 곳 가까이에.','오늘은 듣는 쪽이 더 사랑받아요.','설레는 순간이 스칠 수 있어요.','먼저 웃으면 분위기가 부드러워져요.','추억 하나가 관계를 다시 이어줘요.','표현을 아끼지 마요. 지금이 타이밍.','작은 다툼은 오늘 풀면 개운해요.'];
-const MONEY=['불필요한 지출만 줄여도 이득.','뜻밖의 굳히기 찬스가 있어요.','작은 절약이 큰 만족으로.','충동구매는 잠시 참기.','정보가 곧 돈. 잘 챙겨두세요.','나눔이 복으로 돌아와요.','계획한 소비는 오히려 기분전환.','장부를 한 번 들여다볼 때.','작은 부수입의 기회가 있어요.','비교하고 사면 후회가 줄어요.','오래된 물건이 값을 할 수도.','영수증은 꼭 챙겨두세요.'];
-const HEALTH=['물 자주 마시고 스트레칭 한 번.','가벼운 산책이 컨디션을 살려요.','눈과 어깨에 휴식을 주세요.','잘 자는 게 최고의 보약.','따뜻한 음식으로 속을 달래요.','심호흡 세 번, 마음이 가라앉아요.','오늘은 무리 대신 회복.','햇빛 조금이 기분을 밝혀요.','카페인은 조금 줄여봐요.','목·허리를 자주 펴주세요.','따뜻한 물 한 잔으로 시작해요.','일찍 자면 내일이 가벼워요.'];
-const WORK=['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','작은 성취를 칭찬해 주세요.','미룬 일 하나만 처리해도 개운.','새 배움이 도움이 되는 날.','꼼꼼함이 실수를 막아줘요.','도움을 청하면 빨라져요.','메모 습관이 오늘 빛을 봐요.','한 가지에 집중하면 성과가 커요.','피드백을 열어두면 더 좋아져요.','마감을 앞당기면 마음이 편해요.'];
-const SAY=['오늘도 반짝반짝 빛나요 ✨','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 💫','웃는 하루가 좋은 하루 😊','천천히 가도 괜찮아요 🌙','좋은 일은 곧 찾아와요 🍀','스스로를 꼭 안아주기 🤗','오늘의 나, 충분히 멋져요 ⭐','한 걸음이면 충분해요 👟','좋아하는 걸 하나 챙겨요 🎵','오늘의 미소, 잊지 마요 🙂','내일은 더 좋아질 거예요 🌈'];
-const LUCK_COLORS=[{n:'코랄 핑크',x:'#ff8aa0'},{n:'라벤더',x:'#b79bf5'},{n:'민트',x:'#5ec6b0'},{n:'하늘',x:'#7fb3ff'},{n:'레몬',x:'#f5d64a'},{n:'살구',x:'#ffb877'},{n:'로즈',x:'#f06292'},{n:'올리브',x:'#9fb35a'},{n:'터콰이즈',x:'#2fc7c0'},{n:'플럼',x:'#a06ef8'},{n:'하양',x:'#f2f2f7'},{n:'남색',x:'#5b6b9e'}];
-const LUCK_ITEMS=['따뜻한 커피','손거울','작은 화분','파란 펜','향초','포스트잇','텀블러','이어폰','손수건','반짝이는 것','종이 노트','작은 인형','귤 하나','우산','열쇠고리','머그컵','책갈피','스티커','작은 초콜릿','안경닦이','손목시계','미니 선인장'];
+let LANG='ko';
+function detectLang(){ let l=null; try{ l=new URLSearchParams(location.search).get('lang'); }catch(e){} if(!l){ try{ l=localStorage.getItem('brain.lang'); }catch(e){} } if(!l){ const n=(navigator.language||'ko').slice(0,2); l=(n==='th')?'th':(n==='ko')?'ko':'en'; } return ['ko','en','th'].includes(l)?l:'ko'; }
+function setLang(l){ LANG=l; try{ localStorage.setItem('brain.lang',l); }catch(e){} document.documentElement.lang=l; applyLang(); if(document.getElementById('result').style.display!=='none') compute(); }
+function applyLang(){ const d=L[LANG];
+  document.getElementById('langSel').value=LANG;
+  document.getElementById('t-home').textContent=d.home;
+  document.getElementById('t-title').textContent=d.title;
+  document.getElementById('t-tagline').textContent=d.tagline;
+  document.getElementById('t-birthLabel').textContent=d.birthLabel;
+  document.getElementById('goBtn').textContent=d.go;
+  document.getElementById('t-todayTotal').textContent=d.todayTotal;
+  document.getElementById('t-byField').textContent=d.byField;
+  document.getElementById('t-luck').textContent=d.luck;
+  document.getElementById('t-lkColor').textContent=d.lkColor;
+  document.getElementById('t-lkNum').textContent=d.lkNum;
+  document.getElementById('t-lkItem').textContent=d.lkItem;
+  document.getElementById('shareBtn').textContent=d.share;
+  document.getElementById('againBtn').textContent=d.again;
+  document.getElementById('t-disc').innerHTML=d.disc;
+  document.getElementById('t-footer').textContent=d.footer;
+  document.title=(LANG==='ko')?'말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow':(LANG==='th')?'ดวงราศี Mallow — ดูดวงราศีประจำวัน':'Mallow Horoscope — Today\'s Zodiac Fortune';
+}
+
+function signIndex(M,D){ const md=M*100+D; const cuts=[[120,0],[219,1],[321,2],[420,3],[521,4],[622,5],[723,6],[823,7],[923,8],[1024,9],[1123,10],[1222,11]]; let idx=11; for(let i=0;i<cuts.length;i++){ if(md>=cuts[i][0]) idx=cuts[i][1]; } return idx; }
+function goodSign(idx){ const g=ELGROUP[SIGN_META[idx].el]; return g.filter(x=>x!==idx).map(i=>L[LANG].names[i]).join(' · '); }
+function dateRangeText(idx){ const cur=SIGN_META[idx].from, nx=SIGN_META[(idx+1)%12].from; const d=x=>x[0]+'/'+x[1]; return d(cur)+' ~ '+(nx[1]===1?(nx[0]-1||12)+'/late':d([nx[0],nx[1]-1])); }
 
 function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);}
 function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
-function lvl(rng){const r=rng();return r<0.5?{c:'lv-good',t:'좋음'}:r<0.85?{c:'lv-mid',t:'보통'}:{c:'lv-low',t:'주의'};}
+function lvl(rng){const r=rng();const d=L[LANG];return r<0.5?{c:'lv-good',t:d.lv[0]}:r<0.85?{c:'lv-mid',t:d.lv[1]}:{c:'lv-low',t:d.lv[2]};}
 let LAST=null;
 const logoImg=new Image(); logoImg.src='/icon-192.png';
 
 function compute(){
+  const d=L[LANG];
   const bv=document.getElementById('birth').value;
-  if(!bv){ alert('생년월일을 입력해 주세요 🙂'); return; }
+  if(!bv){ alert(d.needBirth); return; }
   const [Y,M,D]=bv.split('-').map(Number);
-  if(new Date(bv)>new Date()){ alert('미래 날짜는 볼 수 없어요 😅'); return; }
+  if(new Date(bv)>new Date()){ alert(d.noFuture); return; }
   try{localStorage.setItem('zodiac_birth',bv);localStorage.setItem('zodiac_seen',kstDate());}catch(e){}
-  gtag('event','zodiac_view',{});
+  gtag('event','zodiac_view',{lang:LANG});
 
-  const idx=signIndex(M,D), sg=SIGNS[idx], el=ELEM[sg.el];
-  let traitTxt='<b>'+sg.t+'</b> 성격의 <b>'+sg.n+'</b>. '+el.adj+' <b>'+sg.el+'</b>의 기운을 지녔어요.';
+  const idx=signIndex(M,D), elKey=SIGN_META[idx].el;
+  const nm=d.names[idx], tr=d.traits[idx], elName=d.elem[elKey], adj=d.elemAdj[elKey];
+  const totalHi=d.totalHi,totalMid=d.totalMid,totalLo=d.totalLo;
 
-  const rng=mulberry32(hashStr(sg.n+'|'+kstDate())); // 같은 별자리는 하루 동안 같은 운세
+  const rng=mulberry32(hashStr(idx+'|'+kstDate())); // 같은 별자리는 하루 동안 같은 운세(언어 무관 동일 결과)
   const starN=2+Math.floor(rng()*4);
-  const totalTxt=pick(rng, starN>=4?TOTAL_HI:starN===3?TOTAL_MID:TOTAL_LO);
-  const fields=[{i:'💗',n:'애정운',c:pick(rng,LOVE),v:lvl(rng)},{i:'💰',n:'금전운',c:pick(rng,MONEY),v:lvl(rng)},{i:'🍀',n:'건강운',c:pick(rng,HEALTH),v:lvl(rng)},{i:'📚',n:'학업·일운',c:pick(rng,WORK),v:lvl(rng)}];
-  const lc=pick(rng,LUCK_COLORS), ln=1+Math.floor(rng()*45), li=pick(rng,LUCK_ITEMS), say=pick(rng,SAY);
+  const totalTxt=pick(rng, starN>=4?totalHi:starN===3?totalMid:totalLo);
+  const fdefs=[['💗',d.love],['💰',d.money],['🍀',d.health],['📚',d.work]];
+  const fields=fdefs.map((f,i)=>({i:f[0],n:d.fields[i],c:pick(rng,f[1]),v:lvl(rng)}));
+  const lc=pick(rng,d.colors), ln=1+Math.floor(rng()*45), li=pick(rng,d.items), say=pick(rng,d.say);
 
-  document.getElementById('zSym').textContent=sg.s;
-  document.getElementById('zName').textContent=sg.n;
-  document.getElementById('zSub').textContent=dateRangeText(idx)+' · '+Y+'년생';
-  const eb=document.getElementById('elemBadge'); eb.textContent=sg.el+' 별자리'; eb.style.background=el.bg; eb.style.color=el.fc;
-  document.getElementById('trait').innerHTML=traitTxt;
-  document.getElementById('match').textContent='🤝 잘 맞는 별자리: '+goodSign(idx);
+  document.getElementById('zSym').textContent=SIGN_META[idx].s;
+  document.getElementById('zName').textContent=nm;
+  document.getElementById('zSub').textContent=dateRangeText(idx)+' · '+Y+d.bornIn;
+  const eb=document.getElementById('elemBadge'); eb.textContent=d.elemBadge(elName);
+  const ec={fire:['#ffecec','#d64a4a'],earth:['#fff5da','#b9821a'],air:['#eaf2ff','#3d6fd6'],water:['#e4f6f5','#1f8f89']}[elKey];
+  eb.style.background=ec[0]; eb.style.color=ec[1];
+  document.getElementById('trait').innerHTML=d.traitTpl(tr,nm,adj,elName);
+  document.getElementById('match').textContent=d.matchLabel+goodSign(idx);
   document.getElementById('todayLabel').textContent='· '+kstDate();
-  const starEl=document.getElementById('stars'); starEl.textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN); starEl.classList.toggle('smax',starN===5); starEl.setAttribute('role','img'); starEl.setAttribute('aria-label','오늘의 총운 5점 만점에 '+starN+'점');
+  const starEl=document.getElementById('stars'); starEl.textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN); starEl.classList.toggle('smax',starN===5);
   document.body.setAttribute('data-star',String(starN));
   document.getElementById('total').textContent=totalTxt;
   document.getElementById('fields').innerHTML=fields.map(f=>'<div class="frow"><div class="fi">'+f.i+'</div><div class="ft"><div class="fn">'+f.n+'</div><div class="fc">'+f.c+'</div></div><div class="fv '+f.v.c+'">'+f.v.t+'</div></div>').join('');
-  document.getElementById('luckColor').innerHTML='<span class="swatch" style="background:'+lc.x+'"></span>'+lc.n;
+  document.getElementById('luckColor').innerHTML='<span class="swatch" style="background:'+lc[1]+'"></span>'+lc[0];
   document.getElementById('luckNum').textContent=ln;
   document.getElementById('luckItem').textContent=li;
   document.getElementById('say').textContent=say;
 
   document.getElementById('inputCard').style.display='none';
   document.getElementById('result').style.display='block';
-  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
-  LAST={sg,starN,totalTxt,lc,ln,say};
+  window.scrollTo({top:0,behavior:'smooth'});
+  LAST={idx,sym:SIGN_META[idx].s,nm,elName,starN,totalTxt,lc,ln,say};
 }
 function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
 function drawCard(){
-  const L=LAST; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
-  const GRAD={5:['#f7c65a','#ff8aa0'],4:['#c79bf5','#ff8aa0'],3:['#8fb2f0','#b79bf5'],2:['#8fb2f0','#7e8fd0']}[L.starN]||['#8fb2f0','#b79bf5'];
+  const L2=LAST, d=L[LANG]; const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
+  const GRAD={5:['#f7c65a','#ff8aa0'],4:['#c79bf5','#ff8aa0'],3:['#8fb2f0','#b79bf5'],2:['#8fb2f0','#7e8fd0']}[L2.starN]||['#8fb2f0','#b79bf5'];
   const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,GRAD[0]); g.addColorStop(1,GRAD[1]); c.fillStyle=g; c.fillRect(0,0,W,H);
   c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();
   c.textAlign='center'; c.textBaseline='alphabetic';
@@ -212,26 +293,26 @@ function drawCard(){
   const mw=54,gap=12,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=74;
   if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
-  c.font='96px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(L.sg.s,W/2,244);
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.sg.n+' · '+L.sg.el,W/2,296);
-  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,344);
-  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.totalTxt,W/2,392,W-150,34);
-  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText('행운의 색',W/2-120,520); c.fillText('행운의 숫자',W/2+120,520);
-  c.beginPath(); c.arc(W/2-120,564,18,0,7); c.fillStyle=L.lc.x; c.fill();
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,576);
-  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,640,W-150,30);
+  c.font='96px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(L2.sym,W/2,254);
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.nm+' · '+L2.elName,W/2,306);
+  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L2.starN,10-L2.starN),W/2,354);
+  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L2.totalTxt,W/2,402,W-150,34);
+  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText(d.luckHdr[0],W/2-120,530); c.fillText(d.luckHdr[1],W/2+120,530);
+  c.beginPath(); c.arc(W/2-120,574,18,0,7); c.fillStyle=L2.lc[1]; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.ln,W/2+120,586);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L2.say,W/2,648,W-150,30);
   c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
   return cv;
 }
-function share(){ if(!LAST) return; gtag('event','zodiac_share',{}); const cv=drawCard();
+function share(){ if(!LAST) return; gtag('event','zodiac_share',{lang:LANG}); const cv=drawCard();
   cv.toBlob(function(blob){ const file=new File([blob],'mallow-zodiac.png',{type:'image/png'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'오늘의 내 별자리 운세 ⭐ playmallow.com/zodiac'}).catch(()=>{}); }
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:L[LANG].shareText}).catch(()=>{}); }
     else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-zodiac.png'; a.click(); } },'image/png'); }
 
 document.getElementById('goBtn').onclick=compute;
 document.getElementById('shareBtn').onclick=share;
 document.getElementById('againBtn').onclick=function(){document.getElementById('result').style.display='none';document.getElementById('inputCard').style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
-(function(){try{const b=localStorage.getItem('zodiac_birth');if(b)document.getElementById('birth').value=b;}catch(e){}})();
+(function(){ LANG=detectLang(); applyLang(); try{const b=localStorage.getItem('zodiac_birth');if(b)document.getElementById('birth').value=b;}catch(e){} })();
 </script>
 </body>
 </html>

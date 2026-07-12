@@ -1729,3 +1729,1514 @@ _This file is automatically injected into Claude's context at the start of every
 - 사용자: Search Console에 가이드 URL 색인 요청 권장(특히 /guide/sudoku/, /guide/2048/).
 - 모아모아 퍼즐 D+25(8월 초) 추가. 백로그: 어림계산, IQ 공유버튼, 개인정보처리방침.
 
+---
+
+## Session 9ad078c0-9694-45bf-9034-0cb949d3305b — 2026-07-11T10:39:07.642780+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) 외부 UX 리뷰 반영 패키지(2763f9a) — text3 대비/전역 focus-visible/타이머 톤다운/죽은 nav CSS 제거. 랜딩·가이드 9종 회색도 통일. 라이브 확인.
+
+## Decisions
+- 리뷰 8건 중 4건 반영, 토큰 전면화·픽셀 통일·홈 밀도(사실오류)·다크모드는 기각/보류 — MEMORY '디자인 컨벤션'에 기각 사유 기록.
+- 색 단독 피드백(✓/✗ 확장)은 게임 수정 때마다 점진 적용.
+
+## Open questions
+- 사용자 확인: 타이머 새 톤(파스텔 핑크 칩)이 게임 화면에서 어색하지 않은지.
+- 모아모아 퍼즐 D+25(8월 초). 백로그: 어림계산, IQ 공유버튼, 개인정보처리방침, 색약 피드백 점진.
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T14:39:37.515341+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T14:46:06.272999+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T14:55:52.248764+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:23:10.331787+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:24:46.645408+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:29:20.035819+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:31:28.387053+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:42:26.351939+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:46:28.698450+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T15:50:57.805657+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:10:02.842939+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:35:14.937926+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:39:34.655913+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:46:50.889958+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:54:07.200690+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T16:58:50.667317+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T17:01:35.873551+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T17:11:28.136379+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T17:14:50.773860+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T17:19:43.552176+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T18:03:58.170199+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T19:35:54.169483+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T19:37:40.342712+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T19:48:54.810637+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T19:58:45.878594+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T20:09:36.434256+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T20:22:38.952726+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T20:27:53.372487+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T20:32:00.526796+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T20:33:50.209561+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-11T20:37:35.316364+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T20:45:40.518702+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T23:23:29.106311+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-11T23:33:48.213486+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T00:26:46.094813+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T00:49:20.443236+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:29:27.643567+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:44:19.045308+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:48:19.725331+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:52:40.636293+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:53:54.567176+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T04:54:26.780158+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T05:00:08.860928+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T05:03:50.740198+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-12T05:38:55.598362+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T05:53:13.873153+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T05:59:13.121531+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session 839c3728-ddac-49c9-8605-88e80bf9c764 — 2026-07-12T06:33:57.132568+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T06:45:48.077799+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T06:51:05.365288+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T06:53:57.723422+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T07:02:37.484666+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
+---
+
+## Session eddecaa6-e283-4cff-b721-f6ba4dc79393 — 2026-07-12T07:23:58.731449+00:00
+
+
+# Active Session State
+
+## Current task
+운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
+파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
+검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+
+## Plan
+- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
+- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
+- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
+
+## 진행
+- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
+- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
+
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
+
+## Decisions
+
+디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
+- 결과 화면에 Mallow success 표정 크게 + 컨페티
+- 홈 히어로에 Mallow 애니메이션(mallow-bob)
+- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
+
+## Files in progress
+
+(none — index.html==brain_app.html 동기화됨)
+
+## Open questions
+
+(none)
+
