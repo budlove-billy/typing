@@ -3,10 +3,18 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## 브랜드 검색·언어 SEO (2026-07-15)
+- 한국어 공식 표기는 **플레이말로우**, 영문 표기는 **Mallow / Play Mallow**. 메인 검색 의도는 `무료 두뇌게임·웹게임`이며 title·description·OG·manifest·홈 가시 본문에 자연스럽게 함께 쓴다.
+- 정적 단일 앱 구조에서는 `/`를 한국어 기본 문서로 유지한다. 언어 선택은 `?lang=en|th`로 명시하고 언어별 title/description/canonical/OG URL을 동기화한다. ko/en/th/x-default hreflang은 head와 sitemap에 유지한다. 브라우저 언어만으로 깨끗한 루트를 영어로 자동 전환하지 않는다.
+- 홈 자체가 랜딩이다. 별도 광고 랜딩 대신 첫 화면의 가치 제안, 대표 게임, 카테고리, 본문 소개와 검색용 개별 게임 랜딩을 강화한다.
+
+## 두뇌유형 방향 (2026-07-15)
+- MBTI 명칭을 직접 쓰지 않는 재미용 **플레이 스타일 테스트**다. 12문항·6유형과 유형별 게임 추천·공유카드를 유지하고, 의학적·지능 진단이 아니라는 면책을 노출한다.
+
 ## 디자인 시스템 (2026-07-12 상용화 리프트 — 캐릭터/오브젝트/손맛/입체/테마)
 - **Mallow 마스코트 = 인라인 SVG**. `mallowSVG(mood,{size,variant,cls,attrs,standalone})` → SVG 문자열.
   mood: `default|happy|success|sad|focus`. variant(몸통색): `cream(기본)|pink|mint|sky|lemon|grape` (MALLOW_VARIANTS).
-  **얼굴 = 원본 mallow-chan.png 마시멜로 감성**(네모 둥근사각 눈 `_EYES` + 작은 'w' 입 + 핑크 볼 `_mCheeks`). 동그란 아기눈은 "무섭다" 피드백으로 폐기(2026-07-12). 몸통=살짝 눌린 필로우형.
+  **공식 방향 = 한입 말랑 큐브**(2026-07-15): 오른쪽 위 한입 실루엣 + 작은 점눈·입·볼, 팔·다리 없는 마시멜로 몸체. 32px에서도 표정보다 실루엣이 먼저 보여야 하며 `mallowSVG()`와 `mallow-logo.svg`를 같은 형태로 유지한다.
   공유 그라데이션 defs는 `_mgDefs()`가 body에 1회 주입(id=`mg_<variant>`). **캔버스/데이터URL용은 `standalone:true`**(defs 인라인). 픽셀 PNG(mallow-chan.png)는 **폐기**.
   HTML 자리표시는 `data-mallow="happy" data-mallow-size="30" data-mallow-variant="mint"` → `initMallowUI()`가 렌더. 로고/공유카드/bubble·catch·chop·whack·count 전부 SVG.
 - **오브젝트 헬퍼**: `forkSVG(size)`(catch 장애물·금속 포크), `basketSVG(size)`(catch 바구니·위커). whack 팝업/count 인원=Mallow SVG.

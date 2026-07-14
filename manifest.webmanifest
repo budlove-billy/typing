@@ -1,7 +1,7 @@
 {
-  "name": "Mallow — 가볍게 즐기는 두뇌게임",
-  "short_name": "Mallow",
-  "description": "가입 없이 3초 만에 시작하는 무료 두뇌게임. 매일 가볍게 머리 식히세요.",
+  "name": "플레이말로우 — 무료 두뇌게임·웹게임",
+  "short_name": "플레이말로우",
+  "description": "가입·설치 없이 바로 시작하는 무료 두뇌게임·웹게임. 매일 가볍게 머리 식히세요.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

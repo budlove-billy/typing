@@ -3,24 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">Mallow — 가볍게 즐기는 두뇌게임 | 무료 두뇌 트레이닝</title>
-<meta name="description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임 33종. 기억력·집중력·순발력·공간감각 트레이닝, 오늘의 미션, 두뇌 유형 테스트, 사주·타로·별자리 운세까지. 매일 가볍게 머리 식히세요.">
+<title id="page-title">플레이말로우(Mallow) | 무료 두뇌게임·웹게임</title>
+<meta name="description" content="플레이말로우는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트입니다. 기억력·집중력·순발력 게임 33종과 오늘의 미션, 두뇌 유형 테스트를 즐겨보세요.">
 <meta name="naver-site-verification" content="9837235c67647e2d6c47293ba00aa17e80abf903" />
 <link rel="canonical" href="https://playmallow.com/">
+<link rel="alternate" hreflang="ko" href="https://playmallow.com/">
+<link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en">
+<link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th">
+<link rel="alternate" hreflang="x-default" href="https://playmallow.com/">
 <meta name="theme-color" content="#4f7cff">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Mallow">
-<meta property="og:title" content="Mallow — 가볍게 즐기는 두뇌게임">
-<meta property="og:description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임 33종과 오늘의 미션, 사주·타로·별자리 운세까지!">
+<meta property="og:site_name" content="플레이말로우(Mallow)">
+<meta property="og:title" content="플레이말로우 | 무료 두뇌게임·웹게임">
+<meta property="og:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임 33종과 오늘의 미션!">
 <meta property="og:url" content="https://playmallow.com/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mallow — 가볍게 즐기는 두뇌게임">
-<meta name="twitter:description" content="가입 없이 3초 만에 시작하는 무료 두뇌게임. 매일 가볍게 머리 식히세요.">
+<meta name="twitter:title" content="플레이말로우 | 무료 두뇌게임·웹게임">
+<meta name="twitter:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임. 매일 가볍게 머리 식히세요.">
 <meta name="twitter:image" content="https://playmallow.com/og.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://playmallow.com/#website","url":"https://playmallow.com/","name":"플레이말로우","alternateName":["Mallow","Play Mallow"],"inLanguage":["ko","en","th"]},{"@type":"Organization","@id":"https://playmallow.com/#organization","name":"플레이말로우","alternateName":["Mallow","Play Mallow"],"url":"https://playmallow.com/","logo":"https://playmallow.com/icon-512.png"}]}
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
 <script>
@@ -701,6 +708,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .tab-label{font-size:.7rem;font-weight:700}
 /* 홈 */
 .home-hi{font-size:1.3rem;font-weight:800;color:var(--text);margin:.25rem .25rem 1rem}
+.home-intro{margin:-.35rem .25rem 1rem;color:var(--text2);font-size:.9rem;line-height:1.6}
+.home-intro strong{color:var(--purple);font-weight:800}
 .home-feature{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--purple);background:linear-gradient(120deg,#e9f0ff,#fff);font-family:inherit;transition:.15s}
 .home-feature:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(79,124,255,.16)}
 .hf-label{font-size:.78rem;font-weight:700;color:var(--purple);margin-bottom:.6rem}
@@ -780,10 +789,10 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="success" data-mallow-variant="pink" data-mallow-size="40" aria-label="Mallow 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-variant="pink" data-mallow-size="40" aria-label="플레이말로우 한입 말랑 큐브 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
-    <select class="lang-select" id="lang-select" onchange="setLanguage(this.value)">
+    <select class="lang-select" id="lang-select" onchange="setLanguage(this.value,true)">
       <option value="ko">🇰🇷 한국어</option>
       <option value="en">🇺🇸 English</option>
       <option value="th">🇹🇭 ไทย</option>
@@ -794,6 +803,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 <!-- ==================== HOME / DASHBOARD ==================== -->
 <div class="screen active" id="screen-home">
   <div class="home-hi" data-i18n="home.title">오늘의 두뇌 체조</div>
+  <p class="home-intro" data-i18n="home.intro"><strong>플레이말로우</strong>는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트예요. 오늘의 추천부터 가볍게 시작해보세요.</p>
   <button class="card home-feature" id="home-feature" onclick="featureStart()"></button>
   <div class="card home-goals">
     <div class="hg-title" data-i18n="goals.title">오늘의 목표</div>
@@ -814,7 +824,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
     <div class="home-grid" id="home-fun"></div>
   </div>
   <div class="home-about">
-    <p data-i18n="about.p1">Mallow(가볍게 즐기는 두뇌게임)는 가입 없이 바로 즐기는 무료 두뇌 게임 모음입니다. 기억력(순간기억·카드 짝·엔백·거꾸로 기억), 집중력(스트룹·규칙 바꾸기·화살표 집중), 순발력(반응 속도·말로우 타워), 관찰력(다른 색·다른 모양·틀린 그림 찾기), 공간감각(도형 회전·슬라이딩 퍼즐·블록 채우기), 계산(암산·버블 톡톡·말랑 2048·어림 계산), 논리(스도쿠·컬러 소트·IQ·픽셀 로직), 언어(글자 맞추기·숨은 단어), 청각(멜로디·리듬·높은음), 협응(팡팡·받기·길 따라가기)까지 33가지 미니게임을 제공합니다. 여기에 두뇌 유형 테스트, 낱말 퍼즐 '모아모아', 오늘의 운세·별자리·띠별 운세·타로까지 재미 콘텐츠도 가득해요.</p>
+    <p data-i18n="about.p1">플레이말로우(Play Mallow)는 가입 없이 바로 즐기는 무료 두뇌게임·웹게임 모음입니다. 기억력(순간기억·카드 짝·엔백·거꾸로 기억), 집중력(스트룹·규칙 바꾸기·화살표 집중), 순발력(반응 속도·말로우 타워), 관찰력(다른 색·다른 모양·틀린 그림 찾기), 공간감각(도형 회전·슬라이딩 퍼즐·블록 채우기), 계산(암산·버블 톡톡·말랑 2048·어림 계산), 논리(스도쿠·컬러 소트·IQ·픽셀 로직), 언어(글자 맞추기·숨은 단어), 청각(멜로디·리듬·높은음), 협응(팡팡·받기·길 따라가기)까지 33가지 미니게임을 제공합니다. 여기에 두뇌 유형 테스트, 낱말 퍼즐 '모아모아', 오늘의 운세·별자리·띠별 운세·타로까지 재미 콘텐츠도 가득해요.</p>
     <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
   </div>
   <div class="site-footer" id="site-footer">
@@ -1730,14 +1740,15 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
   <div class="card" id="bt-intro-card">
     <div class="section-head"><h2 data-i18n="braintype.title">두뇌 유형 테스트</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="braintype.intro">
-      6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.
+      12개의 질문으로 알아보는 나의 플레이 스타일!<br>결과에 딱 맞는 두뇌게임도 추천해드려요.
     </p>
+    <p class="sub" data-i18n="braintype.disclaimer">재미로 보는 플레이 스타일 테스트이며, 의학적·지능 진단이 아닙니다.</p>
     <button class="btn" onclick="startBrainType()" data-i18n="braintype.start">테스트 시작</button>
   </div>
 
   <div class="card" id="bt-quiz-card" style="display:none">
     <div class="progress-bar"><div class="progress-fill" id="bt-progress-fill" style="width:0%"></div></div>
-    <div class="bt-progress" id="bt-progress">1 / 6</div>
+    <div class="bt-progress" id="bt-progress">1 / 12</div>
     <div class="bt-question" id="bt-question"></div>
     <div id="bt-options"></div>
     <div style="display:flex;justify-content:center;margin-top:.5rem">
@@ -2673,15 +2684,15 @@ function _mgDefs(){
   d+='</defs>'; svg.innerHTML=d; document.body.appendChild(svg);
 }
 const _EYE='#33405c';
-/* 원본 마시멜로 감성: 네모난(둥근사각) 눈 + 작은 'w' 입 + 핑크 볼 */
-const _mCheeks=`<rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/>`;
-const _EYES=`<rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="${_EYE}"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="${_EYE}"/>`+
-  `<rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff" opacity=".92"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff" opacity=".92"/>`;
+/* 한입 말랑 큐브: 표정보다 실루엣이 먼저 보이도록 점눈·작은 볼을 사용 */
+const _mCheeks=`<circle cx="30" cy="56" r="3.5" fill="#FF9DB8" opacity=".35"/><circle cx="70" cy="56" r="3.5" fill="#FF9DB8" opacity=".35"/>`;
+const _EYES=`<circle cx="38" cy="47" r="4.2" fill="${_EYE}"/><circle cx="62" cy="47" r="4.2" fill="${_EYE}"/>`+
+  `<circle cx="36.8" cy="45.8" r="1.15" fill="#fff" opacity=".9"/><circle cx="60.8" cy="45.8" r="1.15" fill="#fff" opacity=".9"/>`;
 const _sparkles=`<path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/>`+
   `<path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/>`;
 const MALLOW_FACES={
   default:_mCheeks+_EYES+
-    `<path d="M43.5 59 Q47 64.2 50 60.4 Q53 64.2 56.5 59" fill="none" stroke="${_EYE}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+    `<path d="M46 59 Q50 62.5 54 59" fill="none" stroke="${_EYE}" stroke-width="2.2" stroke-linecap="round"/>`,
   happy:_mCheeks+_EYES+
     `<path d="M43 59 Q50 68.5 57 59 Z" fill="#E8657F"/><path d="M45.5 62 Q50 65 54.5 62" fill="#F49BB1"/>`,
   success:_mCheeks+_EYES+_sparkles+
@@ -2710,7 +2721,7 @@ function mallowSVG(mood,opts){
   const xmlns=opts.standalone?' xmlns="http://www.w3.org/2000/svg"':'';
   return `<svg class="mallow${cls}"${xmlns} viewBox="0 0 100 100" width="${size}" height="${size}" ${attrs} aria-hidden="true">`+defs+
     `<ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/>`+
-    `<rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mg_${v})" stroke="${stroke}" stroke-width="1.5"/>`+
+    `<path d="M42 19 H65 C62 23 63 28 68 30 C73 32 77 28 76 23 C82 27 85 34 85 43 V58 C85 73 77 82 62 82 H38 C23 82 15 73 15 58 V43 C15 28 25 19 42 19 Z" fill="url(#mg_${v})" stroke="${stroke}" stroke-width="1.5" stroke-linejoin="round"/>`+
     `<ellipse cx="50" cy="70" rx="27" ry="11" fill="rgba(150,110,60,.09)"/>`+
     `<ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/>`+
     face+`</svg>`;
@@ -2749,7 +2760,7 @@ if(typeof document!=='undefined'){
 }
 
 const I18N = {
-  "page.title": {ko:"Mallow — 가볍게 즐기는 두뇌게임 | 무료 두뇌 트레이닝", en:"Mallow — Light & Fun Brain Games", th:"Mallow — เกมสมองเบา ๆ สนุก ๆ"},
+  "page.title": {ko:"플레이말로우(Mallow) | 무료 두뇌게임·웹게임", en:"Mallow | Free Brain Games Online", th:"Mallow | เกมฝึกสมองออนไลน์ฟรี"},
   "nav.tagline": {ko:" 가볍게 즐기는 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
   "nav.leaveConfirm": {ko:"게임을 종료하고 이동할까요? 진행 상황은 저장되지 않아요.", en:"Quit the current game and leave? Your progress won't be saved.", th:"ออกจากเกมแล้วไปต่อไหม? ความคืบหน้าจะไม่ถูกบันทึก"},
   "nav.moamoa": {ko:"모아모아", en:"Moamoa", th:"โมอาโมอา"},
@@ -3442,6 +3453,7 @@ const I18N = {
   "tab.games": {ko:"게임", en:"Games", th:"เกม"},
   "tab.records": {ko:"내 기록", en:"Records", th:"สถิติ"},
   "home.title": {ko:"오늘의 두뇌 체조", en:"Today's Brain Workout", th:"บริหารสมองวันนี้"},
+  "home.intro": {ko:"<strong>플레이말로우</strong>는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트예요. 오늘의 추천부터 가볍게 시작해보세요.", en:"<strong>Mallow</strong> is a free brain-game site you can play instantly—no sign-up or install. Start with today's pick.", th:"<strong>Mallow</strong> คือเว็บเกมฝึกสมองฟรี เล่นได้ทันทีโดยไม่ต้องสมัครหรือติดตั้ง เริ่มจากเกมแนะนำวันนี้ได้เลย"},
   "install.button": {ko:"홈 화면에 앱으로 설치", en:"Install as app", th:"ติดตั้งเป็นแอป"},
   "install.ios": {ko:"iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요", en:"On iPhone: Safari Share button → 'Add to Home Screen' to install", th:"บน iPhone: ปุ่มแชร์ใน Safari → 'เพิ่มลงหน้าจอโฮม' เพื่อติดตั้ง"},
   "home.about1min": {ko:"약 1분", en:"about 1 min", th:"ประมาณ 1 นาที"},
@@ -3482,7 +3494,8 @@ const I18N = {
   "home.grpLang": {ko:"📚 언어", en:"📚 Language", th:"📚 ภาษา"},
   "home.grpTest": {ko:"🔮 테스트", en:"🔮 Test", th:"🔮 แบบทดสอบ"},
   "braintype.title": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
-  "braintype.intro": {ko:"6개의 질문으로 알아보는 나의 두뇌 유형!<br>결과에 딱 맞는 트레이닝도 추천해드려요.", en:"Discover your brain type in 6 questions!<br>We'll also recommend the training that fits you.", th:"ค้นหาประเภทสมองของคุณใน 6 คำถาม!<br>พร้อมแนะนำการฝึกที่เหมาะกับคุณ"},
+  "braintype.intro": {ko:"12개의 질문으로 알아보는 나의 플레이 스타일!<br>결과에 딱 맞는 두뇌게임도 추천해드려요.", en:"Discover your play style in 12 questions!<br>We'll recommend brain games that fit you.", th:"ค้นหาสไตล์การเล่นของคุณใน 12 คำถาม!<br>พร้อมแนะนำเกมฝึกสมองที่เหมาะกับคุณ"},
+  "braintype.disclaimer": {ko:"재미로 보는 플레이 스타일 테스트이며, 의학적·지능 진단이 아닙니다.", en:"A just-for-fun play-style quiz, not a medical or intelligence assessment.", th:"แบบทดสอบสไตล์การเล่นเพื่อความสนุก ไม่ใช่การวินิจฉัยทางการแพทย์หรือสติปัญญา"},
   "braintype.start": {ko:"테스트 시작", en:"Start Test", th:"เริ่มทดสอบ"},
   "braintype.leave": {ko:"나가기", en:"Leave", th:"ออก"},
   "braintype.resultTitle": {ko:"당신의 두뇌 유형은", en:"Your brain type is", th:"ประเภทสมองของคุณคือ"},
@@ -3707,13 +3720,37 @@ function tArr(key){
   return localized || I18N[key] || [];
 }
 
-function setLanguage(lang){
+const SEO_LANG={
+  ko:{title:'플레이말로우(Mallow) | 무료 두뇌게임·웹게임',desc:'플레이말로우는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트입니다. 기억력·집중력·순발력 게임 33종과 오늘의 미션, 두뇌 유형 테스트를 즐겨보세요.'},
+  en:{title:'Mallow | Free Brain Games Online',desc:'Play 33 free brain games online with no sign-up or installation. Train memory, focus, logic and reaction speed with a new daily mission.'},
+  th:{title:'Mallow | เกมฝึกสมองออนไลน์ฟรี',desc:'เล่นเกมฝึกสมองฟรี 33 เกมออนไลน์ ไม่ต้องสมัครหรือติดตั้ง ฝึกความจำ สมาธิ ตรรกะ และความไวพร้อมภารกิจประจำวัน'}
+};
+function syncLanguageSEO(lang,syncUrl){
+  const seo=SEO_LANG[lang]||SEO_LANG.ko;
+  const canonical='https://playmallow.com/'+(lang==='ko'?'':'?lang='+lang);
+  const set=(sel,attr,val)=>{const el=document.querySelector(sel);if(el)el.setAttribute(attr,val);};
+  document.title=seo.title;
+  set('meta[name="description"]','content',seo.desc);
+  set('link[rel="canonical"]','href',canonical);
+  set('meta[property="og:title"]','content',seo.title);
+  set('meta[property="og:description"]','content',seo.desc);
+  set('meta[property="og:url"]','content',canonical);
+  set('meta[name="twitter:title"]','content',seo.title);
+  set('meta[name="twitter:description"]','content',seo.desc);
+  if(syncUrl && history.replaceState){
+    const u=new URL(location.href);
+    if(lang==='ko') u.searchParams.delete('lang'); else u.searchParams.set('lang',lang);
+    history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
+  }
+}
+function setLanguage(lang,syncUrl){
   if(!['ko','en','th'].includes(lang)) lang='ko';
   CURRENT_LANG = lang;
   document.documentElement.lang = lang;
   document.getElementById('lang-select').value = lang;
   try{ localStorage.setItem('brain.lang', lang); }catch(e){}
   applyLanguage();
+  syncLanguageSEO(lang,!!syncUrl);
 }
 
 // 화면에 존재하는 모든 data-i18n / data-i18n-ph 요소를 현재 언어로 갱신
@@ -3725,7 +3762,7 @@ function applyLanguage(){
     if(!entry) return;
     const text = Array.isArray(entry) ? entry[0] : (entry[CURRENT_LANG] || entry.ko);
     // <br> 등 HTML이 포함된 안내문구는 innerHTML로, 그 외엔 textContent로
-    if(text.includes('<br>')) el.innerHTML = text;
+    if(text.includes('<br>') || text.includes('<strong>')) el.innerHTML = text;
     else el.textContent = text;
   });
 
@@ -5959,6 +5996,36 @@ const BT_QUESTIONS=[
     {t:'memory', label:{ko:'"기억력이 좋다"',en:'"Great memory"',th:'"ความจำดี"'}},
     {t:'focus',  label:{ko:'"집중력이 대단하다"',en:'"Amazing focus"',th:'"สมาธิเยี่ยม"'}},
     {t:'calc',   label:{ko:'"암산을 잘한다"',en:'"Good at mental math"',th:'"คิดเลขในใจเก่ง"'}} ]},
+  { q:{ko:'새로운 게임을 시작할 때 나는?',en:'Starting a new game, I...',th:'เมื่อเริ่มเกมใหม่ ฉัน...'}, opts:[
+    {t:'logic',  label:{ko:'규칙부터 파악한다',en:'Figure out the rules first',th:'ทำความเข้าใจกฎก่อน'}},
+    {t:'quick',  label:{ko:'일단 눌러보며 배운다',en:'Jump in and learn by doing',th:'ลองเล่นแล้วเรียนรู้ไป'}},
+    {t:'focus',  label:{ko:'튜토리얼을 끝까지 본다',en:'Finish the whole tutorial',th:'ดูบทสอนจนจบ'}},
+    {t:'memory', label:{ko:'본 화면과 패턴을 기억한다',en:'Remember screens and patterns',th:'จำหน้าจอและรูปแบบ'}} ]},
+  { q:{ko:'카페에서 주문을 기다릴 때?',en:'While waiting for an order?',th:'ระหว่างรออาหารที่สั่ง?'}, opts:[
+    {t:'word',   label:{ko:'메시지나 글을 읽는다',en:'Read messages or articles',th:'อ่านข้อความหรือบทความ'}},
+    {t:'calc',   label:{ko:'오늘 쓴 돈을 계산한다',en:'Add up today’s spending',th:'คำนวณเงินที่ใช้วันนี้'}},
+    {t:'focus',  label:{ko:'주변의 작은 변화를 살핀다',en:'Notice small changes around me',th:'สังเกตการเปลี่ยนแปลงรอบตัว'}},
+    {t:'quick',  label:{ko:'짧은 반응 게임을 한다',en:'Play a quick reaction game',th:'เล่นเกมตอบสนองสั้น ๆ'}} ]},
+  { q:{ko:'문제가 잘 풀리지 않으면?',en:'When a problem feels stuck?',th:'เมื่อแก้ปัญหาไม่ออก?'}, opts:[
+    {t:'logic',  label:{ko:'조건을 다시 정리한다',en:'Reorganize the conditions',th:'จัดเงื่อนไขใหม่'}},
+    {t:'word',   label:{ko:'말이나 글로 풀어본다',en:'Explain it in words',th:'อธิบายออกมาเป็นคำพูด'}},
+    {t:'memory', label:{ko:'비슷한 경험을 떠올린다',en:'Recall a similar experience',th:'นึกถึงประสบการณ์คล้ายกัน'}},
+    {t:'calc',   label:{ko:'가능한 경우를 하나씩 센다',en:'Count each possibility',th:'นับความเป็นไปได้ทีละข้อ'}} ]},
+  { q:{ko:'친구와 게임할 때 더 즐거운 순간은?',en:'The best moment in a game with friends?',th:'ช่วงที่สนุกที่สุดเมื่อเล่นกับเพื่อน?'}, opts:[
+    {t:'quick',  label:{ko:'순간적으로 먼저 맞혔을 때',en:'Answering first in a flash',th:'ตอบได้ก่อนอย่างรวดเร็ว'}},
+    {t:'logic',  label:{ko:'숨은 규칙을 밝혀냈을 때',en:'Uncovering the hidden rule',th:'ค้นพบกฎที่ซ่อนอยู่'}},
+    {t:'word',   label:{ko:'기막힌 표현이 떠올랐을 때',en:'Finding the perfect phrase',th:'คิดคำที่เหมาะเจาะได้'}},
+    {t:'focus',  label:{ko:'끝까지 실수 없이 해냈을 때',en:'Finishing without a mistake',th:'ทำจนจบโดยไม่พลาด'}} ]},
+  { q:{ko:'잠깐 본 장면에서 잘 기억나는 것은?',en:'From a brief scene, I remember...',th:'จากภาพที่เห็นแวบเดียว ฉันจำ...'}, opts:[
+    {t:'memory', label:{ko:'사물의 위치와 순서',en:'Positions and order',th:'ตำแหน่งและลำดับ'}},
+    {t:'word',   label:{ko:'간판과 문구',en:'Signs and wording',th:'ป้ายและข้อความ'}},
+    {t:'calc',   label:{ko:'개수와 숫자',en:'Counts and numbers',th:'จำนวนและตัวเลข'}},
+    {t:'focus',  label:{ko:'남들이 놓친 작은 차이',en:'Tiny details others missed',th:'รายละเอียดเล็ก ๆ ที่คนอื่นพลาด'}} ]},
+  { q:{ko:'제한 시간이 생기면 나는?',en:'Under a time limit, I...',th:'เมื่อมีเวลาจำกัด ฉัน...'}, opts:[
+    {t:'quick',  label:{ko:'직감을 믿고 빠르게 간다',en:'Trust instinct and move fast',th:'เชื่อสัญชาตญาณและไปเร็ว'}},
+    {t:'calc',   label:{ko:'남은 시간을 나눠 쓴다',en:'Budget the remaining time',th:'แบ่งเวลาที่เหลือ'}},
+    {t:'memory', label:{ko:'익숙한 방법을 바로 꺼낸다',en:'Use a familiar method',th:'ใช้วิธีที่คุ้นเคยทันที'}},
+    {t:'logic',  label:{ko:'가장 확실한 경로를 고른다',en:'Choose the surest route',th:'เลือกเส้นทางที่แน่นอนที่สุด'}} ]},
 ];
 const BT = { idx:0, counts:{}, result:null };
 
@@ -8676,16 +8743,13 @@ function leaveTrace(){ resetTrace(); showScreen('games'); }
 function resetTrace(){ TC.running=false; TC.active=false; const g=document.getElementById('trace-game-card');if(g)g.style.display='none'; const r=document.getElementById('trace-result-card');if(r)r.style.display='none'; const i=document.getElementById('trace-intro-card');if(i)i.style.display='block'; tcUpdateBestLine(); }
 
 // INIT
-// 언어: URL ?lang= 우선 → 저장값 → 브라우저 언어 자동 감지(ko/th/기타=en)
+// 언어: URL ?lang= 우선 → 저장값 → 한국어. 루트 URL은 항상 한국어 문서로 유지한다.
 (function(){
   let lang=null;
   try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
   if(!lang){ try{ lang=localStorage.getItem('brain.lang'); }catch(e){} }
-  if(lang && ['ko','en','th'].includes(lang)){ setLanguage(lang); }
-  else{
-    const nav=((navigator.language||'ko')+'').toLowerCase();
-    setLanguage(nav.startsWith('ko')?'ko':(nav.startsWith('th')?'th':'en'));
-  }
+  if(lang && ['ko','en','th'].includes(lang)){ setLanguage(lang,!new URLSearchParams(location.search).get('lang')); }
+  else setLanguage('ko',false);
 })();
 renderLevelTabs();
 renderExamInfo();
