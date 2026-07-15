@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-15 — **모아모아 색인 콘텐츠 보강**: `/moamoa/` title·description을 한국어 낱말 퍼즐 의도로 정리하고, 게임 아래 고정 소개·3단계 방법·김치 묶기 예시·난이도·FAQ·관련 게임 링크 추가. WebApplication+FAQPage JSON-LD 반영. 핵심 타깃 시장=한국어·영어, 태국어=보조 지원으로 확정.
+
 - 2026-07-15 — **브랜드 SEO·홈·마스코트·두뇌유형 보강**: `플레이말로우(Mallow)`·`무료 두뇌게임·웹게임` 검색 신호, JSON-LD, ko/en/th/x-default hreflang과 언어별 canonical을 보강. 루트는 한국어로 고정. 상단 캐릭터를 점눈·한입 실루엣의 **한입 말랑 큐브** SVG로 교체. 두뇌유형을 6→12문항 플레이 스타일 테스트로 확장하고 재미용 면책·검색 랜딩 갱신. JS 문법·12문항·sitemap·manifest·미러 정합성 검증.
 
 - 2026-07-13 — **운세 다국어 마감**: ① 홈→운세 정적페이지 이동 시 현재 앱 언어를 `?lang=`로 전달(`goExternal`) → 별자리 영어 자동 적용 문제 해소.
