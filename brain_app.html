@@ -3450,6 +3450,7 @@ const I18N = {
   "nav.zodiac": {ko:"별자리 운세", en:"Horoscope", th:"ดวงราศี"},
   "nav.ttirank": {ko:"띠별 운세", en:"Zodiac Rank", th:"อันดับนักษัตร"},
   "nav.tarot": {ko:"타로 점", en:"Tarot", th:"ไพ่ทาโรต์"},
+  "nav.persona": {ko:"성격 유형 진단", en:"Persona Type", th:"บุคลิกภาพ"},
   "nav.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
   "home.greeting": {ko:"오늘도 두뇌 체조 한 판!", en:"Time for today's brain workout!", th:"ได้เวลาบริหารสมองวันนี้!"},
   "home.sub": {ko:"매일 조금씩, 뇌가 말랑말랑해집니다.", en:"A little each day keeps your brain sharp.", th:"ทำทุกวันทีละนิด สมองก็เฉียบคม"},
@@ -7202,6 +7203,7 @@ const HOME_GAMES=[
   {id:'zodiac', emoji:'⭐', key:'nav.zodiac', grp:'cat.fun', langs:['ko','en','th'], external:'zodiac/'},
   {id:'ttirank', emoji:'🐭', key:'nav.ttirank', grp:'cat.fun', koOnly:true, external:'ttirank/'},
   {id:'tarot', emoji:'🃏', key:'nav.tarot', grp:'cat.fun', langs:['ko','th'], external:'tarot/'},
+  {id:'persona', emoji:'🧭', key:'nav.persona', grp:'cat.fun', koOnly:true, external:'persona/'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
@@ -7280,6 +7282,7 @@ function gameCardHTML(g){
   if(g.id==='zodiac'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('zodiac_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='ttirank'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('ttirank_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='tarot'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('tarot_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
+  if(g.id==='persona'){ try{ if(!localStorage.getItem('persona_seen')) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
     '<div class="home-card-cat">'+t(g.grp)+'</div>';
@@ -7333,7 +7336,7 @@ function renderHome(){
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
     fun.innerHTML='';
-    const funByLang={ ko:['unse','zodiac','ttirank','tarot'], en:['zodiac'], th:['zodiac','tarot'] };
+    const funByLang={ ko:['unse','zodiac','ttirank','tarot','persona'], en:['zodiac'], th:['zodiac','tarot'] };
     const funIds=funByLang[CURRENT_LANG]||[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
       card.onclick=()=>{ if(g.external){ goExternal(g); return; } showScreen(g.id); };

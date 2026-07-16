@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>말로우 페르소나 — 성격 유형 심층 진단 (16유형) | Mallow</title>
+<meta name="description" content="24개의 상황 질문으로 알아보는 나의 성격 유형. 16가지 유형과 4가지 축(에너지·인식·판단·생활)을 %로 진단하고, 강점·연애·일·궁합·추천 게임까지. 재미로 보는 말로우 페르소나.">
+<meta property="og:title" content="말로우 페르소나 — 성격 유형 심층 진단">
+<meta property="og:description" content="24문항으로 보는 나의 16유형! 축별 %와 상세 프로필, 결과를 친구와 공유해 보세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playmallow.com/persona/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/persona/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9EQEH5BF0C');
+</script>
+<style>
+:root{ --bg:#f6f4fb; --text:#2a2140; --sub:#7d7495; --card:#ffffff; --line:#ece7f6;
+  --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a; --radius:18px; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #e9e2ff 0%, var(--bg) 55%);color:var(--text);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
+#backHome{position:absolute;left:12px;top:16px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);}
+#backHome:active{opacity:.6;}
+.h1row{display:flex;align-items:center;justify-content:center;gap:8px;}
+.h1row .mhead{width:30px;height:30px;flex-shrink:0;}
+h1{margin:0;font-size:23px;font-weight:800;letter-spacing:-.3px;}
+h1 .sp{color:var(--p);}
+.tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
+main{width:100%;max-width:480px;padding:8px 14px 44px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
+.intro-emoji{font-size:52px;text-align:center;line-height:1;}
+.intro-h{font-size:19px;font-weight:800;text-align:center;margin:10px 0 6px;}
+.intro-p{font-size:14px;line-height:1.7;color:var(--sub);text-align:center;}
+.axis-legend{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 2px;}
+.axis-legend span{font-size:11.5px;color:var(--sub);background:#f5f2ff;border-radius:999px;padding:4px 10px;font-weight:700;}
+.btn{display:block;width:100%;margin-top:16px;padding:15px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);font-family:inherit;}
+.btn:active{transform:translateY(1px);}
+.btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+/* Quiz */
+.prog{height:8px;background:#eee6fb;border-radius:999px;overflow:hidden;margin-bottom:6px;}
+.prog>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pink));border-radius:999px;transition:width .3s;}
+.prog-txt{font-size:12px;color:var(--sub);font-weight:700;text-align:center;margin-bottom:16px;}
+.q-scene{font-size:12px;font-weight:800;color:var(--p);text-align:center;margin-bottom:6px;letter-spacing:.3px;}
+.q-text{font-size:17.5px;font-weight:800;line-height:1.55;text-align:center;margin-bottom:20px;min-height:56px;display:flex;align-items:center;justify-content:center;}
+.opt{display:block;width:100%;text-align:left;padding:16px 16px;margin-bottom:11px;font-size:15px;font-weight:600;line-height:1.5;
+  border:1.5px solid var(--line);border-radius:14px;background:#fbfaff;color:var(--text);cursor:pointer;font-family:inherit;transition:transform .06s,border-color .15s;}
+.opt:hover{border-color:var(--p2);} .opt:active{transform:scale(.985);}
+.opt .oi{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#efe9ff;color:var(--p);font-weight:800;font-size:12px;margin-right:8px;vertical-align:-3px;}
+.q-back{text-align:center;margin-top:4px;} .q-back button{background:none;border:none;color:var(--sub);font-size:12.5px;cursor:pointer;font-family:inherit;text-decoration:underline;}
+/* Result */
+.r-emoji{font-size:60px;text-align:center;line-height:1;}
+.r-code{font-size:34px;font-weight:900;text-align:center;letter-spacing:2px;color:var(--p);margin-top:2px;}
+.r-name{font-size:20px;font-weight:800;text-align:center;margin-top:2px;}
+.r-tag{font-size:13.5px;color:var(--sub);text-align:center;margin-top:6px;line-height:1.6;}
+.r-desc{font-size:14.5px;line-height:1.75;margin-top:14px;background:#f7f5ff;border-radius:12px;padding:13px 15px;}
+.bars{margin-top:16px;}
+.bar-row{margin-bottom:12px;}
+.bar-lab{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:4px;}
+.bar-lab .l{color:var(--p);} .bar-lab .r{color:var(--sub);}
+.bar-lab .l.win,.bar-lab .r.win{color:var(--pink);}
+.bar{height:12px;border-radius:999px;background:#eee6fb;overflow:hidden;position:relative;}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--p2));border-radius:999px;}
+.sect-title{font-size:12.5px;font-weight:800;color:var(--sub);margin:20px 2px 8px;letter-spacing:.3px;}
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chips span{font-size:12.5px;font-weight:700;background:#eefaf4;color:var(--teal);border-radius:999px;padding:5px 11px;}
+.chips.weak span{background:#fff1f4;color:#d6437a;}
+.frow{display:flex;gap:10px;padding:11px 12px;border-radius:12px;background:#fbfaff;margin-bottom:8px;}
+.frow .fi{font-size:20px;} .frow .ft{flex:1;} .frow .fn{font-size:12.5px;font-weight:800;color:var(--p);}
+.frow .fc{font-size:13.5px;color:var(--text);margin-top:2px;line-height:1.6;}
+.match{display:flex;gap:10px;margin-top:8px;}
+.match>div{flex:1;text-align:center;border-radius:12px;padding:12px 8px;}
+.match .good{background:#eefaf4;} .match .bad{background:#fff1f4;}
+.match .mk{font-size:11.5px;font-weight:800;color:var(--sub);} .match .mv{font-size:15px;font-weight:800;margin-top:3px;} .match .good .mv{color:var(--teal);} .match .bad .mv{color:#d6437a;}
+.recs{display:flex;gap:10px;margin-top:8px;}
+.rec{flex:1;display:block;text-decoration:none;text-align:center;background:linear-gradient(135deg,#f2ecff,#faf7ff);border:1.5px solid var(--line);border-radius:14px;padding:14px 8px;color:var(--text);}
+.rec .re{font-size:26px;line-height:1;} .rec .rn{font-size:12.5px;font-weight:800;margin-top:6px;color:var(--p);}
+.btns{display:flex;gap:10px;margin-top:16px;} .btns .btn{margin-top:0;}
+.disc{font-size:11px;color:var(--sub);text-align:center;margin-top:16px;line-height:1.6;}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
+</style>
+</head>
+<body>
+<header>
+  <a id="backHome" href="/">← 홈</a>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">페르소나</span></h1>
+  <div class="tagline">24문항으로 보는 나의 성격 16유형</div>
+</header>
+<main>
+  <!-- 인트로 -->
+  <div class="card" id="introCard">
+    <div class="intro-emoji">🧭</div>
+    <div class="intro-h">나는 어떤 유형일까?</div>
+    <div class="intro-p">일상 속 <b>24개의 상황</b>에서 나의 선택을 따라가며<br>4가지 축과 16가지 성격 유형을 진단해요.<br>정답은 없어요 — 더 <b>끌리는 쪽</b>을 고르면 돼요.</div>
+    <div class="axis-legend">
+      <span>⚡ 에너지 E·I</span><span>🔭 인식 N·S</span><span>💗 판단 F·T</span><span>🗂️ 생활 P·J</span>
+    </div>
+    <button class="btn" id="startBtn">테스트 시작하기</button>
+  </div>
+
+  <!-- 퀴즈 -->
+  <div class="card" id="quizCard" style="display:none">
+    <div class="prog"><i id="progBar" style="width:0%"></i></div>
+    <div class="prog-txt" id="progTxt"></div>
+    <div class="q-scene" id="qScene"></div>
+    <div class="q-text" id="qText"></div>
+    <div id="opts"></div>
+    <div class="q-back"><button id="backBtn" onclick="goBack()">← 이전 질문</button></div>
+  </div>
+
+  <!-- 결과 -->
+  <div id="result" style="display:none">
+    <div class="card">
+      <div class="r-emoji" id="rEmoji"></div>
+      <div class="r-code" id="rCode"></div>
+      <div class="r-name" id="rName"></div>
+      <div class="r-tag" id="rTag"></div>
+      <div class="r-desc" id="rDesc"></div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div class="card">
+      <div class="sect-title">🌟 강점</div>
+      <div class="chips" id="rStrength"></div>
+      <div class="sect-title">🌀 조심할 점</div>
+      <div class="chips weak" id="rWeak"></div>
+      <div class="sect-title">💬 이런 모습</div>
+      <div id="rTraits"></div>
+      <div class="sect-title">💞 궁합</div>
+      <div class="match">
+        <div class="good"><div class="mk">환상의 짝</div><div class="mv" id="rGood"></div></div>
+        <div class="bad"><div class="mk">노력이 필요</div><div class="mv" id="rBad"></div></div>
+      </div>
+      <div class="sect-title">🎮 이 유형에게 어울리는 말로우 게임</div>
+      <div class="recs" id="rRecs"></div>
+      <div class="btns">
+        <button class="btn" id="shareBtn">📷 결과 카드 공유</button>
+        <button class="btn sub" id="againBtn">다시 하기</button>
+      </div>
+      <div class="disc">본 진단은 <b>재미로 즐기는 콘텐츠</b>예요. 특정 성격 검사(MBTI®)와 무관한 말로우 자체 콘텐츠이며, 사람을 규정하지 않아요 🌙</div>
+    </div>
+  </div>
+</main>
+<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
+<script>
+"use strict";
+/* Mallow 마스코트(핑크·웃는) */
+const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
+(function(){ var el=document.getElementById('mhead'); if(el) el.innerHTML=MHEAD_SVG; })();
+
+/* 4축: 각 문항은 두 보기(a/b)가 서로 반대 극(pole)에 1점. pole 코드는 MBTI식 letter */
+// 축 정의: EI(에너지) SN(인식) TF(판단) JP(생활)
+const AXES=[
+ {k:'EI', scene:'⚡ 에너지', l:{code:'E',name:'외향'}, r:{code:'I',name:'내향'}},
+ {k:'SN', scene:'🔭 인식',   l:{code:'N',name:'직관'}, r:{code:'S',name:'감각'}},
+ {k:'TF', scene:'💗 판단',   l:{code:'F',name:'감정'}, r:{code:'T',name:'사고'}},
+ {k:'JP', scene:'🗂️ 생활',   l:{code:'P',name:'즉흥'}, r:{code:'J',name:'계획'}}
+];
+const AXMAP={}; AXES.forEach(a=>AXMAP[a.k]=a);
+// 24문항 (축당 6). a/b 각각 어느 letter에 1점인지
+const Q=[
+ {ax:'EI',s:'주말이 통째로 비었다',t:'에너지가 더 채워지는 쪽은?',a:['친구들과 왁자지껄 모임','E'],b:['혼자 조용히 재충전','I']},
+ {ax:'SN',s:'새 물건을 손에 쥐었다',t:'가장 먼저 드는 생각은?',a:['이걸로 뭘 상상해볼까','N'],b:['어디에 어떻게 쓸까','S']},
+ {ax:'TF',s:'친구가 실수로 풀 죽어 있다',t:'나는 먼저?',a:['마음부터 다독여준다','F'],b:['원인·해결책을 짚어준다','T']},
+ {ax:'JP',s:'여행을 떠난다면',t:'내 스타일은?',a:['발길 닿는 대로 즉흥','P'],b:['시간별 계획표 완비','J']},
+ {ax:'EI',s:'처음 간 모임에 도착',t:'초반의 나는?',a:['먼저 말 걸며 분위기 띄움','E'],b:['낯익을 때까지 지켜봄','I']},
+ {ax:'SN',s:'이야기를 할 때',t:'내 대화는 주로?',a:['의미·가능성·비유 위주','N'],b:['구체적 사실·경험 위주','S']},
+ {ax:'TF',s:'중요한 결정을 앞두고',t:'더 믿는 것은?',a:['사람과 감정의 결','F'],b:['논리와 객관적 사실','T']},
+ {ax:'JP',s:'할 일이 하나 생겼다',t:'나는 보통?',a:['마감 즈음 몰아서','P'],b:['미리미리 끝내둠','J']},
+ {ax:'EI',s:'고민이 생기면',t:'정리하는 방법은?',a:['누군가에게 말하며','E'],b:['혼자 곱씹으며','I']},
+ {ax:'SN',s:'새 일을 배울 때',t:'접근 방식은?',a:['큰 그림 먼저, 내 식대로','N'],b:['검증된 순서대로 차근차근','S']},
+ {ax:'TF',s:'피드백을 줘야 한다',t:'내가 더 중시하는 건?',a:['상대 기분을 배려','F'],b:['솔직하고 명확하게','T']},
+ {ax:'JP',s:'책상과 폴더 상태는',t:'대체로?',a:['나만 아는 질서(어질러짐)','P'],b:['늘 정리정돈','J']},
+ {ax:'EI',s:'약속으로 꽉 찬 하루',t:'그런 날의 나는?',a:['신나고 활력 넘침','E'],b:['은근히 진이 빠짐','I']},
+ {ax:'SN',s:'끌리는 쪽을 고른다면',t:'마음이 향하는 곳은?',a:['아직 오지 않은 가능성','N'],b:['지금 눈앞의 현실','S']},
+ {ax:'TF',s:'갈등 상황이 벌어졌다',t:'내가 먼저 챙기는 건?',a:['관계가 상하지 않게','F'],b:['옳고 그름을 가리기','T']},
+ {ax:'JP',s:'계획이 갑자기 틀어졌다',t:'내 반응은?',a:['오히려 즉흥이 즐겁다','P'],b:['스트레스, 다시 짜야 함','J']},
+ {ax:'EI',s:'단체 채팅방에서',t:'평소 나는?',a:['리액션·대화 활발','E'],b:['주로 읽고 가끔 남김','I']},
+ {ax:'SN',s:'오래 기억에 남는 건',t:'주로 어떤 것?',a:['그때의 느낌·떠오른 생각','N'],b:['실제 장면·구체적 디테일','S']},
+ {ax:'TF',s:'듣고 싶은 칭찬은',t:'어느 쪽이 더 좋다?',a:['따뜻하고 다정하다','F'],b:['정확하고 유능하다','T']},
+ {ax:'JP',s:'결정을 내릴 때',t:'내 방식은?',a:['최대한 열어두고 유연히','P'],b:['빨리 정하고 마음 편히','J']},
+ {ax:'EI',s:'여행지에서 사람을',t:'나는?',a:['새로운 사람과도 잘 어울림','E'],b:['익숙한 일행과 깊게','I']},
+ {ax:'SN',s:'설명서를 받으면',t:'보통?',a:['감으로 먼저 해본다','N'],b:['그대로 순서대로 따른다','S']},
+ {ax:'TF',s:'영화를 볼 때',t:'더 몰입하는 지점은?',a:['감정에 푹 이입','F'],b:['개연성·설정을 따짐','T']},
+ {ax:'JP',s:'이상적인 하루는',t:'어떤 모습?',a:['변수도 재미인 하루','P'],b:['계획대로 착착 흐르는 하루','J']}
+];
+
+/* 16유형 프로필 (말로우 자체 작성) */
+const GNAME={sudoku:['🔢','스도쿠'],nono:['🎨','픽셀 로직'],sort:['🧪','컬러 소트'],merge:['🔷','말랑 2048'],cards:['🃏','카드 짝맞추기'],count:['🏠','인원수 세기'],melody:['🎹','멜로디 기억'],rhythm:['🥁','리듬 따라하기'],fit:['🧊','블록 채우기'],react:['⏱️','반응 속도'],trace:['🖊️','길 따라가기'],wordsearch:['🔤','숨은 단어'],chop:['🍢','말로우 타워'],whack:['🔨','말로우 팡팡'],catch:['🧺','마시멜로 받기'],anagram:['🔡','글자 맞추기'],trail:['🔗','순서 잇기'],spot:['🎯','다른 색 찾기']};
+const TYPES={
+ ISTJ:{e:'🗂️',name:'묵묵한 원칙러',tag:'믿고 맡기는 성실함, 약속은 반드시 지킨다',desc:'책임감이 강하고 한번 맡은 일은 끝까지 해내요. 규칙과 순서를 존중하며, 화려하진 않아도 가장 든든한 사람이에요.',str:['책임감','꼼꼼함','신뢰감'],weak:['융통성 부족','변화에 스트레스'],love:'표현은 서툴러도 한결같이 챙기는 사랑',work:'맡은 일을 빈틈없이 마무리하는 실무형',stress:'갑작스러운 계획 변경에 예민해져요',grow:'가끔은 정답 없는 즉흥도 즐겨보기',good:'ESFP',bad:'ENFP',games:['sudoku','nono']},
+ ISFJ:{e:'🧸',name:'다정한 살림꾼',tag:'조용히, 그러나 확실히 곁을 지키는 사람',desc:'주변을 세심하게 챙기고 배려가 몸에 뱄어요. 나서기보다 뒤에서 돕는 걸 좋아하고, 작은 약속도 소중히 여겨요.',str:['배려심','성실함','기억력'],weak:['거절을 못함','속앓이'],love:'헌신적으로 챙기지만 서운함은 속에 담아둠',work:'디테일을 챙기는 든든한 서포터',stress:'감사받지 못한다 느끼면 지쳐요',grow:'내 마음도 남만큼 소중히 표현하기',good:'ESTP',bad:'ENTP',games:['cards','count']},
+ INFJ:{e:'🌙',name:'속깊은 몽상가',tag:'말 없이도 사람의 마음을 읽는 통찰가',desc:'의미와 가치를 좇으며 사람의 속마음에 민감해요. 조용하지만 확고한 신념이 있고, 깊은 관계를 소중히 여겨요.',str:['통찰력','공감','신념'],weak:['혼자 앓음','이상과 현실의 간극'],love:'깊고 진지한 영혼의 교감을 원함',work:'사람과 의미를 잇는 기획·상담형',stress:'가치와 어긋난 일을 오래 하면 소진돼요',grow:'완벽한 이해를 기다리기보다 먼저 말해보기',good:'ENFP',bad:'ESTP',games:['melody','nono']},
+ INTJ:{e:'♟️',name:'혼자 다 그린 설계자',tag:'멀리 보고 판을 미리 짜두는 전략가',desc:'큰 그림을 그리고 목표를 향해 조용히 밀고 나가요. 논리적이고 독립적이며, 비효율을 참지 못해요.',str:['전략','독립성','통찰'],weak:['고집','감정 표현 서툼'],love:'깊이 신뢰하는 소수에게만 마음을 엶',work:'시스템을 설계하는 장기 전략가',stress:'무능·비효율에 둘러싸이면 답답해져요',grow:'남의 감정도 데이터만큼 중요하게 보기',good:'ENFP',bad:'ESFP',games:['sudoku','merge']},
+ ISTP:{e:'🛠️',name:'손으로 푸는 해결사',tag:'말보다 행동, 문제는 직접 뜯어본다',desc:'차분하고 실용적이며 위기 상황에 강해요. 원리를 파악해 손으로 해결하는 걸 즐기고, 구속을 싫어해요.',str:['문제해결','침착함','손재주'],weak:['무심해 보임','장기계획 약함'],love:'표현은 적어도 필요할 때 곁에 있음',work:'현장에서 즉시 해결하는 실전형',stress:'쓸데없는 규칙·잔소리에 답답해져요',grow:'생각을 조금 더 말로 나눠보기',good:'ESFJ',bad:'ENFJ',games:['fit','react']},
+ ISFP:{e:'🎨',name:'잔잔한 감성러',tag:'말없이 자기만의 아름다움을 만드는 사람',desc:'온화하고 감각적이며 지금 이 순간을 소중히 해요. 경쟁보다 조화를, 말보다 행동으로 마음을 전해요.',str:['감성','유연함','친화력'],weak:['우유부단','갈등 회피'],love:'조용히 다 맞춰주는 스며드는 사랑',work:'감각을 살리는 창작·현장형',stress:'다툼과 압박이 계속되면 움츠러들어요',grow:'내 의견도 분명히 말해보기',good:'ENFJ',bad:'ENTJ',games:['trace','melody']},
+ INFP:{e:'🌷',name:'마음 여린 이상가',tag:'따뜻한 상상 속에서 가치를 좇는 사람',desc:'순수하고 이상이 높으며 자신의 신념에 충실해요. 겉은 조용해도 속엔 뜨거운 열정과 풍부한 감정이 있어요.',str:['공감','창의성','진정성'],weak:['현실감 부족','상처 잘 받음'],love:'운명 같은 깊은 교감을 꿈꿈',work:'의미를 담는 글·창작·기획형',stress:'가치와 어긋나거나 비난받으면 크게 흔들려요',grow:'이상을 작은 실행으로 옮겨보기',good:'ENFJ',bad:'ESTJ',games:['rhythm','wordsearch']},
+ INTP:{e:'🔬',name:'생각 많은 탐구가',tag:'"왜?"가 멈추지 않는 아이디어 실험실',desc:'호기심이 많고 논리 퍼즐을 사랑해요. 새로운 개념을 파고들며, 틀에 얽매이지 않는 독창적 사고를 해요.',str:['분석력','독창성','호기심'],weak:['실행력 약함','현실 무관심'],love:'지적으로 통하는 사람에게 끌림',work:'개념을 탐구·설계하는 연구형',stress:'단순 반복과 감정 소모에 지쳐요',grow:'생각을 끝까지 실행으로 마무리하기',good:'ENTJ',bad:'ESFJ',games:['nono','sort']},
+ ESTP:{e:'🔥',name:'일단 저지르는 모험가',tag:'생각보다 몸이 먼저, 순간을 즐긴다',desc:'대담하고 에너지가 넘치며 현장에서 빛나요. 위기 속에서도 즐길 줄 알고, 지루한 걸 못 참아요.',str:['추진력','순발력','대담함'],weak:['성급함','뒷일 무계획'],love:'화끈하고 스릴 넘치는 밀당형',work:'즉시 움직여 성과 내는 실전형',stress:'답답하게 갇힌 상황을 못 견뎌요',grow:'저지르기 전에 3초만 생각하기',good:'ISFJ',bad:'INFJ',games:['react','chop']},
+ ESFP:{e:'🎉',name:'타고난 분위기메이커',tag:'있는 곳이 곧 파티, 지금이 제일 중요',desc:'밝고 사교적이며 사람들을 즐겁게 만들어요. 지금 이 순간의 즐거움에 충실하고, 주목받는 걸 즐겨요.',str:['사교성','긍정','현장감'],weak:['계획성 부족','산만함'],love:'표현 넘치고 함께 노는 걸 좋아함',work:'분위기를 살리는 사람 중심형',stress:'혼자 반복 작업이 길어지면 시들해져요',grow:'재미만큼 마무리도 챙기기',good:'ISTJ',bad:'INTJ',games:['whack','catch']},
+ ENFP:{e:'✨',name:'반짝이는 열정러',tag:'가능성만 보이면 심장이 뛰는 아이디어 요정',desc:'호기심과 열정이 넘치고 사람을 좋아해요. 새로운 가능성에 금세 불붙지만, 반복되는 일엔 쉽게 지루해져요.',str:['열정','창의성','친화력'],weak:['금방 싫증','마무리 약함'],love:'설레는 교감과 자유를 동시에 원함',work:'아이디어를 퍼뜨리는 기획·홍보형',stress:'틀에 갇히고 자유가 없으면 답답해져요',grow:'벌인 일 하나는 끝까지 마치기',good:'INFJ',bad:'ISTJ',games:['whack','anagram']},
+ ENTP:{e:'💡',name:'말발 좋은 아이디어뱅크',tag:'토론과 발상이 취미인 재기발랄 전략가',desc:'재치 있고 논쟁을 즐기며 새 아이디어가 샘솟아요. 고정관념에 도전하고, 지루한 규칙을 재미없어 해요.',str:['발상력','순발력','설득력'],weak:['일 벌임','디테일 약함'],love:'티키타카 되는 지적 자극형',work:'새 판을 여는 기획·창업형',stress:'무의미한 규칙과 반복에 좀이 쑤셔요',grow:'벌인 아이디어를 실행까지 밀기',good:'INFJ',bad:'ISFJ',games:['merge','anagram']},
+ ESTJ:{e:'📊',name:'추진력 만렙 대장',tag:'말보다 결과, 일을 굴러가게 만든다',desc:'현실적이고 책임감이 강해 조직을 이끌어요. 명확한 목표와 규칙을 세우고 밀어붙이는 실행력이 뛰어나요.',str:['리더십','실행력','책임감'],weak:['융통성 부족','직설적'],love:'확실하게 챙기는 든든한 사랑',work:'목표를 밀어붙이는 관리·운영형',stress:'무질서와 애매함을 못 견뎌요',grow:'과정과 사람의 감정도 살피기',good:'ISFP',bad:'INFP',games:['trail','merge']},
+ ESFJ:{e:'🤗',name:'챙김왕 인싸',tag:'사람 사이의 온도를 맞추는 분위기 메이커',desc:'따뜻하고 사교적이며 주변을 잘 챙겨요. 조화를 중시하고, 사람들에게 인정받고 도울 때 행복해요.',str:['배려','사교성','책임감'],weak:['눈치 많이 봄','거절 어려움'],love:'헌신적이고 표현이 풍부한 사랑',work:'팀을 화합시키는 코디네이터형',stress:'갈등과 무관심 속에서 크게 지쳐요',grow:'남의 인정 없이도 나를 인정하기',good:'ISTP',bad:'INTP',games:['cards','catch']},
+ ENFJ:{e:'🌟',name:'사람 모으는 리더',tag:'모두의 잠재력을 끌어내는 따뜻한 리더',desc:'카리스마와 공감을 겸비해 사람을 이끌어요. 타인의 성장을 돕는 데서 보람을 느끼고, 분위기를 살려요.',str:['공감','리더십','설득력'],weak:['오지랖','자기희생'],love:'상대에게 헌신하는 이끄는 사랑',work:'사람을 성장시키는 리더·멘토형',stress:'애쓴 만큼 돌아오지 않으면 소진돼요',grow:'남을 챙기기 전에 나부터 돌보기',good:'INFP',bad:'ISTP',games:['melody','trail']},
+ ENTJ:{e:'👑',name:'판 짜는 총사령관',tag:'목표가 보이면 최단 경로로 밀어붙인다',desc:'대담하고 결단력이 강한 타고난 지휘자예요. 큰 그림을 그리고 사람과 자원을 움직여 목표를 이뤄내요.',str:['통솔력','전략','결단력'],weak:['독단','조급함'],love:'주도적으로 이끄는 강한 사랑',work:'조직을 이끄는 전략·경영형',stress:'무능·비효율과 통제 불가 상황에 답답해져요',grow:'속도를 늦추고 사람 마음도 듣기',good:'INTP',bad:'ISFP',games:['sort','merge']}
+};
+
+/* ===== 로직 ===== */
+let step=0; const ans=new Array(Q.length).fill(null);
+const introCard=document.getElementById('introCard'), quizCard=document.getElementById('quizCard'), resultEl=document.getElementById('result');
+function startQuiz(){ step=0; ans.fill(null); introCard.style.display='none'; resultEl.style.display='none'; quizCard.style.display='block'; gtag('event','persona_start',{}); renderQ(); window.scrollTo({top:0}); }
+function renderQ(){
+  const q=Q[step];
+  document.getElementById('progBar').style.width=Math.round(step/Q.length*100)+'%';
+  document.getElementById('progTxt').textContent=(step+1)+' / '+Q.length;
+  document.getElementById('qScene').textContent=q.s;
+  document.getElementById('qText').textContent=q.t;
+  document.getElementById('backBtn').style.visibility=step>0?'visible':'hidden';
+  const opts=document.getElementById('opts'); opts.innerHTML='';
+  [['A',q.a],['B',q.b]].forEach(([lab,o])=>{
+    const b=document.createElement('button'); b.className='opt';
+    b.innerHTML='<span class="oi">'+lab+'</span>'+o[0];
+    b.onclick=()=>choose(o[1]);
+    opts.appendChild(b);
+  });
+}
+function choose(pole){ ans[step]=pole; if(step<Q.length-1){ step++; renderQ(); } else finish(); }
+function goBack(){ if(step>0){ step--; renderQ(); } }
+
+function computeType(){
+  const cnt={}; // letter → count
+  Q.forEach((q,i)=>{ const p=ans[i]; if(p) cnt[p]=(cnt[p]||0)+1; });
+  const res={code:'',bars:[]};
+  AXES.forEach(a=>{
+    const lc=cnt[a.l.code]||0, rc=cnt[a.r.code]||0; // l=E/N/F/P, r=I/S/T/J
+    // 동점(3-3)은 왼쪽(첫 극) 성향으로
+    const winLeft = lc>=rc;
+    const total=6; const lpct=Math.round(lc/total*100), rpct=100-lpct;
+    // MBTI letter 조립 순서: E/I, S/N, T/F, J/P
+    let letter;
+    if(a.k==='EI') letter = winLeft?'E':'I';
+    else if(a.k==='SN') letter = winLeft?'N':'S';
+    else if(a.k==='TF') letter = winLeft?'F':'T';
+    else letter = winLeft?'P':'J';
+    res.bars.push({ax:a, lpct, rpct, winLeft, letter});
+  });
+  // code는 표준 순서 E/I S/N T/F J/P
+  const byk={}; res.bars.forEach(b=>byk[b.ax.k]=b.letter);
+  res.code = byk.EI + byk.SN + byk.TF + byk.JP;
+  return res;
+}
+let LASTRES=null;
+function finish(){
+  document.getElementById('progBar').style.width='100%';
+  const r=computeType(); LASTRES=r; const T=TYPES[r.code];
+  gtag('event','persona_result',{type:r.code});
+  try{ localStorage.setItem('persona_seen','1'); localStorage.setItem('persona_last',r.code); }catch(e){}
+  document.getElementById('rEmoji').textContent=T.e;
+  document.getElementById('rCode').textContent=r.code;
+  document.getElementById('rName').textContent=T.name;
+  document.getElementById('rTag').textContent=T.tag;
+  document.getElementById('rDesc').textContent=T.desc;
+  // bars
+  document.getElementById('bars').innerHTML=r.bars.map(b=>{
+    const lWin=b.winLeft, rWin=!b.winLeft;
+    return '<div class="bar-row"><div class="bar-lab">'+
+      '<span class="l'+(lWin?' win':'')+'">'+b.ax.l.code+' '+b.ax.l.name+' '+b.lpct+'%</span>'+
+      '<span class="r'+(rWin?' win':'')+'">'+b.rpct+'% '+b.ax.r.name+' '+b.ax.r.code+'</span></div>'+
+      '<div class="bar"><i style="width:'+b.lpct+'%"></i></div></div>';
+  }).join('');
+  document.getElementById('rStrength').innerHTML=T.str.map(s=>'<span>'+s+'</span>').join('');
+  document.getElementById('rWeak').innerHTML=T.weak.map(s=>'<span>'+s+'</span>').join('');
+  document.getElementById('rTraits').innerHTML=[
+    ['💗','연애',T.love],['💼','일·공부',T.work],['🌧️','스트레스',T.stress],['🌱','성장 포인트',T.grow]
+  ].map(x=>'<div class="frow"><div class="fi">'+x[0]+'</div><div class="ft"><div class="fn">'+x[1]+'</div><div class="fc">'+x[2]+'</div></div></div>').join('');
+  const gd=TYPES[T.good], bd=TYPES[T.bad];
+  document.getElementById('rGood').textContent=T.good+' '+(gd?gd.name:'');
+  document.getElementById('rBad').textContent=T.bad+' '+(bd?bd.name:'');
+  document.getElementById('rRecs').innerHTML=T.games.map(id=>{ const g=GNAME[id]||['🎮',id];
+    return '<a class="rec" href="/?game='+id+'"><div class="re">'+g[0]+'</div><div class="rn">'+g[1]+'</div></a>'; }).join('');
+  quizCard.style.display='none'; introCard.style.display='none'; resultEl.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== 공유 카드 ===== */
+const logoImg=new Image(); logoImg.src='/mallow-logo.svg';
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
+function drawCard(){
+  const r=LASTRES, T=TYPES[r.code];
+  const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#8b6ff0'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();
+  c.textAlign='center'; c.textBaseline='alphabetic';
+  // 브랜드
+  c.font='800 34px "Apple SD Gothic Neo",Arial,sans-serif';
+  const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=78;
+  if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
+  c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
+  c.font='700 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('페르소나 · 성격 유형',W/2,170);
+  // 이모지 + 코드
+  c.font='72px sans-serif'; c.fillText(T.e,W/2,258);
+  c.font='900 56px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(r.code,W/2,326);
+  c.font='800 26px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(T.name,W/2,366);
+  c.font='500 16px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; wrap(c,T.tag,W/2,396,W-160,24);
+  // 축 4바
+  let by=452; const bx=110, bw2=W-220;
+  r.bars.forEach(b=>{
+    c.textAlign='left'; c.font='800 15px "Apple SD Gothic Neo",sans-serif';
+    c.fillStyle=b.winLeft?'#ff6f9c':'#b7add0'; c.fillText(b.ax.l.code+' '+b.ax.l.name,bx,by-8);
+    c.textAlign='right'; c.fillStyle=b.winLeft?'#b7add0':'#ff6f9c'; c.fillText(b.ax.r.name+' '+b.ax.r.code,bx+bw2,by-8);
+    // track
+    c.fillStyle='#eee6fb'; roundRect(c,bx,by,bw2,12,6); c.fill();
+    const fillW=Math.max(12,Math.round(bw2*b.lpct/100));
+    const gg=c.createLinearGradient(bx,0,bx+bw2,0); gg.addColorStop(0,'#8b6ff0'); gg.addColorStop(1,'#b79bf5');
+    c.fillStyle=gg; roundRect(c,bx,by,fillW,12,6); c.fill();
+    c.textAlign='center';
+    by+=52;
+  });
+  c.textAlign='center'; c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,H-58);
+  return cv;
+}
+function share(){ if(!LASTRES) return; gtag('event','persona_share',{type:LASTRES.code}); const cv=drawCard();
+  cv.toBlob(function(blob){ const file=new File([blob],'mallow-persona.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'내 성격 유형은 '+LASTRES.code+'! 🧭 playmallow.com/persona'}).catch(()=>{}); }
+    else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-persona.png'; a.click(); } },'image/png'); }
+
+document.getElementById('startBtn').onclick=startQuiz;
+document.getElementById('shareBtn').onclick=share;
+document.getElementById('againBtn').onclick=startQuiz;
+</script>
+</body>
+</html>

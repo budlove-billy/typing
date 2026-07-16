@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-16 — **말로우 페르소나(`/persona/`)**: 심층 성격 유형 진단(재미·cat.fun). 24문항 시나리오형(축당 6: EI/SN/TF/JP)→16유형, 축별 % 바 + 유형 풀 프로필(강점·약점·연애·일·스트레스·성장·궁합·추천게임). 추천게임 `/?game=<id>` 딥링크 funnel, **결과 공유카드**(코드+별명+4축바). braintype와 분리(그건 6문항 게임추천). MBTI® 미표기·유형설명 자체작성(저작권). v1 ko 전용. 채점 시뮬 검증(극단값·랜덤2000·16종 도달).
+
 - 2026-07-13 — **운세 다국어 마감**: ① 홈→운세 정적페이지 이동 시 현재 앱 언어를 `?lang=`로 전달(`goExternal`) → 별자리 영어 자동 적용 문제 해소.
   ② **타로 태국어(ko/th)** 전면 이식: `TX`(ko/th UI)+`CARD_TH`(78장 태국어=메이저22 개별+마이너56 슈트·랭크 조합)+언어 선택기+`detectLang`(?lang→brain.lang)+`CF(pick)` 언어별 카드. 별자리는 ko/en/th 기완비. 타로 en은 저작권 신중으로 제외.
 
@@ -134,15 +136,15 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8086-8090** (5 ports total).
+This project is allocated the port range **8065-8069** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8086-8090`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8065-8069`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8086`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8090`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8065`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8069`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -318,12 +320,12 @@ this project — files written anywhere else are NOT reachable from chat.
 
 ### How to deliver — paste the REAL public URL
 For a file at `generated_images/<name>.<ext>`, its public URL is exactly
-`/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
+`/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
 correctly in web and Telegram/Discord:
-- Image → `![<alt>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.png)` — shows inline
-- Video → `[<title>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
-- Audio → `[<title>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.mp3)` — web embeds an audio player
-- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/5a9185a3-08c9-4438-b967-f8699286db39/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
+- Image → `![<alt>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.png)` — shows inline
+- Video → `[<title>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
+- Audio → `[<title>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.mp3)` — web embeds an audio player
+- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
 
 Always give the user the link for anything you produce — never just say "saved to
 generated_images/" without the URL.
@@ -376,6 +378,7 @@ Project conventions: always save outputs under `generated_images/` in the
 project working directory, use descriptive filenames, and after saving tell the
 user the relative path so they can preview/download it in the file browser.
 <!-- MDBOX_MULTIMODAL_END -->
+
 
 <!-- ROLE_REF_BEGIN -->
 ## Your role
