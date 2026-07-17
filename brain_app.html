@@ -752,7 +752,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .home-cat{background:#fff;border:1px solid rgba(205,213,229,.8);border-radius:999px;padding:.5rem 1.05rem;font-size:.85rem;font-weight:700;color:var(--text2);cursor:pointer;font-family:inherit;transition:.14s;box-shadow:var(--shadow-sm)}
 .home-cat:hover{border-color:var(--purple2);color:var(--purple);background:var(--purple3);transform:translateY(-1px)}
 /* 내 기록 */
-.rec-row{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.7rem .9rem;margin-bottom:.5rem}
+.rec-row{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:.7rem .9rem;margin-bottom:.5rem;box-shadow:var(--shadow-sm);transition:transform .14s,box-shadow .14s,border-color .14s}
+.rec-row:hover{border-color:var(--purple2);box-shadow:var(--shadow);transform:translateX(3px)}
+.rec-row:active{transform:translateX(1px) scale(.995)}
 .rec-game{flex:1;font-size:.92rem;font-weight:600;color:var(--text)}
 .rec-cat{font-size:.72rem;color:var(--text3)}
 .rec-best{font-size:.9rem;font-weight:800;color:var(--amber2);min-width:60px;text-align:right}
@@ -7402,13 +7404,16 @@ function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(
 function abilityScores(){
   const num={},den={}; ABILITIES.forEach(a=>{num[a]=0;den[a]=0;});
   Object.keys(ABILITY_MAP).forEach(id=>{
-    if(gameBestVal(id)<=0) return; // 안 한 게임 제외
+    if(gameBestVal(id)<=0) return; // 레이더(축)는 '해본 게임 성적'만 → 강점이 잘 보이게
     const lvl=gameLevel(id), w=ABILITY_MAP[id];
     Object.keys(w).forEach(a=>{ num[a]+=lvl*w[a]; den[a]+=w[a]; });
   });
   const out={}; ABILITIES.forEach(a=>{ out[a]= den[a]>0?Math.round(num[a]/den[a]):0; });
   return out;
 }
+// 종합 두뇌 레벨 = 전체 게임 숙련도(안 한 게임=0의 전 게임 평균) → 몇 판으론 못 오르고, 골고루 숙달해야 100
+function overallLevel(){ const ids=Object.keys(ABILITY_MAP); if(!ids.length) return 0;
+  let s=0; ids.forEach(id=>{ s += gameBestVal(id)>0 ? gameLevel(id) : 0; }); return Math.round(s/ids.length); }
 // 최근 성장: 최대 7일 전 스냅샷 대비 증가분(주간 롤링)
 function abilityDelta(cur){
   let base=null; try{ base=JSON.parse(localStorage.getItem('brain.ability.base')||'null'); }catch(e){}
@@ -7429,7 +7434,7 @@ function toggleAbility(a){ const el=document.getElementById('abd-'+a); if(el) el
 function _abilitySeen(){ try{ return JSON.parse(localStorage.getItem('brain.ability.seen')||'{}'); }catch(e){ return {}; } }
 function _abilitySaveSeen(scores,overall){ try{ localStorage.setItem('brain.ability.seen',JSON.stringify({scores:scores,overall:overall})); }catch(e){} }
 function markRecordsSeen(){
-  try{ const sc=abilityScores(); const played=ABILITIES.filter(a=>sc[a]>0); const overall=played.length?Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length):0; _abilitySaveSeen(sc,overall); }catch(e){}
+  try{ const sc=abilityScores(); _abilitySaveSeen(sc, overallLevel()); }catch(e){}
   _clearNewRecords();
 }
 function renderAbility(){
@@ -7437,7 +7442,7 @@ function renderAbility(){
   const sc=abilityScores(); const dl=abilityDelta(sc);
   const seenObj=_abilitySeen(); const seen=seenObj.scores||{}; const seenOverall=seenObj.overall||0;
   const played=ABILITIES.filter(a=>sc[a]>0);
-  const overall = played.length? Math.round(played.reduce((s,a)=>s+sc[a],0)/played.length) : 0;
+  const overall = overallLevel();
   setTxt('ability-overall', overall);
   const ov=document.getElementById('ability-overall'); if(ov && overall>seenOverall){ ov.classList.remove('up'); void ov.offsetWidth; ov.classList.add('up'); }
   if(typeof drawRadar==='function') drawRadar(sc);
@@ -7492,6 +7497,9 @@ function renderRecords(){
     const mx=gameBestVal(g.id);
     const isNew=newSet.has(g.id) && mx>0;
     const row=document.createElement('div'); row.className='rec-row'+(isNew?' isnew':'');
+    row.style.cursor='pointer'; row.setAttribute('role','button'); row.tabIndex=0;
+    row.onclick=()=>showScreen(g.id);
+    row.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); showScreen(g.id); } };
     row.innerHTML='<span class="rec-game">'+g.emoji+' '+t(g.key)+'</span>'+
       '<span class="rec-cat">'+t(g.grp)+'</span>'+
       '<span class="rec-best'+(isNew?' up':'')+'">'+(mx>0?('🏆 '+mx):'—')+(isNew?'<span class="rec-new-badge">NEW</span>':'')+'</span>';
