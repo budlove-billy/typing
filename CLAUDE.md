@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-17 — **데일리 논리퍼즐 2종(글로벌·언어무관)**: LinkedIn 트렌드(Queens·Tango) 벤치마크로 자체 구현. **말로우 크라운(`/queens/`)** = 행·열·색구역에 왕관 1개·인접금지(N6/7/8), **말로우 탱고(`/tango/`)** = 해/달 Binairo(3연속 금지·개수균형, N6/8). 둘 다 `kstDate()` 데일리 시드·유일해 100% 보장(백트래킹 솔버)·결정적·공유카드·● 뱃지·ko/en/th. 생성기 선검증(`.logs/queens_sim.mjs`·`tango_sim.mjs`: Queens는 랜덤성장+균형필터+시드재시도, Tango는 given제거 유일화). HOME_GAMES cat.daily(langs 3언어)로 모아모아 옆 배치.
+
 - 2026-07-17 — **말로우 페르소나 다국어(ko/en/th)**: `TX`(3언어 UI)+`AXL`(축 극명)+`Q_i18n`(en/th 24문항)+`TYPES_i18n`(en/th 16유형)+`GNAME_i18n`. 접근자 qText/typeOf/poleName/gameName로 언어 분기, detectLang(?lang→brain.lang)+langSel+setLang(결과중 언어변경 재렌더). 채점은 언어무관(Q 극/축 공유, 시뮬로 ko=en=th 동일코드 확인). 홈 persona langs ko/en/th·funByLang 3언어·goExternal ?lang. (질문 상황문구 15px·퀴즈/결과 태그라인 숨김 포함)
 
 - 2026-07-16 — **말로우 페르소나(`/persona/`)**: 심층 성격 유형 진단(재미·cat.fun). 24문항 시나리오형(축당 6: EI/SN/TF/JP)→16유형, 축별 % 바 + 유형 풀 프로필(강점·약점·연애·일·스트레스·성장·궁합·추천게임). 추천게임 `/?game=<id>` 딥링크 funnel, **결과 공유카드**(코드+별명+4축바). braintype와 분리(그건 6문항 게임추천). MBTI® 미표기·유형설명 자체작성(저작권). v1 ko 전용. 채점 시뮬 검증(극단값·랜덤2000·16종 도달).

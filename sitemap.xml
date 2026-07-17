@@ -14,6 +14,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://playmallow.com/queens/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://playmallow.com/tango/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://playmallow.com/unse/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

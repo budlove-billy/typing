@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>말로우 크라운 — 오늘의 왕관 퍼즐 (Queens) | Mallow</title>
+<meta name="description" content="색 구역·행·열에 왕관을 하나씩, 서로 닿지 않게. 매일 새로 나오는 논리 퍼즐 '말로우 크라운'. 설치 없이 브라우저에서 무료로.">
+<meta property="og:title" content="말로우 크라운 — 오늘의 왕관 퍼즐">
+<meta property="og:description" content="행·열·색 구역에 왕관 하나씩! 매일 바뀌는 논리 퍼즐을 풀고 기록을 공유해 보세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playmallow.com/queens/">
+<meta property="og:image" content="https://playmallow.com/og.png?v=2">
+<link rel="canonical" href="https://playmallow.com/queens/">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9EQEH5BF0C');</script>
+<style>
+:root{ --bg:#f6f4fb; --text:#2a2140; --sub:#7d7495; --card:#ffffff; --line:#ece7f6;
+  --p:#8b6ff0; --p2:#b79bf5; --pink:#ff6f9c; --gold:#f0b429; --teal:#21a67a; --radius:18px; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%, #e9e2ff 0%, var(--bg) 55%);color:var(--text);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;position:relative;}
+#backHome{position:absolute;left:12px;top:16px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);}
+#backHome:active{opacity:.6;}
+#langSel{position:absolute;right:12px;top:14px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--sub);padding:4px 6px;font-family:inherit;}
+.h1row{display:flex;align-items:center;justify-content:center;gap:8px;}
+.h1row .mhead{width:30px;height:30px;flex-shrink:0;}
+h1{margin:0;font-size:23px;font-weight:800;letter-spacing:-.3px;}
+h1 .sp{color:var(--p);}
+.tagline{font-size:12.5px;color:var(--sub);margin-top:4px;}
+main{width:100%;max-width:480px;padding:8px 14px 44px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.datebar{font-size:13px;font-weight:800;color:var(--p);}
+.timer{font-size:13px;font-weight:800;color:var(--sub);font-variant-numeric:tabular-nums;}
+.sizes{display:flex;gap:6px;}
+.sizes button{font-size:12px;font-weight:800;border:1.5px solid var(--line);background:#fbfaff;color:var(--sub);border-radius:9px;padding:5px 9px;cursor:pointer;font-family:inherit;}
+.sizes button.on{border-color:var(--p);background:#efe9ff;color:var(--p);}
+#board{display:grid;gap:3px;margin:4px auto 0;touch-action:manipulation;user-select:none;width:100%;max-width:400px;}
+.cell{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:min(7vw,26px);cursor:pointer;border:2px solid rgba(255,255,255,.55);position:relative;transition:transform .05s;}
+.cell:active{transform:scale(.93);}
+.cell.bad{outline:3px solid #e0475a;outline-offset:-3px;}
+.cell .x{color:rgba(60,50,90,.42);font-size:min(4.4vw,16px);font-weight:800;}
+.hint{font-size:12px;color:var(--sub);text-align:center;line-height:1.6;margin-top:12px;}
+.btns{display:flex;gap:10px;margin-top:12px;}
+.btn{flex:1;padding:13px 0;font-size:15px;font-weight:800;border:none;border-radius:13px;background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);font-family:inherit;}
+.btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+.btn:active{transform:translateY(1px);}
+.won{text-align:center;padding:6px 0 2px;}
+.won .big{font-size:20px;font-weight:800;color:var(--p);}
+.won .t{font-size:14px;color:var(--sub);margin-top:4px;}
+.disc{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.6;}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#2a2140;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:50;}
+.toast.show{opacity:.95;}
+</style>
+</head>
+<body>
+<header>
+  <a id="backHome" href="/">← <span id="t-home">홈</span></a>
+  <select id="langSel" onchange="setLang(this.value)"><option value="ko">한국어</option><option value="en">English</option><option value="th">ไทย</option></select>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span><span id="t-brand">Mallow</span>&nbsp;<span class="sp" id="t-title">크라운</span></h1>
+  <div class="tagline" id="t-tagline">행·열·색 구역에 왕관 하나씩</div>
+</header>
+<main>
+  <div class="card">
+    <div class="bar">
+      <span class="datebar" id="dateBar"></span>
+      <span class="timer" id="timer">0:00</span>
+    </div>
+    <div class="bar" style="margin-bottom:8px">
+      <div class="sizes" id="sizes"></div>
+      <button class="btn sub" id="clearBtn" style="flex:0 0 auto;padding:6px 12px;font-size:12px">↺ <span id="t-clear">지우기</span></button>
+    </div>
+    <div id="board"></div>
+    <div id="wonBox"></div>
+    <div class="btns" id="btns"></div>
+    <div class="hint" id="t-hint"></div>
+    <div class="disc" id="t-disc"></div>
+  </div>
+</main>
+<footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
+<canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
+(function(){var el=document.getElementById('mhead');if(el)el.innerHTML=MHEAD_SVG;})();
+
+/* ===== i18n ===== */
+const TX={
+ ko:{home:'홈',title:'크라운',tagline:'행·열·색 구역에 왕관 하나씩',clear:'지우기',
+   date:d=>'📅 '+d+' 오늘의 퍼즐',hint:'빈칸 탭 → ✕(표시) → 👑(왕관) → 빈칸. 각 행·열·색 구역에 왕관을 딱 하나씩, 왕관끼리는 상하좌우·대각으로 <b>닿지 않게</b> 놓으세요.',
+   disc:'매일 자정(KST) 새 퍼즐이 나와요. 오직 <b>논리</b>로 유일한 정답을 풀 수 있게 만들어집니다 👑',footer:'가볍게 즐기는 두뇌게임',
+   size:'크기',newGame:'새 퍼즐',share:'📷 결과 공유',again:'다시 풀기',won:'클리어! 👑',wonTime:t=>'걸린 시간 '+t,
+   share1:'말로우 크라운',share2:d=>d+' 데일리',shareText:t=>'말로우 크라운 클리어! 👑 '+t+' playmallow.com/queens',docTitle:'말로우 크라운 — 오늘의 왕관 퍼즐 (Queens) | Mallow',
+   toastBad:'왕관 규칙 위반! 빨간 칸을 확인하세요.'},
+ en:{home:'Home',title:'Crown',tagline:'One crown per row, column & color region',clear:'Clear',
+   date:d=>'📅 '+d+' Daily Puzzle',hint:'Tap a cell → ✕ (mark) → 👑 (crown) → empty. Place exactly one crown in each row, column and color region, and no two crowns may <b>touch</b> — not even diagonally.',
+   disc:'A new puzzle every midnight (KST). Each one has a single answer solvable by <b>pure logic</b> 👑',footer:'brain games, made light',
+   size:'Size',newGame:'New puzzle',share:'📷 Share result',again:'Play again',won:'Solved! 👑',wonTime:t=>'Time '+t,
+   share1:'Mallow Crown',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Crown! 👑 '+t+' playmallow.com/queens',docTitle:'Mallow Crown — Daily Queens Puzzle | Mallow',
+   toastBad:'Crown rule broken! Check the red cells.'},
+ th:{home:'หน้าแรก',title:'คราวน์',tagline:'วางมงกุฎ 1 อันต่อแถว คอลัมน์ และโซนสี',clear:'ล้าง',
+   date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'แตะช่อง → ✕ (ทำเครื่องหมาย) → 👑 (มงกุฎ) → ว่าง วางมงกุฎ 1 อันในแต่ละแถว คอลัมน์ และโซนสี และมงกุฎห้าม<b>ติดกัน</b> แม้แต่แนวทแยง',
+   disc:'ปริศนาใหม่ทุกเที่ยงคืน (KST) ทุกด่านมีคำตอบเดียว แก้ได้ด้วย<b>ตรรกะ</b>ล้วน 👑',footer:'เกมสมองเบา ๆ',
+   size:'ขนาด',newGame:'ปริศนาใหม่',share:'📷 แชร์ผล',again:'เล่นอีกครั้ง',won:'สำเร็จ! 👑',wonTime:t=>'เวลา '+t,
+   share1:'Mallow คราวน์',share2:d=>d+' รายวัน',shareText:t=>'แก้ Mallow คราวน์สำเร็จ! 👑 '+t+' playmallow.com/queens',docTitle:'Mallow คราวน์ — ปริศนามงกุฎรายวัน | Mallow',
+   toastBad:'ผิดกฎมงกุฎ! ดูช่องสีแดง'}
+};
+let LANG='ko';
+function detectLang(){let l=null;try{l=new URLSearchParams(location.search).get('lang');}catch(e){}if(!l){try{l=localStorage.getItem('brain.lang');}catch(e){}}return ['ko','en','th'].includes(l)?l:'ko';}
+
+/* ===== 생성기(.logs/queens_sim.mjs 검증본 이식) ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);}
+function shuf(a,rng){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function placeCrowns(N,rng){const cols=new Array(N).fill(-1),used=new Array(N).fill(false);
+  function bt(r){if(r===N)return true;for(const c of shuf([...Array(N).keys()],rng)){if(used[c])continue;if(r>0&&Math.abs(c-cols[r-1])<2)continue;cols[r]=c;used[c]=true;if(bt(r+1))return true;cols[r]=-1;used[c]=false;}return false;}
+  return bt(0)?cols.map((c,r)=>[r,c]):null;}
+function growRegions(N,crowns,rng){const region=Array.from({length:N},()=>new Array(N).fill(-1));const fr=[];
+  function push(r,c,g){[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{const nr=r+dr,nc=c+dc;if(nr>=0&&nr<N&&nc>=0&&nc<N&&region[nr][nc]===-1)fr.push([nr,nc,g]);});}
+  crowns.forEach(([r,c],i)=>{region[r][c]=i;});crowns.forEach(([r,c],i)=>push(r,c,i));let asg=N;
+  while(asg<N*N&&fr.length){const k=Math.floor(rng()*fr.length);const [r,c,g]=fr.splice(k,1)[0];if(region[r][c]!==-1)continue;region[r][c]=g;asg++;push(r,c,g);}
+  return asg<N*N?null:region;}
+function countSol(N,region,limit){const colU=new Array(N).fill(false),regU=new Array(N).fill(false),cols=new Array(N).fill(-1);let cnt=0;
+  function bt(r){if(cnt>=limit)return;if(r===N){cnt++;return;}for(let c=0;c<N;c++){if(colU[c])continue;const g=region[r][c];if(regU[g])continue;if(r>0&&Math.abs(c-cols[r-1])<2)continue;cols[r]=c;colU[c]=true;regU[g]=true;bt(r+1);cols[r]=-1;colU[c]=false;regU[g]=false;}}
+  bt(0);return cnt;}
+function genPuzzle(N,seed){const rng=mulberry32(seed);const crowns=placeCrowns(N,rng);if(!crowns)return null;const region=growRegions(N,crowns,rng);if(!region)return null;
+  const sz=new Array(N).fill(0);region.forEach(row=>row.forEach(v=>sz[v]++));if(Math.max(...sz)>Math.ceil(N*1.9))return null;
+  if(countSol(N,region,2)!==1)return null;return {region,crowns};}
+function genDaily(N,daySeed){for(let k=0;k<8000;k++){const p=genPuzzle(N,(daySeed+k*2654435761)>>>0);if(p)return p;}return null;}
+
+/* ===== 상태 ===== */
+const REGCOL=['#f7b9cf','#b9d4f7','#c8f0cf','#f7e2a8','#d8c3f5','#a8ecec','#f7c9a8','#c9d0e8'];
+let N=7, REGION=null, ST=null, DAILY=true, DAYSEED=0;
+let startT=0, tick=null, WON=false;
+function fmt(ms){const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function startTimer(){startT=Date.now();if(tick)clearInterval(tick);tick=setInterval(()=>{if(!WON)document.getElementById('timer').textContent=fmt(Date.now()-startT);},500);}
+
+function newPuzzle(daily){
+  DAILY=daily; WON=false;
+  DAYSEED = daily ? hashStr('queens|'+N+'|'+kstDate()) : (hashStr('queens|'+N+'|r')^Math.floor(perfRand()*1e9))>>>0;
+  const p=genDaily(N,DAYSEED); REGION=p.region;
+  ST=Array.from({length:N},()=>new Array(N).fill(0)); // 0 empty,1 X,2 crown
+  document.getElementById('wonBox').innerHTML=''; document.getElementById('timer').textContent='0:00';
+  renderBoard(); renderBtns(); startTimer();
+}
+let _rc=0; function perfRand(){ _rc=(_rc*1103515245+12345)&0x7fffffff; return ((Date.now()%100000)+_rc%100000)/100000%1; }
+
+function renderBoard(){
+  const b=document.getElementById('board'); b.style.gridTemplateColumns='repeat('+N+',1fr)';
+  b.innerHTML='';
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    const d=document.createElement('div'); d.className='cell'; d.style.background=REGCOL[REGION[r][c]%REGCOL.length];
+    d.dataset.r=r; d.dataset.c=c;
+    d.onclick=()=>tap(r,c);
+    b.appendChild(d);
+  }
+  paint();
+}
+function paint(){
+  const bad=conflicts();
+  document.querySelectorAll('#board .cell').forEach(d=>{
+    const r=+d.dataset.r,c=+d.dataset.c,s=ST[r][c];
+    d.innerHTML = s===2?'👑':(s===1?'<span class="x">✕</span>':'');
+    d.classList.toggle('bad', bad.has(r*N+c));
+  });
+}
+function tap(r,c){ if(WON) return; ST[r][c]=(ST[r][c]+1)%3; paint(); checkWin(); }
+function conflicts(){
+  const bad=new Set(); const crowns=[];
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(ST[r][c]===2) crowns.push([r,c]);
+  const rowc={},colc={},regc={};
+  crowns.forEach(([r,c])=>{ (rowc[r]=rowc[r]||[]).push([r,c]); (colc[c]=colc[c]||[]).push([r,c]); const g=REGION[r][c]; (regc[g]=regc[g]||[]).push([r,c]); });
+  Object.values(rowc).forEach(a=>{if(a.length>1)a.forEach(([r,c])=>bad.add(r*N+c));});
+  Object.values(colc).forEach(a=>{if(a.length>1)a.forEach(([r,c])=>bad.add(r*N+c));});
+  Object.values(regc).forEach(a=>{if(a.length>1)a.forEach(([r,c])=>bad.add(r*N+c));});
+  for(let i=0;i<crowns.length;i++)for(let j=i+1;j<crowns.length;j++){const [r1,c1]=crowns[i],[r2,c2]=crowns[j];if(Math.abs(r1-r2)<=1&&Math.abs(c1-c2)<=1){bad.add(r1*N+c1);bad.add(r2*N+c2);}}
+  return bad;
+}
+function checkWin(){
+  let cnt=0; for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(ST[r][c]===2) cnt++;
+  if(cnt!==N) return;
+  if(conflicts().size>0){ toast(TX[LANG].toastBad); return; }
+  WON=true; if(tick)clearInterval(tick); const t=fmt(Date.now()-startT);
+  gtag('event','queens_win',{size:N,daily:DAILY});
+  if(DAILY){ try{localStorage.setItem('queens_done',kstDate());}catch(e){} }
+  const d=TX[LANG];
+  document.getElementById('wonBox').innerHTML='<div class="won"><div class="big">'+d.won+'</div><div class="t">'+d.wonTime(t)+'</div></div>';
+  document.getElementById('btns').innerHTML='<button class="btn" id="shareBtn">'+d.share+'</button><button class="btn sub" id="againBtn">'+d.again+'</button>';
+  document.getElementById('shareBtn').onclick=()=>share(t);
+  document.getElementById('againBtn').onclick=()=>newPuzzle(false);
+  toastWin(t);
+}
+function renderBtns(){
+  const d=TX[LANG];
+  document.getElementById('btns').innerHTML='<button class="btn sub" id="newBtn">🔀 '+d.newGame+'</button>';
+  document.getElementById('newBtn').onclick=()=>newPuzzle(false);
+}
+let _lastT='';
+function toastWin(t){ _lastT=t; }
+function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1600);}
+
+/* ===== 공유 카드 ===== */
+const logoImg=new Image(); logoImg.src='/mallow-logo.svg';
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function drawCard(t){
+  const cv=document.getElementById('shareCanvas'),c=cv.getContext('2d'),W=600,H=820,d=TX[LANG];
+  const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#8b6ff0');g.addColorStop(1,'#ff8aa0');c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.fillStyle='#fff';roundRect(c,40,50,W-80,H-100,28);c.fill();
+  c.textAlign='center';c.textBaseline='alphabetic';
+  c.font='800 34px "Apple SD Gothic Neo",Arial,sans-serif';
+  const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=78;
+  if(logoImg.complete&&logoImg.naturalWidth>0)c.drawImage(logoImg,x0,topY,mw,mw);
+  c.textAlign='left';c.fillStyle='#2a2140';c.fillText('Mallow',x0+mw+gap,topY+mw*0.72);c.textAlign='center';
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif';c.fillStyle='#8b6ff0';c.fillText('👑 '+d.share1,W/2,168);
+  // 완성 보드
+  const cell=Math.min(58,Math.floor(380/N)), bw2=cell*N, bx=(W-bw2)/2, by=210;
+  for(let r=0;r<N;r++)for(let cc=0;cc<N;cc++){
+    c.fillStyle=REGCOL[REGION[r][cc]%REGCOL.length]; const x=bx+cc*cell, y=by+r*cell;
+    roundRect(c,x+2,y+2,cell-4,cell-4,7); c.fill();
+    if(ST[r][cc]===2){ c.font=Math.floor(cell*0.62)+'px sans-serif'; c.fillStyle='#2a2140'; c.textBaseline='middle'; c.fillText('👑',x+cell/2,y+cell/2+2); c.textBaseline='alphabetic'; }
+  }
+  const yb=by+bw2+52;
+  c.font='800 30px "Apple SD Gothic Neo",sans-serif';c.fillStyle='#2a2140';c.fillText(d.won+'  '+t,W/2,yb);
+  c.font='600 18px "Apple SD Gothic Neo",sans-serif';c.fillStyle='#7d7495';c.fillText(d.share2(kstDate())+' · '+N+'×'+N,W/2,yb+34);
+  c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif';c.fillStyle='#8b6ff0';c.fillText('www.playmallow.com',W/2,H-58);
+  return cv;
+}
+function share(t){ gtag('event','queens_share',{}); const cv=drawCard(t);
+  cv.toBlob(function(blob){const file=new File([blob],'mallow-crown.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:TX[LANG].shareText(t)}).catch(()=>{});}
+    else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mallow-crown.png';a.click();}},'image/png'); }
+
+/* ===== 언어/사이즈 UI ===== */
+function applyLang(){const d=TX[LANG];
+  document.getElementById('langSel').value=LANG;
+  document.getElementById('t-home').textContent=d.home;
+  document.getElementById('t-title').textContent=d.title;
+  document.getElementById('t-tagline').textContent=d.tagline;
+  document.getElementById('t-clear').textContent=d.clear;
+  document.getElementById('t-hint').innerHTML=d.hint;
+  document.getElementById('t-disc').innerHTML=d.disc;
+  document.getElementById('t-footer').textContent=d.footer;
+  document.getElementById('dateBar').textContent=d.date(kstDate());
+  document.title=d.docTitle;
+  if(!WON) renderBtns(); // 버튼 라벨 갱신
+}
+function renderSizes(){
+  const wrap=document.getElementById('sizes'); wrap.innerHTML='';
+  [6,7,8].forEach(n=>{const b=document.createElement('button');b.textContent=n+'×'+n;b.className=n===N?'on':'';b.onclick=()=>{N=n;renderSizes();newPuzzle(DAILY);};wrap.appendChild(b);});
+}
+function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();}
+document.getElementById('clearBtn').onclick=()=>{ if(WON)return; ST=Array.from({length:N},()=>new Array(N).fill(0)); paint(); };
+
+LANG=detectLang(); document.documentElement.lang=LANG;
+renderSizes(); applyLang(); newPuzzle(true);
+</script>
+</body>
+</html>
