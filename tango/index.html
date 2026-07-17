@@ -24,6 +24,8 @@ header{width:100%;max-width:480px;padding:16px 16px 8px;text-align:center;positi
 #backHome{position:absolute;left:12px;top:16px;font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);}
 #backHome:active{opacity:.6;}
 #langSel{position:absolute;right:12px;top:14px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--sub);padding:4px 6px;font-family:inherit;}
+#muteBtn{position:absolute;left:58px;top:13px;font-size:14px;line-height:1;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px 7px;cursor:pointer;}
+#muteBtn:active{transform:scale(.92);}
 .h1row{display:flex;align-items:center;justify-content:center;gap:8px;}
 .h1row .mhead{width:30px;height:30px;flex-shrink:0;}
 h1{margin:0;font-size:23px;font-weight:800;letter-spacing:-.3px;}
@@ -59,6 +61,7 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 <body>
 <header>
   <a id="backHome" href="/">← <span id="t-home">홈</span></a>
+  <button id="muteBtn" onclick="toggleMute()" title="sound" aria-label="sound">🔊</button>
   <select id="langSel" onchange="setLang(this.value)"><option value="ko">한국어</option><option value="en">English</option><option value="th">ไทย</option></select>
   <h1 class="h1row"><span class="mhead" id="mhead"></span><span id="t-brand">Mallow</span>&nbsp;<span class="sp" id="t-title">탱고</span></h1>
   <div class="tagline" id="t-tagline">해와 달을 채우는 논리 퍼즐</div>
@@ -88,6 +91,22 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
 (function(){var el=document.getElementById('mhead');if(el)el.innerHTML=MHEAD_SVG;})();
 const SUN='☀️', MOON='🌙';
+
+/* ===== 사운드 + 햅틱 ===== */
+let AC=null, MUTED=false; try{MUTED=localStorage.getItem('mallow_mute')==='1';}catch(e){}
+function actx(){ if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} return AC; }
+function tone(f,st,dur,type,vol){ if(MUTED)return; const ac=actx(); if(!ac)return; if(ac.state==='suspended')ac.resume();
+  const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+st; o.type=type||'sine'; o.frequency.value=f;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t+dur+0.03); }
+function vib(p){ try{ if(!MUTED&&navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+function sndSun(){ tone(660,0,0.08,'triangle',0.15); tone(990,0.045,0.09,'triangle',0.10); vib(12); }   // 해
+function sndMoon(){ tone(392,0,0.09,'triangle',0.15); tone(523,0.045,0.09,'triangle',0.10); vib(12); }  // 달
+function sndCancel(){ tone(300,0,0.10,'sine',0.10); }                                                    // 취소(빈칸)
+function sndBad(){ tone(160,0,0.16,'square',0.10); tone(120,0.09,0.17,'square',0.09); vib([25,40,25]); } // 규칙 위반
+function sndWin(){ [523,659,784,1047,1319].forEach((f,i)=>tone(f,i*0.10,0.34,'triangle',0.17)); vib([18,50,18,50,30]); }
+['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,()=>{const ac=actx();if(ac&&ac.state==='suspended')ac.resume();},{passive:true}));
+function toggleMute(){ MUTED=!MUTED; try{localStorage.setItem('mallow_mute',MUTED?'1':'0');}catch(e){} const b=document.getElementById('muteBtn'); if(b)b.textContent=MUTED?'🔇':'🔊'; if(!MUTED)sndCancel(); }
 
 /* ===== i18n ===== */
 const TX={
@@ -170,7 +189,9 @@ function paint(){
   document.querySelectorAll('#board .cell').forEach(d=>{const r=+d.dataset.r,c=+d.dataset.c;
     d.textContent=sym(ST[r][c]); d.classList.toggle('bad',bad.has(r*N+c));});
 }
-function tap(r,c){ if(WON||GIVEN[r][c]!==-1) return; const v=ST[r][c]; ST[r][c]= v===-1?1:(v===1?0:-1); paint(); checkWin(); }
+function tap(r,c){ if(WON||GIVEN[r][c]!==-1) return; const v=ST[r][c]; const nv= v===-1?1:(v===1?0:-1); ST[r][c]=nv; paint();
+  if(nv===-1){ sndCancel(); } else if(conflicts().has(r*N+c)){ sndBad(); } else { nv===1?sndSun():sndMoon(); }
+  checkWin(); }
 function conflicts(){
   const bad=new Set(), half=N/2;
   // 3연속
@@ -187,7 +208,7 @@ function conflicts(){
 function checkWin(){
   for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(ST[r][c]===-1) return;
   if(conflicts().size>0){ toast(TX[LANG].toastBad); return; }
-  WON=true; if(tick)clearInterval(tick); const t=fmt(Date.now()-startT);
+  WON=true; if(tick)clearInterval(tick); const t=fmt(Date.now()-startT); sndWin();
   gtag('event','tango_win',{size:N,daily:DAILY});
   if(DAILY){ try{localStorage.setItem('tango_done',kstDate());}catch(e){} }
   const d=TX[LANG];
@@ -248,6 +269,7 @@ function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.se
 document.getElementById('clearBtn').onclick=()=>{ if(WON)return; ST=GIVEN.map(row=>row.slice()); paint(); };
 
 LANG=detectLang(); document.documentElement.lang=LANG;
+document.getElementById('muteBtn').textContent=MUTED?'🔇':'🔊';
 renderSizes(); applyLang(); newPuzzle(true);
 </script>
 </body>
