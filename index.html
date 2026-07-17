@@ -138,6 +138,8 @@ body.ingame .nav-logo{padding-left:.7rem;gap:.35rem}
 .uses-abil{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:-.5rem 0 1.1rem}
 .ua-label{font-size:.78rem;font-weight:700;color:var(--text3)}
 .ua-chip{font-size:.76rem;font-weight:800;color:var(--purple);background:var(--purple3);border:1px solid rgba(110,146,255,.28);border-radius:999px;padding:.22rem .62rem}
+/* 학습 철학 콜아웃(꾸준함) — 난이도 선택 화면 */
+.game-philo{font-size:.85rem;line-height:1.65;color:var(--text2);background:linear-gradient(120deg,#f3f0ff,#fbfaff);border:1px solid rgba(110,146,255,.16);border-left:3px solid var(--purple2);border-radius:11px;padding:.65rem .85rem;margin:0 0 1.1rem}
 
 /* TYPING GAME */
 .typing-top{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -3514,6 +3516,7 @@ const I18N = {
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "game.usesAbility": {ko:"이 게임이 쓰는 능력", en:"Abilities you'll use", th:"ทักษะที่ได้ใช้"},
+  "game.philo": {ko:"🌱 화려한 그래픽보다 중요한 건 꾸준함이에요. 매일 조금씩 반복해 다양한 두뇌 능력을 골고루 써보세요.", en:"🌱 What matters isn't flashy graphics — it's consistency. Come back a little each day and exercise a range of brain skills.", th:"🌱 สิ่งสำคัญไม่ใช่กราฟิกหวือหวา แต่คือความสม่ำเสมอ แวะมาเล่นทุกวันทีละนิด เพื่อใช้ทักษะสมองหลาย ๆ ด้าน"},
   "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
   "cat.speed": {ko:"순발력", en:"Speed", th:"ความไว"},
   "cat.space": {ko:"공간감각", en:"Spatial", th:"มิติสัมพันธ์"},
@@ -7397,6 +7400,10 @@ function renderUsesAbility(){
     const maxW=Math.max.apply(null,Object.values(w));
     const axes=Object.keys(w).filter(a=>ABILITY_CAT[a]&&w[a]>=maxW*0.5).sort((a,b)=>w[b]-w[a]).slice(0,3);
     box.innerHTML='<span class="ua-label">🧠 '+t('game.usesAbility')+'</span>'+axes.map(a=>'<span class="ua-chip">'+t(ABILITY_CAT[a])+'</span>').join('');
+    // 학습 철학 콜아웃(꾸준함) — 능력 칩 바로 아래(난이도 버튼 위)
+    let ph=box.nextElementSibling;
+    if(!ph||!ph.classList||!ph.classList.contains('game-philo')){ ph=document.createElement('div'); ph.className='game-philo'; box.parentNode.insertBefore(ph,box.nextSibling); }
+    ph.textContent=t('game.philo');
   });
 }
 // 게임 → 능력 기여 가중치(%)
