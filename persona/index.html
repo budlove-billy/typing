@@ -468,18 +468,19 @@ function drawCard(){
   c.font='900 56px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(r.code,W/2,326);
   c.font='800 26px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(T.name,W/2,366);
   c.font='500 16px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; wrap(c,T.tag,W/2,396,W-140,24);
-  // 축 4바
-  let by=452; const bx=110, bw2=W-220;
+  // 축 4바 (라벨은 카드 안쪽에 안전하게: measureText로 우측 끝 고정, 폰트 축소로 다국어 오버플로 방지)
+  let by=452; const bx=64, bw2=W-128;   // 바 [64,536] — 좌우 대칭(카드 안쪽 여백 동일)
   r.bars.forEach(b=>{
-    c.textAlign='left'; c.font='800 15px "Apple SD Gothic Neo",sans-serif';
-    c.fillStyle=b.winLeft?'#ff6f9c':'#b7add0'; c.fillText(b.ax.l.code+' '+poleName(b.ax.l.code),bx,by-8);
-    c.textAlign='right'; c.fillStyle=b.winLeft?'#b7add0':'#ff6f9c'; c.fillText(poleName(b.ax.r.code)+' '+b.ax.r.code,bx+bw2,by-8);
+    c.font='800 13px "Apple SD Gothic Neo",sans-serif'; c.textAlign='left';
+    const ll=b.ax.l.code+' '+poleName(b.ax.l.code);
+    const rl=poleName(b.ax.r.code)+' '+b.ax.r.code;
+    c.fillStyle=b.winLeft?'#ff6f9c':'#b7add0'; c.fillText(ll, bx, by-8);
+    c.fillStyle=b.winLeft?'#b7add0':'#ff6f9c'; c.fillText(rl, bx+bw2-c.measureText(rl).width, by-8);
     // track
     c.fillStyle='#eee6fb'; roundRect(c,bx,by,bw2,12,6); c.fill();
     const fillW=Math.max(12,Math.round(bw2*b.lpct/100));
     const gg=c.createLinearGradient(bx,0,bx+bw2,0); gg.addColorStop(0,'#8b6ff0'); gg.addColorStop(1,'#b79bf5');
     c.fillStyle=gg; roundRect(c,bx,by,fillW,12,6); c.fill();
-    c.textAlign='center';
     by+=52;
   });
   c.textAlign='center'; c.font='800 22px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,H-58);
