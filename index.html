@@ -36,6 +36,8 @@
   gtag('js', new Date());
   gtag('config', 'G-9EQEH5BF0C');
 </script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -49,9 +51,13 @@
   --red:#e0475a;--red2:#c0384a;--red3:#fce9ec;
   --green:#21a67a;--green3:#daf3ea;
   --blue:#4f7cff;--blue3:#e9f0ff;
-  --radius:8px;--radius2:12px;--radius3:16px;
+  --radius:10px;--radius2:14px;--radius3:18px;
+  /* 다층 부드러운 그림자 — 깊이감·고급감 */
+  --shadow-sm:0 1px 2px rgba(24,34,53,.04), 0 3px 10px rgba(40,30,80,.045);
+  --shadow:0 2px 5px rgba(24,34,53,.05), 0 10px 28px rgba(50,38,95,.08);
+  --shadow-lg:0 6px 16px rgba(50,38,95,.10), 0 20px 48px rgba(50,38,95,.13);
 }
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px;background-attachment:fixed;transition:background .5s ease}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;letter-spacing:-0.01em;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px;background-attachment:fixed;transition:background .5s ease}
 /* ===== 인지 축별 테마 배경(은은한 상단 글로우) ===== */
 body[data-axis]{background:radial-gradient(135% 62% at 50% -12%,var(--glow,#e9f0ff) 0%,#f2f5fb 56%);background-attachment:fixed}
 body[data-axis="memory"]{--glow:#ffe6c2}
@@ -127,7 +133,7 @@ body.ingame .nav-logo{padding-left:.7rem;gap:.35rem}
 .screen.active{display:block}
 
 /* CARDS */
-.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 1px 2px rgba(24,34,53,.04)}
+.card{background:#fff;border:1px solid rgba(228,233,242,.7);border-radius:var(--radius3);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow)}
 
 /* TYPING GAME */
 .typing-top{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -439,8 +445,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .hm-cta:disabled{background:var(--teal);cursor:default}
 .home-section-title{font-size:.9rem;font-weight:700;color:var(--text2);margin:.25rem .25rem .75rem}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
-.home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1rem .5rem;cursor:pointer;transition:.14s;font-family:inherit;box-shadow:0 1px 2px rgba(24,34,53,.04)}
-.home-card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(79,124,255,.14)}
+.home-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;background:#fff;border:1px solid rgba(228,233,242,.7);border-radius:var(--radius3);padding:1.05rem .5rem;cursor:pointer;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s,border-color .16s;font-family:inherit;box-shadow:var(--shadow-sm)}
+.home-card:hover{border-color:var(--purple2);transform:translateY(-3px);box-shadow:var(--shadow)}
+.home-card:active{transform:translateY(-1px) scale(.985)}
 .home-card-emoji{font-size:2rem;line-height:1}
 .home-card-name{font-size:.82rem;font-weight:600;color:var(--text);text-align:center;line-height:1.2}
 .home-card-cat{font-size:.66rem;color:var(--text3);font-weight:500}
@@ -721,17 +728,18 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .tab-btn.active .tab-ico{filter:none;opacity:1}
 .tab-label{font-size:.7rem;font-weight:700}
 /* 홈 */
-.home-hi{font-size:1.3rem;font-weight:800;color:var(--text);margin:.25rem .25rem 1rem}
-.home-intro{margin:-.35rem .25rem 1rem;color:var(--text2);font-size:.9rem;line-height:1.6}
+.home-hi{font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin:.35rem .25rem .9rem}
+.home-intro{margin:-.3rem .25rem 1.1rem;color:var(--text2);font-size:.9rem;line-height:1.65}
 .home-intro strong{color:var(--purple);font-weight:800}
-.home-feature{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--purple);background:linear-gradient(120deg,#e9f0ff,#fff);font-family:inherit;transition:.15s}
-.home-feature:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(79,124,255,.16)}
-.hf-label{font-size:.78rem;font-weight:700;color:var(--purple);margin-bottom:.6rem}
+.home-feature{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid rgba(110,146,255,.35);background:linear-gradient(125deg,#eef3ff 0%,#faf7ff 60%,#fff 100%);box-shadow:var(--shadow-sm);font-family:inherit;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s}
+.home-feature:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.home-feature:active{transform:translateY(-1px)}
+.hf-label{font-size:.78rem;font-weight:800;color:var(--purple);margin-bottom:.6rem;letter-spacing:.01em}
 .hf-main{display:flex;align-items:center;gap:.85rem;margin-bottom:.9rem}
-.hf-emoji{font-size:3rem;line-height:1}
-.hf-name{font-size:1.35rem;font-weight:800;color:var(--text);line-height:1.15}
+.hf-emoji{font-size:3rem;line-height:1;filter:drop-shadow(0 4px 8px rgba(50,38,95,.14))}
+.hf-name{font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.15;letter-spacing:-.01em}
 .hf-cat{font-size:.8rem;color:var(--text2);margin-top:.15rem}
-.hf-cta{display:inline-block;background:var(--purple);color:#fff;font-size:.9rem;font-weight:700;padding:.6rem 1.2rem;border-radius:var(--radius)}
+.hf-cta{display:inline-block;background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;font-size:.9rem;font-weight:800;padding:.62rem 1.3rem;border-radius:12px;box-shadow:0 6px 16px rgba(79,124,255,.28)}
 /* 오늘의 목표 */
 .home-goals{padding-top:1rem;padding-bottom:1rem}
 .hg-title{font-size:.85rem;font-weight:700;color:var(--text2);margin-bottom:.7rem}
@@ -741,8 +749,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .hg-item span{font-size:.68rem;color:var(--text3);text-align:center}
 /* 게임 모음 카테고리 칩 */
 .home-cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
-.home-cat{background:#fff;border:1px solid var(--border2);border-radius:999px;padding:.5rem 1rem;font-size:.85rem;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}
-.home-cat:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
+.home-cat{background:#fff;border:1px solid rgba(205,213,229,.8);border-radius:999px;padding:.5rem 1.05rem;font-size:.85rem;font-weight:700;color:var(--text2);cursor:pointer;font-family:inherit;transition:.14s;box-shadow:var(--shadow-sm)}
+.home-cat:hover{border-color:var(--purple2);color:var(--purple);background:var(--purple3);transform:translateY(-1px)}
 /* 내 기록 */
 .rec-row{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.7rem .9rem;margin-bottom:.5rem}
 .rec-game{flex:1;font-size:.92rem;font-weight:600;color:var(--text)}
