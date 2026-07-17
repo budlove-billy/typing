@@ -7203,7 +7203,7 @@ const HOME_GAMES=[
   {id:'zodiac', emoji:'⭐', key:'nav.zodiac', grp:'cat.fun', langs:['ko','en','th'], external:'zodiac/'},
   {id:'ttirank', emoji:'🐭', key:'nav.ttirank', grp:'cat.fun', koOnly:true, external:'ttirank/'},
   {id:'tarot', emoji:'🃏', key:'nav.tarot', grp:'cat.fun', langs:['ko','th'], external:'tarot/'},
-  {id:'persona', emoji:'🧭', key:'nav.persona', grp:'cat.fun', koOnly:true, external:'persona/'},
+  {id:'persona', emoji:'🧭', key:'nav.persona', grp:'cat.fun', langs:['ko','en','th'], external:'persona/'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 // 연속 출석 갱신 (하루 1회 카운트)
@@ -7336,7 +7336,7 @@ function renderHome(){
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
     fun.innerHTML='';
-    const funByLang={ ko:['unse','zodiac','ttirank','tarot','persona'], en:['zodiac'], th:['zodiac','tarot'] };
+    const funByLang={ ko:['unse','zodiac','ttirank','tarot','persona'], en:['zodiac','persona'], th:['zodiac','tarot','persona'] };
     const funIds=funByLang[CURRENT_LANG]||[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
       card.onclick=()=>{ if(g.external){ goExternal(g); return; } showScreen(g.id); };

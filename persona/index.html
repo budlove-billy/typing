@@ -89,17 +89,18 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
 </head>
 <body>
 <header>
-  <a id="backHome" href="/">← 홈</a>
-  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">페르소나</span></h1>
+  <a id="backHome" href="/">← <span id="t-home">홈</span></a>
+  <select id="langSel" onchange="setLang(this.value)" style="position:absolute;right:12px;top:14px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--sub);padding:4px 6px;font-family:inherit"><option value="ko">한국어</option><option value="en">English</option><option value="th">ไทย</option></select>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span><span id="t-brand">Mallow</span>&nbsp;<span class="sp" id="t-title">페르소나</span></h1>
   <div class="tagline" id="tagline">24문항으로 보는 나의 성격 16유형</div>
 </header>
 <main>
   <!-- 인트로 -->
   <div class="card" id="introCard">
     <div class="intro-emoji">🧭</div>
-    <div class="intro-h">나는 어떤 유형일까?</div>
-    <div class="intro-p">일상 속 <b>24개의 상황</b>에서 나의 선택을 따라가며<br>4가지 축과 16가지 성격 유형을 진단해요.<br>정답은 없어요 — 더 <b>끌리는 쪽</b>을 고르면 돼요.</div>
-    <div class="axis-legend">
+    <div class="intro-h" id="t-introH">나는 어떤 유형일까?</div>
+    <div class="intro-p" id="t-introP">일상 속 <b>24개의 상황</b>에서 나의 선택을 따라가며<br>4가지 축과 16가지 성격 유형을 진단해요.<br>정답은 없어요 — 더 <b>끌리는 쪽</b>을 고르면 돼요.</div>
+    <div class="axis-legend" id="t-legend">
       <span>⚡ 에너지 E·I</span><span>🔭 인식 N·S</span><span>💗 판단 F·T</span><span>🗂️ 생활 P·J</span>
     </div>
     <button class="btn" id="startBtn">테스트 시작하기</button>
@@ -126,28 +127,28 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
       <div class="bars" id="bars"></div>
     </div>
     <div class="card">
-      <div class="sect-title">🌟 강점</div>
+      <div class="sect-title" id="t-secStr">🌟 강점</div>
       <div class="chips" id="rStrength"></div>
-      <div class="sect-title">🌀 조심할 점</div>
+      <div class="sect-title" id="t-secWeak">🌀 조심할 점</div>
       <div class="chips weak" id="rWeak"></div>
-      <div class="sect-title">💬 이런 모습</div>
+      <div class="sect-title" id="t-secTrait">💬 이런 모습</div>
       <div id="rTraits"></div>
-      <div class="sect-title">💞 궁합</div>
+      <div class="sect-title" id="t-secMatch">💞 궁합</div>
       <div class="match">
-        <div class="good"><div class="mk">환상의 짝</div><div class="mv" id="rGood"></div></div>
-        <div class="bad"><div class="mk">노력이 필요</div><div class="mv" id="rBad"></div></div>
+        <div class="good"><div class="mk" id="t-mkGood">환상의 짝</div><div class="mv" id="rGood"></div></div>
+        <div class="bad"><div class="mk" id="t-mkBad">노력이 필요</div><div class="mv" id="rBad"></div></div>
       </div>
-      <div class="sect-title">🎮 이 유형에게 어울리는 말로우 게임</div>
+      <div class="sect-title" id="t-secGame">🎮 이 유형에게 어울리는 말로우 게임</div>
       <div class="recs" id="rRecs"></div>
       <div class="btns">
         <button class="btn" id="shareBtn">📷 결과 카드 공유</button>
         <button class="btn sub" id="againBtn">다시 하기</button>
       </div>
-      <div class="disc">본 진단은 <b>재미로 즐기는 콘텐츠</b>예요. 특정 성격 검사(MBTI®)와 무관한 말로우 자체 콘텐츠이며, 사람을 규정하지 않아요 🌙</div>
+      <div class="disc" id="t-disc">본 진단은 <b>재미로 즐기는 콘텐츠</b>예요. 특정 성격 검사(MBTI®)와 무관한 말로우 자체 콘텐츠이며, 사람을 규정하지 않아요 🌙</div>
     </div>
   </div>
 </main>
-<footer><a href="/">playmallow.com</a> · 가볍게 즐기는 두뇌게임</footer>
+<footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
 <script>
 "use strict";
@@ -213,22 +214,178 @@ const TYPES={
  ENTJ:{e:'👑',name:'판 짜는 총사령관',tag:'목표가 보이면 최단 경로로 밀어붙인다',desc:'대담하고 결단력이 강한 타고난 지휘자예요. 큰 그림을 그리고 사람과 자원을 움직여 목표를 이뤄내요.',str:['통솔력','전략','결단력'],weak:['독단','조급함'],love:'주도적으로 이끄는 강한 사랑',work:'조직을 이끄는 전략·경영형',stress:'무능·비효율과 통제 불가 상황에 답답해져요',grow:'속도를 늦추고 사람 마음도 듣기',good:'INTP',bad:'ISFP',games:['sort','merge']}
 };
 
+/* ===== 다국어(ko/en/th) ===== */
+const AXL={
+ ko:{E:'외향',I:'내향',N:'직관',S:'감각',F:'감정',T:'사고',P:'즉흥',J:'계획'},
+ en:{E:'Extravert',I:'Introvert',N:'Intuition',S:'Sensing',F:'Feeling',T:'Thinking',P:'Prospecting',J:'Judging'},
+ th:{E:'ชอบสังคม',I:'ชอบส่วนตัว',N:'สัญชาตญาณ',S:'สัมผัสจริง',F:'ความรู้สึก',T:'เหตุผล',P:'ยืดหยุ่น',J:'วางแผน'}
+};
+// 문항 텍스트(극/축은 Q에 그대로, 텍스트만 언어별). 각 항목 [s, t, a보기, b보기]
+const Q_i18n={
+ en:[
+  ['Your whole weekend is free','What recharges you more?','A lively get-together with friends','Quiet time alone to recharge'],
+  ['You pick up a new gadget','Your first thought?','What could I imagine doing with it','Where and how would I use it'],
+  ['A friend is down after a mistake','You first…','Comfort their feelings','Point out the cause and the fix'],
+  ['If you go on a trip','Your style is…','Wherever the mood takes you','A full hour-by-hour plan'],
+  ['You arrive at a new gathering','Early on, you…','Break the ice and liven it up','Watch until you feel at ease'],
+  ['When you talk','Your conversation is mostly…','Meaning, possibilities, metaphors','Concrete facts and experiences'],
+  ['Facing an important decision','You trust more…','People and feelings','Logic and objective facts'],
+  ['A task lands on you','You usually…','Cram near the deadline','Finish it well ahead'],
+  ['When something worries you','You sort it out by…','Talking it through with someone','Mulling it over alone'],
+  ['Learning something new','Your approach…','Big picture first, my own way','Step by step, the proven order'],
+  ['You have to give feedback','You value more…','Caring about their feelings','Being honest and clear'],
+  ['Your desk and folders are…','Generally…','My own kind of chaos','Always tidy and organized'],
+  ['A day packed with plans','On such days you…','Feel excited and energized','Get quietly drained'],
+  ['If you had to choose','Your heart leans toward…','Possibilities not yet here','The reality right in front'],
+  ['A conflict breaks out','You protect first…','That the bond stays intact','Sorting out right from wrong'],
+  ['Plans suddenly fall apart','Your reaction…','Actually, spontaneity is fun','Stress — I must re-plan'],
+  ['In a group chat','You usually…','React and chat actively','Mostly read, post now and then'],
+  ['What stays in memory','Mostly…','The feeling and thoughts of the moment','The actual scene and details'],
+  ['A compliment you want','Which feels better?','“Warm and kind”','“Precise and capable”'],
+  ['When making a decision','Your way…','Keep options open, stay flexible','Decide fast and feel at ease'],
+  ['Meeting people while traveling','You…','Mingle well even with strangers','Go deep with familiar company'],
+  ['Given a manual','You usually…','Try by feel first','Follow it in order'],
+  ['When watching a film','You get drawn into…','Fully immersed in the emotion','Checking the plausibility and setup'],
+  ['Your ideal day','Looks like…','A day where surprises are fun','A day going smoothly as planned']
+ ],
+ th:[
+  ['สุดสัปดาห์ว่างทั้งวัน','อะไรเติมพลังให้คุณมากกว่า?','ปาร์ตี้สนุก ๆ กับเพื่อน','อยู่เงียบ ๆ คนเดียวชาร์จพลัง'],
+  ['หยิบของชิ้นใหม่ขึ้นมา','คิดอะไรเป็นอย่างแรก?','จะเอาไปจินตนาการทำอะไรได้บ้าง','จะใช้ที่ไหนอย่างไร'],
+  ['เพื่อนกำลังเซ็งเพราะทำพลาด','คุณจะ…ก่อน','ปลอบใจก่อนเลย','ชี้สาเหตุและทางแก้'],
+  ['ถ้าได้ไปเที่ยว','สไตล์ของคุณคือ…','ไปตามใจพาไป','วางแผนละเอียดเป็นชั่วโมง'],
+  ['ไปถึงงานรวมกลุ่มครั้งแรก','ช่วงแรกคุณ…','ทักก่อนและช่วยสร้างบรรยากาศ','รอจนคุ้นแล้วค่อยเข้า'],
+  ['เวลาคุยกัน','บทสนทนาของคุณมักเป็น…','ความหมาย ความเป็นไปได้ การเปรียบเปรย','ข้อเท็จจริงและประสบการณ์จริง'],
+  ['ก่อนตัดสินใจเรื่องสำคัญ','คุณเชื่อสิ่งไหนมากกว่า','ผู้คนและความรู้สึก','ตรรกะและข้อเท็จจริง'],
+  ['มีงานเข้ามาชิ้นหนึ่ง','ปกติคุณ…','รวบตอนใกล้เดดไลน์','ทำให้เสร็จล่วงหน้า'],
+  ['เวลามีเรื่องกังวล','คุณจัดการโดย…','พูดระบายกับใครสักคน','ครุ่นคิดคนเดียว'],
+  ['ตอนเรียนรู้สิ่งใหม่','วิธีของคุณ…','ดูภาพรวมก่อน แล้วทำแบบของตัวเอง','ทีละขั้นตามลำดับที่พิสูจน์แล้ว'],
+  ['ต้องให้ฟีดแบ็ก','คุณให้ความสำคัญกับ…','ใส่ใจความรู้สึกของเขา','ตรงไปตรงมาและชัดเจน'],
+  ['โต๊ะและโฟลเดอร์ของคุณ…','โดยรวม…','ความรกที่ฉันเข้าใจเอง','เป็นระเบียบเสมอ'],
+  ['วันที่นัดแน่นทั้งวัน','วันแบบนั้นคุณ…','ตื่นเต้นและมีพลัง','ค่อย ๆ หมดแรงเงียบ ๆ'],
+  ['ถ้าต้องเลือก','ใจคุณเอนไปทาง…','ความเป็นไปได้ที่ยังไม่มาถึง','ความจริงตรงหน้าตอนนี้'],
+  ['เกิดความขัดแย้งขึ้น','คุณปกป้องสิ่งใดก่อน…','ให้ความสัมพันธ์ไม่บาดหมาง','แยกแยะถูกผิด'],
+  ['แผนพังกะทันหัน','ปฏิกิริยาของคุณ…','กลับสนุกกับความไม่คาดคิด','เครียด ต้องวางแผนใหม่'],
+  ['ในแชทกลุ่ม','ปกติคุณ…','ตอบและคุยอย่างกระตือรือร้น','ส่วนใหญ่อ่าน นาน ๆ พิมพ์ที'],
+  ['สิ่งที่จำได้นาน','ส่วนใหญ่คือ…','ความรู้สึกและความคิดตอนนั้น','ฉากจริงและรายละเอียด'],
+  ['คำชมที่อยากได้ยิน','แบบไหนดีกว่า?','“อบอุ่นและใจดี”','“แม่นยำและเก่ง”'],
+  ['เวลาตัดสินใจ','วิธีของคุณ…','เปิดทางเลือกไว้ ยืดหยุ่น','ตัดสินเร็วแล้วสบายใจ'],
+  ['เจอผู้คนตอนไปเที่ยว','คุณ…','เข้ากับคนแปลกหน้าได้ดี','สนิทลึกกับกลุ่มที่คุ้นเคย'],
+  ['ได้คู่มือมา','ปกติคุณ…','ลองด้วยความรู้สึกก่อน','ทำตามลำดับเป๊ะ ๆ'],
+  ['ตอนดูหนัง','คุณอินกับ…','ดำดิ่งไปกับอารมณ์','ดูความสมเหตุสมผลของเรื่อง'],
+  ['วันในอุดมคติ','เป็นแบบ…','วันที่เซอร์ไพรส์ก็สนุก','วันที่เป็นไปตามแผนราบรื่น']
+ ]
+};
+// 유형 텍스트(코드별 good/bad/games/e는 TYPES(ko)에서 공유, 텍스트만 언어별)
+const TYPES_i18n={
+ en:{
+  ISTJ:{name:'The Steady Keeper',tag:'Reliable and true to their word',desc:'Responsible and thorough — once you take something on, you see it through. Not flashy, but the most dependable person around.',str:['Responsible','Meticulous','Trustworthy'],weak:['Inflexible','Stressed by change'],love:'Steady and caring, even if not expressive',work:'A flawless, detail-proof executor',stress:'Sudden plan changes set you on edge',grow:'Try enjoying the unplanned once in a while'},
+  ISFJ:{name:'The Warm Caretaker',tag:'Quietly but surely by your side',desc:'Considerate and caring by nature. You help from behind rather than seek the spotlight, and treasure every little promise.',str:['Caring','Diligent','Great memory'],weak:['Hard to say no','Bottles things up'],love:'Devoted, though hurt often stays unspoken',work:'A dependable, detail-minded supporter',stress:'You burn out when unappreciated',grow:'Voice your own needs too'},
+  INFJ:{name:'The Deep Dreamer',tag:'Reads hearts without a word',desc:'You chase meaning and sense people’s inner worlds. Quiet but firm in conviction, valuing deep bonds.',str:['Insightful','Empathetic','Principled'],weak:['Suffers alone','Ideal vs reality gap'],love:'Craves a deep, soulful connection',work:'A planner-counselor linking people and meaning',stress:'Work against your values drains you',grow:'Speak up before waiting to be understood'},
+  INTJ:{name:'The Lone Architect',tag:'Plans the board far ahead',desc:'You draw the big picture and push toward goals quietly. Logical and independent, you can’t stand inefficiency.',str:['Strategic','Independent','Insightful'],weak:['Stubborn','Awkward with emotions'],love:'Opens up only to a trusted few',work:'A long-game systems strategist',stress:'Incompetence and inefficiency frustrate you',grow:'See others’ feelings as data too'},
+  ISTP:{name:'The Hands-on Fixer',tag:'Action over talk — takes it apart',desc:'Calm and practical, strong in a crisis. You enjoy figuring things out with your hands and dislike being tied down.',str:['Problem-solving','Composed','Handy'],weak:['Seems detached','Weak long-term plans'],love:'Few words, but there when it counts',work:'A real-time, on-site troubleshooter',stress:'Pointless rules and nagging annoy you',grow:'Share a little more of your thoughts'},
+  ISFP:{name:'The Gentle Soul',tag:'Quietly crafts their own beauty',desc:'Warm and sensory, you treasure the present. You value harmony over competition and show love through action.',str:['Sensitive','Flexible','Friendly'],weak:['Indecisive','Avoids conflict'],love:'A soft love that quietly adapts to you',work:'A creative, hands-on maker',stress:'Constant friction makes you shrink back',grow:'Speak your own opinion clearly too'},
+  INFP:{name:'The Tender Idealist',tag:'Chasing values in a warm imagination',desc:'Pure and high-minded, true to your beliefs. Quiet outside, but full of warm passion and rich feeling within.',str:['Empathetic','Creative','Authentic'],weak:['Loses touch with reality','Easily hurt'],love:'Dreams of a fated, deep connection',work:'A meaning-driven writer/creator',stress:'Clashing values or criticism shakes you',grow:'Turn ideals into small actions'},
+  INTP:{name:'The Curious Explorer',tag:'A lab of endless “why?”',desc:'Curious and in love with logic puzzles. You dig into new concepts and think originally, free of convention.',str:['Analytical','Original','Curious'],weak:['Weak follow-through','Detached from reality'],love:'Drawn to those who click intellectually',work:'A concept-exploring researcher',stress:'Repetition and emotional drain tire you',grow:'Finish what you start'},
+  ESTP:{name:'The Bold Adventurer',tag:'Body before thought — lives the moment',desc:'Bold and full of energy, you shine on the ground. You even enjoy a crisis and can’t stand boredom.',str:['Driven','Quick','Daring'],weak:['Impulsive','No plan for after'],love:'Fiery and thrilling push-and-pull',work:'An act-now results-getter',stress:'You can’t bear being boxed in',grow:'Think three seconds before you leap'},
+  ESFP:{name:'The Life of the Party',tag:'Wherever you are is the party',desc:'Bright and sociable, you make people happy. You live for the joy of now and love the spotlight.',str:['Sociable','Positive','Present'],weak:['Unplanned','Easily distracted'],love:'Expressive and loves playing together',work:'A people-first vibe maker',stress:'Long solo repetition wilts you',grow:'Mind the finish as much as the fun'},
+  ENFP:{name:'The Sparkling Enthusiast',tag:'Heart races at any possibility',desc:'Bursting with curiosity and warmth, you love people. New possibilities light you up, but routine bores you fast.',str:['Passionate','Creative','Friendly'],weak:['Bores quickly','Weak finisher'],love:'Wants thrilling connection and freedom both',work:'An idea-spreading promoter',stress:'Cages and lost freedom frustrate you',grow:'Finish at least one thing you start'},
+  ENTP:{name:'The Idea Machine',tag:'Debate and ideas are a hobby',desc:'Witty and love a good debate, ideas keep bubbling up. You challenge norms and find dull rules boring.',str:['Inventive','Quick-witted','Persuasive'],weak:['Overcommits','Weak on detail'],love:'A witty, intellectually stimulating match',work:'A game-changing starter',stress:'Meaningless rules and repetition itch you',grow:'Push an idea through to execution'},
+  ESTJ:{name:'The Driving Captain',tag:'Results over words — gets things rolling',desc:'Practical and responsible, you lead teams. You set clear goals and rules and push them through with drive.',str:['Leadership','Executing','Responsible'],weak:['Inflexible','Blunt'],love:'A dependable love that surely provides',work:'A goal-pushing manager',stress:'Disorder and vagueness are unbearable',grow:'Watch the process and people’s feelings too'},
+  ESFJ:{name:'The Caring Connector',tag:'Tunes the temperature between people',desc:'Warm and sociable, you look after those around you. You value harmony and thrive on helping and being appreciated.',str:['Caring','Sociable','Responsible'],weak:['Over-reads others','Hard to refuse'],love:'Devoted and expressive love',work:'A team-harmonizing coordinator',stress:'Conflict and indifference drain you',grow:'Validate yourself without others’ approval'},
+  ENFJ:{name:'The People Grower',tag:'A warm leader who draws out potential',desc:'Charismatic and empathetic, you lead people. You find meaning in others’ growth and lift the mood.',str:['Empathetic','Leadership','Persuasive'],weak:['Overreaches','Self-sacrificing'],love:'A leading love, devoted to their partner',work:'A growth-driving leader/mentor',stress:'No return for your effort burns you out',grow:'Care for yourself before others'},
+  ENTJ:{name:'The Grand Commander',tag:'Sees a goal, takes the shortest path',desc:'Bold and decisive, a born commander. You draw the big picture and move people and resources to hit goals.',str:['Commanding','Strategic','Decisive'],weak:['Domineering','Impatient'],love:'A strong, leading love',work:'A strategy-and-management leader',stress:'Incompetence and lost control frustrate you',grow:'Slow down and hear people’s hearts too'}
+ },
+ th:{
+  ISTJ:{name:'ผู้ยึดมั่นเงียบขรึม',tag:'ไว้ใจได้ รักษาคำพูดเสมอ',desc:'มีความรับผิดชอบสูง งานที่รับมาทำจนจบ ไม่หวือหวาแต่พึ่งพาได้ที่สุด',str:['รับผิดชอบ','ละเอียด','น่าเชื่อถือ'],weak:['ไม่ยืดหยุ่น','เครียดกับการเปลี่ยนแปลง'],love:'ดูแลสม่ำเสมอแม้ไม่ค่อยแสดงออก',work:'สายปฏิบัติที่เก็บงานไร้ที่ติ',stress:'แผนที่เปลี่ยนกะทันหันทำให้หงุดหงิด',grow:'ลองสนุกกับความไม่ได้วางแผนบ้าง'},
+  ISFJ:{name:'ผู้ดูแลใจดี',tag:'เงียบ ๆ แต่อยู่เคียงข้างเสมอ',desc:'ใส่ใจและเอื้ออาทรโดยธรรมชาติ ชอบช่วยอยู่เบื้องหลังและเห็นค่าทุกสัญญาเล็ก ๆ',str:['ใส่ใจ','ขยัน','ความจำดี'],weak:['ปฏิเสธไม่เป็น','เก็บไว้ในใจ'],love:'ทุ่มเทดูแล แต่เก็บความน้อยใจไว้',work:'ผู้สนับสนุนที่ใส่ใจรายละเอียด',stress:'เหนื่อยเมื่อไม่ได้รับคำขอบคุณ',grow:'บอกความต้องการของตัวเองบ้าง'},
+  INFJ:{name:'นักฝันลึกซึ้ง',tag:'อ่านใจคนได้โดยไม่ต้องพูด',desc:'ไล่ตามความหมายและไวต่อใจผู้คน เงียบแต่มีความเชื่อมั่นชัดเจน ให้ค่าความสัมพันธ์ลึกซึ้ง',str:['เข้าใจลึก','เห็นอกเห็นใจ','ยึดมั่น'],weak:['ทุกข์คนเดียว','อุดมคติห่างความจริง'],love:'โหยหาการเชื่อมใจที่ลึกซึ้ง',work:'นักวางแผน-ที่ปรึกษาเชื่อมคนกับความหมาย',stress:'งานที่ขัดค่านิยมทำให้หมดพลัง',grow:'พูดออกมาก่อนจะรอให้เข้าใจ'},
+  INTJ:{name:'สถาปนิกเดี่ยว',tag:'วางหมากไว้ล่วงหน้าไกล',desc:'วาดภาพใหญ่และมุ่งเป้าอย่างเงียบ ๆ มีเหตุผลและเป็นตัวของตัวเอง ทนความไร้ประสิทธิภาพไม่ได้',str:['วางกลยุทธ์','อิสระ','เข้าใจลึก'],weak:['ดื้อ','ไม่ถนัดเรื่องอารมณ์'],love:'เปิดใจให้เฉพาะคนที่ไว้ใจ',work:'นักกลยุทธ์ระบบระยะยาว',stress:'ความไร้ประสิทธิภาพทำให้อึดอัด',grow:'มองความรู้สึกคนอื่นเป็นข้อมูลด้วย'},
+  ISTP:{name:'นักแก้ปัญหาด้วยมือ',tag:'ลงมือก่อนพูด แกะดูเอง',desc:'ใจเย็นและปฏิบัติจริง เก่งในภาวะวิกฤต ชอบแก้ปัญหาด้วยมือ ไม่ชอบถูกผูกมัด',str:['แก้ปัญหา','ใจเย็น','มือดี'],weak:['ดูเย็นชา','วางแผนยาวไม่เก่ง'],love:'พูดน้อยแต่อยู่ตรงนั้นเมื่อจำเป็น',work:'สายแก้ปัญหาหน้างานทันที',stress:'กฎจุกจิกและการบ่นทำให้อึดอัด',grow:'แบ่งปันความคิดออกมาบ้าง'},
+  ISFP:{name:'จิตใจอ่อนโยน',tag:'สร้างความงามในแบบเงียบ ๆ',desc:'อบอุ่นและมีสัมผัสศิลป์ ให้ค่าปัจจุบัน ชอบความกลมกลืนมากกว่าการแข่งขัน แสดงรักผ่านการกระทำ',str:['อ่อนไหว','ยืดหยุ่น','เป็นมิตร'],weak:['ลังเล','เลี่ยงความขัดแย้ง'],love:'รักที่ค่อย ๆ ปรับเข้าหากันเงียบ ๆ',work:'นักสร้างสรรค์สายลงมือ',stress:'การเสียดสีต่อเนื่องทำให้หดตัว',grow:'พูดความเห็นของตัวเองให้ชัด'},
+  INFP:{name:'นักอุดมคติใจอ่อน',tag:'ไล่ตามคุณค่าในจินตนาการอบอุ่น',desc:'บริสุทธิ์และอุดมคติสูง ซื่อต่อความเชื่อ ภายนอกเงียบแต่ข้างในเต็มด้วยความรู้สึกและไฟ',str:['เห็นอกเห็นใจ','สร้างสรรค์','จริงใจ'],weak:['ห่างความจริง','ใจบาง'],love:'ฝันถึงการเชื่อมใจที่ลึกดั่งพรหมลิขิต',work:'นักเขียน/สร้างสรรค์ที่มีความหมาย',stress:'ค่านิยมที่ขัดหรือคำวิจารณ์สั่นคลอนใจ',grow:'เปลี่ยนอุดมคติเป็นการลงมือเล็ก ๆ'},
+  INTP:{name:'นักสำรวจช่างสงสัย',tag:'ห้องทดลองของคำว่า “ทำไม”',desc:'ช่างสงสัยและรักปริศนาตรรกะ เจาะแนวคิดใหม่ คิดต่างโดยไม่ติดกรอบ',str:['วิเคราะห์','คิดต่าง','อยากรู้'],weak:['ลงมือไม่สุด','เมินความจริง'],love:'ถูกดึงดูดด้วยคนที่คุยกันถูกคอทางความคิด',work:'นักวิจัยเจาะแนวคิด',stress:'งานซ้ำและการเสียพลังใจทำให้เบื่อ',grow:'ทำสิ่งที่เริ่มให้จบ'},
+  ESTP:{name:'นักผจญภัยกล้าลุย',tag:'ลงมือก่อนคิด สนุกกับปัจจุบัน',desc:'กล้าและพลังล้น โดดเด่นหน้างาน สนุกได้แม้ในวิกฤต ทนความน่าเบื่อไม่ได้',str:['ผลักดัน','ไว','กล้า'],weak:['หุนหัน','ไม่คิดตอนจบ'],love:'รักแบบเร่าร้อนและลุ้นระทึก',work:'สายลงมือทำผลลัพธ์ทันที',stress:'ทนการถูกกักขังไม่ได้',grow:'คิดสักสามวินาทีก่อนลุย'},
+  ESFP:{name:'ตัวจี๊ดสร้างสีสัน',tag:'อยู่ตรงไหนที่นั่นคือปาร์ตี้',desc:'สดใสและเข้าสังคมเก่ง ทำให้คนรอบข้างสนุก ใช้ชีวิตกับความสุขตอนนี้และชอบเป็นจุดสนใจ',str:['เข้าสังคม','คิดบวก','อยู่กับปัจจุบัน'],weak:['ไม่วางแผน','วอกแวก'],love:'แสดงออกและชอบเล่นด้วยกัน',work:'สายสร้างบรรยากาศเน้นคน',stress:'งานซ้ำคนเดียวนาน ๆ ทำให้เหี่ยว',grow:'ใส่ใจตอนจบพอ ๆ กับความสนุก'},
+  ENFP:{name:'นักกระตือรือร้นเปล่งประกาย',tag:'เห็นความเป็นไปได้ก็ใจเต้น',desc:'เต็มไปด้วยความอยากรู้และความอบอุ่น รักผู้คน ติดไฟกับความเป็นไปได้ใหม่ แต่เบื่องานซ้ำเร็ว',str:['มีไฟ','สร้างสรรค์','เป็นมิตร'],weak:['เบื่อเร็ว','เก็บงานไม่เก่ง'],love:'อยากได้ทั้งความผูกพันและอิสระ',work:'นักโปรโมตกระจายไอเดีย',stress:'กรอบและการเสียอิสระทำให้อึดอัด',grow:'ทำสิ่งที่เริ่มให้จบสักอย่าง'},
+  ENTP:{name:'คลังไอเดียปากไว',tag:'ถกเถียงและไอเดียคืองานอดิเรก',desc:'เจ้าปัญญาและชอบโต้วาที ไอเดียผุดไม่หยุด ท้าทายกรอบเดิมและเบื่อกฎน่าเบื่อ',str:['ช่างคิด','ไหวพริบดี','โน้มน้าวเก่ง'],weak:['รับงานเกิน','อ่อนรายละเอียด'],love:'คู่ที่กระตุ้นความคิดและคุยสนุก',work:'นักเปิดเกมใหม่',stress:'กฎไร้สาระและงานซ้ำทำให้คัน',grow:'ผลักไอเดียไปจนถึงการลงมือ'},
+  ESTJ:{name:'หัวหน้าขับเคลื่อน',tag:'เน้นผลลัพธ์ ทำให้ทุกอย่างเดินหน้า',desc:'ปฏิบัติจริงและรับผิดชอบสูง นำทีมได้ ตั้งเป้าและกฎชัดเจนแล้วผลักดันด้วยแรงขับ',str:['ผู้นำ','ลงมือ','รับผิดชอบ'],weak:['ไม่ยืดหยุ่น','พูดตรง'],love:'รักที่ดูแลอย่างมั่นคง',work:'ผู้จัดการที่ผลักเป้าหมาย',stress:'ความไร้ระเบียบและคลุมเครือทนไม่ได้',grow:'ใส่ใจกระบวนการและความรู้สึกคนด้วย'},
+  ESFJ:{name:'ตัวเชื่อมใจดี',tag:'ปรับอุณหภูมิระหว่างผู้คน',desc:'อบอุ่นและเข้าสังคม ดูแลคนรอบข้างดี ให้ค่าความกลมเกลียว มีความสุขเมื่อได้ช่วยและได้รับการยอมรับ',str:['ใส่ใจ','เข้าสังคม','รับผิดชอบ'],weak:['เกรงใจมาก','ปฏิเสธยาก'],love:'รักที่ทุ่มเทและแสดงออกมาก',work:'ผู้ประสานทีมให้กลมเกลียว',stress:'ความขัดแย้งและความเมินเฉยทำให้หมดแรง',grow:'ยอมรับตัวเองโดยไม่ต้องรอคำชม'},
+  ENFJ:{name:'ผู้ปลุกศักยภาพ',tag:'ผู้นำอบอุ่นที่ดึงศักยภาพคนออกมา',desc:'มีเสน่ห์และเห็นอกเห็นใจ นำคนได้ พบความหมายในการช่วยผู้อื่นเติบโตและช่วยสร้างบรรยากาศ',str:['เห็นอกเห็นใจ','ผู้นำ','โน้มน้าว'],weak:['จุ้นเกิน','เสียสละตัวเอง'],love:'รักแบบนำและทุ่มเทให้คู่',work:'ผู้นำ/พี่เลี้ยงที่ช่วยคนเติบโต',stress:'พอทุ่มไปแล้วไม่ได้ตอบแทนก็หมดพลัง',grow:'ดูแลตัวเองก่อนดูแลคนอื่น'},
+  ENTJ:{name:'แม่ทัพวางเกม',tag:'เห็นเป้าก็ลัดสู่เส้นทางสั้นสุด',desc:'กล้าและเด็ดขาด เป็นผู้บัญชาการโดยกำเนิด วาดภาพใหญ่และขับเคลื่อนคนและทรัพยากรสู่เป้าหมาย',str:['สั่งการ','กลยุทธ์','เด็ดขาด'],weak:['เผด็จการ','ใจร้อน'],love:'รักที่เข้มแข็งและเป็นผู้นำ',work:'ผู้นำสายกลยุทธ์และบริหาร',stress:'ความไร้ประสิทธิภาพและควบคุมไม่ได้ทำให้อึดอัด',grow:'ชะลอลงและฟังใจคนบ้าง'}
+ }
+};
+const GNAME_i18n={
+ en:{sudoku:'Sudoku',nono:'Pixel Logic',sort:'Color Sort',merge:'Mallow 2048',cards:'Card Match',count:'People Count',melody:'Melody Memory',rhythm:'Rhythm Tap',fit:'Block Fit',react:'Reaction',trace:'Path Trace',wordsearch:'Word Search',chop:'Mallow Tower',whack:'Mallow Whack',catch:'Marshmallow Catch',anagram:'Anagram',trail:'Trail',spot:'Spot Color'},
+ th:{sudoku:'ซูโดกุ',nono:'พิกเซลลอจิก',sort:'เรียงสี',merge:'มาโลว์ 2048',cards:'จับคู่การ์ด',count:'นับคน',melody:'จำเมโลดี้',rhythm:'เคาะจังหวะ',fit:'วางบล็อก',react:'ความไว',trace:'ลากตามเส้น',wordsearch:'หาคำ',chop:'หอมาโลว์',whack:'ตีมาโลว์',catch:'รับมาชเมลโลว์',anagram:'สลับอักษร',trail:'ลากลำดับ',spot:'หาสีต่าง'}
+};
+const TX={
+ ko:{home:'홈',title:'페르소나',tagline:'24문항으로 보는 나의 성격 16유형',
+  introH:'나는 어떤 유형일까?',introP:'일상 속 <b>24개의 상황</b>에서 나의 선택을 따라가며<br>4가지 축과 16가지 성격 유형을 진단해요.<br>정답은 없어요 — 더 <b>끌리는 쪽</b>을 고르면 돼요.',
+  legend:'<span>⚡ 에너지 E·I</span><span>🔭 인식 N·S</span><span>💗 판단 F·T</span><span>🗂️ 생활 P·J</span>',
+  start:'테스트 시작하기',back:'← 이전 질문',secStr:'🌟 강점',secWeak:'🌀 조심할 점',secTrait:'💬 이런 모습',secMatch:'💞 궁합',mkGood:'환상의 짝',mkBad:'노력이 필요',secGame:'🎮 이 유형에게 어울리는 말로우 게임',
+  share:'📷 결과 카드 공유',again:'다시 하기',disc:'본 진단은 <b>재미로 즐기는 콘텐츠</b>예요. 특정 성격 검사(MBTI®)와 무관한 말로우 자체 콘텐츠이며, 사람을 규정하지 않아요 🌙',footer:'가볍게 즐기는 두뇌게임',
+  traitLove:'연애',traitWork:'일·공부',traitStress:'스트레스',traitGrow:'성장 포인트',cardSub:'페르소나 · 성격 유형',docTitle:'말로우 페르소나 — 성격 유형 심층 진단 (16유형) | Mallow',shareText:function(c){return '내 성격 유형은 '+c+'! 🧭 playmallow.com/persona';}},
+ en:{home:'Home',title:'Persona',tagline:'Your personality in 24 questions · 16 types',
+  introH:'Which type am I?',introP:'Follow your choices through <b>24 everyday situations</b><br>to reveal your 4 axes and one of 16 personality types.<br>There’s no right answer — just pick what you <b>lean toward</b>.',
+  legend:'<span>⚡ Energy E·I</span><span>🔭 Perceiving N·S</span><span>💗 Judging F·T</span><span>🗂️ Lifestyle P·J</span>',
+  start:'Start the test',back:'← Previous',secStr:'🌟 Strengths',secWeak:'🌀 Watch out for',secTrait:'💬 How you show up',secMatch:'💞 Compatibility',mkGood:'Perfect match',mkBad:'Takes effort',secGame:'🎮 Mallow games for your type',
+  share:'📷 Share result card',again:'Try again',disc:'This is <b>just-for-fun content</b>. It is Mallow’s own material, unrelated to any specific test (MBTI®), and does not define anyone 🌙',footer:'brain games, made light',
+  traitLove:'Love',traitWork:'Work·Study',traitStress:'Under stress',traitGrow:'Growth tip',cardSub:'Persona · Personality type',docTitle:'Mallow Persona — Personality Type Test (16 types) | Mallow',shareText:function(c){return 'My personality type is '+c+'! 🧭 playmallow.com/persona';}},
+ th:{home:'หน้าแรก',title:'เพอร์โซนา',tagline:'บุคลิกของคุณใน 24 ข้อ · 16 แบบ',
+  introH:'ฉันเป็นแบบไหน?',introP:'ตามการเลือกของคุณผ่าน <b>24 สถานการณ์ในชีวิตประจำวัน</b><br>เพื่อเผย 4 แกนและ 1 ใน 16 บุคลิกภาพ<br>ไม่มีคำตอบถูกผิด — เลือกที่คุณ<b>เอนเอียงไป</b>ได้เลย',
+  legend:'<span>⚡ พลังงาน E·I</span><span>🔭 การรับรู้ N·S</span><span>💗 การตัดสิน F·T</span><span>🗂️ การใช้ชีวิต P·J</span>',
+  start:'เริ่มทำแบบทดสอบ',back:'← ข้อก่อนหน้า',secStr:'🌟 จุดแข็ง',secWeak:'🌀 สิ่งที่ต้องระวัง',secTrait:'💬 ตัวตนของคุณ',secMatch:'💞 ความเข้ากัน',mkGood:'คู่ที่ใช่',mkBad:'ต้องใช้ความพยายาม',secGame:'🎮 เกมมาโลว์ที่เข้ากับแบบของคุณ',
+  share:'📷 แชร์การ์ดผล',again:'ทำอีกครั้ง',disc:'นี่เป็น <b>คอนเทนต์เพื่อความสนุก</b> เป็นเนื้อหาของมาโลว์เอง ไม่เกี่ยวกับแบบทดสอบเฉพาะใด ๆ (MBTI®) และไม่ตัดสินตัวตนของใคร 🌙',footer:'เกมสมองเบา ๆ',
+  traitLove:'ความรัก',traitWork:'งาน·เรียน',traitStress:'ยามเครียด',traitGrow:'จุดเติบโต',cardSub:'เพอร์โซนา · บุคลิกภาพ',docTitle:'Mallow เพอร์โซนา — แบบทดสอบบุคลิกภาพ (16 แบบ) | Mallow',shareText:function(c){return 'บุคลิกของฉันคือ '+c+'! 🧭 playmallow.com/persona';}}
+};
+let LANG='ko';
+function detectLang(){ let l=null; try{l=new URLSearchParams(location.search).get('lang');}catch(e){} if(!l){try{l=localStorage.getItem('brain.lang');}catch(e){}} return ['ko','en','th'].includes(l)?l:'ko'; }
+function qText(i){ if(LANG==='ko'){ const q=Q[i]; return {s:q.s,t:q.t,a:q.a[0],b:q.b[0]}; } const q=Q_i18n[LANG][i]; return {s:q[0],t:q[1],a:q[2],b:q[3]}; }
+function typeOf(code){ return LANG==='ko' ? TYPES[code] : Object.assign({}, TYPES[code], TYPES_i18n[LANG][code]); }
+function poleName(code){ return (AXL[LANG]&&AXL[LANG][code]) || code; }
+function gameName(id){ const base=GNAME[id]||['🎮',id]; const nm=(LANG!=='ko'&&GNAME_i18n[LANG]&&GNAME_i18n[LANG][id])||base[1]; return [base[0],nm]; }
+function setLang(l){ LANG=['ko','en','th'].includes(l)?l:'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang();
+  if(resultEl.style.display==='block'&&LASTRES){ finish(); } else if(quizCard.style.display==='block'){ renderQ(); } }
+function applyLang(){ const d=TX[LANG];
+  document.getElementById('langSel').value=LANG;
+  document.getElementById('t-home').textContent=d.home;
+  document.getElementById('t-title').textContent=d.title;
+  document.getElementById('tagline').textContent=d.tagline;
+  document.getElementById('t-introH').textContent=d.introH;
+  document.getElementById('t-introP').innerHTML=d.introP;
+  document.getElementById('t-legend').innerHTML=d.legend;
+  document.getElementById('startBtn').textContent=d.start;
+  document.getElementById('backBtn').textContent=d.back;
+  document.getElementById('t-secStr').textContent=d.secStr;
+  document.getElementById('t-secWeak').textContent=d.secWeak;
+  document.getElementById('t-secTrait').textContent=d.secTrait;
+  document.getElementById('t-secMatch').textContent=d.secMatch;
+  document.getElementById('t-mkGood').textContent=d.mkGood;
+  document.getElementById('t-mkBad').textContent=d.mkBad;
+  document.getElementById('t-secGame').textContent=d.secGame;
+  document.getElementById('shareBtn').textContent=d.share;
+  document.getElementById('againBtn').textContent=d.again;
+  document.getElementById('t-disc').innerHTML=d.disc;
+  document.getElementById('t-footer').textContent=d.footer;
+  document.title=d.docTitle;
+}
+
 /* ===== 로직 ===== */
 let step=0; const ans=new Array(Q.length).fill(null);
 const introCard=document.getElementById('introCard'), quizCard=document.getElementById('quizCard'), resultEl=document.getElementById('result');
 function startQuiz(){ step=0; ans.fill(null); introCard.style.display='none'; resultEl.style.display='none'; quizCard.style.display='block'; document.getElementById('tagline').style.visibility='hidden'; gtag('event','persona_start',{}); renderQ(); window.scrollTo({top:0}); }
 function renderQ(){
-  const q=Q[step];
+  const qt=qText(step); const meta=Q[step];
   document.getElementById('progBar').style.width=Math.round(step/Q.length*100)+'%';
   document.getElementById('progTxt').textContent=(step+1)+' / '+Q.length;
-  document.getElementById('qScene').textContent=q.s;
-  document.getElementById('qText').textContent=q.t;
+  document.getElementById('qScene').textContent=qt.s;
+  document.getElementById('qText').textContent=qt.t;
   document.getElementById('backBtn').style.visibility=step>0?'visible':'hidden';
   const opts=document.getElementById('opts'); opts.innerHTML='';
-  [['A',q.a],['B',q.b]].forEach(([lab,o])=>{
+  [['A',qt.a,meta.a[1]],['B',qt.b,meta.b[1]]].forEach(([lab,label,pole])=>{
     const b=document.createElement('button'); b.className='opt';
-    b.innerHTML='<span class="oi">'+lab+'</span>'+o[0];
-    b.onclick=()=>choose(o[1]);
+    b.innerHTML='<span class="oi">'+lab+'</span>'+label;
+    b.onclick=()=>choose(pole);
     opts.appendChild(b);
   });
 }
@@ -260,10 +417,10 @@ function computeType(){
 let LASTRES=null;
 function finish(){
   document.getElementById('progBar').style.width='100%';
-  const r=computeType(); LASTRES=r; const T=TYPES[r.code];
+  const r=computeType(); LASTRES=r; const T=typeOf(r.code); const d=TX[LANG];
   gtag('event','persona_result',{type:r.code});
   try{ localStorage.setItem('persona_seen','1'); localStorage.setItem('persona_last',r.code); }catch(e){}
-  document.getElementById('rEmoji').textContent=T.e;
+  document.getElementById('rEmoji').textContent=TYPES[r.code].e;
   document.getElementById('rCode').textContent=r.code;
   document.getElementById('rName').textContent=T.name;
   document.getElementById('rTag').textContent=T.tag;
@@ -272,19 +429,19 @@ function finish(){
   document.getElementById('bars').innerHTML=r.bars.map(b=>{
     const lWin=b.winLeft, rWin=!b.winLeft;
     return '<div class="bar-row"><div class="bar-lab">'+
-      '<span class="l'+(lWin?' win':'')+'">'+b.ax.l.code+' '+b.ax.l.name+' '+b.lpct+'%</span>'+
-      '<span class="r'+(rWin?' win':'')+'">'+b.rpct+'% '+b.ax.r.name+' '+b.ax.r.code+'</span></div>'+
+      '<span class="l'+(lWin?' win':'')+'">'+b.ax.l.code+' '+poleName(b.ax.l.code)+' '+b.lpct+'%</span>'+
+      '<span class="r'+(rWin?' win':'')+'">'+b.rpct+'% '+poleName(b.ax.r.code)+' '+b.ax.r.code+'</span></div>'+
       '<div class="bar"><i style="width:'+b.lpct+'%"></i></div></div>';
   }).join('');
   document.getElementById('rStrength').innerHTML=T.str.map(s=>'<span>'+s+'</span>').join('');
   document.getElementById('rWeak').innerHTML=T.weak.map(s=>'<span>'+s+'</span>').join('');
   document.getElementById('rTraits').innerHTML=[
-    ['💗','연애',T.love],['💼','일·공부',T.work],['🌧️','스트레스',T.stress],['🌱','성장 포인트',T.grow]
+    ['💗',d.traitLove,T.love],['💼',d.traitWork,T.work],['🌧️',d.traitStress,T.stress],['🌱',d.traitGrow,T.grow]
   ].map(x=>'<div class="frow"><div class="fi">'+x[0]+'</div><div class="ft"><div class="fn">'+x[1]+'</div><div class="fc">'+x[2]+'</div></div></div>').join('');
-  const gd=TYPES[T.good], bd=TYPES[T.bad];
-  document.getElementById('rGood').textContent=T.good+' '+(gd?gd.name:'');
-  document.getElementById('rBad').textContent=T.bad+' '+(bd?bd.name:'');
-  document.getElementById('rRecs').innerHTML=T.games.map(id=>{ const g=GNAME[id]||['🎮',id];
+  const meta=TYPES[r.code]; const gd=typeOf(meta.good), bd=typeOf(meta.bad);
+  document.getElementById('rGood').textContent=meta.good+' '+(gd?gd.name:'');
+  document.getElementById('rBad').textContent=meta.bad+' '+(bd?bd.name:'');
+  document.getElementById('rRecs').innerHTML=meta.games.map(id=>{ const g=gameName(id);
     return '<a class="rec" href="/?game='+id+'"><div class="re">'+g[0]+'</div><div class="rn">'+g[1]+'</div></a>'; }).join('');
   quizCard.style.display='none'; introCard.style.display='none'; resultEl.style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
@@ -295,7 +452,7 @@ const logoImg=new Image(); logoImg.src='/mallow-logo.svg';
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
 function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
 function drawCard(){
-  const r=LASTRES, T=TYPES[r.code];
+  const r=LASTRES, T=typeOf(r.code), d=TX[LANG];
   const cv=document.getElementById('shareCanvas'), c=cv.getContext('2d'), W=600,H=820;
   const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#8b6ff0'); g.addColorStop(1,'#ff8aa0'); c.fillStyle=g; c.fillRect(0,0,W,H);
   c.fillStyle='#fff'; roundRect(c,40,50,W-80,H-100,28); c.fill();
@@ -305,18 +462,18 @@ function drawCard(){
   const mw=50,gap=11,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=78;
   if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
-  c.font='700 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('페르소나 · 성격 유형',W/2,170);
+  c.font='700 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(d.cardSub,W/2,170);
   // 이모지 + 코드
-  c.font='72px sans-serif'; c.fillText(T.e,W/2,258);
+  c.font='72px sans-serif'; c.fillText(TYPES[r.code].e,W/2,258);
   c.font='900 56px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(r.code,W/2,326);
   c.font='800 26px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(T.name,W/2,366);
-  c.font='500 16px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; wrap(c,T.tag,W/2,396,W-160,24);
+  c.font='500 16px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; wrap(c,T.tag,W/2,396,W-140,24);
   // 축 4바
   let by=452; const bx=110, bw2=W-220;
   r.bars.forEach(b=>{
     c.textAlign='left'; c.font='800 15px "Apple SD Gothic Neo",sans-serif';
-    c.fillStyle=b.winLeft?'#ff6f9c':'#b7add0'; c.fillText(b.ax.l.code+' '+b.ax.l.name,bx,by-8);
-    c.textAlign='right'; c.fillStyle=b.winLeft?'#b7add0':'#ff6f9c'; c.fillText(b.ax.r.name+' '+b.ax.r.code,bx+bw2,by-8);
+    c.fillStyle=b.winLeft?'#ff6f9c':'#b7add0'; c.fillText(b.ax.l.code+' '+poleName(b.ax.l.code),bx,by-8);
+    c.textAlign='right'; c.fillStyle=b.winLeft?'#b7add0':'#ff6f9c'; c.fillText(poleName(b.ax.r.code)+' '+b.ax.r.code,bx+bw2,by-8);
     // track
     c.fillStyle='#eee6fb'; roundRect(c,bx,by,bw2,12,6); c.fill();
     const fillW=Math.max(12,Math.round(bw2*b.lpct/100));
@@ -330,9 +487,10 @@ function drawCard(){
 }
 function share(){ if(!LASTRES) return; gtag('event','persona_share',{type:LASTRES.code}); const cv=drawCard();
   cv.toBlob(function(blob){ const file=new File([blob],'mallow-persona.png',{type:'image/png'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:'내 성격 유형은 '+LASTRES.code+'! 🧭 playmallow.com/persona'}).catch(()=>{}); }
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:TX[LANG].shareText(LASTRES.code)}).catch(()=>{}); }
     else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-persona.png'; a.click(); } },'image/png'); }
 
+LANG=detectLang(); document.documentElement.lang=LANG; applyLang();
 document.getElementById('startBtn').onclick=startQuiz;
 document.getElementById('shareBtn').onclick=share;
 document.getElementById('againBtn').onclick=startQuiz;

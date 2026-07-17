@@ -1,16 +1,15 @@
 # Active Session State
 
 ## Current task
-(완료) **말로우 페르소나**(`/persona/`) 심층 성격 유형 진단 신규 배포.
-- 24문항 시나리오형(축당 6: EI/SN/TF/JP) → 16유형. 축별 % 바 + 유형 풀 프로필(강점/약점/연애/일/스트레스/성장/궁합/추천게임).
-- 추천 게임은 `/?game=<id>` 딥링크(앱 showScreen 진입 funnel). 결과 공유카드(600x820, 코드+별명+4축바) 필수 반영.
-- 홈 배선: HOME_GAMES persona(koOnly,cat.fun) + funByLang.ko + nav.persona i18n + 최초방문 dot(persona_seen) + sitemap + brain_app 동기화.
-- 검증: node --check OK, 16유형·24문항·궁합/게임 참조 무결, 채점 시뮬(극단값 정확·랜덤 2000회 전부 유효·16종 도달). site_audit ld+json 오탐 제외 패치.
+(완료) **말로우 페르소나 다국어(ko/en/th)** 확장 배포.
+- TX(3언어 UI)+AXL(축 극명)+Q_i18n(en/th 24문항)+TYPES_i18n(en/th 16유형 9필드)+GNAME_i18n. 접근자 qText/typeOf/poleName/gameName로 렌더 분기. detectLang(?lang→brain.lang)+langSel+applyLang+setLang(결과중 언어변경 시 재렌더).
+- 채점은 언어무관(Q 극/축 공유) — 시뮬로 ko=en=th 동일코드 확인. 홈: persona langs ko/en/th + funByLang 3언어 + goExternal ?lang 전달.
+- 검증: node --check OK, 24문항×3 / 16유형×2 필드 무결, TX 키 동일, site_audit 클린, brain_app 동기화.
 
 ## Decisions
-- braintype(6문항·게임추천)와 분리: persona=심층 진단. MBTI® 미표기·유형 설명 자체작성(저작권).
-- v1 ko 전용(langSel 없음), 반응 좋으면 en/th·인지기능(v2).
+- persona=심층진단(24문항), braintype(6문항)와 분리. MBTI® 미표기·설명 자체작성.
+- 앞선: 질문 상황문구 15px, 퀴즈/결과서 태그라인 숨김.
 
 ## Open questions
 - 모아모아 퍼즐 D+25(8월 초). 개인정보처리방침(로그인/애드센스 전).
-- persona 반응 보고 en/th 확장 여부 결정.
+

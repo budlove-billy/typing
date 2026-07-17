@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-17 — **말로우 페르소나 다국어(ko/en/th)**: `TX`(3언어 UI)+`AXL`(축 극명)+`Q_i18n`(en/th 24문항)+`TYPES_i18n`(en/th 16유형)+`GNAME_i18n`. 접근자 qText/typeOf/poleName/gameName로 언어 분기, detectLang(?lang→brain.lang)+langSel+setLang(결과중 언어변경 재렌더). 채점은 언어무관(Q 극/축 공유, 시뮬로 ko=en=th 동일코드 확인). 홈 persona langs ko/en/th·funByLang 3언어·goExternal ?lang. (질문 상황문구 15px·퀴즈/결과 태그라인 숨김 포함)
+
 - 2026-07-16 — **말로우 페르소나(`/persona/`)**: 심층 성격 유형 진단(재미·cat.fun). 24문항 시나리오형(축당 6: EI/SN/TF/JP)→16유형, 축별 % 바 + 유형 풀 프로필(강점·약점·연애·일·스트레스·성장·궁합·추천게임). 추천게임 `/?game=<id>` 딥링크 funnel, **결과 공유카드**(코드+별명+4축바). braintype와 분리(그건 6문항 게임추천). MBTI® 미표기·유형설명 자체작성(저작권). v1 ko 전용. 채점 시뮬 검증(극단값·랜덤2000·16종 도달).
 
 - 2026-07-13 — **운세 다국어 마감**: ① 홈→운세 정적페이지 이동 시 현재 앱 언어를 `?lang=`로 전달(`goExternal`) → 별자리 영어 자동 적용 문제 해소.
