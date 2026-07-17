@@ -91,19 +91,19 @@ const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http:/
 /* ===== i18n ===== */
 const TX={
  ko:{home:'홈',title:'크라운',tagline:'행·열·색 구역에 왕관 하나씩',clear:'지우기',
-   date:d=>'📅 '+d+' 오늘의 퍼즐',hint:'빈칸 탭 → ✕(표시) → 👑(왕관) → 빈칸. 각 행·열·색 구역에 왕관을 딱 하나씩, 왕관끼리는 상하좌우·대각으로 <b>닿지 않게</b> 놓으세요.',
+   date:d=>'📅 '+d+' 오늘의 퍼즐',hint:'👑 <b>목표</b> — 가로줄·세로줄·<b>색깔 구역</b>마다 왕관을 <b>딱 1개씩</b> 놓아요.<br>🚫 왕관끼리 <b>상하좌우·대각선으로 붙으면</b> 안 돼요(한 칸 이상 떨어뜨리기).<br>👆 칸을 탭하면 <b>👑 → ✕</b>(여기 아님 표시) <b>→ 빈칸</b> 순서로 바뀌어요. ✕는 후보를 지울 때 쓰는 메모예요.',
    disc:'매일 자정(KST) 새 퍼즐이 나와요. 오직 <b>논리</b>로 유일한 정답을 풀 수 있게 만들어집니다 👑',footer:'가볍게 즐기는 두뇌게임',
    size:'크기',newGame:'새 퍼즐',share:'📷 결과 공유',again:'다시 풀기',won:'클리어! 👑',wonTime:t=>'걸린 시간 '+t,
    share1:'말로우 크라운',share2:d=>d+' 데일리',shareText:t=>'말로우 크라운 클리어! 👑 '+t+' playmallow.com/queens',docTitle:'말로우 크라운 — 오늘의 왕관 퍼즐 (Queens) | Mallow',
    toastBad:'왕관 규칙 위반! 빨간 칸을 확인하세요.'},
  en:{home:'Home',title:'Crown',tagline:'One crown per row, column & color region',clear:'Clear',
-   date:d=>'📅 '+d+' Daily Puzzle',hint:'Tap a cell → ✕ (mark) → 👑 (crown) → empty. Place exactly one crown in each row, column and color region, and no two crowns may <b>touch</b> — not even diagonally.',
+   date:d=>'📅 '+d+' Daily Puzzle',hint:'👑 <b>Goal</b> — place exactly <b>one crown</b> in every row, every column and every <b>color region</b>.<br>🚫 No two crowns may <b>touch</b>, not even diagonally (keep them at least one cell apart).<br>👆 Tap a cell to cycle <b>👑 → ✕</b> (not here) <b>→ empty</b>. The ✕ is just a note to rule a cell out.',
    disc:'A new puzzle every midnight (KST). Each one has a single answer solvable by <b>pure logic</b> 👑',footer:'brain games, made light',
    size:'Size',newGame:'New puzzle',share:'📷 Share result',again:'Play again',won:'Solved! 👑',wonTime:t=>'Time '+t,
    share1:'Mallow Crown',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Crown! 👑 '+t+' playmallow.com/queens',docTitle:'Mallow Crown — Daily Queens Puzzle | Mallow',
    toastBad:'Crown rule broken! Check the red cells.'},
  th:{home:'หน้าแรก',title:'คราวน์',tagline:'วางมงกุฎ 1 อันต่อแถว คอลัมน์ และโซนสี',clear:'ล้าง',
-   date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'แตะช่อง → ✕ (ทำเครื่องหมาย) → 👑 (มงกุฎ) → ว่าง วางมงกุฎ 1 อันในแต่ละแถว คอลัมน์ และโซนสี และมงกุฎห้าม<b>ติดกัน</b> แม้แต่แนวทแยง',
+   date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'👑 <b>เป้าหมาย</b> — วางมงกุฎ <b>1 อัน</b> ในทุกแถว ทุกคอลัมน์ และทุก<b>โซนสี</b><br>🚫 มงกุฎห้าม<b>ติดกัน</b> แม้แต่แนวทแยง (ให้ห่างกันอย่างน้อย 1 ช่อง)<br>👆 แตะช่องเพื่อสลับ <b>👑 → ✕</b> (ไม่ใช่ตรงนี้) <b>→ ว่าง</b> เครื่องหมาย ✕ ใช้จดว่าตัดช่องนี้ออก',
    disc:'ปริศนาใหม่ทุกเที่ยงคืน (KST) ทุกด่านมีคำตอบเดียว แก้ได้ด้วย<b>ตรรกะ</b>ล้วน 👑',footer:'เกมสมองเบา ๆ',
    size:'ขนาด',newGame:'ปริศนาใหม่',share:'📷 แชร์ผล',again:'เล่นอีกครั้ง',won:'สำเร็จ! 👑',wonTime:t=>'เวลา '+t,
    share1:'Mallow คราวน์',share2:d=>d+' รายวัน',shareText:t=>'แก้ Mallow คราวน์สำเร็จ! 👑 '+t+' playmallow.com/queens',docTitle:'Mallow คราวน์ — ปริศนามงกุฎรายวัน | Mallow',
@@ -169,7 +169,7 @@ function paint(){
     d.classList.toggle('bad', bad.has(r*N+c));
   });
 }
-function tap(r,c){ if(WON) return; ST[r][c]=(ST[r][c]+1)%3; paint(); checkWin(); }
+function tap(r,c){ if(WON) return; const s=ST[r][c]; ST[r][c]= s===0?2:(s===2?1:0); paint(); checkWin(); } // 빈칸→👑→✕→빈칸
 function conflicts(){
   const bad=new Set(); const crowns=[];
   for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(ST[r][c]===2) crowns.push([r,c]);
