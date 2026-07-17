@@ -39,6 +39,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
+  --wrap:860px; /* 콘텐츠(.screen) 중앙 컬럼 폭 — 상·하단 네비 정렬 기준 */
   --bg:#f5f7fb;--bg2:#ffffff;--bg3:#eef1f7;--bg4:#e2e7f0;
   --border:#e4e9f2;--border2:#cdd5e5;
   --text:#182235;--text2:#5a6683;--text3:#6b7794;
@@ -70,7 +71,7 @@ h1,h2,h3{font-weight:600}
 
 /* NAV */
 :focus-visible{outline:2px solid var(--purple);outline-offset:2px;border-radius:4px}
-nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05)}
+nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(24,34,53,.05);padding:0 max(0px,calc((100% - var(--wrap))/2))}
 .nav-logo{display:flex;align-items:center;gap:.5rem;letter-spacing:-0.02em;white-space:nowrap;padding:0 .9rem 0 1.05rem;flex-shrink:0;cursor:pointer;line-height:1}
 .nav-mascot{display:inline-flex;align-items:center;flex-shrink:0}
 .nav-mascot svg{width:40px;height:40px;display:block}
@@ -713,7 +714,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .rc-box.bad{background:linear-gradient(135deg,#c97a00,#a86300)}
 .rc-box-sub{font-size:1.2rem;font-weight:600;opacity:.92}
 /* ===== Phase2: 하단 탭바 · 홈 개편 · 기록 ===== */
-.tabbar{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -1px 6px rgba(24,34,53,.05)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -1px 6px rgba(24,34,53,.05);padding:0 max(0px,calc((100% - var(--wrap))/2))}
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text3);transition:.12s;padding:0}
 .tab-btn.active{color:var(--purple)}
 .tab-ico{font-size:1.4rem;line-height:1;filter:grayscale(.4);opacity:.75}
