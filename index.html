@@ -134,6 +134,10 @@ body.ingame .nav-logo{padding-left:.7rem;gap:.35rem}
 
 /* CARDS */
 .card{background:#fff;border:1px solid rgba(228,233,242,.7);border-radius:var(--radius3);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+/* 게임이 쓰는 능력 칩(효능 주장 아님·설명용) */
+.uses-abil{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:-.5rem 0 1.1rem}
+.ua-label{font-size:.78rem;font-weight:700;color:var(--text3)}
+.ua-chip{font-size:.76rem;font-weight:800;color:var(--purple);background:var(--purple3);border:1px solid rgba(110,146,255,.28);border-radius:999px;padding:.22rem .62rem}
 
 /* TYPING GAME */
 .typing-top{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -3509,6 +3513,7 @@ const I18N = {
   "records.noData": {ko:"아직 기록 없음 — 관련 게임을 해보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
+  "game.usesAbility": {ko:"이 게임이 쓰는 능력", en:"Abilities you'll use", th:"ทักษะที่ได้ใช้"},
   "cat.focus": {ko:"집중력", en:"Focus", th:"สมาธิ"},
   "cat.speed": {ko:"순발력", en:"Speed", th:"ความไว"},
   "cat.space": {ko:"공간감각", en:"Spatial", th:"มิติสัมพันธ์"},
@@ -3814,6 +3819,7 @@ function applyLanguage(){
 
   // 4) 동적으로 갱신해야 하는 화면별 보조 함수 호출 (현재 화면 다시 그리기)
   refreshDynamicTexts();
+  try{ renderUsesAbility(); }catch(e){}
 }
 
 // 정적 속성만으로 처리 안 되는, JS가 매번 새로 그리는 영역들을 현재 화면 기준으로 다시 렌더
@@ -7382,6 +7388,17 @@ function renderGames(){
 // ===== 두뇌 능력치 (게임 수행 기반 지표, 실제 지능 측정 아님) =====
 const ABILITIES=['memory','focus','speed','space','calc','logic','lang'];
 const ABILITY_CAT={memory:'cat.memory',focus:'cat.focus',speed:'cat.speed',space:'cat.space',calc:'cat.calc',logic:'cat.logic',lang:'cat.lang'};
+// 각 게임 인트로에 "이 게임이 쓰는 능력" 칩 자동 주입(설명용·효능 주장 아님). 언어 변경 시 재호출.
+function renderUsesAbility(){
+  document.querySelectorAll('[data-i18n$=".intro"]').forEach(p=>{
+    const id=(p.getAttribute('data-i18n')||'').replace('.intro',''); const w=ABILITY_MAP[id]; if(!w) return;
+    let box=p.nextElementSibling;
+    if(!box||!box.classList||!box.classList.contains('uses-abil')){ box=document.createElement('div'); box.className='uses-abil'; p.parentNode.insertBefore(box,p.nextSibling); }
+    const maxW=Math.max.apply(null,Object.values(w));
+    const axes=Object.keys(w).filter(a=>ABILITY_CAT[a]&&w[a]>=maxW*0.5).sort((a,b)=>w[b]-w[a]).slice(0,3);
+    box.innerHTML='<span class="ua-label">🧠 '+t('game.usesAbility')+'</span>'+axes.map(a=>'<span class="ua-chip">'+t(ABILITY_CAT[a])+'</span>').join('');
+  });
+}
 // 게임 → 능력 기여 가중치(%)
 const ABILITY_MAP={
   flash:{memory:70,focus:20,speed:10}, count:{memory:70,focus:20,calc:10}, nback:{memory:70,focus:30}, cards:{memory:70,focus:20,speed:10},
