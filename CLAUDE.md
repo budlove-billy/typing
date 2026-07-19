@@ -140,15 +140,22 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8065-8069** (5 ports total).
+This project is allocated the port range **8086-8090** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8065-8069`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8086-8090`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8065`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8069`
+**Showing the user a web page / preview (MUST follow):**
+- A static page or site (HTML/CSS/JS, no live backend) — save it (with its assets) under `public/` in your work dir, then give the user a **clickable markdown link** (never a bare path — a bare path renders as dead plain text the user can't click):
+  `[打开页面](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/public/<file>.html)`
+  SmartJ serves that folder directly, so the link always opens — NO server and NO port needed. (`generated_images/` is served the same way.)
+- **NEVER** hand the user a `http://localhost:<port>/…` link or hardcode a port like `:8000` — they cannot reach your local dev server that way.
+- Only start a real server (on a port from the range above) when the page needs a live backend/API; for anything static, always use the `public/` link.
+
+**Env vars injected into your shell:** `PROJECT_PORT_START=8086`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8090`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -253,10 +260,16 @@ the project stays lean.
   your tools (webread / git / unzip / the chat) and **author a clean skill to the
   template** — don't dump the raw source. New skills are added unfavorited; the user
   favorites the keepers on the Skills page to make them pluggable in projects.
+- `skills update <code|key> [--dir <folder>] [--name N] [--category C] [--description D]`
+  — update an EXISTING skill in place (same key/code/favorite state). **When editing a
+  skill, ALWAYS use `update` — never `create` a near-duplicate with a suffixed name.**
+  With `--dir` the folder REPLACES the skill's files (must include SKILL.md); without
+  it, only the metadata changes.
+- `skills delete <code|key>` — delete a skill from the LIBRARY (`remove` merely unplugs
+  it from this project). Builtin skills can't be deleted.
 
 Codes look like `S0042`; keys look like `mdbox-media`. Either is accepted.
 <!-- SKILLS_TOOL_END -->
-
 <!-- CLONE_TOOL_BEGIN -->
 ## Session clones — 分身 (`clone`)
 
@@ -389,3 +402,41 @@ user the relative path so they can preview/download it in the file browser.
 
 Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first** before responding, and let it shape your tone, focus, and what you proactively bring up.
 <!-- ROLE_REF_END -->
+
+<!-- CAPABILITY_AUTOPILOT_BEGIN -->
+## Capability autopilot — the task pulls in capabilities (MUST follow)
+
+SmartJ users are non-programmers. They will NEVER browse the skills / roles /
+connectors / plugins libraries themselves — they only type what they want. YOU are
+the one who notices what a task needs and equips this project:
+
+1. When a task is of a kind you haven't handled here before (make a PPT, scrape a
+   site, process video, talk to an external service, ...), FIRST spend a few seconds
+   checking the library: `skills search <keyword>`; for an external system
+   `connectors search <keyword>`; for bundled capability packs `plugins list`.
+2. Found a fit → SUGGEST it, don't install it. One short line in the user's
+   language, e.g. 「这个任务用『数据图表』技能效果更好,要我启用吗?」 — then WAIT.
+   Only after the user agrees do you equip it (`skills add ...`,
+   `connectors enable ...`, `plugins enable ...`), and confirm in one line. Never
+   install anything the user hasn't approved.
+3. Anything additionally needing the USER's account / API key / money (connector
+   credentials, paid services) → explain what's needed when you ask, and collect
+   the credential conversationally after they agree.
+4. When an approved capability is clearly no longer needed, you may suggest
+   unplugging it (`skills remove ...`) — plugged capabilities cost context tokens.
+5. For a sub-task needing deep domain expertise, `roles search` and suggest the
+   expert; on OK, `roles add <code>` and delegate to that sub-agent.
+
+Be proactive about NOTICING and SUGGESTING — never wait for the user to name a
+tool, and never equip one behind their back. The user describes the outcome and
+stays in charge; you scout the toolkit.
+
+## Explicit ability references
+
+A message may begin with one or more `[skill: <key>]`, `[connector: <key>]`,
+`[plugin: <key>]` or `[mcp: <key>]` tags — the user picked those abilities in the
+composer to say "use THIS for what follows." Treat it as an explicit instruction:
+use that ability for the request. It's already enabled on the project, so just use
+it (no need to ask). Example: `[skill: mdbox-media] 生成一张海报` → use the
+mdbox-media skill to generate the poster.
+<!-- CAPABILITY_AUTOPILOT_END -->
