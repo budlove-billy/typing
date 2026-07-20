@@ -2586,7 +2586,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="section-head"><h2 data-i18n="diff.title">틀린 그림 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="diff.intro">
       위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>
-      레벨이 오를수록 판이 커지고 차이가 많아집니다. 60초 타임어택.
+      레벨이 오를수록 판이 커지고 차이가 많아집니다. <b>판마다 30초</b>!
     </p>
     <div class="difficulty-row">
       <div class="diff-btn" id="df-diff-easy" onclick="setDiffDiff('easy')"><h3>🌱 <span data-i18n="diff.easy">쉬움</span></h3><p data-i18n="diff.easyDesc">작은 판</p></div>
@@ -2602,7 +2602,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="mg-stat-divider"></div>
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="diff.combo">COMBO</div><div class="mg-stat-value" id="df-combo">0</div></div>
     </div>
-    <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="df-timer">01:00</div></div>
+    <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="df-timer">00:30</div></div>
     <div class="gm-status" id="df-status" data-i18n="diff.guide">다른 칸을 모두 찾으세요</div>
     <div class="df-grids"><div class="df-board b1"><span class="df-tag t1" data-i18n="diff.board1">원본</span><div class="df-grid" id="df-grid1"></div></div><div class="df-vs-wrap"><div class="df-count" id="df-count"></div><div class="df-vs" data-i18n="diff.compare">↕ 위아래를 비교하세요</div></div><div class="df-board b2"><span class="df-tag t2" data-i18n="diff.board2">다른 곳 찾기</span><div class="df-grid" id="df-grid2"></div></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveDiff()" data-i18n="diff.leave">나가기</button></div>
@@ -3026,7 +3026,7 @@ const I18N = {
   "wordsearch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "wordsearch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "wordsearch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.diff": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
   "diff.title": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
-  "diff.intro": {ko:"위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 차이가 많아집니다. 60초 타임어택.", en:"Compare the two boards and tap <b>every cell that differs</b>!<br>Higher levels bring bigger boards and more differences. 60-second time attack.", th:"เทียบสองกระดานแล้วแตะ<b>ทุกช่องที่ต่าง</b>!<br>เลเวลสูงขึ้น กระดานใหญ่ขึ้นและต่างมากขึ้น จับเวลา 60 วินาที"},
+  "diff.intro": {ko:"위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 차이가 많아집니다. <b>판마다 30초</b>(판을 깰 때마다 리셋)!", en:"Compare the two boards and tap <b>every cell that differs</b>!<br>Higher levels bring bigger boards and more differences. <b>30 seconds per board</b> (resets each clear)!", th:"เทียบสองกระดานแล้วแตะ<b>ทุกช่องที่ต่าง</b>!<br>เลเวลสูงขึ้น กระดานใหญ่ขึ้นและต่างมากขึ้น <b>30 วินาทีต่อกระดาน</b> (รีเซ็ตทุกครั้งที่ผ่าน)!"},
   "diff.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "diff.easyDesc": {ko:"작은 판", en:"Small", th:"เล็ก"},
   "diff.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "diff.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
   "diff.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "diff.hardDesc": {ko:"큰 판", en:"Large", th:"ใหญ่"},
@@ -8868,7 +8868,7 @@ function resetWordsearch(){ clearInterval(WS.timer); WS.running=false; WS.drag=n
 // ========== 틀린 그림 찾기 (관찰) ==========
 const DF_POOL=['🍎','🍊','🍋','🍇','🍓','🫐','🥝','🍑','🍒','🥥','🌸','🌼','🌻','🌷','⭐','⚡','❤️','💙','💚','🧡','🐶','🐱','🐰','🐸','🐵','🦊','🐢','🐬','🦋','🐝','🚗','🚀','⚽','🏀','🎈','🎁','🔔','🍀','🌈','🌟'];
 const DF_CFG={ easy:{nStart:3,nMax:5}, normal:{nStart:4,nMax:6}, hard:{nStart:5,nMax:7} };
-const DF_TIME=60;
+const DF_TIME=30;
 const DF={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:DF_TIME, timer:null, running:false, lock:false, n:4, g1:[], g2:[], diffs:[], foundSet:null, found:0, best:bt_loadBest('brain.diff.best') };
 function DF_DIFF_LABEL(d){ return d==='easy'?t('diff.easy'):d==='hard'?t('diff.hard'):t('diff.normal'); }
 function dfUpdateBestLine(){ const el=document.getElementById('df-intro-best'); if(el) el.textContent=bt_bestLineText(DF.best,DF.diff); }
@@ -8880,7 +8880,7 @@ function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   const base=Array.from({length:total},()=>DF_POOL[Math.floor(Math.random()*DF_POOL.length)]); const g2=base.slice();
   const idx=shuffleArr(base.map((_,i)=>i)).slice(0,p.k); DF.diffs=idx.slice(); DF.foundSet=new Set(); DF.found=0;
   idx.forEach(i=>{ let e; do{ e=DF_POOL[Math.floor(Math.random()*DF_POOL.length)]; }while(e===base[i]); g2[i]=e; });
-  DF.g1=base; DF.g2=g2; dfRender(); dfCount();
+  DF.g1=base; DF.g2=g2; DF.timeLeft=DF_TIME; if(typeof dfTimer==='function') dfTimer(); dfRender(); dfCount();
 }
 function dfCount(){ const el=document.getElementById('df-count'); if(!el) return; const total=DF.diffs.length, found=DF.found, rem=Math.max(0,total-found);
   let pips=''; for(let i=0;i<total;i++){ pips += i<found ? '<span style="color:#f0b429">●</span>' : '<span style="color:#c9d0e8">○</span>'; }
@@ -8892,7 +8892,7 @@ function dfRender(){ const cs=Math.max(42,Math.floor(332/DF.n)); const fs=Math.r
 function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
 function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
   if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=10+(DF.combo-1)*2; sfx('good'); dfMark(i); dfStats(); dfCount();
-    if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
+    if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; DF.timeLeft=DF_TIME; dfTimer(); sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
   else { DF.combo=0; sfx('bad'); DF.timeLeft=Math.max(0,DF.timeLeft-2); dfTimer(); dfStats(); el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320); if(DF.timeLeft<=0) finishDiff(); }
 }
 function startDiff(){ DF.score=0;DF.combo=0;DF.maxCombo=0;DF.level=1;DF.timeLeft=DF_TIME;DF.running=true;DF.lock=false;
