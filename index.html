@@ -587,6 +587,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .df-tag.t1{background:#4f7cff}
 .df-tag.t2{background:#e08a3c}
 .df-vs{font-size:.78rem;color:var(--text3);font-weight:700;letter-spacing:.02em;display:flex;align-items:center;gap:.35rem}
+.df-vs-wrap{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.df-count{display:inline-flex;align-items:center;gap:.45rem;font-size:.92rem;font-weight:800;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:.32rem .85rem;box-shadow:var(--shadow-sm)}
+.df-count b{color:var(--purple);font-size:1.12rem;font-variant-numeric:tabular-nums}
+.df-pips{letter-spacing:2.5px;font-size:.82rem;line-height:1}
 .df-grid{display:inline-grid;gap:4px}
 .df-cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#eef1f7);border-radius:10px;font-size:1.4rem;cursor:pointer;box-shadow:0 2px 4px rgba(24,34,53,.07);transition:transform .1s}
 .df-cell:active{transform:scale(.94)}
@@ -2600,7 +2604,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     </div>
     <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="df-timer">01:00</div></div>
     <div class="gm-status" id="df-status" data-i18n="diff.guide">다른 칸을 모두 찾으세요</div>
-    <div class="df-grids"><div class="df-board b1"><span class="df-tag t1" data-i18n="diff.board1">원본</span><div class="df-grid" id="df-grid1"></div></div><div class="df-vs" data-i18n="diff.compare">↕ 위아래를 비교하세요</div><div class="df-board b2"><span class="df-tag t2" data-i18n="diff.board2">다른 곳 찾기</span><div class="df-grid" id="df-grid2"></div></div></div>
+    <div class="df-grids"><div class="df-board b1"><span class="df-tag t1" data-i18n="diff.board1">원본</span><div class="df-grid" id="df-grid1"></div></div><div class="df-vs-wrap"><div class="df-count" id="df-count"></div><div class="df-vs" data-i18n="diff.compare">↕ 위아래를 비교하세요</div></div><div class="df-board b2"><span class="df-tag t2" data-i18n="diff.board2">다른 곳 찾기</span><div class="df-grid" id="df-grid2"></div></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveDiff()" data-i18n="diff.leave">나가기</button></div>
   </div>
   <div class="card" id="diff-result-card" style="display:none;text-align:center">
@@ -3032,6 +3036,7 @@ const I18N = {
   "diff.board1": {ko:"원본", en:"Original", th:"ต้นฉบับ"},
   "diff.board2": {ko:"다른 곳 찾기", en:"Find changes", th:"หาจุดต่าง"},
   "diff.compare": {ko:"↕ 위아래를 비교하세요", en:"↕ Compare top & bottom", th:"↕ เทียบบน-ล่าง"},
+  "diff.toFind": {ko:"남은 틀린 곳", en:"Left to find", th:"เหลืออีก"},
   "diff.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "diff.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "diff.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "diff.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "diff.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "diff.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "diff.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "diff.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
@@ -8875,15 +8880,18 @@ function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   const base=Array.from({length:total},()=>DF_POOL[Math.floor(Math.random()*DF_POOL.length)]); const g2=base.slice();
   const idx=shuffleArr(base.map((_,i)=>i)).slice(0,p.k); DF.diffs=idx.slice(); DF.foundSet=new Set(); DF.found=0;
   idx.forEach(i=>{ let e; do{ e=DF_POOL[Math.floor(Math.random()*DF_POOL.length)]; }while(e===base[i]); g2[i]=e; });
-  DF.g1=base; DF.g2=g2; dfRender();
+  DF.g1=base; DF.g2=g2; dfRender(); dfCount();
 }
+function dfCount(){ const el=document.getElementById('df-count'); if(!el) return; const total=DF.diffs.length, found=DF.found, rem=Math.max(0,total-found);
+  let pips=''; for(let i=0;i<total;i++){ pips += i<found ? '<span style="color:#f0b429">●</span>' : '<span style="color:#c9d0e8">○</span>'; }
+  el.innerHTML='🔍 '+t('diff.toFind')+' <b>'+rem+'</b> <span class="df-pips">'+pips+'</span>'; }
 function dfRender(){ const cs=Math.max(42,Math.floor(332/DF.n)); const fs=Math.round(cs*0.66);
   [['df-grid1',DF.g1],['df-grid2',DF.g2]].forEach(pair=>{ const g=document.getElementById(pair[0]); g.style.gridTemplateColumns='repeat('+DF.n+','+cs+'px)'; g.innerHTML='';
     for(let i=0;i<pair[1].length;i++){ const d=document.createElement('div'); d.className='df-cell'+(DF.foundSet.has(i)?' found':''); d.style.width=cs+'px'; d.style.height=cs+'px'; d.style.fontSize=fs+'px'; d.textContent=pair[1][i]; d.onclick=()=>dfTap(i,d); g.appendChild(d); } });
 }
 function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
 function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
-  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=10+(DF.combo-1)*2; sfx('good'); dfMark(i); dfStats();
+  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=10+(DF.combo-1)*2; sfx('good'); dfMark(i); dfStats(); dfCount();
     if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
   else { DF.combo=0; sfx('bad'); DF.timeLeft=Math.max(0,DF.timeLeft-2); dfTimer(); dfStats(); el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320); if(DF.timeLeft<=0) finishDiff(); }
 }
