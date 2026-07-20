@@ -8512,21 +8512,26 @@ function resetCatch(){ clearInterval(CA.timer);clearInterval(CA.tickT);clearInte
 
 // ========== 말로우 런 (순발력·집중력 · 엔들리스 러너) — 물리·간격은 .logs/run_sim.mjs 검증본 ==========
 const RN_G=0.9, RN_JV=15, RN_PW=40, RN_PH=42, RN_OBW=26, RN_OBH=46, RN_AIR=2*RN_JV/RN_G;
-const RN_CFG={ easy:{spd0:4.2,acc:0.0010,cap:9.0,gapRand:180}, normal:{spd0:5.2,acc:0.0014,cap:10.5,gapRand:170}, hard:{spd0:6.2,acc:0.0020,cap:12.0,gapRand:150} };
+const RN_CFG={ easy:{spd0:4.2,acc:0.0010,cap:9.0,gapRand:180,clusterP:0,clusterMax:0}, normal:{spd0:5.2,acc:0.0015,cap:11.0,gapRand:150,clusterP:0.24,clusterMax:1}, hard:{spd0:6.4,acc:0.0022,cap:12.5,gapRand:110,clusterP:0.36,clusterMax:2} };
 const RN={ diff:'normal', running:false, over:false, raf:0, best:bt_loadBest('brain.run.best'),
-  score:0, dist:0, spd:0, py:0, vy:0, grounded:true, obs:[], clouds:[], W:0, H:0, groundY:0, px:0, run:0 };
+  score:0, dist:0, spd:0, py:0, vy:0, grounded:true, obs:[], clouds:[], burst:0, nextGap:0, W:0, H:0, groundY:0, px:0, run:0 };
 function RN_DIFF_LABEL(d){ return d==='easy'?t('run.easy'):d==='hard'?t('run.hard'):t('run.normal'); }
 function rnUpdateBestLine(){ const el=document.getElementById('rn-intro-best'); if(el) el.textContent=bt_bestLineText(RN.best,RN.diff); }
 function setRunDiff(d){ RN.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('rn-diff-'+k).classList.toggle('active',k===d)); rnUpdateBestLine(); }
 function safeGapRun(spd){ return spd*RN_AIR + RN_OBW + 24; }
+// 다음 장애물까지 간격 — 군집(연속 타이트) + 가변 간격으로 리듬 깨기. 항상 safeGap 이상(공정)
+function rnNextGap(){ const cfg=RN_CFG[RN.diff], base=safeGapRun(RN.spd);
+  if(RN.burst>0){ RN.burst--; return base*(1.03+Math.random()*0.12); }
+  if(cfg.clusterMax>0 && Math.random()<cfg.clusterP){ RN.burst=cfg.clusterMax; return base*(1.03+Math.random()*0.12); }
+  return base*1.15 + Math.random()*cfg.gapRand; }
 function rnResize(){ const cv=document.getElementById('rn-canvas'); if(!cv) return; const cssW=Math.round(cv.clientWidth||340); const cssH=Math.round(Math.min(250,Math.max(190,cssW*0.5)));
   const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(cssW*dpr); cv.height=Math.round(cssH*dpr); cv.style.height=cssH+'px';
   const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); RN.W=cssW; RN.H=cssH; RN.groundY=cssH-28; RN.px=Math.round(cssW*0.16); }
 function startRun(){
   document.getElementById('run-intro-card').style.display='none'; document.getElementById('run-result-card').style.display='none'; document.getElementById('run-game-card').style.display='block';
   rnResize(); const cfg=RN_CFG[RN.diff];
-  RN.running=true; RN.over=false; RN.score=0; RN.dist=0; RN.spd=cfg.spd0; RN.py=0; RN.vy=0; RN.grounded=true; RN.run=0;
-  RN.obs=[{x:RN.W+40}]; RN.clouds=[{x:RN.W*0.3,y:26,s:.38,r:16},{x:RN.W*0.75,y:48,s:.26,r:13}];
+  RN.running=true; RN.over=false; RN.score=0; RN.dist=0; RN.spd=cfg.spd0; RN.py=0; RN.vy=0; RN.grounded=true; RN.run=0; RN.burst=0;
+  RN.obs=[{x:RN.W+40}]; RN.nextGap=rnNextGap(); RN.clouds=[{x:RN.W*0.3,y:26,s:.38,r:16},{x:RN.W*0.75,y:48,s:.26,r:13}];
   document.getElementById('rn-score').textContent='0';
   cancelAnimationFrame(RN.raf); RN.raf=requestAnimationFrame(rnLoop);
 }
@@ -8537,8 +8542,8 @@ function rnLoop(){
   if(!RN.grounded){ RN.py+=RN.vy; RN.vy-=RN_G; if(RN.py<=0){ RN.py=0; RN.vy=0; RN.grounded=true; } }
   for(const o of RN.obs) o.x-=RN.spd;
   while(RN.obs.length && RN.obs[0].x < -RN_OBW-6) RN.obs.shift();
-  const last=RN.obs[RN.obs.length-1]; const gap=safeGapRun(RN.spd)+Math.random()*cfg.gapRand;
-  if(!last || last.x <= RN.W-gap) RN.obs.push({x:RN.W});
+  const last=RN.obs[RN.obs.length-1];
+  if(!last || (RN.W - last.x) >= RN.nextGap){ RN.obs.push({x:RN.W}); RN.nextGap=rnNextGap(); }
   RN.clouds.forEach(cl=>{ cl.x-=RN.spd*cl.s; if(cl.x<-30) cl.x=RN.W+30; });
   RN.dist+=RN.spd; RN.score=Math.floor(RN.dist/12); document.getElementById('rn-score').textContent=RN.score;
   // 충돌(AABB): 플레이어[px,px+PW]×[py,py+PH] vs 장애물[x,x+OBW]×[0,OBH]
