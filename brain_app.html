@@ -100,6 +100,7 @@ body.ingame .nav-logo{padding-left:.7rem;gap:.35rem}
 /* ===== FX 손맛 레이어 ===== */
 #fx-layer{position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden}
 .fx-dot{position:absolute;border-radius:50%;will-change:transform,opacity}
+.fx-confetti{position:absolute;border-radius:2px;will-change:transform,opacity;box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .fx-pop{position:absolute;font-weight:800;font-size:1.5rem;transform:translate(-50%,-50%);will-change:transform,opacity;text-shadow:0 2px 5px rgba(0,0,0,.18);animation:fxPop .85s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes fxPop{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}18%{opacity:1;transform:translate(-50%,-60%) scale(1.12)}100%{opacity:0;transform:translate(-50%,-165%) scale(1)}}
 .fx-combo{position:fixed;left:50%;top:34%;transform:translateX(-50%);pointer-events:none;z-index:9001;font-weight:900;font-size:2rem;color:#fff;padding:.35rem 1.1rem;border-radius:999px;background:linear-gradient(135deg,#ff8a5b,#ff5f9e);box-shadow:0 8px 22px rgba(255,95,158,.4);animation:fxCombo 1s cubic-bezier(.2,.8,.3,1) forwards;white-space:nowrap}
@@ -4016,7 +4017,29 @@ let _fxXY={x:innerWidth/2,y:innerHeight*0.4};
 if(typeof document!=='undefined') document.addEventListener('pointerdown',e=>{ _fxXY={x:e.clientX,y:e.clientY}; },{passive:true});
 function _fxLayer(){ let l=document.getElementById('fx-layer'); if(!l){ l=document.createElement('div'); l.id='fx-layer'; document.body.appendChild(l); } return l; }
 const FX_COLORS=['#4f7cff','#21a67a','#ffb703','#ff6b9d','#8a5cf6','#ff8a5b'];
+const FX_CONFETTI_COLORS=['#4f7cff','#21a67a','#ffb703','#ff6b9d','#8a5cf6','#ff8a5b','#ff5f6d','#22c1c3','#f9d423','#12d8fa','#ff7eb3'];
 function fxReduced(){ try{ return matchMedia('(prefers-reduced-motion:reduce)').matches; }catch(e){ return false; } }
+/* 진짜 컨페티: 위로 발사→중력 낙하, 회전, 색종이 스트립/원 혼합 */
+function fxConfetti(x,y,opts){ opts=opts||{}; if(fxReduced()) return; const layer=_fxLayer();
+  const n=opts.count||80, baseAng=(opts.ang!=null?opts.ang:-Math.PI/2), arc=opts.arc||2.0, power=opts.power||170;
+  for(let i=0;i<n;i++){ const d=document.createElement('div'); d.className='fx-confetti';
+    const strip=Math.random()<0.55; const w=strip?(4+Math.random()*4):(7+Math.random()*8), h=strip?(11+Math.random()*11):w;
+    d.style.width=w+'px'; d.style.height=h+'px';
+    d.style.background=FX_CONFETTI_COLORS[(Math.random()*FX_CONFETTI_COLORS.length)|0];
+    if(!strip && Math.random()<0.45) d.style.borderRadius='50%';
+    d.style.left=x+'px'; d.style.top=y+'px'; layer.appendChild(d);
+    const ang=baseAng+(Math.random()-0.5)*arc, pw=power*(0.5+Math.random());
+    const vx=Math.cos(ang)*pw, vy=Math.sin(ang)*pw;                 // vy 음수 = 위로
+    const peakX=vx*0.55, peakY=vy*0.55;                             // 상승 정점
+    const fallX=vx*1.15+(Math.random()-0.5)*50, fallY=Math.abs(vy)*0.18+280+Math.random()*180; // 낙하
+    const rot=Math.random()*1440-720, dur=1200+Math.random()*1000;
+    d.animate([
+      {transform:'translate(-50%,-50%) rotate(0deg)',opacity:1},
+      {transform:`translate(calc(-50% + ${peakX}px),calc(-50% + ${peakY}px)) rotate(${rot*0.4}deg)`,opacity:1,offset:0.32},
+      {transform:`translate(calc(-50% + ${fallX}px),calc(-50% + ${fallY}px)) rotate(${rot}deg)`,opacity:0}
+    ],{duration:dur,easing:'cubic-bezier(.15,.55,.4,1)'}).onfinish=()=>d.remove();
+  }
+}
 function fxBurst(x,y,opts){ opts=opts||{}; if(fxReduced()) return; const n=opts.count||12, layer=_fxLayer(), spread=opts.spread||58;
   for(let i=0;i<n;i++){ const d=document.createElement('div'); d.className='fx-dot';
     d.style.background=opts.color||FX_COLORS[(Math.random()*FX_COLORS.length)|0];
@@ -4042,9 +4065,18 @@ function celebrateRecordScreen(){
   let scoreEl=null;
   document.querySelectorAll('[id$="-result-card"]').forEach(c=>{ if(c.offsetParent!==null){ const s=c.querySelector('.iq-result-score'); if(s) scoreEl=s; } });
   if(!scoreEl) return;
-  const emit=()=>{ if(!scoreEl.offsetParent){ stopRecordFx(); return; } const r=scoreEl.getBoundingClientRect(); const cx=r.left+r.width/2, cy=r.top+r.height/2;
-    fxBurst(cx,cy,{count:11,spread:Math.max(26,Math.min(46,r.width*0.4))}); };
-  emit(); _recordFxTimer=setInterval(emit,620);
+  const center=()=>{ const r=scoreEl.getBoundingClientRect(); return {cx:r.left+r.width/2, cy:r.top+r.height/2, w:r.width}; };
+  // 큰 폭죽: 점수 중심 분사 + 화면 하단 양쪽 캐논(안쪽·위로)
+  const blast=()=>{ if(!scoreEl.offsetParent) return; const {cx,cy}=center();
+    fxConfetti(cx,cy,{count:80,power:180,arc:2.6});
+    fxConfetti(innerWidth*0.10, innerHeight*0.94,{count:55,power:260,arc:0.9,ang:-Math.PI/2+0.38});
+    fxConfetti(innerWidth*0.90, innerHeight*0.94,{count:55,power:260,arc:0.9,ang:-Math.PI/2-0.38});
+    fxBurst(cx,cy,{count:22,spread:80}); };
+  blast(); setTimeout(blast,650); setTimeout(blast,1350);   // 2연발 추가
+  // 이후 점수 주변 지속 반짝 + 소규모 컨페티
+  const emit=()=>{ if(!scoreEl.offsetParent){ stopRecordFx(); return; } const {cx,cy,w}=center();
+    fxBurst(cx,cy,{count:16,spread:Math.max(44,Math.min(72,w*0.5))}); fxConfetti(cx,cy,{count:22,power:140,arc:2.8}); };
+  _recordFxTimer=setInterval(emit,1000);
 }
 /* 신기록 게임 추적(내 기록 NEW 배지) */
 function _markNewRecord(id){ try{ const s=new Set(JSON.parse(localStorage.getItem('brain.newRecords')||'[]')); s.add(id); localStorage.setItem('brain.newRecords',JSON.stringify([...s])); }catch(e){} }

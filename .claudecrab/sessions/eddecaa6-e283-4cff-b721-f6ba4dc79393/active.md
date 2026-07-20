@@ -1,37 +1,17 @@
 # Active Session State
 
 ## Current task
-운세 4종 상용 퀄리티 개선 — A→B→C 순차(사용자: "A부터 순차, 상용 서비스라 퀄리티 중요").
-파일: tarot/index.html, ttirank/index.html, unse/index.html, zodiac/index.html (각각 독립 정적페이지, brain_app 동기화 불필요).
-검증: playwright(npx캐시 경로), 서버 python -m http.server 8081.
+(완료) **말로우 런(Mallow Run)** 신규 — 원버튼 엔들리스 러너(순발력·집중력), 앱 내부 게임.
+- 캔버스: 마스코트가 달리며 포크 장애물 점프, 가속(cap), 하이스코어(거리/12), 난이도 3단.
+- 물리 G=0.9·JV=15(peak 125>장애물46), 장애물 spawn=safeGap(spd)=spd*airTime+폭+여유 → 항상 통과 가능.
+- 선검증 `.logs/run_sim.mjs`: 완벽플레이어 3난이도 200/200 생존.
+- 입력: 캔버스 pointerdown / Space·↑ / 점프버튼. 종료=충돌. 결과·공유·도전장.
+- 배선: HOME_GAMES cat.speed(chop 뒤)·ABILITY_MAP run{speed80,focus20}·GAME_REF run:600·gameShare·haltRunningGames(resetRun)·i18n run.*(ko/en/th)·nav.run. 능력칩/철학콜아웃 자동.
+- 검증: node --check OK, 배선 정합 grep 확인, site_audit 클린, brain_app 동기화, 배포 ad1dbb5.
 
-## Plan
-- A(task#11) 타로: ①22장 이모지→SVG 카드아트(cardArtSVG, 정/역/뒷면) ②오늘의 한마디≠카드의미(DECK에 tip 필드 추가). 1카드+3카드+공유카드.
-- B(task#12) 띠별: 순위문구 CM_MID 5개→순위별 톤 차등+중복제거, 내 띠 하이라이트.
-- C(task#13) 공통: 헤더 이모지→Mallow SVG(4종), 데스크톱 #backHome 정렬, 결과 자동스크롤(일부 이미 있음-확인), 별점 aria.
-
-## 진행
-- [완료] A/B/C 전부 완료·검증(34종+운세4종 pageerror 0)·커밋·푸시(→main 53bf85d).
-- 운세 4종은 독립 정적페이지(brain_app 동기화 불필요). 헤더 마스코트는 각 파일에 인라인 MHEAD_SVG(핑크 success) 상수로 복제됨.
-
-
-_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
-
-## Current task
-
-(idle) — playmallow 디자인 상용화 5단계 완료·커밋·검증 끝.
-
-## Decisions
-
-디자인 시스템은 MEMORY.md "디자인 시스템(2026-07-12)" 참고. 다음 후보(선택):
-- 결과 화면에 Mallow success 표정 크게 + 컨페티
-- 홈 히어로에 Mallow 애니메이션(mallow-bob)
-- house(count)·bomb(whack)·chop 포크 등 잔여 이모지 SVG화(선택)
-
-## Files in progress
-
-(none — index.html==brain_app.html 동기화됨)
+## 라이브 스모크 필요
+- 실제 브라우저에서 점프 타이밍·충돌·모바일 탭·캔버스 리사이즈(dpr) 체감. GAME_REF run:600 실측 후 보정 가능.
 
 ## Open questions
-
-(none)
+- 모아모아 퍼즐 D+25(8월 초). 개인정보처리방침(로그인/애드센스 전).
+- run 반응 보고 조작(낮은 장애물 숙이기/새 장애물) v2 여부.
