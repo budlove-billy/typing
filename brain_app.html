@@ -8485,6 +8485,7 @@ function caTimer(){ const el=document.getElementById('ca-timer'); const m=Math.f
 function caArea(){ return document.getElementById('ca-area'); }
 function caPlaceBasket(){ const b=document.getElementById('ca-basket'); if(b) b.style.left=((CA.lane+0.5)/CA_LANES*100)+'%'; }
 function caMove(d){ if(!CA.running) return; CA.lane=Math.max(0,Math.min(CA_LANES-1,CA.lane+d)); caPlaceBasket(); }
+document.addEventListener('keydown',e=>{ if(!CA.running) return; if(e.code==='ArrowLeft'){ e.preventDefault(); caMove(-1); } else if(e.code==='ArrowRight'){ e.preventDefault(); caMove(1); } });
 function caSpawn(){ if(!CA.running) return; const cfg=CA_CFG[CA.diff]; const lane=Math.floor(Math.random()*CA_LANES); const bad=Math.random()<cfg.badP;
   const el=document.createElement('div'); el.className='ca-item'+(bad?' fork':' good'); el.innerHTML=bad?forkSVG(30):mallowSVG('happy',{size:44}); el.style.left=((lane+0.5)/CA_LANES*100)+'%'; el.style.top='0px'; caArea().appendChild(el); CA.items.push({el,lane,y:0,bad}); }
 function caFlash(bad){ const a=caArea(); if(!a) return; a.style.background=bad?'#f8d7dd':''; if(bad) setTimeout(()=>{ const x=caArea(); if(x) x.style.background=''; },140); }
