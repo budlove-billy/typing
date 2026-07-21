@@ -22,8 +22,9 @@
 - 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
 
 ## 다음 코드작업(진행중)
-- 게임 랜딩 JSON-LD 확장(sudoku/2048/iq-test/memory-game/nonogram/reaction-time/water-sort 등 11+가이드6 = 구조화데이터 없음).
-- 이후: 운세 OG 텍스트/이미지, 내부링크, 시즌 랜딩(수능 11월·신년 1월).
+- ✅ 게임 랜딩 11종 JSON-LD 추가 → **랜딩 17/17 구조화데이터 완비**(커밋 6f2435d, 라이브 확인). push 정상(이 환경 인증 복구됨).
+- 남음: 가이드 6종(Article/HowTo schema), 운세 OG 텍스트/이미지, 내부링크, 시즌 랜딩(수능 11월·신년 1월).
+- pub-id 받으면: head 스니펫+ads.txt+슬롯 일괄. "광고없음" 카피 수정(2048/·sudoku/·water-sort/).
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.

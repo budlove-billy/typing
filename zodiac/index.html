@@ -73,6 +73,19 @@ body[data-star="5"]{background:radial-gradient(130% 95% at 50% 0%, #ffeab0 0%, #
 body[data-star="4"]{background:radial-gradient(130% 95% at 50% 0%, #ffd9ea 0%, #e7ecff 45%, var(--bg) 74%);}
 body[data-star="3"]{background:radial-gradient(120% 90% at 50% 0%, #e7ecff 0%, var(--bg) 55%);}
 body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, var(--bg) 60%);}
+.seo{max-width:480px;margin:0 auto;padding:0 14px 8px}
+.seo .card{text-align:left}
+.seo h2{font-size:16px;margin:0 0 8px;color:var(--text)}
+.seo p{font-size:14px;line-height:1.7;color:var(--text);margin:0 0 8px}
+.seo p:last-child{margin-bottom:0}
+.seo .sub{color:var(--sub);font-size:13px}
+.seo ol,.seo ul{margin:0;padding-left:18px}
+.seo li{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:3px}
+.seo ul.zlist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+.seo ul.zlist li{font-size:13px}
+.seo ul.zlist b{color:var(--p)}
+.seo .links a{color:var(--p);text-decoration:none}
+.seo .disc{font-size:12px;color:var(--sub);text-align:center;margin-top:2px}
 </style>
 </head>
 <body>
@@ -117,6 +130,49 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
       <div class="disc" id="t-disc"></div>
     </div>
   </div>
+  <section class="seo" data-lang-only="ko">
+    <div class="card">
+      <h2>별자리 운세란?</h2>
+      <p>별자리 운세는 태어난 날짜에 따라 정해지는 12개의 별자리(황도 12궁)를 기준으로 그날그날의 흐름을 재미있게 풀어 보는 오락 콘텐츠입니다. 말로우 별자리 운세는 생년월일만 넣으면 내 별자리와 원소를 자동으로 찾아, 오늘 날짜에 맞춘 총운·애정·금전·건강운과 행운의 색·숫자를 무료로 보여 줍니다. 가입도 설치도 필요 없습니다.</p>
+    </div>
+    <div class="card">
+      <h2>12별자리 날짜표</h2>
+      <ul class="zlist">
+        <li><b>양자리</b> 3.21–4.19 · 불</li>
+        <li><b>황소자리</b> 4.20–5.20 · 흙</li>
+        <li><b>쌍둥이자리</b> 5.21–6.21 · 공기</li>
+        <li><b>게자리</b> 6.22–7.22 · 물</li>
+        <li><b>사자자리</b> 7.23–8.22 · 불</li>
+        <li><b>처녀자리</b> 8.23–9.22 · 흙</li>
+        <li><b>천칭자리</b> 9.23–10.22 · 공기</li>
+        <li><b>전갈자리</b> 10.23–11.22 · 물</li>
+        <li><b>사수자리</b> 11.23–12.24 · 불</li>
+        <li><b>염소자리</b> 12.25–1.19 · 흙</li>
+        <li><b>물병자리</b> 1.20–2.18 · 공기</li>
+        <li><b>물고기자리</b> 2.19–3.20 · 물</li>
+      </ul>
+      <p class="sub">같은 원소(불·흙·공기·물)끼리는 결이 잘 맞는다고 봅니다. 경계 날짜에 태어났다면 앞뒤 두 별자리를 함께 참고해 보세요.</p>
+    </div>
+    <div class="card">
+      <h2>이용 방법</h2>
+      <ol>
+        <li>생년월일을 입력합니다.</li>
+        <li>내 별자리와 원소, 타고난 기질이 나옵니다.</li>
+        <li>오늘의 총운과 분야별 운세, 행운 정보를 확인하고 친구와 공유하세요.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>자주 묻는 질문</h2>
+      <p><b>Q. 무료인가요?</b><br>네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 볼 수 있습니다.</p>
+      <p><b>Q. 운세는 매일 바뀌나요?</b><br>같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다.</p>
+      <p><b>Q. 내 별자리는 어떻게 정해지나요?</b><br>입력한 생년월일을 위 날짜표의 경계에 맞춰 자동으로 판별합니다.</p>
+    </div>
+    <div class="card">
+      <h2>다른 운세도 보기</h2>
+      <p class="links"><a href="/unse/">오늘의 운세·사주</a> · <a href="/ttirank/">띠별 운세 순위</a> · <a href="/tarot/">타로 카드</a> · <a href="/">두뇌게임 홈</a></p>
+    </div>
+    <p class="disc">※ 별자리 운세는 통계·전통을 바탕으로 재미로 보는 오락 콘텐츠이며, 과학적·의학적 예측이 아닙니다.</p>
+  </section>
 </main>
 <footer><a href="/">playmallow.com</a> · <span id="t-footer"></span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>

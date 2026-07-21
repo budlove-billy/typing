@@ -81,6 +81,19 @@ main{width:100%;max-width:480px;padding:18px 14px 56px;}
 .btns{display:flex;gap:10px;margin-top:14px;} .btns .btn{margin-top:0;}
 .disc{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.6;}
 footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
+.seo{max-width:480px;margin:0 auto;padding:0 14px 8px}
+.seo .card{text-align:left;background:var(--card,#fff);border-radius:var(--radius,12px);padding:14px 16px;margin-bottom:10px}
+.seo h2{font-size:16px;margin:0 0 8px;color:var(--text,#1a1a1a)}
+.seo p{font-size:14px;line-height:1.7;color:var(--text,#1a1a1a);margin:0 0 8px}
+.seo p:last-child{margin-bottom:0}
+.seo .sub{color:var(--sub,#6b6b6b);font-size:13px}
+.seo ol,.seo ul{margin:0;padding-left:18px}
+.seo li{font-size:14px;line-height:1.7;color:var(--text,#1a1a1a);margin-bottom:3px}
+.seo ul.zlist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+.seo ul.zlist li{font-size:13px}
+.seo ul.zlist b{color:var(--p,#b07fc7)}
+.seo .links a{color:var(--p,#b07fc7);text-decoration:none}
+.seo .disc{font-size:12px;color:var(--sub,#6b6b6b);text-align:center;margin-top:2px}
 </style>
 </head>
 <body>
@@ -129,6 +142,39 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     </div>
     <div class="disc" id="t-disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909), Pamela Colman Smith · 퍼블릭 도메인</span></div>
   </div>
+  <section class="seo">
+    <div class="card">
+      <h2>타로란?</h2>
+      <p>타로는 78장의 카드에 담긴 상징으로 지금의 마음과 상황을 비춰 보는 오랜 점술입니다. 말로우 타로는 라이더-웨이트-스미스 카드 78장으로 오늘의 카드 한 장과 연애·일·재물을 보는 3카드 스프레드를 무료로, 가입·설치 없이 바로 뽑아 볼 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>오늘의 카드 · 3카드 스프레드</h2>
+      <p><b>오늘의 카드</b>는 하루 동안 고정되는 한 장으로, 오늘의 분위기와 조언을 담습니다.<br><b>3카드 스프레드</b>는 연애·일·재물 중 주제를 골라 과거·현재·미래를 뽑아 보며, 뽑을 때마다 새로 나옵니다.</p>
+    </div>
+    <div class="card">
+      <h2>메이저 · 마이너 아르카나</h2>
+      <p>타로 78장은 인생의 큰 흐름을 나타내는 <b>메이저 아르카나 22장</b>과, 완드·컵·소드·펜타클 네 슈트로 일상을 나타내는 <b>마이너 아르카나 56장</b>으로 이루어집니다. 카드가 바로 서면(정방향) 순한 의미, 뒤집히면(역방향) 그 반대나 과함을 뜻합니다.</p>
+    </div>
+    <div class="card">
+      <h2>이용 방법</h2>
+      <ol>
+        <li>오늘의 카드를 뒤집어 한 장을 확인합니다.</li>
+        <li>3카드 스프레드에서 주제(연애·일·재물)를 고릅니다.</li>
+        <li>과거·현재·미래 카드를 읽고 결과를 친구와 공유하세요.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>자주 묻는 질문</h2>
+      <p><b>Q. 무료인가요?</b><br>네. 가입·설치 없이 오늘의 카드와 3카드 스프레드를 무료로 바로 볼 수 있습니다.</p>
+      <p><b>Q. 어떤 카드를 쓰나요?</b><br>퍼블릭 도메인인 라이더-웨이트-스미스 타로 78장을 사용합니다.</p>
+      <p><b>Q. 오늘의 카드는 언제 바뀌나요?</b><br>하루 동안 고정되고 날짜가 바뀌면 새 카드가 나옵니다.</p>
+    </div>
+    <div class="card">
+      <h2>다른 운세도 보기</h2>
+      <p class="links"><a href="/unse/">오늘의 운세·사주</a> · <a href="/zodiac/">별자리 운세</a> · <a href="/ttirank/">띠별 운세 순위</a> · <a href="/">두뇌게임 홈</a></p>
+    </div>
+    <p class="disc">※ 타로는 재미로 보는 오락 콘텐츠이며, 과학적·의학적 예측이 아닙니다.</p>
+  </section>
 </main>
 <footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
