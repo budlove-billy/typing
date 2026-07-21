@@ -10,10 +10,15 @@
 - index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
 
 ## 계획
-1. (진행) 애드센스 승인준비: 개인정보처리방침 `/privacy/` + ads.txt + 소개/문의 신뢰신호. 무위험 하드블로커 제거.
-2. 애드센스 통합: config 방식(ADSENSE_CLIENT 비면 off). 배치=랜딩/가이드/운세결과/게임결과카드/홈·기록. **게임 플레이중 광고 금지**(정책·오클릭).
-3. 트래픽: SEO 색인, 운세 커뮤니티 시딩, 글로벌 게임포털.
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
 
-## Open questions (사용자 확인)
-- 애드센스 계정/ca-pub 퍼블리셔ID 있는지? 없으면 신규신청 준비.
-- 사이트 노출용 문의 이메일 무엇으로?
+## 배포
+- git push origin master:main → Vercel 자동배포. 이번 배치 push 예정.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.

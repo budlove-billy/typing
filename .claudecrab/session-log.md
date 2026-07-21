@@ -5062,3 +5062,30 @@ _This file is automatically injected into Claude's context at the start of every
 - 모아모아 퍼즐 D+25(8월 초). 개인정보처리방침(로그인/애드센스 전).
 - run 반응 보고 조작(낮은 장애물 숙이기/새 장애물) v2 여부.
 
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T05:02:52.707788+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap. 미배포(git push 대기).
+2. (대기: pub-id 필요) 애드센스 통합 + ads.txt + 소개/문의. 배치=랜딩/가이드/운세결과/게임결과카드/홈·기록. 게임 플레이중 금지.
+   - ⚠️ 애드센스 켜면 "광고 없음" 문구 수정 필요: 2048/·sudoku/·water-sort/ index.html.
+   - ⚠️ privacy 및 푸터 이메일 placeholder=contact@playmallow.com → 실제값 확정 후 교체.
+3. 트래픽: SEO 색인, 운세 커뮤니티 시딩, 글로벌 게임포털.
+
+## Open questions (사용자 확인)
+- 애드센스 계정/ca-pub 퍼블리셔ID 있는지? 없으면 신규신청 준비.
+- 사이트 노출용 문의 이메일 무엇으로?
+
