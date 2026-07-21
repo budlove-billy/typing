@@ -9,3 +9,4 @@ venv/
 .logs/
 shared/
 generated_images/
+.mcp.json

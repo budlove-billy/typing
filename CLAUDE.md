@@ -140,22 +140,22 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8086-8090** (5 ports total).
+This project is allocated the port range **8131-8135** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8086-8090`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8131-8135`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
 **Showing the user a web page / preview (MUST follow):**
 - A static page or site (HTML/CSS/JS, no live backend) — save it (with its assets) under `public/` in your work dir, then give the user a **clickable markdown link** (never a bare path — a bare path renders as dead plain text the user can't click):
-  `[打开页面](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/public/<file>.html)`
+  `[打开页面](/api/v1/media/49f9dcf2-1663-4fc8-8f6f-bc4570df374c/public/<file>.html)`
   SmartJ serves that folder directly, so the link always opens — NO server and NO port needed. (`generated_images/` is served the same way.)
 - **NEVER** hand the user a `http://localhost:<port>/…` link or hardcode a port like `:8000` — they cannot reach your local dev server that way.
 - Only start a real server (on a port from the range above) when the page needs a live backend/API; for anything static, always use the `public/` link.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8086`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8090`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8131`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8135`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -270,6 +270,7 @@ the project stays lean.
 
 Codes look like `S0042`; keys look like `mdbox-media`. Either is accepted.
 <!-- SKILLS_TOOL_END -->
+
 <!-- CLONE_TOOL_BEGIN -->
 ## Session clones — 分身 (`clone`)
 
@@ -395,7 +396,6 @@ Project conventions: always save outputs under `generated_images/` in the
 project working directory, use descriptive filenames, and after saving tell the
 user the relative path so they can preview/download it in the file browser.
 <!-- MDBOX_MULTIMODAL_END -->
-
 
 <!-- ROLE_REF_BEGIN -->
 ## Your role
