@@ -22,9 +22,13 @@
 - 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
 
 ## 다음 코드작업(진행중)
-- ✅ 게임 랜딩 11종 JSON-LD 추가 → **랜딩 17/17 구조화데이터 완비**(커밋 6f2435d, 라이브 확인). push 정상(이 환경 인증 복구됨).
-- 남음: 가이드 6종(Article/HowTo schema), 운세 OG 텍스트/이미지, 내부링크, 시즌 랜딩(수능 11월·신년 1월).
+- ✅ 게임 랜딩 11종 JSON-LD → 랜딩 17/17 완비(6f2435d).
+- ✅ 운세 4종 크롤 콘텐츠 보강: 얇은위젯→리치(100~449자→865~1223자), 소개·날짜표·FAQ·내부링크·면책(af4a374, 라이브확인).
+- 남음: 가이드 6종 schema, 운세 OG 이미지, 홈↔랜딩 내부링크, 시즌 랜딩(수능 11월·신년 1월), 고수요 무랜딩 게임(스트룹 등) 검토.
 - pub-id 받으면: head 스니펫+ads.txt+슬롯 일괄. "광고없음" 카피 수정(2048/·sudoku/·water-sort/).
+
+## push 팁
+- GCM이 종종 hang → `taskkill //F //IM git-credential-manager.exe` 후 `GIT_TERMINAL_PROMPT=0 git push` 재시도하면 캐시 자격증명으로 성공.
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
