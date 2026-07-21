@@ -17,8 +17,13 @@
    - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
    - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
 
-## 배포
-- git push origin master:main → Vercel 자동배포. 이번 배치 push 예정.
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 다음 코드작업(진행중)
+- 게임 랜딩 JSON-LD 확장(sudoku/2048/iq-test/memory-game/nonogram/reaction-time/water-sort 등 11+가이드6 = 구조화데이터 없음).
+- 이후: 운세 OG 텍스트/이미지, 내부링크, 시즌 랜딩(수능 11월·신년 1월).
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
