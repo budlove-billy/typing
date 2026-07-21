@@ -21,14 +21,19 @@
 - 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
 - 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
 
-## 다음 코드작업(진행중)
-- ✅ 게임 랜딩 11종 JSON-LD → 랜딩 17/17 완비(6f2435d).
-- ✅ 운세 4종 크롤 콘텐츠 보강: 얇은위젯→리치(100~449자→865~1223자), 소개·날짜표·FAQ·내부링크·면책(af4a374, 라이브확인).
-- 남음: 가이드 6종 schema, 운세 OG 이미지, 홈↔랜딩 내부링크, 시즌 랜딩(수능 11월·신년 1월), 고수요 무랜딩 게임(스트룹 등) 검토.
-- pub-id 받으면: head 스니펫+ads.txt+슬롯 일괄. "광고없음" 카피 수정(2048/·sudoku/·water-sort/).
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ (애드센스 블로커 제거) · 홈푸터·sitemap
+- ✅ 랜딩 17/17 JSON-LD + 가이드 6종 Article schema
+- ✅ 운세 4종 크롤콘텐츠 보강(얇은위젯→리치 865~1223자)
+- ✅ 홈 푸터 운세 내부링크
+- ✅ 애드센스 신청가이드·트래픽 플레이북·MEMORY/CLAUDE 기록
+
+## 다음 (gated / 사용자 결정 대기)
+- 🔴 애드센스 실삽입 = pub-id 필요(사용자 신청 후). 추후 하기로 함.
+- 선택 후속(사용자 greenlight 시): 운세 페이지별 OG이미지, 시즌 랜딩(수능/신년), 스트룹 등 고수요 무랜딩 게임.
 
 ## push 팁
-- GCM이 종종 hang → `taskkill //F //IM git-credential-manager.exe` 후 `GIT_TERMINAL_PROMPT=0 git push` 재시도하면 캐시 자격증명으로 성공.
+- GCM hang 시 `taskkill //F //IM git-credential-manager.exe` 후 `GIT_TERMINAL_PROMPT=0 git push origin master:main`.
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
