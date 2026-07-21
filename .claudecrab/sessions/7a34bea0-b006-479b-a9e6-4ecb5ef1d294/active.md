@@ -25,13 +25,13 @@
 - ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
 
 ## 셋다 작업(사용자 요청)
-- ✅ 태스크1 /stroop/ 스트룹 랜딩(설명·FAQ·JSON-LD·CTA).
-- ✅ 태스크2 /suneung/(2027수능 D-day 2026-11-19)·/newyear/(2027 정미년) 시즌 랜딩. sitemap 27, 홈푸터.
-- ⏳ 태스크3 OG이미지: **환경 제약** — mdbox 바이너리 없음 + generated_images/ gitignore → repo커밋 PNG 즉시 불가. og.png(브랜드) 폴백 유지. 대안: __media__ 디렉티브로 생성 후 다음 턴에 committable 경로(/og/)로 배치·og:image 갱신 검토. 가치는 marginal(인앱 공유카드 이미 존재).
-- 커밋 b73ff1b(랜딩3종) **push 대기**: GCM이 GitHub 계정 2개 브라우저 선택창 대기(헤드리스라 hang). 사용자가 브라우저에서 계정 선택하면 push 완료. 로컬 안전.
+- ✅ 태스크1 /stroop/ 라이브. ✅ 태스크2 /suneung//newyear/ 라이브(원격 b73ff1b).
+- ⏳ 태스크3 OG이미지: **zodiac·ttirank 완료·라이브**(og/zodiac.png·og/ttirank.png, 커밋 0eda986). 매트 크롭 워크플로: __media__로 생성→generated_images/(gitignore)에 낙하→PIL로 배너영역 크롭 1200x630→og/에 저장→og:image 메타 교체.
+  - **unse·tarot 미완**(지난 4장 중 2장만 디스크 낙하). 재생성 필요 → 다음 턴에 크롭+og/에 저장+메타 교체(unse/index.html·tarot/index.html line12 og:image).
+  - 크롭 스크립트 참고: zodiac는 autocrop(threshold28) OK, ttirank는 수동 box=(66,306,962,716). unse/tarot도 생성물 보고 box 조정.
 
-## push 팁
-- GCM hang(계정 선택창) → 백그라운드 `nohup git push ... &` 후 사용자 브라우저 인증. 또는 사용자가 직접 push.
+## push
+- 원격 최신=0eda986. GCM 캐시 유효 시 `nohup git push ... &`로 통과. 계정 2개라 만료 시 브라우저 선택 필요.
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
