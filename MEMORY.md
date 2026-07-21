@@ -3,6 +3,18 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## 수익화(애드센스) & SEO 강화 (2026-07-21)
+- **목표**: 트래픽 유입 → 구글 애드센스 → 꾸준한 수익. 사이트는 살아있고 문제는 트래픽/수익화 0.
+- **애드센스 상태**: 아직 **미신청**(pub-id 없음, 신규 신청 예정). 사용자가 신청 후 `ca-pub-...` 주면 → head 스니펫 + `ads.txt`(`google.com, pub-XXX, DIRECT, f08c47fec0942fa0`) + 광고 슬롯 일괄 삽입 예정. 배치는 **정책 안전 위치만**(랜딩/가이드/운세 결과/게임 결과카드/홈·기록), **게임 플레이 화면 금지**(오클릭=밴). 신청 이메일=contact@playmallow.com(사용자가 추후 연결). 켜면 "광고 없음" 카피 수정 필요: `2048/`·`sudoku/`·`water-sort/`. 가이드=`애드센스-신청-가이드.md`.
+- **개인정보처리방침** `/privacy/`(ko/en) 신설 — 애드센스 승인 하드블로커. 쿠키·GA4·localStorage·AdSense 제3자쿠키 고지 + opt-out. 홈 푸터·sitemap 등재.
+- **구조화 데이터 완비**: 정적 랜딩 17/17 JSON-LD(WebApplication/GameApplication + BreadcrumbList), 운세 4종은 WebApp+FAQPage+Breadcrumb, 가이드 6종 Article+Breadcrumb(author/publisher/date). moamoa·home은 기존 보유.
+- **운세 4종 콘텐츠 보강(핵심)**: unse/zodiac/ttirank/tarot가 **얇은 JS 위젯**(크롤텍스트 100~449자)이라 랭킹·애드센스 저품질 반려 위험 → `</main>` 앞에 고정 SEO 콘텐츠(소개·십이지/별자리 날짜표·오행/아르카나 설명·이용법·FAQ·관련운세 내부링크·면책) 추가로 **865~1223자**로 상향(moamoa 952·sudoku 758 리치 수준 초과). `.seo` 스타일 각 페이지 head에 주입(var fallback). 교훈: **운세/게임 정적 페이지는 위젯만 두지 말고 크롤용 고정 콘텐츠를 항상 붙일 것**(moamoa 원칙과 동일).
+- **홈 내부링크**: `.site-footer`(ko전용)에 운세 4종·persona·queens·tango 추가 → 홈→운세 크롤·권한 전달.
+- **트래픽 플레이북** `트래픽-실행-플레이북.md`: 신생도메인 우선순위=① 서치콘솔/네이버 색인요청 ② 운세 공유카드 커뮤니티 시딩(가장 빠름) ③ 네이버블로그 ④ 글로벌 게임포털. 사용자: 색인은 이미 요청 완료.
+- **push 이슈**: 이 환경 Git Credential Manager가 종종 hang → `taskkill //F //IM git-credential-manager.exe` 후 `GIT_TERMINAL_PROMPT=0 git push origin master:main` 재시도하면 캐시 자격증명으로 성공. 원격은 `github.com/budlove-billy/typing.git`, push는 master→main.
+- **남은 후보(우선순위 낮거나 gated)**: 애드센스 실삽입(pub-id 대기), 운세 페이지별 OG 이미지(공유 클릭률), 시즌 랜딩(수능 11월·신년 1월), 고수요 무랜딩 게임(스트룹) 랜딩 검토.
+
+
 ## 브랜드 검색·언어 SEO (2026-07-15)
 - 한국어 공식 표기는 **플레이말로우**, 영문 표기는 **Mallow / Play Mallow**. 메인 검색 의도는 `무료 두뇌게임·웹게임`이며 title·description·OG·manifest·홈 가시 본문에 자연스럽게 함께 쓴다.
 - **핵심 타깃 시장은 한국어·영어 2개**다. 신규 검색 랜딩, 키워드 조사, 콘텐츠 확장, 품질 검증은 ko/en 순으로 우선한다. 태국어는 운영자가 좋아해서 제공하는 보조 언어로 유지하되 동일 규모의 SEO 투자를 전제하지 않는다.
