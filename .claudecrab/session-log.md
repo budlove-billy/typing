@@ -5331,3 +5331,1076 @@ _This file is automatically injected into Claude's context at the start of every
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
 
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:29:05.735696+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## push ⚠️ 대기
+- c18f3ac push가 GCM 계정선택 대기(원격 0eda986). 사용자 브라우저 계정 선택 또는 `git push origin master:main` 필요.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:34:24.538293+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## push ⚠️ 대기
+- c18f3ac push가 GCM 계정선택 대기(원격 0eda986). 사용자 브라우저 계정 선택 또는 `git push origin master:main` 필요.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:37:40.727722+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## push ⚠️ 대기
+- c18f3ac push가 GCM 계정선택 대기(원격 0eda986). 사용자 브라우저 계정 선택 또는 `git push origin master:main` 필요.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:39:32.287249+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## push ⚠️ 대기
+- c18f3ac push가 GCM 계정선택 대기(원격 0eda986). 사용자 브라우저 계정 선택 또는 `git push origin master:main` 필요.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:40:44.842978+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## push ⚠️ 대기
+- c18f3ac push가 GCM 계정선택 대기(원격 0eda986). 사용자 브라우저 계정 선택 또는 `git push origin master:main` 필요.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T10:45:46.055248+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 (진행중)
+- 문제: OG 4종 마스코트가 **크림색 큐브**(내 프롬프트가 "cream" 오기재) → 실제 말로우=**분홍 둥근 마스코트+반짝이 별2**(icon-512.png/favicon). 브랜드 불일치로 "의미 전달 안됨" 지적받음.
+- 해결: icon-512.png를 i2i 레퍼런스로 넣고 nano-banana로 4종 재생성 → 크롭(기존 워크플로)→og/ 덮어쓰기→커밋. 메타는 이미 og/*.png 가리키므로 파일만 교체하면 됨.
+- 실제 마스코트 스펙: 파스텔 핑크 둥근 몸통, 정수리에 작은 금색 반짝이 별 2개, 큰 검은 눈+흰 하이라이트, 발그레 볼, 작은 미소. (로고 SVG는 '한입 큐브' 버전, 앱아이콘은 '둥근+별' 버전 — 후자 채택)
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:12:02.290102+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 (거의 완료)
+- ✅ unse/zodiac/ttirank OG를 실제 말로우(핑크 둥근+별)로 재생성·크롭·교체·라이브(커밋4326981, 원격 반영).
+- ⏳ **tarot만 재생성 대기**(4장 중 3장만 낙하). i2i(icon-512 레퍼런스)로 타로씬 재생성→크롭(센터 box 약 0,210,1024,748)→og/tarot.png 덮어쓰기→커밋. 현재 og/tarot.png는 크림큐브 버전(교체 필요).
+- i2i 성공 프롬프트: "Use the exact pink character from reference (pastel-pink round marshmallow, 2 golden sparkle stars on head, big glossy dark eyes+white highlights, rosy cheeks, tiny smile)" + 씬 + full-bleed 1200x630. ref=icon-512.png. 크롭 워크플로 동일.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:16:15.825481+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(사용자 안내 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵 재제출(27 URL).
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:20:02.211453+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 (진행중)
+- 신규 랜딩 3종(stroop/suneung/newyear)에 전용 OG 없음(og.png?v=2 폴백) → 실제 마스코트로 생성.
+- i2i(nano-banana, ref=icon-512.png) 3장 요청 → 크롭 1200x630 → og/{stroop,suneung,newyear}.png → 각 페이지 og:image 메타 교체(현재 og.png?v=2) + twitter card 추가.
+- 게임 랜딩(sudoku/2048 등 다수)·홈도 og.png 폴백 — 대량이라 사용자 확인 후 별도 배치 예정.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:24:56.347562+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- 남은 og.png 폴백: **홈 + 게임랜딩 12종**(sudoku/2048/iq-test/memory-game/nonogram/reaction-time/water-sort/braintype/persona/queens/tango) + 가이드 6종 + moamoa. 대량 → 사용자 원하면 배치 생성.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:26:50.406123+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- (진행중) 핵심 4종 OG: **home/sudoku/2048/iq-test**. i2i(ref=icon-512.png) → 크롭 1200x630 → og/{home,sudoku,2048,iq-test}.png → 메타 교체.
+  - ⚠️ home og:image는 index.html + brain_app.html **둘 다** 교체 후 동기화. 나머지는 각 랜딩 line12.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:31:05.786070+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:33:03.738508+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:36:38.790953+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:40:30.961741+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:41:09.127324+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:43:24.757192+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:50:07.870565+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:53:04.541203+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T12:56:08.271786+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+
+---
+
+## Session 7a34bea0-b006-479b-a9e6-4ecb5ef1d294 — 2026-07-21T13:04:58.019938+00:00
+
+
+# Active Session State
+
+## Current task
+사이트 수익화(구글 애드센스) + 트래픽 유입. 사용자: 코드분석→살리기→유입→애드센스→꾸준한 수익. 긴박함 강함.
+
+## 진단 (2026-07-21)
+- 사이트는 **살아있음**(playmallow.com 정상, 33게임+운세+랜딩19+가이드6). "살리기"=트래픽/수익.
+- **애드센스 미적용**(광고코드 0). **개인정보처리방침 없음**=승인 하드블로커. **ads.txt 없음**.
+- GA4 있음(G-9EQEH5BF0C). 도메인 2026-07-10 출시=약11일 신생 → "저품질/트래픽부족" 반려 위험.
+- index.html==brain_app.html 바이트동일(수정 시 둘 다 sync). 정적 랜딩 다수.
+
+## 계획
+1. (✅ 커밋 4578fbf) 개인정보처리방침 `/privacy/`(ko/en) + 홈푸터 링크 + sitemap.
+2. 애드센스: **신규신청**으로 결정(pub-id 없음). 이메일=contact@playmallow.com 확정(나중에 연결). 가이드=`애드센스-신청-가이드.md`. pub-id 받으면 head 스니펫+ads.txt+슬롯 일괄 삽입.
+   - ⚠️ 켜면 "광고없음" 카피 수정: 2048/·sudoku/·water-sort/.
+3. 트래픽(진행): ✅ 운세4종(unse/zodiac/ttirank/tarot) JSON-LD 추가. 플레이북=`트래픽-실행-플레이북.md`.
+   - 사용자 직접 액션(★): 서치콘솔·네이버 색인요청, 커뮤니티 시딩, 네이버블로그, 게임포털.
+   - 다음 코드작업: 나머지 랜딩 JSON-LD, 운세 OG이미지, 내부링크, 시즌 랜딩(신년/수능).
+
+## 배포 ✅ 완료
+- 원격 main=33ba213, /privacy/ HTTP200·운세 JSON-LD 라이브 확인(2026-07-21). 사용자가 인증 리프레시 후 push 성공.
+- 이 환경 push 재시도 시 hang 없이 exit0 → 자격증명 리프레시됨(다음 커밋 push 가능 추정).
+
+## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
+- ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
+
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
+
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
+
+## Open questions
+- (해소) pub-id 신규신청, 이메일 확정.
+

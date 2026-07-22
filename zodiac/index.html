@@ -270,6 +270,7 @@ let LANG='ko';
 function detectLang(){ let l=null; try{ l=new URLSearchParams(location.search).get('lang'); }catch(e){} if(!l){ try{ l=localStorage.getItem('brain.lang'); }catch(e){} } if(!l){ const n=(navigator.language||'ko').slice(0,2); l=(n==='th')?'th':(n==='ko')?'ko':'en'; } return ['ko','en','th'].includes(l)?l:'ko'; }
 function setLang(l){ LANG=l; try{ localStorage.setItem('brain.lang',l); }catch(e){} document.documentElement.lang=l; applyLang(); if(document.getElementById('result').style.display!=='none') compute(); }
 function applyLang(){ const d=L[LANG];
+  document.documentElement.lang=LANG;
   document.getElementById('langSel').value=LANG;
   document.getElementById('t-home').textContent=d.home;
   document.getElementById('t-title').textContent=d.title;
@@ -286,6 +287,7 @@ function applyLang(){ const d=L[LANG];
   document.getElementById('againBtn').textContent=d.again;
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
+  document.querySelectorAll('[data-lang-only]').forEach(el=>{ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
   document.title=(LANG==='ko')?'말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow':(LANG==='th')?'ดวงราศี Mallow — ดูดวงราศีประจำวัน':'Mallow Horoscope — Today\'s Zodiac Fortune';
 }
 

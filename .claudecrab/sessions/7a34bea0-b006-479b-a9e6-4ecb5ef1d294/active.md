@@ -24,14 +24,25 @@
 ## 진행 요약 (2026-07-21, 전부 배포됨 fd9e0c7)
 - ✅ /privacy/ · 랜딩 17/17 JSON-LD · 가이드 6종 Article · 운세 4종 리치콘텐츠 · 홈푸터 · 문서
 
-## 셋다 작업(사용자 요청)
-- ✅ 태스크1 /stroop/ 라이브. ✅ 태스크2 /suneung//newyear/ 라이브(원격 b73ff1b).
-- ⏳ 태스크3 OG이미지: **zodiac·ttirank 완료·라이브**(og/zodiac.png·og/ttirank.png, 커밋 0eda986). 매트 크롭 워크플로: __media__로 생성→generated_images/(gitignore)에 낙하→PIL로 배너영역 크롭 1200x630→og/에 저장→og:image 메타 교체.
-  - **unse·tarot 미완**(지난 4장 중 2장만 디스크 낙하). 재생성 필요 → 다음 턴에 크롭+og/에 저장+메타 교체(unse/index.html·tarot/index.html line12 og:image).
-  - 크롭 스크립트 참고: zodiac는 autocrop(threshold28) OK, ttirank는 수동 box=(66,306,962,716). unse/tarot도 생성물 보고 box 조정.
+## 셋다 작업 — ✅ 전부 완료
+- ✅ /stroop/ ✅ /suneung/ /newyear/ (라이브)
+- ✅ 운세 4종 OG 이미지 완비: og/{zodiac,ttirank,unse,tarot}.png 1200x630 + og:image/twitter 메타 교체.
+  - zodiac/ttirank=커밋0eda986(라이브). unse/tarot=**커밋 c18f3ac(push 대기)**.
+- OG 크롭 워크플로 확립: __media__ 생성→generated_images/(gitignore) 낙하→PIL 크롭(정사각→하단/센터 밴드)→og/ 저장→메타 교체. box: zodiac autocrop, ttirank(66,306,962,716), unse(0,380,1024,918)하단, tarot(0,210,1024,748)센터.
 
-## push
-- 원격 최신=0eda986. GCM 캐시 유효 시 `nohup git push ... &`로 통과. 계정 2개라 만료 시 브라우저 선택 필요.
+## OG 마스코트 교체 ✅ 완료
+- ✅ 운세 4종(unse/zodiac/ttirank/tarot) OG 전부 **실제 말로우 마스코트**(핑크 둥근+반짝이별)로 교체·라이브(커밋 4862e12, 원격 반영, 4장 HTTP200 확인).
+- 방법: i2i(nano-banana, ref=icon-512.png) 재생성→PIL 크롭 1200x630→og/*.png 덮어쓰기. 크림큐브(AI오생성) 문제 해소.
+- 캐시 주의: 카톡/페북은 옛 미리보기 캐시 → 카카오/페북 디버거서 초기화 또는 URL에 ?v= 붙여 재스크랩.
+
+## 색인 요청 목록(✅ 사용자 색인 완료)
+- 1순위: /stroop/ /suneung/ /newyear/ /privacy/  2순위: /unse/ /zodiac/ /ttirank/ /tarot/  3순위: 사이트맵.
+
+## OG 추가 생성 ✅ (신규 랜딩 3종 완료)
+- ✅ stroop/suneung/newyear 전용 OG(실제 마스코트) 생성·크롭·메타교체·라이브(커밋 7b418ff, HTTP200).
+- ✅ home/sudoku/2048 OG 생성·크롭·메타교체·라이브(커밋 d2c5a80, 홈은 index+brain_app 동기화).
+  - ⏳ **iq-test만 재생성 대기**(4장중 3장 낙하). i2i(ref=icon-512) IQ씬(전구+도형+물음표)→크롭→og/iq-test.png→iq-test/index.html line12 메타교체+twitter.
+- 남은 og.png 폴백(핵심 4 이후): 게임랜딩 나머지 8종·가이드 6종·moamoa.
 
 ## Open questions
 - (해소) pub-id 신규신청, 이메일 확정.
