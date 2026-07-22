@@ -47,6 +47,7 @@ input[type=date]{width:100%;padding:13px 12px;font-size:16px;border:1.5px solid 
   background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
 .btn:active{transform:translateY(1px);}
 .btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
+.btn.xbtn{background:#111;color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.22);}
 .hero{text-align:center;padding:22px 18px 18px;}
 .hero .sym{font-size:70px;line-height:1;color:var(--p);}
 .hero .zname{font-size:22px;font-weight:800;margin-top:2px;}
@@ -129,8 +130,9 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
       <div class="say" id="say"></div>
       <div class="btns">
         <button class="btn" id="shareBtn"></button>
-        <button class="btn sub" id="againBtn"></button>
+        <button class="btn xbtn" id="xBtn"></button>
       </div>
+      <button class="btn sub" id="againBtn" style="margin-top:10px"></button>
       <div class="disc" id="t-disc"></div>
     </div>
   </div>
@@ -196,6 +198,7 @@ const L={
   home:'홈', title:'별자리 운세', tagline:'생년월일로 보는 오늘의 별자리 운세', birthLabel:'생년월일',
   go:'내 별자리 운세 보기', todayTotal:'🌟 오늘의 총운', byField:'🍀 분야별 운세', luck:'🎁 오늘의 행운',
   lkColor:'행운의 색', lkNum:'행운의 숫자', lkItem:'행운의 아이템', share:'📷 결과 공유', again:'다시 입력',
+  xShare:'X에 공유', xText:'오늘 내 별자리 운세를 확인했어요 ⭐ 당신도 무료로 확인해보세요!',
   disc:'본 운세는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 🌙 내일도 새로운 운세로 만나요!',
   footer:'가볍게 즐기는 두뇌게임', bornIn:'년생', matchLabel:'🤝 잘 맞는 별자리: ',
   needBirth:'생년월일을 입력해 주세요 🙂', noFuture:'미래 날짜는 볼 수 없어요 😅', shareText:'오늘의 내 별자리 운세 ⭐ playmallow.com/zodiac',
@@ -220,6 +223,7 @@ const L={
   home:'Home', title:'Horoscope', tagline:'Your daily horoscope by birth date', birthLabel:'Date of birth',
   go:'See my horoscope', todayTotal:'🌟 Overall Luck', byField:'🍀 Luck by Area', luck:'🎁 Lucky Charms',
   lkColor:'Lucky Color', lkNum:'Lucky Number', lkItem:'Lucky Item', share:'📷 Share', again:'Try again',
+  xShare:'Share on X', xText:'I just checked my horoscope on Mallow ⭐ Check yours free!',
   disc:'This horoscope is <b>just for fun</b> and should not guide any decision. 🌙 Come back tomorrow for a new one!',
   footer:'light brain games', bornIn:'', matchLabel:'🤝 Best match: ',
   needBirth:'Please enter your birth date 🙂', noFuture:"Can't read a future date 😅", shareText:'My horoscope today ⭐ playmallow.com/zodiac',
@@ -244,6 +248,7 @@ const L={
   home:'หน้าแรก', title:'ดวงราศี', tagline:'ดูดวงราศีประจำวันจากวันเกิด', birthLabel:'วันเดือนปีเกิด',
   go:'ดูดวงราศีของฉัน', todayTotal:'🌟 ดวงรวมวันนี้', byField:'🍀 ดวงแยกด้าน', luck:'🎁 ของนำโชควันนี้',
   lkColor:'สีนำโชค', lkNum:'เลขนำโชค', lkItem:'ของนำโชค', share:'📷 แชร์ผล', again:'กรอกใหม่',
+  xShare:'แชร์ลง X', xText:'ฉันเช็กดวงราศีวันนี้แล้ว ⭐ มาเช็กของคุณฟรี!',
   disc:'ดวงนี้เป็น <b>คอนเทนต์เพื่อความสนุก</b> ไม่ควรใช้ตัดสินใจใด ๆ 🌙 พรุ่งนี้มาดูดวงใหม่กันนะ!',
   footer:'เกมสมองเบา ๆ', bornIn:'', matchLabel:'🤝 ราศีที่เข้ากัน: ',
   needBirth:'กรุณากรอกวันเกิด 🙂', noFuture:'ดูวันในอนาคตไม่ได้นะ 😅', shareText:'ดวงราศีของฉันวันนี้ ⭐ playmallow.com/zodiac',
@@ -285,6 +290,7 @@ function applyLang(){ const d=L[LANG];
   document.getElementById('t-lkItem').textContent=d.lkItem;
   document.getElementById('shareBtn').textContent=d.share;
   document.getElementById('againBtn').textContent=d.again;
+  document.getElementById('xBtn').textContent=d.xShare;
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
   document.querySelectorAll('[data-lang-only]').forEach(el=>{ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
@@ -374,8 +380,18 @@ function share(){ if(!LAST) return; gtag('event','zodiac_share',{lang:LANG}); co
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],text:L[LANG].shareText}).catch(()=>{}); }
     else{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-zodiac.png'; a.click(); } },'image/png'); }
 
+function shareX(){ const d=L[LANG];
+  let msg=d.xText;
+  if(LAST){ msg=LAST.nm+' '+'★'.repeat(LAST.starN)+' — '+d.xText; }
+  const url='https://playmallow.com/zodiac/'+(LANG!=='ko'?('?lang='+LANG):'');
+  const u='https://twitter.com/intent/tweet?text='+encodeURIComponent(msg)+'&url='+encodeURIComponent(url)+'&hashtags=Mallow';
+  gtag('event','zodiac_share_x',{lang:LANG});
+  window.open(u,'_blank','noopener');
+}
+
 document.getElementById('goBtn').onclick=compute;
 document.getElementById('shareBtn').onclick=share;
+document.getElementById('xBtn').onclick=shareX;
 document.getElementById('againBtn').onclick=function(){document.getElementById('result').style.display='none';document.getElementById('inputCard').style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
 (function(){ LANG=detectLang(); applyLang(); try{const b=localStorage.getItem('zodiac_birth');if(b)document.getElementById('birth').value=b;}catch(e){} })();
 </script>
