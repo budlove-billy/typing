@@ -780,6 +780,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .grade-chip{display:inline-block;font-size:.85rem;margin-right:.3rem;vertical-align:-.08em;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
 .grade-0{filter:drop-shadow(0 0 5px rgba(79,124,255,.65))}
 .grade-1{filter:drop-shadow(0 0 4px rgba(255,183,3,.6))}
+.grade-line{display:flex;flex-direction:column;align-items:center;gap:.15rem;margin:0 auto .8rem;padding:.5rem .8rem;border-radius:12px;background:linear-gradient(135deg,rgba(79,124,255,.07),rgba(138,92,246,.07));border:1px solid rgba(79,124,255,.14);max-width:22rem}
+.gl-cur{font-size:1.02rem;font-weight:800}
+.gl-next{font-size:.78rem;color:var(--text2)}
+.gl-max{color:var(--green);font-weight:700}
 .ab-row{margin-bottom:.5rem}
 .ab-line{display:flex;align-items:center;gap:.5rem;cursor:pointer}
 .ab-detail{font-size:.68rem;color:var(--text3);margin:.25rem 0 .5rem 66px;line-height:1.6}
@@ -3584,6 +3588,7 @@ const I18N = {
   "records.noData": {ko:"아직 기록 없음 — 관련 게임을 합보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
   "grade.next": {ko:"다음 등급", en:"next rank", th:"ระดับถัดไป"},
   "grade.max": {ko:"최고 등급 달성!", en:"Top rank achieved!", th:"ถึงระดับสูงสุดแล้ว!"},
+  "grade.left": {ko:"점 남음", en:"pts to go", th:"อีก"},
   "records.overallSub": {ko:"게임 숙련도 70% + 다양한 게임 경험 30%", en:"70% skill + 30% game variety", th:"70% ทักษะ + 30% ความหลากหลาย"},
   "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
   "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
@@ -7493,6 +7498,16 @@ function recommendGames(cur, n){
 function renderRecs(cur){
   const card = document.getElementById(cur+'-result-card'); if(!card) return;
   const old = card.querySelector('.rec-box'); if(old) old.remove();
+  const oldG = card.querySelector('.grade-line'); if(oldG) oldG.remove();
+  // 등급 진행 표시 (등급 배지 + 다음 등급까지)
+  if(GAME_REF[cur]){
+    const gr=gradeOf(cur), nx=gradeNext(cur);
+    let gh='<div class="grade-line"><span class="gl-cur grade-'+gr.tier+'">'+gr.g.emoji+' '+gradeName(gr.g)+'</span>';
+    if(nx){ gh+='<span class="gl-next">'+t('grade.next')+' '+nx.g.emoji+' '+gradeName(nx.g)+' — <b>'+Math.max(0,nx.need-nx.cur)+'</b> '+t('grade.left')+'</span>'; }
+    else { gh+='<span class="gl-next gl-max">'+t('grade.max')+'</span>'; }
+    gh+='</div>';
+    card.insertAdjacentHTML('afterbegin', gh);
+  }
   const recs = recommendGames(cur, 3); if(!recs.length) return;
   let html = '<div class="rec-box"><div class="rec-title">'+t('rec.title')+'</div><div class="rec-grid">';
   recs.forEach(g=>{ html += '<button class="rec-card" onclick="showScreen(\''+g.id+'\')"><span class="rec-emoji">'+g.emoji+'</span><span class="rec-name">'+t(g.key)+'</span></button>'; });
