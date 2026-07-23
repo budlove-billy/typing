@@ -1,7 +1,21 @@
 # Active Session State
 
 ## Current task
-완료 — UX·성장 구조 개편 5종 + D 2차(상위 게임 씬 SVG)까지 모두 배포
+완료 — UX·성장 개편 5종 + D 2차(씬 확장 + AI 배경) 모두 배포
+
+## 최근 완료 (pushed)
+- **씬 확장** (236027a): GAME_SCENES 28종 추가 → 전체 34종 인앱 게임 인트로 장식 완성
+- **AI 히어로 배경** (cf9aaad): generated_images/image_c2ea68ae.png(마시멜로 구름) →
+  중앙 밴드 크롭·900px·14KB → assets/home-hero.jpg → home-feature 배경 적용(그라데이션 오버레이)
+- push 이슈: git-credential-manager hang → taskkill 후 GIT_TERMINAL_PROMPT=0 재시도로 해결
+
+## Earlier (all pushed)
+A 5118482 / B 0ad74e9 / C 7000ac3 / E 21e9ece / D1차 6a0dc74 / D2차씬 bb1a5fe / docs bd39c24
+
+## 후속 후보
+- 결과 화면 신기록 배경도 AI 이미지로 (홈 히어로와 같은 방식)
+- 다른 게임 개별 AI 배경
+- 애드센스(pub-id 대기)
 
 ## D 2차 완료 (bb1a5fe, pushed)
 - GAME_SCENES 맵 + initGameScenes(): merge/slide/react/cards/sudoku/stroop 6종 인트로 카드에

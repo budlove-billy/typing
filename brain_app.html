@@ -660,6 +660,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .sl-tile.ok{box-shadow:inset 0 0 0 2.5px var(--teal),0 2px 6px rgba(24,34,53,.10)}
 /* 말랑 2048 */
 .mr-board-wrap{max-width:380px;margin:0 auto;touch-action:none}
+/* 2048 플레이 화면 AI 배경 (가장자리 장식, 중앙은 읽기 쉽게 오버레이) */
+#merge-game-card{background:linear-gradient(160deg,rgba(255,250,244,.88) 0%,rgba(255,244,236,.8) 55%,rgba(255,255,255,.7) 100%),url('assets/merge-bg.jpg') center/cover no-repeat;border:1px solid rgba(255,170,120,.35)}
 .mr-board{display:grid;gap:.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:.5rem;aspect-ratio:1/1}
 .mr-cell{border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;background:#e8ecf4;color:#5a6683;user-select:none}
 .mr-cell.pop{animation:mrPop .18s ease}
@@ -794,6 +796,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .home-intro{margin:-.3rem .25rem 1.1rem;color:var(--text2);font-size:.9rem;line-height:1.65}
 .home-intro strong{color:var(--purple);font-weight:800}
 .home-feature{display:block;width:100%;text-align:left;cursor:pointer;border:1px solid rgba(110,146,255,.35);background:linear-gradient(125deg,rgba(238,243,255,.82) 0%,rgba(250,247,255,.68) 55%,rgba(255,255,255,.42) 100%),url('assets/home-hero.jpg') right center/cover no-repeat;box-shadow:var(--shadow-sm);font-family:inherit;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s;overflow:hidden}
+/* 신기록 결과 카드 축하 배경 */
+.card.is-record{border:1px solid rgba(255,183,3,.5);background:linear-gradient(160deg,rgba(255,248,231,.9) 0%,rgba(255,243,214,.72) 60%,rgba(255,255,255,.5) 100%),url('assets/record-bg.jpg') center/cover no-repeat;box-shadow:0 12px 32px rgba(255,183,3,.22);position:relative;overflow:hidden}
 .home-feature:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
 .home-feature:active{transform:translateY(-1px)}
 .hf-label{font-size:.78rem;font-weight:800;color:var(--purple);margin-bottom:.6rem;letter-spacing:.01em}
@@ -5863,9 +5867,18 @@ function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
   let newAll=false;
-  if(score>b.all){ b.all=score; newAll=true; sfx('record'); setTimeout(celebrateRecordScreen,140); }
+  if(score>b.all){ b.all=score; newAll=true; sfx('record'); setTimeout(celebrateRecordScreen,140); markRecordCard(); }
   if(score>b.day){ b.day=score; }
   return newAll;
+}
+/* 신기록 시 현재 보이는 결과 카드에 is-record 표시 → 축하 배경 CSS 적용 */
+function markRecordCard(){
+  try{
+    document.querySelectorAll('[id$="-result-card"]').forEach(c=>c.classList.remove('is-record'));
+    setTimeout(()=>{
+      document.querySelectorAll('[id$="-result-card"]').forEach(c=>{ if(c.offsetParent!==null) c.classList.add('is-record'); });
+    },60);
+  }catch(e){}
 }
 function bt_bestLineText(best,diff){
   const today=bt_today(), b=best[diff];
