@@ -3,6 +3,21 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## UX·성장 구조 개편 (2026-07-23) — 사운드/능력치/홈/등급/전환
+- **배경**: 게임 45종 시대에 사운드(3종뿐)·7축 능력치·하드코딩 홈·서버리스 랭킹 부재가 체감 품질을 깎음. 5개 작업 순차 배포.
+- **A. 사운드 팩**(`_tone()` 신설): 파일 없이 WebAudio 합성 유지하되 메인+옥타브 서브 레이어·노이즈(타격감)·글라이드·어택 엔벌로프.
+  `sfx()`에 tap/combo/level/flip/whoosh/tick/count/go/record 9종 추가(기존 good/bad/win 재녹음, 60+ 호출지점 그대로).
+  UI 버튼 탭 = document pointerdown 위임 리스너(개별 onclick 수정 0). fxCombo에 콤보음 내장. 신기록 sfx('record') 팡파르.
+  카드뒤집기(flip), 2048/슬라이딩(whoosh), 60초 게임 마지막 5초 틱 11곳(sfx('__tick',STATE) 패치).
+- **B. 능력치 10축**: ABILITIES 7→10(+coord/sound/sight, i18n 키 기존 것 재사용). ABILITY_MAP 재매핑(whack/catch/trace→coord, melody/rhythm/pitch→sound, spot/odd/diff→sight).
+  **overallLevel 산식 변경**: 전체평균(게임 늘수록 희석) → **숙련도70%+커버리지30%**(핸 게임 평균 + 핸 게임 비율). 신규유저 달성 가능, 골고루 플레이 보상. 안내 문구(records.overallSub) 추가.
+- **등급 배지 6단계** 🐣🌱🥉🥈🏆💎 (gradeOf/gradeNext, 경계=min% of GAME_REF): 내 기록 게임별 칩 + 결과 화면 grade-line.
+- **E. 등급 진행 표시**: renderRecs가 결과카드 상단에 현재 등급 + 다음 등급까지 N점(grade.next/left/max i18n). **서버리스 랭킹 대안 = 가짜 퍼센타일 대신 실제 진행 지표**로 결정(신뢰).
+- **C. 홈 개편**: '오늘의 데일리' 섹션(moamoa/queens/tango, ● 뱃지, 재방문 훅) + '인기 게임' 하드코딩 제거 → **recommendGames 개인화 추천**(약한 축+미플레이), 부족 시 큐레이션 보충. home.daily/home.foryou i18n.
+- **D. 전환 연출**: .screen.active에 screenIn 키프레임(페이드+슬라이드업), body[data-axis] 배경 transition. reduced-motion 존중.
+- **검증**: `.logs/sfx_check.mjs`(12종+위임), `.logs/ability_check.mjs`(10축·등급·overall), `.logs/home_check.mjs`(데일리+개인화), `.logs/grade_check.mjs`(등급라인+MAX), `.logs/errcheck.mjs`(34종 무결, **BASE를 8156으로 수정**). 정적 서버는 8156.
+- **남은 D 2차(후속)**: 상위 게임 이미지 자산 리프트(생성 이미지 배경/스프라이트)는 미착수 — GA 상위 게임 선정 후 진행.
+
 ## 수익화(애드센스) & SEO 강화 (2026-07-21)
 - **목표**: 트래픽 유입 → 구글 애드센스 → 꾸준한 수익. 사이트는 살아있고 문제는 트래픽/수익화 0.
 - **애드센스 상태**: 아직 **미신청**(pub-id 없음, 신규 신청 예정). 사용자가 신청 후 `ca-pub-...` 주면 → head 스니펫 + `ads.txt`(`google.com, pub-XXX, DIRECT, f08c47fec0942fa0`) + 광고 슬롯 일괄 삽입 예정. 배치는 **정책 안전 위치만**(랜딩/가이드/운세 결과/게임 결과카드/홈·기록), **게임 플레이 화면 금지**(오클릭=밴). 신청 이메일=contact@playmallow.com(사용자가 추후 연결). 켜면 "광고 없음" 카피 수정 필요: `2048/`·`sudoku/`·`water-sort/`. 가이드=`애드센스-신청-가이드.md`.

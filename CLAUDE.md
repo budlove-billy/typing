@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-23 — **UX·성장 구조 개편 5종**: ① 사운드 팩(`_tone` 레이어드 신스, sfx 12종, UI 탭 위임, 신기록 팡파르, 타이머 틱) ② 능력치 10축(+협응/청각/관찰) + overall=숙련도70%+커버리지30% ③ 등급 배지 6단계(🐣~💎) 내 기록 칩 + 결과 화면 다음 등급까지 N점 ④ 홈 '오늘의 데일리' 섹션 + 인기게임 하드코딩→개인화 추천 ⑤ 화면 전환 애니메이션. 검증 errcheck 34종 무결. 상세=MEMORY.md.
+
 - 2026-07-21 — **수익화(애드센스) 준비 + SEO 강화 배치**: ① 개인정보처리방침 `/privacy/`(ko/en) 신설 — 애드센스 승인 하드블로커 제거(쿠키·GA·AdSense 제3자쿠키 고지+opt-out, 홈푸터·sitemap). ② 정적 랜딩 **17/17 구조화데이터(JSON-LD) 완비** + 가이드 6종 Article schema. ③ **운세 4종(unse/zodiac/ttirank/tarot) 크롤 콘텐츠 대폭 보강** — 얇은 위젯(100~449자)→리치(865~1223자), 소개·날짜표·FAQ·내부링크·면책 고정HTML로 랭킹·애드센스 저품질반려 완화. ④ 홈 푸터 운세 내부링크. ⑤ `애드센스-신청-가이드.md`·`트래픽-실행-플레이북.md`. 애드센스는 신규신청 대기(pub-id 받으면 head스니펫+ads.txt+슬롯 삽입, 게임 플레이화면 광고 금지). 상세=MEMORY.md.
 
 - 2026-07-17 — **데일리 논리퍼즐 2종(글로벌·언어무관)**: LinkedIn 트렌드(Queens·Tango) 벤치마크로 자체 구현. **말로우 크라운(`/queens/`)** = 행·열·색구역에 왕관 1개·인접금지(N6/7/8), **말로우 탱고(`/tango/`)** = 해/달 Binairo(3연속 금지·개수균형, N6/8). 둘 다 `kstDate()` 데일리 시드·유일해 100% 보장(백트래킹 솔버)·결정적·공유카드·● 뱃지·ko/en/th. 생성기 선검증(`.logs/queens_sim.mjs`·`tango_sim.mjs`: Queens는 랜덤성장+균형필터+시드재시도, Tango는 given제거 유일화). HOME_GAMES cat.daily(langs 3언어)로 모아모아 옆 배치.
