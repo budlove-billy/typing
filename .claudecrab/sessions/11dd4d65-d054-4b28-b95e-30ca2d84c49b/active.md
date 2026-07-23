@@ -1,32 +1,28 @@
 # Active Session State
 
 ## Current task
-코드 전체 분석 (사용자 요청 4가지 축):
-1. 대시보드(홈) 구성
-2. 게임 구성 및 연결 구조
-3. 게임 퀄리티 (그래픽 상용 업그레이드 + 사운드 보강 목표)
-4. 랭킹 및 브레인 점수 구조 (게임 45종이라 개선 필요)
+완료 — UX·성장 구조 개편 5종 (사용자 "순서대로 해줘" 요청에 따라 A→B→C→E→D 순 실행)
 
-## Key facts gathered
-- index.html = brain_app.html (바이트 동일, 780KB 단일 HTML SPA, 서버 없음)
-- HOME_GAMES 45개 항목 (index.html:7282): 아케이드 34 + external 9(moamoa/queens/tango/unse/zodiac/ttirank/tarot/persona/suneung/newyear) + braintype + run
-- 스크린 44개 div.screen, i18n 키 ~701개 (ko/en/th)
-- 홈 구조: home-feature(미션 다음 게임) + 오늘의 목표(streak/plays/records) + home-cats(카테고리 칩) + home-popular(큐레이션 iq/sudoku/braintype 하드코딩) + home-fun(운세) + home-about + site-footer
-- 게임 패턴: intro/game/result 3카드, 상태객체 2글자(FM/HC/ST/TR...), best=brain.<id>.best {easy|normal|hard:{all,day,date}}
-- 사운드: WebAudio 단일 _beep() (osc sine/square 2종), sfx('good'|'bad'|'win') 3종뿐, good 30지점/bad 28/win 9. 파일 사운드 없음.
-- FX: fxBurst/fxConfetti/fxScorePop/fxCombo/celebrateRecordScreen (DOM+WAAPI, 파티클 잘 되어 있음)
-- 점수 구조: ABILITY_MAP(7축 가중치) + GAME_REF(레벨100 기준값) + gameLevel=best/ref*100 + abilityScores(핸 게임만 가중평균) + overallLevel(전체 평균, 안 한 게임=0)
-- 랭킹: 서버 없어서 **없음** (localStorage만). 내 기록 탭 = 개인 기록/능력치 레이더/백업.
-- 도전장: ?c=game.score.diff URL 챌린지 (친구 1:1)
-- 미션: 날짜시드 A/B/C 풀에서 3개, missionMark 공통 훅 (GA game_finish + chCheck + renderRecs)
+## Completed (committed)
+- **A. 사운드 팩** (5118482): `_tone()` 레이어드 신스, sfx 12종, UI 탭 위임 리스너, 신기록 팡파르, 60초 게임 타이머 틱 11곳
+- **B. 능력치 10축** (0ad74e9): +coord/sound/sight, overall=숙련도70%+커버리지30%, 등급 배지 6단계(gradeOf/gradeNext)
+- **C. 홈 개편** (7000ac3): 오늘의 데일리 섹션(moamoa/queens/tango) + 인기게임 하드코딩→recommendGames 개인화
+- **E. 등급 진행 표시** (21e9ece): 결과 화면 grade-line (다음 등급까지 N점)
+- **D. 전환 연출** (6a0dc74): screenIn 키프레임 + 축 배경 transition
+- **docs** (bd39c24): MEMORY.md + CLAUDE.md 체인지로그
 
-## Decisions
-(분석 결과를 사용자에게 보고 예정 — 그래픽/사운드 업그레이드와 점수 개선 제안 포함)
+## Verification
+- errcheck.mjs: **ALL 34 CLEAN — no pageerrors** (BASE를 8156으로 수정함)
+- sfx_check / ability_check / home_check / grade_check 모두 통과
+- 정적 프리뷰 서버: 포트 **8156** 가동 중 (python http.server, detached)
 
-## Files in progress
-- D:\claude\brain\index.html (읽기 분석 중, 수정 없음)
+## Key facts (변경된 구조)
+- ABILITIES 10축 = memory,focus,speed,space,calc,logic,lang,coord,sound,sight
+- overallLevel = round(핸게임평균레벨*0.7 + (핸게임수/전체)*100*0.3)
+- GRADES 6단계 경계: 입문0/새싹10/브론즈30/실버50/골드70/다이아90 (% of GAME_REF)
+- sfx 종류: good,bad,win,tap,combo,level,flip,whoosh,tick,count,go,record (+__tick 낮은수준)
 
-## Open questions
-- 랭킹: 서버 도입 의사 있는가? (Supabase 슬롯 문제로 보류 이력 있음 — MEMORY.md 2026-07-10)
-- 그래픽 업그레이드 범위: 전 게임 공통 품질 리프트 vs 상위 인기 게임 집중?
-- 사운드: WebAudio 합성 유지 보강 vs 사운드 파일(묶음) 도입?
+## Open questions / 후속
+- D 2차: 상위 게임 이미지 자산 리프트(생성 이미지 배경/스프라이트) 미착수 — GA 상위 게임 선정 후
+- 배포: git push origin master:main → Vercel 자동배포 (push는 사용자 확인 후)
+- 랭킹: 서버리스 대안은 "등급 진행"으로 해소. 실서버 랭킹은 Supabase 슬롯 문제로 보류 유지

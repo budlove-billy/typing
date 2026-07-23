@@ -79,6 +79,27 @@ body[data-axis="lang"]{--glow:#ffdcec}
 body[data-axis="daily"]{--glow:#d3f0ea}
 body[data-axis="fun"]{--glow:#fff0c9}
 body[data-axis="home"]{--glow:#e5edff}
+
+/* ===== 게임 씬 (인트로 카드 안 장식) ===== */
+.game-scene{position:absolute;top:14px;right:16px;display:flex;align-items:center;gap:.5rem;pointer-events:none;opacity:.95;z-index:2}
+.card:has(.game-scene){position:relative;overflow:hidden}
+.card:has(.game-scene)>.section-head,
+.card:has(.game-scene)>p{max-width:calc(100% - 130px)}
+.gs-tile{width:34px;height:34px;border-radius:9px;background:var(--c);display:flex;align-items:center;justify-content:center;font-weight:800;color:#5a4a3a;font-size:.9rem;box-shadow:0 3px 7px rgba(0,0,0,.14);animation:gsFloat 3s ease-in-out infinite}
+.gs-tile:nth-child(3){animation-delay:.5s}.gs-tile:nth-child(4){animation-delay:1s}
+.gs-grid{display:grid;grid-template-columns:repeat(3,30px);gap:3px}
+.gs-grid.sudoku{grid-template-columns:repeat(3,26px)}
+.gs-cell{width:30px;height:30px;border-radius:5px;background:#fff;border:1px solid #dbe2ef;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#4a5570;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.gs-grid.sudoku .gs-cell{width:26px;height:26px;font-size:.72rem}
+.gs-cell.empty{background:#eef2f9;border-style:dashed}
+.gs-bolt{font-size:2rem;animation:gsBolt 1.6s ease-in-out infinite;filter:drop-shadow(0 2px 5px rgba(255,183,3,.5))}
+.gs-cardfan{font-size:2.2rem;transform:rotate(-14deg);display:inline-block;filter:drop-shadow(0 3px 5px rgba(0,0,0,.2))}
+.gs-cardfan.two{transform:rotate(12deg);margin-left:-.6rem}
+.gs-stroop{display:flex;flex-direction:column;gap:.15rem;font-weight:800;font-size:.95rem;opacity:.85;transform:rotate(3deg)}
+@keyframes gsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes gsBolt{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.gs-tile,.gs-bolt{animation:none}}
+@media (max-width:480px){.game-scene{opacity:.55;transform:scale(.82);transform-origin:top right}}
 h1,h2,h3{font-weight:600}
 
 /* NAV */
@@ -1088,7 +1109,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== SUDOKU SCREEN ==================== -->
 <div class="screen" id="screen-sudoku">
-  <div class="card" id="sudoku-intro-card">
+    <div class="card" id="sudoku-intro-card">
+    <div class="game-scene" data-scene="sudoku" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="sudoku.title">스도쿠</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="sudoku.intro">
       9×9 격자를 1~9 숫자로 채워 각 행, 열, 3×3 박스에 같은 숫자가 겹치지 않도록 완성하세요.<br>
@@ -1331,7 +1353,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== STROOP SCREEN (색깔 맞추기) ==================== -->
 <div class="screen" id="screen-stroop">
-  <div class="card" id="stroop-intro-card">
+    <div class="card" id="stroop-intro-card">
+    <div class="game-scene" data-scene="stroop" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="stroop.title">색깔 맞추기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="stroop.intro">
       화면에 나오는 <b>글자의 색</b>과 같은 색 버튼을 누르세요.<br>
@@ -1536,7 +1559,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== MERGE 2048 GAME (말랑 2048 / 계산·계획) ==================== -->
 <div class="screen" id="screen-merge">
-  <div class="card" id="merge-intro-card">
+    <div class="card" id="merge-intro-card">
+    <div class="game-scene" data-scene="merge" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="merge.title">말랑 2048</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="merge.intro">
       밀어서 <b>같은 숫자를 합치면 두 배</b>가 됩니다. 2048 타일에 도전하세요!<br>
@@ -1585,7 +1609,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== SLIDE PUZZLE GAME (슬라이딩 퍼즐 / 공간) ==================== -->
 <div class="screen" id="screen-slide">
-  <div class="card" id="slide-intro-card">
+    <div class="card" id="slide-intro-card">
+    <div class="game-scene" data-scene="slide" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="slide.title">슬라이딩 퍼즐</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="slide.intro">
       빈칸 옆의 타일을 밀어 <b>숫자를 1부터 순서대로</b> 정렬하세요.<br>
@@ -1995,7 +2020,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== CARD MATCH SCREEN (카드 짝 맞추기) ==================== -->
 <div class="screen" id="screen-cards">
-  <div class="card" id="cards-intro-card">
+    <div class="card" id="cards-intro-card">
+    <div class="game-scene" data-scene="cards" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="cards.title">카드 짝 맞추기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="cards.intro">
       뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>
@@ -2046,7 +2072,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== REACTION SCREEN (반응 속도 / Go-No-Go) ==================== -->
 <div class="screen" id="screen-react">
-  <div class="card" id="react-intro-card">
+    <div class="card" id="react-intro-card">
+    <div class="game-scene" data-scene="react" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="react.title">반응 속도</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="react.intro">
       화면이 <b>초록색이 되는 순간 최대한 빨리</b> 누르세요. 빠를수록 고득점!<br>
@@ -2839,6 +2866,25 @@ function initMallowUI(){
     const vr=el.getAttribute('data-mallow-variant')||'cream';
     el.innerHTML=mallowSVG(mood,{size:sz,variant:vr});
   });
+}
+/* ===== 게임 씬 SVG — 상위 게임 인트로 뒤 장식 배경 (가벼운 인라인, 파일 없음) ===== */
+const GAME_SCENES={
+  merge:  mallowSVG('happy',{size:84,variant:'pink'}) + `<div class="gs-tile" style="--c:#ffd6e0">2</div><div class="gs-tile" style="--c:#ffe9c9">4</div><div class="gs-tile" style="--c:#d3ecff">8</div>`,
+  slide:  `<div class="gs-grid">${[1,2,3,4,5,6,7,8,''].map(v=>`<div class="gs-cell${v===''?' empty':''}">${v}</div>`).join('')}</div>`,
+  react:  mallowSVG('focus',{size:80,variant:'mint'}) + `<div class="gs-bolt">⚡</div>`,
+  cards:  mallowSVG('happy',{size:78,variant:'sky'}) + `<div class="gs-cardfan">🂠</div><div class="gs-cardfan two">🃏</div>`,
+  sudoku: `<div class="gs-grid sudoku">${[5,3,'','',7,'','','',''].map(v=>`<div class="gs-cell${v===''?' empty':''}">${v}</div>`).join('')}</div>`,
+  stroop: `<div class="gs-stroop"><span style="color:#e05555">빨강</span><span style="color:#3a7bd5">파랑</span><span style="color:#2fa56b">초록</span></div>`
+};
+function initGameScenes(){
+  document.querySelectorAll('.game-scene[data-scene]').forEach(el=>{
+    const k=el.getAttribute('data-scene');
+    if(GAME_SCENES[k]) el.innerHTML=GAME_SCENES[k];
+  });
+}
+if(typeof document!=='undefined'){
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initGameScenes);
+  else initGameScenes();
 }
 if(typeof document!=='undefined'){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initMallowUI);
