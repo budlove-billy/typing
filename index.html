@@ -859,7 +859,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   <div class="card home-ios-hint" id="ios-hint" style="display:none"><span data-i18n="install.ios">iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요</span><button class="ios-hint-x" onclick="dismissIosHint()">✕</button></div>
   <div class="home-section-title" data-i18n="home.browse">게임 모음</div>
   <div class="home-cats" id="home-cats"></div>
-  <div class="home-section-title" data-i18n="home.popular">인기 게임</div>
+  <div class="home-section-title" data-i18n="home.daily">오늘의 데일리</div>
+  <div class="home-grid" id="home-daily"></div>
+  <div class="home-section-title" data-i18n="home.foryou">추천 게임</div>
   <div class="home-grid" id="home-popular"></div>
   <div id="home-fun-wrap" style="display:none;margin-top:1.5rem">
     <div class="home-section-title" data-i18n="home.fun">재미로 보는 운세</div>
@@ -3583,6 +3585,8 @@ const I18N = {
   "grade.next": {ko:"다음 등급", en:"next rank", th:"ระดับถัดไป"},
   "grade.max": {ko:"최고 등급 달성!", en:"Top rank achieved!", th:"ถึงระดับสูงสุดแล้ว!"},
   "records.overallSub": {ko:"게임 숙련도 70% + 다양한 게임 경험 30%", en:"70% skill + 30% game variety", th:"70% ทักษะ + 30% ความหลากหลาย"},
+  "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
+  "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "game.usesAbility": {ko:"이 게임이 쓰는 능력", en:"Abilities you'll use", th:"ทักษะที่ได้ใช้"},
@@ -7554,9 +7558,32 @@ function renderHome(){
   if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>{ showScreen('games'); setTimeout(()=>{ const el=document.getElementById('grp-'+c.replace('.','-')); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },60); }; catWrap.appendChild(b); }); }
   // 랜딩 내부링크 푸터는 ko에서만
   const ftr=document.getElementById('site-footer'); if(ftr) ftr.style.display=(CURRENT_LANG==='ko')?'':'none';
-  // 인기 게임(큐레이션)
+  // 오늘의 데일리 (매일 새 판이 나오는 콘텐츠 — 재방문 훅)
+  const daily=document.getElementById('home-daily');
+  if(daily){
+    daily.innerHTML='';
+    ['moamoa','queens','tango'].forEach(id=>{
+      const g=gameMeta(id);
+      const card=document.createElement('button'); card.className='home-card';
+      card.onclick=()=>goExternal(g);
+      card.innerHTML=gameCardHTML(g);
+      daily.appendChild(card);
+    });
+  }
+  // 추천 게임 — 하드코딩 대신 내 약점·미플레이 기반 개인화(recommendGames), 부족하면 큐레이션 보충
   const pop=document.getElementById('home-popular');
-  if(pop){ pop.innerHTML=''; ['iq','sudoku','braintype'].forEach(id=>{ const g=gameMeta(id); const card=document.createElement('button'); card.className='home-card'; card.onclick=()=>showScreen(id); card.innerHTML=gameCardHTML(g); pop.appendChild(card); }); }
+  if(pop){
+    pop.innerHTML='';
+    let picks=[];
+    try{ picks=recommendGames('home',3); }catch(e){ picks=[]; }
+    ['iq','sudoku','merge'].forEach(id=>{ if(picks.length>=3) return; if(!picks.some(g=>g.id===id)){ const g=gameMeta(id); if(g&&g.id===id) picks.push(g); } });
+    picks.slice(0,3).forEach(g=>{
+      const card=document.createElement('button'); card.className='home-card';
+      card.onclick=()=>showScreen(g.id);
+      card.innerHTML=gameCardHTML(g);
+      pop.appendChild(card);
+    });
+  }
   // 재미로 보는 운세(ko 전용) — 인기 게임 밑에 모아서
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
