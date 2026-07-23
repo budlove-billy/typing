@@ -61,7 +61,11 @@
 }
 body{background:var(--bg);color:var(--text);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;letter-spacing:-0.01em;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px;background-attachment:fixed;transition:background .5s ease}
 /* ===== 인지 축별 테마 배경(은은한 상단 글로우) ===== */
-body[data-axis]{background:radial-gradient(135% 62% at 50% -12%,var(--glow,#e9f0ff) 0%,#f2f5fb 56%);background-attachment:fixed}
+body[data-axis]{background:radial-gradient(135% 62% at 50% -12%,var(--glow,#e9f0ff) 0%,#f2f5fb 56%);background-attachment:fixed;transition:background .4s ease}
+/* 화면 전환 연출 — showScreen이 .active를 토글할 때 부드럽게 진입 */
+@keyframes screenIn{from{opacity:0;transform:translateY(10px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+.screen.active{animation:screenIn .26s cubic-bezier(.2,.7,.3,1)}
+@media (prefers-reduced-motion:reduce){.screen.active{animation:none}}
 body[data-axis="memory"]{--glow:#ffe6c2}
 body[data-axis="focus"]{--glow:#eaddf8}
 body[data-axis="speed"]{--glow:#d6e8ff}
