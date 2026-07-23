@@ -1,7 +1,21 @@
 # Active Session State
 
 ## Current task
-완료 — UX·성장 개편 5종 + D 2차(씬 확장 + AI 배경) 모두 배포
+완료 — UX·성장 개편 + D 2차(씬) + D 3차(AI 배경 2종) 모두 배포
+
+## 최근 완료 (pushed)
+- **D 3차** (6d0f13a): 신기록 결과 배경(record-bg.jpg 골드 컨페티, is-record 클래스) +
+  2048 플레이 배경(merge-bg.jpg). bt_recordScore → markRecordCard()로 결과 카드 표시.
+- **AI 배경 파이프라인 확립**: generated_images 생성 → PIL 크롭/900px/~45KB JPEG → assets/ → CSS background
+- **씬 확장** (236027a) / **AI 히어로** (cf9aaad)
+
+## Earlier (all pushed)
+A 5118482 / B 0ad74e9 / C 7000ac3 / E 21e9ece / D1차 6a0dc74 / D2차씬 bb1a5fe / docs bd39c24
+
+## 후속 후보
+- 다른 게임 개별 AI 배경 (스도쿠/카드/반응속도 등) — 같은 파이프라인으로 빠르게 가능
+- 애드센스(pub-id 대기)
+- assets/ 이미지 preload 고려 (현재 CSS lazy)
 
 ## 최근 완료 (pushed)
 - **씬 확장** (236027a): GAME_SCENES 28종 추가 → 전체 34종 인앱 게임 인트로 장식 완성

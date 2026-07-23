@@ -440,6 +440,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .hc-stage{position:relative;height:210px;background:linear-gradient(180deg,#eaf1ff,#dfe8fb);border:1px solid var(--border);border-radius:var(--radius2);overflow:hidden;margin-bottom:1rem}
 .hc-house{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:5.5rem;z-index:2;filter:drop-shadow(0 3px 4px rgba(0,0,0,.12))}
 .hc-person{position:absolute;top:40%;transform:translateY(-50%);line-height:0;z-index:1;transition:left .9s linear,opacity .3s ease;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
+/* 캐릭터가 집 본체(문 쪽) 높이로 들어가도록 아래 레인으로 */
+.hc-person.hc-door{z-index:3}
 .hc-person svg{width:50px;height:50px;display:block}
 .hc-question{text-align:center}
 .hc-q-text{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.9rem}
@@ -6066,7 +6068,8 @@ function hcPlayEvent(ev){
 function hcSpawnPerson(stage, enter, i){
   const p=document.createElement('div');
   p.className='hc-person'; p.innerHTML = mallowSVG(enter?'happy':'default',{size:50,variant:['cream','pink','mint','sky','lemon','grape'][i%6]});
-  p.style.top = (34 + (i%3)*16) + '%'; // 3개 레인으로 분산
+  // 3개 레인을 집 아래쪽(문 높이)으로 — 지붕이 아닌 집 본체 하단으로 들어가게
+  p.style.top = (58 + (i%3)*12) + '%';
   if(enter){
     p.style.left='-16%'; p.style.opacity='1'; stage.appendChild(p);
     void p.offsetWidth; // 시작 위치를 렌더에 확정(강제 리플로우) → transition 보장
