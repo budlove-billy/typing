@@ -142,22 +142,22 @@ If the model is asking "where was I?" the answer is always: **read the active st
 <!-- PORTS_BEGIN -->
 ## Service
 
-This project is allocated the port range **8131-8135** (5 ports total).
+This project is allocated the port range **8156-8160** (5 ports total).
 
 **Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8131-8135`.
+- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8156-8160`.
 - **DO NOT** use any port outside this range.
 - Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
 - If you need more ports, ask the user to expand the range — don't reach outside.
 
 **Showing the user a web page / preview (MUST follow):**
 - A static page or site (HTML/CSS/JS, no live backend) — save it (with its assets) under `public/` in your work dir, then give the user a **clickable markdown link** (never a bare path — a bare path renders as dead plain text the user can't click):
-  `[打开页面](/api/v1/media/49f9dcf2-1663-4fc8-8f6f-bc4570df374c/public/<file>.html)`
+  `[打开页面](/api/v1/media/55e55807-7bfb-46f4-ab82-b3c729706028/public/<file>.html)`
   SmartJ serves that folder directly, so the link always opens — NO server and NO port needed. (`generated_images/` is served the same way.)
 - **NEVER** hand the user a `http://localhost:<port>/…` link or hardcode a port like `:8000` — they cannot reach your local dev server that way.
 - Only start a real server (on a port from the range above) when the page needs a live backend/API; for anything static, always use the `public/` link.
 
-**Env vars injected into your shell:** `PROJECT_PORT_START=8131`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8135`
+**Env vars injected into your shell:** `PROJECT_PORT_START=8156`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8160`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
@@ -398,12 +398,6 @@ Project conventions: always save outputs under `generated_images/` in the
 project working directory, use descriptive filenames, and after saving tell the
 user the relative path so they can preview/download it in the file browser.
 <!-- MDBOX_MULTIMODAL_END -->
-
-<!-- ROLE_REF_BEGIN -->
-## Your role
-
-Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first** before responding, and let it shape your tone, focus, and what you proactively bring up.
-<!-- ROLE_REF_END -->
 
 <!-- CAPABILITY_AUTOPILOT_BEGIN -->
 ## Capability autopilot — the task pulls in capabilities (MUST follow)

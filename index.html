@@ -4018,6 +4018,50 @@ function _beep(freq,dur,type,vol,when){
     o.start(t); o.stop(t+dur+0.02);
   }catch(e){}
 }
+/* ===== 사운드 팩 (WebAudio 합성, 파일 없음) =====
+   _tone: 옥타브 레이어+옵션 노이즈+글라이드로 단일 오실레이터 대비 풍부한 음색.
+   sfx(kind) 상황별 효과음. 기존 'good'/'bad'/'win' 호출 지점(60+)은 그대로 동작. */
+let _noiseBuf=null;
+function _getNoise(){
+  if(_noiseBuf) return _noiseBuf;
+  const len=_AC.sampleRate*0.5, b=_AC.createBuffer(1,len,_AC.sampleRate), d=b.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+  return (_noiseBuf=b);
+}
+function _tone(o){
+  o=o||{};
+  try{
+    if(!_AC) _AC=new (window.AudioContext||window.webkitAudioContext)();
+    if(_AC.state==='suspended') _AC.resume();
+    const t=_AC.currentTime+(o.when||0);
+    const dur=o.dur||0.12, vol=o.vol||0.14;
+    const g=_AC.createGain();
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(vol,t+(o.attack||0.006));
+    g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    g.connect(_AC.destination);
+    // 메인 + 옥타브 위 서브 레이어(밝은 배음)
+    [['',1],['',2]].forEach(function(pr,i){
+      const osc=_AC.createOscillator();
+      osc.type=o.type||'sine';
+      osc.frequency.setValueAtTime((o.freq||440)*pr[1],t);
+      if(o.glide) osc.frequency.exponentialRampToValueAtTime(Math.max(30,(o.freq||440)*pr[1]+o.glide),t+dur);
+      const og=_AC.createGain(); og.gain.value=(i===0?1:0.32)*(o.layerGain==null?1:o.layerGain);
+      osc.connect(og); og.connect(g);
+      osc.start(t); osc.stop(t+dur+0.05);
+    });
+    // 노이즈 레이어(타격감)
+    if(o.noise){
+      const src=_AC.createBufferSource(); src.buffer=_getNoise(); src.loop=true;
+      const nf=_AC.createBiquadFilter(); nf.type=o.noiseType||'highpass'; nf.frequency.value=o.noiseFreq||1800;
+      const ng=_AC.createGain();
+      ng.gain.setValueAtTime(vol*o.noise,t);
+      ng.gain.exponentialRampToValueAtTime(0.001,t+Math.min(dur,0.09));
+      src.connect(nf); nf.connect(ng); ng.connect(_AC.destination);
+      src.start(t); src.stop(t+0.12);
+    }
+  }catch(e){}
+}
 /* ===== 손맛(juice) FX — 파티클/점수팝/콤보 배지 =====
    sfx('good'|'win')에 자동 연결되어 정답을 내는 모든 게임에 적용됨. */
 let _fxXY={x:innerWidth/2,y:innerHeight*0.4};
@@ -4065,7 +4109,7 @@ function fxBurst(x,y,opts){ opts=opts||{}; if(fxReduced()) return; const n=opts.
   }
 }
 function fxScorePop(x,y,text,color){ if(fxReduced()) return; const layer=_fxLayer(); const p=document.createElement('div'); p.className='fx-pop'; p.textContent=text; p.style.color=color||'#21a67a'; p.style.left=x+'px'; p.style.top=y+'px'; layer.appendChild(p); p.addEventListener('animationend',()=>p.remove()); }
-function fxCombo(text){ if(fxReduced()) return; const b=document.createElement('div'); b.className='fx-combo'; b.textContent=text; document.body.appendChild(b); b.addEventListener('animationend',()=>b.remove()); }
+function fxCombo(text){ if(fxReduced()) return; const b=document.createElement('div'); b.className='fx-combo'; b.textContent=text; document.body.appendChild(b); b.addEventListener('animationend',()=>b.remove()); if(sndOn()){ try{ [880,1175,1568].forEach((f,i)=>_tone({freq:f,dur:0.07,type:'triangle',vol:0.11,when:i*0.05})); navigator.vibrate&&navigator.vibrate(18); }catch(_){} } }
 /* 요소 중심에서 축하 연출 */
 function fxCelebrate(el,text,color){ if(!el||!el.getBoundingClientRect) return; const r=el.getBoundingClientRect(); const x=r.left+r.width/2,y=r.top+r.height/2; fxBurst(x,y); if(text) fxScorePop(x,y-r.height*0.35,text,color); }
 /* 신기록 결과 화면: 점수 주변에 지속적으로 팡팡 */
@@ -4095,14 +4139,62 @@ function _getNewRecords(){ try{ return new Set(JSON.parse(localStorage.getItem('
 function _clearNewRecords(){ try{ localStorage.removeItem('brain.newRecords'); }catch(e){} }
 
 function sfx(kind){
+  if(kind==='__tick'){ try{ // 60초 타임어택 공통: 마지막 5초 초당 틱(타이머 표시 함수에서 호출)
+    const st=arguments[1];
+    if(st && st.running && typeof st.timeLeft==='number' && st.timeLeft>0 && st.timeLeft<=5 && sndOn()){
+      if(st.__lastTick!==st.timeLeft){ st.__lastTick=st.timeLeft; _tone({freq:1100,dur:0.04,type:'sine',vol:0.07,noise:0.4,noiseFreq:5000}); }
+    }
+  }catch(_){} return; }
   if(kind==='good') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
   else if(kind==='win') fxBurst(_fxXY.x,_fxXY.y,{count:20,spread:95});
   if(!sndOn()) return;
   const vib=(p)=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
-  if(kind==='good'){ _beep(880,0.08); vib(12); }
-  else if(kind==='bad'){ _beep(180,0.16,'square',0.10); vib([40,30,40]); }
-  else if(kind==='win'){ _beep(660,0.09); _beep(880,0.09,'sine',0.12,0.10); _beep(1174,0.16,'sine',0.12,0.20); vib([20,40,20,40,60]); }
+  switch(kind){
+    case 'good': // 정답 — 밝은 상승 2음 + 가벼운 타격
+      _tone({freq:740,dur:0.09,type:'triangle',vol:0.15,noise:0.18,noiseFreq:3000});
+      _tone({freq:988,dur:0.12,type:'sine',vol:0.13,when:0.06});
+      vib(12); break;
+    case 'bad': // 오답 — 하강 글라이드 저음
+      _tone({freq:220,dur:0.20,type:'square',vol:0.09,glide:-110});
+      _tone({freq:147,dur:0.22,type:'sine',vol:0.10,when:0.04});
+      vib([40,30,40]); break;
+    case 'win': // 클리어 — 메이저 아르페지오 4음
+      [523,659,784,1047].forEach((f,i)=>_tone({freq:f,dur:i===3?0.34:0.11,type:'triangle',vol:0.13,when:i*0.09}));
+      vib([20,40,20,40,60]); break;
+    case 'tap': // UI 탭 — 짧은 클릭
+      _tone({freq:1500,dur:0.035,type:'sine',vol:0.06,noise:0.5,noiseFreq:4000}); break;
+    case 'combo': // 콤보 — 상승 3연음
+      _tone({freq:880,dur:0.06,type:'triangle',vol:0.12});
+      _tone({freq:1175,dur:0.08,type:'triangle',vol:0.12,when:0.05});
+      _tone({freq:1568,dur:0.10,type:'sine',vol:0.10,when:0.10});
+      vib(18); break;
+    case 'level': // 레벨업 — 5도 점프
+      _tone({freq:587,dur:0.10,type:'triangle',vol:0.13,noise:0.15});
+      _tone({freq:880,dur:0.22,type:'triangle',vol:0.13,when:0.09});
+      vib([15,30,45]); break;
+    case 'flip': // 카드/타일 — 부드러운 스윕
+      _tone({freq:420,dur:0.07,type:'sine',vol:0.09,glide:260}); break;
+    case 'whoosh': // 스와이프/이동 — 노이즈 중심
+      _tone({freq:300,dur:0.10,type:'sine',vol:0.05,glide:200,noise:0.9,noiseType:'bandpass',noiseFreq:900}); break;
+    case 'tick': // 시간 임박
+      _tone({freq:1100,dur:0.04,type:'sine',vol:0.08,noise:0.4,noiseFreq:5000}); break;
+    case 'count': // 카운트다운 3·2·1
+      _tone({freq:660,dur:0.08,type:'sine',vol:0.12}); break;
+    case 'go': // 카운트다운 시작!
+      _tone({freq:988,dur:0.18,type:'triangle',vol:0.14,noise:0.2}); vib(25); break;
+    case 'record': // 신기록 — 팡파르(승리 + 고음 화성)
+      [523,659,784,1047,1319].forEach((f,i)=>_tone({freq:f,dur:i>=3?0.30:0.10,type:'triangle',vol:0.12,when:i*0.08}));
+      _tone({freq:2093,dur:0.5,type:'sine',vol:0.05,when:0.36});
+      vib([25,35,25,35,25,35,80]); break;
+  }
 }
+// UI 버튼 탭 사운드 — 위임 리스너(개별 onclick 수정 없이 전역 적용)
+if(typeof document!=='undefined') document.addEventListener('pointerdown',function(e){
+  try{
+    const b=e.target&&e.target.closest?e.target.closest('button,.diff-btn,.home-card,.rec-card,.tab-btn,.home-cat,.rec-row'):null;
+    if(b && !b.disabled) sfx('tap');
+  }catch(_){}
+},{passive:true});
 // 오디오 언락: AudioContext를 첫 사용자 제스처 안에서 생성·resume(+iOS 무음버퍼)해야 이후 setTimeout 사운드(멜로디/리듬)가 확실히 남.
 function _audioUnlock(){
   try{
@@ -5478,7 +5570,7 @@ function updateMgTimerDisplay(){
   const m=Math.floor(MG.timeLeft/60), s=MG.timeLeft%60;
   const el=document.getElementById('mg-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', MG.timeLeft<=10);
+  el.classList.toggle('warn', MG.timeLeft<=10); sfx('__tick',MG);
 }
 
 function mgNextProblem(){
@@ -5622,7 +5714,7 @@ function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
   let newAll=false;
-  if(score>b.all){ b.all=score; newAll=true; sfx('win'); setTimeout(celebrateRecordScreen,140); }
+  if(score>b.all){ b.all=score; newAll=true; sfx('record'); setTimeout(celebrateRecordScreen,140); }
   if(score>b.day){ b.day=score; }
   return newAll;
 }
@@ -5926,7 +6018,7 @@ function updateStTimerDisplay(){
   const m=Math.floor(ST.timeLeft/60), s=ST.timeLeft%60;
   const el=document.getElementById('st-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', ST.timeLeft<=10);
+  el.classList.toggle('warn', ST.timeLeft<=10); sfx('__tick',ST);
 }
 function stUpdateStats(){
   document.getElementById('st-score').textContent=ST.score;
@@ -6020,7 +6112,7 @@ function updateTrTimerDisplay(){
   const m=Math.floor(TR.timeLeft/60), s=TR.timeLeft%60;
   const el=document.getElementById('tr-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', TR.timeLeft<=10);
+  el.classList.toggle('warn', TR.timeLeft<=10); sfx('__tick',TR);
 }
 function trUpdateStats(){
   document.getElementById('tr-score').textContent=TR.score;
@@ -6661,7 +6753,7 @@ function mrMove(dir){ // 'left'|'right'|'up'|'down'
   if(!moved) return;
   MR.prev={grid:before, score:MR.score};
   MR.score+=gain;
-  if(gain>0) sfx('good'); else _beep(500,0.04,'sine',0.1);
+  if(gain>0) sfx('good'); else sfx('whoosh');
   mrSpawn();
   const mx=Math.max.apply(null,MR.grid);
   MR.maxTile=Math.max(MR.maxTile,mx);
@@ -6806,7 +6898,7 @@ function slTap(i){
   if(Math.abs(r-er)+Math.abs(c-ec)!==1) return; // 빈칸과 인접해야 이동
   SL.tiles[empty]=SL.tiles[i]; SL.tiles[i]=0;
   SL.moves++; document.getElementById('sl-moves').textContent=SL.moves;
-  _beep(520,0.04,'sine',0.12);
+  sfx('whoosh');
   slRender();
   if(slSolved()) finishSlide();
 }
@@ -6883,7 +6975,7 @@ function spUpdateTimer(){
   const el=document.getElementById('sp-timer');
   const m=Math.floor(SP.timeLeft/60), sec=SP.timeLeft%60;
   el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
-  el.style.color = SP.timeLeft<=10 ? 'var(--red)' : '';
+  el.style.color = SP.timeLeft<=10 ? 'var(--red)' : ''; sfx('__tick',SP);
 }
 function spNewRound(){
   const p=spParams(SP.level);
@@ -6988,7 +7080,7 @@ function odUpdateTimer(){
   const el=document.getElementById('od-timer');
   const m=Math.floor(OD.timeLeft/60), sec=OD.timeLeft%60;
   el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
-  el.style.color = OD.timeLeft<=10 ? 'var(--red)' : '';
+  el.style.color = OD.timeLeft<=10 ? 'var(--red)' : ''; sfx('__tick',OD);
 }
 function odNewRound(){
   const p=odParams(OD.level);
@@ -7096,7 +7188,7 @@ function bbUpdateTimer(){
   const el=document.getElementById('bb-timer');
   const m=Math.floor(BB.timeLeft/60), sec=BB.timeLeft%60;
   el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
-  el.style.color = BB.timeLeft<=10 ? 'var(--red)' : '';
+  el.style.color = BB.timeLeft<=10 ? 'var(--red)' : ''; sfx('__tick',BB);
 }
 function bbSum(){ return BB.sel.reduce((a,i)=>a+BB.vals[i],0); }
 function bbCurrentLine(){
@@ -7665,7 +7757,7 @@ function updateSwTimerDisplay(){
   const m=Math.floor(SW.timeLeft/60), s=SW.timeLeft%60;
   const el=document.getElementById('sw-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', SW.timeLeft<=10);
+  el.classList.toggle('warn', SW.timeLeft<=10); sfx('__tick',SW);
 }
 function swUpdateStats(){
   document.getElementById('sw-score').textContent=SW.score;
@@ -7768,7 +7860,7 @@ function updateNbTimer(){
   const m=Math.floor(NB.timeLeft/60), s=NB.timeLeft%60;
   const el=document.getElementById('nb-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', NB.timeLeft<=10);
+  el.classList.toggle('warn', NB.timeLeft<=10); sfx('__tick',NB);
 }
 function nbUpdateStats(){
   document.getElementById('nb-score').textContent=NB.score;
@@ -7867,7 +7959,7 @@ function updateRtTimer(){
   const m=Math.floor(RT.timeLeft/60), s=RT.timeLeft%60;
   const el=document.getElementById('rt2-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', RT.timeLeft<=10);
+  el.classList.toggle('warn', RT.timeLeft<=10); sfx('__tick',RT);
 }
 function rtUpdateStats(){
   document.getElementById('rt2-score').textContent=RT.score;
@@ -7959,7 +8051,7 @@ function updateCmTimer(){
   const m=Math.floor(CM.timeLeft/60), s=CM.timeLeft%60;
   const el=document.getElementById('cm-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', CM.timeLeft<=10);
+  el.classList.toggle('warn', CM.timeLeft<=10); sfx('__tick',CM);
 }
 function cmUpdateStats(){
   document.getElementById('cm-score').textContent=CM.score;
@@ -7983,6 +8075,7 @@ function cmFlip(i,b){
   if(!CM.running || CM.lock) return;
   if(b.classList.contains('up') || b.classList.contains('done')) return;
   b.classList.remove('back'); b.classList.add('up'); b.textContent=CM.deck[i];
+  sfx('flip');
   if(CM.first===null){ CM.first={i,b}; return; }
   const f=CM.first; CM.first=null;
   if(f.i===i) return; // 안전장치
@@ -8191,7 +8284,7 @@ function updateWkTimer(){
   const m=Math.floor(WK.timeLeft/60), s=WK.timeLeft%60;
   const el=document.getElementById('wk-timer');
   el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', WK.timeLeft<=10);
+  el.classList.toggle('warn', WK.timeLeft<=10); sfx('__tick',WK);
 }
 function wkUpdateStats(){
   document.getElementById('wk-score').textContent=WK.score;
