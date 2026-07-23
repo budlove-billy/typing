@@ -98,7 +98,31 @@ body[data-axis="home"]{--glow:#e5edff}
 .gs-stroop{display:flex;flex-direction:column;gap:.15rem;font-weight:800;font-size:.95rem;opacity:.85;transform:rotate(3deg)}
 @keyframes gsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes gsBolt{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-@media (prefers-reduced-motion:reduce){.gs-tile,.gs-bolt{animation:none}}
+/* --- 씬 확장 요소 --- */
+.gs-bignum{font-size:1.9rem;font-weight:800;color:#4f7cff;opacity:.8;line-height:1}
+.gs-emoji{font-size:1.7rem;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.14));animation:gsFloat 3s ease-in-out infinite}
+.gs-emoji.rot{animation:gsSpin 4s linear infinite}
+.gs-emoji.fall{animation:gsFall 1.8s ease-in infinite}
+.gs-emoji.diffmark{filter:drop-shadow(0 0 5px rgba(33,166,122,.6));transform:scale(1.15)}
+.gs-dots{display:flex;gap:.35rem}
+.gs-dot{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #4f7cff;color:#4f7cff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.gs-dot:nth-child(odd){animation:gsFloat 2.4s ease-in-out infinite}
+.gs-arrow{font-size:1.4rem;color:#8a5cf6;display:inline-block}
+.gs-arrow.tilt{transform:rotate(38deg);color:#ff5f9e}
+.gs-arrowrow{font-size:1.15rem;color:#9aa3b5;letter-spacing:.1rem}
+.gs-arrowrow b{color:#4f7cff;font-size:1.3rem}
+.gs-bubble{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff,#a5d8ff);box-shadow:0 3px 7px rgba(123,196,255,.4);animation:gsFloat 2.6s ease-in-out infinite}
+.gs-bubble.b2{width:20px;height:20px;background:radial-gradient(circle at 32% 30%,#fff,#ffd6e0);animation-delay:.5s}
+.gs-bubble.b3{width:16px;height:16px;background:radial-gradient(circle at 32% 30%,#fff,#c9f0d8);animation-delay:1s}
+.gs-vial{width:18px;height:46px;border-radius:5px 5px 9px 9px;border:2px solid #cfd6e4;border-top:none;background:linear-gradient(to top,var(--c1) 0 48%,var(--c2) 48% 100%);opacity:.85}
+.gs-block{width:24px;height:24px;border-radius:5px;background:var(--c);box-shadow:0 2px 5px rgba(0,0,0,.15);animation:gsFloat 3s ease-in-out infinite}
+.gs-block:nth-child(2){animation-delay:.5s}.gs-block:nth-child(3){animation-delay:1s}
+.gs-grid.nono .gs-cell,.gs-grid.word .gs-cell{background:#4f7cff;border-radius:3px}
+.gs-grid.nono .gs-cell.empty,.gs-grid.word .gs-cell.empty{background:#eef2f9}
+.gs-grid.word .gs-cell{font-size:.6rem;color:#fff}
+@keyframes gsSpin{to{transform:rotate(360deg)}}
+@keyframes gsFall{0%{transform:translateY(-8px);opacity:0}25%{opacity:1}90%{transform:translateY(10px);opacity:1}100%{transform:translateY(14px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.gs-tile,.gs-bolt,.gs-emoji,.gs-dot,.gs-block,.gs-bubble{animation:none}}
 @media (max-width:480px){.game-scene{opacity:.55;transform:scale(.82);transform-origin:top right}}
 h1,h2,h3{font-weight:600}
 
@@ -1064,6 +1088,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== IQ TEST SCREEN ==================== -->
 <div class="screen" id="screen-iq">
   <div class="card" id="iq-intro-card">
+    <div class="game-scene" data-scene="iq" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="iq.title">IQ 테스트</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="iq.intro">
       수열 완성, 언어 유추, 도형 패턴, 논리 추론 등 4개 영역에서 총 30문항이 출제됩니다.<br>
@@ -1174,6 +1199,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== MATH GAME SCREEN ==================== -->
 <div class="screen" id="screen-math">
   <div class="card" id="math-intro-card">
+    <div class="game-scene" data-scene="math" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="math.title">암산 게임</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="math.intro">
       덧셈·뺄셈·곱셈·나눗셈 문제를 제한 시간 안에 최대한 많이 풀어보세요.<br>
@@ -1250,6 +1276,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== FLASH MEMORY SCREEN (순간기억) ==================== -->
 <div class="screen" id="screen-flash">
   <div class="card" id="flash-intro-card">
+    <div class="game-scene" data-scene="flash" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="flash.title">순간기억</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="flash.intro">
       숫자 1부터 차례로 격자에 잠깐 나타났다 사라집니다.<br>
@@ -1300,6 +1327,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== HEAD COUNT SCREEN (인원수 세기) ==================== -->
 <div class="screen" id="screen-count">
   <div class="card" id="count-intro-card">
+    <div class="game-scene" data-scene="count" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="count.title">인원수 세기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="count.intro">
       사람들이 집에 들어가고 나옵니다. <b>집에 들어간 사람은 보이지 않아요.</b><br>
@@ -1406,6 +1434,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== TRAIL SCREEN (순서 잇기) ==================== -->
 <div class="screen" id="screen-trail">
   <div class="card" id="trail-intro-card">
+    <div class="game-scene" data-scene="trail" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="trail.title">순서 잇기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="trail.intro">
       흩어진 숫자를 <b>1부터 순서대로</b> 빠르게 누르세요.<br>
@@ -1457,6 +1486,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== COLOR SORT GAME (컬러 소트 / 논리) ==================== -->
 <div class="screen" id="screen-sort">
   <div class="card" id="sort-intro-card">
+    <div class="game-scene" data-scene="sort" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="sort.title">컬러 소트</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="sort.intro">
       병을 눌러 <b>맨 위 같은 색끼리만</b> 옮길 수 있어요.<br>
@@ -1506,6 +1536,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== CHOP TOWER GAME (말로우 타워 / 순발력) ==================== -->
 <div class="screen" id="screen-chop">
   <div class="card" id="chop-intro-card">
+    <div class="game-scene" data-scene="chop" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="chop.title">말로우 타워</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="chop.intro">
       마시멜로 타워를 좌우에서 <b>콕콕 깨물어</b> 내려가세요. 단, <b>포크가 있는 쪽은 금지!</b><br>
@@ -1660,6 +1691,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== SPOT COLOR GAME (다른 색 찾기 / 관찰) ==================== -->
 <div class="screen" id="screen-spot">
   <div class="card" id="spot-intro-card">
+    <div class="game-scene" data-scene="spot" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="spot.title">다른 색 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="spot.intro">
       타일 중 <b>딱 하나만 색이 미묘하게 달라요.</b> 그 타일을 찾아 누르세요!<br>
@@ -1711,6 +1743,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <div class="screen" id="screen-odd">
   <div class="card" id="odd-intro-card">
+    <div class="game-scene" data-scene="odd" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="odd.title">다른 모양 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="odd.intro">
       화살표 중 <b>딱 하나만 방향이 미묘하게 달라요.</b> 그 타일을 찾아 누르세요!<br>
@@ -1763,6 +1796,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== BUBBLE SUM GAME (버블 톡톡 / 계산) ==================== -->
 <div class="screen" id="screen-bubble">
   <div class="card" id="bubble-intro-card">
+    <div class="game-scene" data-scene="bubble" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="bubble.title">버블 톡톡</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="bubble.intro">
       버블 속 숫자를 눌러 <b>목표 숫자와 똑같은 합</b>을 만드세요!<br>
@@ -1855,6 +1889,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== RULE SWITCH SCREEN (규칙 바꾸기) ==================== -->
 <div class="screen" id="screen-switch">
   <div class="card" id="switch-intro-card">
+    <div class="game-scene" data-scene="switch" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="switch.title">규칙 바꾸기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="switch.intro">
       규칙이 <b>계속 바뀝니다.</b> 위에 표시된 <b>지금 규칙</b>에 맞게 숫자를 판단하세요.<br>
@@ -1912,6 +1947,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== N-BACK SCREEN (엔백) ==================== -->
 <div class="screen" id="screen-nback">
   <div class="card" id="nback-intro-card">
+    <div class="game-scene" data-scene="nback" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="nback.title">엔백</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="nback.intro">
       글자가 하나씩 지나갑니다. <b>N칸 전에 나왔던 글자와 같으면</b> [일치]를 누르세요.<br>
@@ -1963,6 +1999,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== MENTAL ROTATION SCREEN (도형 회전) ==================== -->
 <div class="screen" id="screen-rotate">
   <div class="card" id="rotate-intro-card">
+    <div class="game-scene" data-scene="rotate" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="rotate.title">도형 회전</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rotate.intro">
       두 글자 도형을 비교하세요. 오른쪽이 <b>돌리기만 하면 왼쪽과 같아지면</b> [같다],<br>
@@ -2127,6 +2164,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== WHACK SCREEN (말로우 팡팡 / 협응) ==================== -->
 <div class="screen" id="screen-whack">
   <div class="card" id="whack-intro-card">
+    <div class="game-scene" data-scene="whack" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="whack.title">말로우 팡팡</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="whack.intro">
       구멍에서 튀어나오는 <b>말로우를 빠르게 탭</b>하세요!<br>
@@ -2176,6 +2214,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== MELODY SCREEN (멜로디 기억 / 청각) ==================== -->
 <div class="screen" id="screen-melody">
   <div class="card" id="melody-intro-card">
+    <div class="game-scene" data-scene="melody" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="melody.title">멜로디 기억</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="melody.intro">
       버튼이 <b>소리와 함께 순서대로</b> 빛납니다. 잘 듣고 <b>같은 순서로</b> 눌러보세요.<br>
@@ -2231,6 +2270,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== FLANK SCREEN (화살표 집중 / 집중) ==================== -->
 <div class="screen" id="screen-flank">
   <div class="card" id="flank-intro-card">
+    <div class="game-scene" data-scene="flank" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="flank.title">화살표 집중</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="flank.intro">
       <b>가운데 화살표</b>가 가리키는 방향을 누르세요. 양옆 화살표는 함정이니 무시!<br>
@@ -2271,6 +2311,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== GUESS SCREEN (어림 계산 / 계산) ==================== -->
 <div class="screen" id="screen-guess">
   <div class="card" id="guess-intro-card">
+    <div class="game-scene" data-scene="guess" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="guess.title">어림 계산</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="guess.intro">
       정확히 계산하지 말고 <b>가장 가까운 어림값</b>을 빠르게 고르세요.<br>
@@ -2310,6 +2351,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== REV SCREEN (거꾸로 기억 / 기억) ==================== -->
 <div class="screen" id="screen-rev">
   <div class="card" id="rev-intro-card">
+    <div class="game-scene" data-scene="rev" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="rev.title">거꾸로 기억</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rev.intro">
       숫자가 하나씩 나타납니다. 다 본 뒤 <b>거꾸로 순서</b>로 입력하세요!<br>
@@ -2357,6 +2399,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== RHYTHM SCREEN (리듬 따라하기 / 청각) ==================== -->
 <div class="screen" id="screen-rhythm">
   <div class="card" id="rhythm-intro-card">
+    <div class="game-scene" data-scene="rhythm" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="rhythm.title">리듬 따라하기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="rhythm.intro">
       들려주는 <b>박자</b>를 잘 듣고, 같은 리듬으로 패드를 두드리세요.<br>
@@ -2397,6 +2440,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== CATCH SCREEN (마시멜로 받기 / 협응) ==================== -->
 <div class="screen" id="screen-catch">
   <div class="card" id="catch-intro-card">
+    <div class="game-scene" data-scene="catch" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="catch.title">마시멜로 받기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="catch.intro">
       떨어지는 <b>마시멜로 🍡</b>를 바구니로 받으세요. <b>포크 🍴</b>는 피해야 해요!<br>
@@ -2436,6 +2480,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== RUN SCREEN (말로우 런 / 순발력) ==================== -->
 <div class="screen" id="screen-run">
   <div class="card" id="run-intro-card">
+    <div class="game-scene" data-scene="run" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="run.title">말로우 런</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="run.intro">
       달려오는 <b>포크 🍴</b>를 <b>점프</b>로 넘으세요! 갈수록 빨라집니다.<br>
@@ -2469,6 +2514,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== FIT SCREEN (블록 채우기 / 공간) ==================== -->
 <div class="screen" id="screen-fit">
   <div class="card" id="fit-intro-card">
+    <div class="game-scene" data-scene="fit" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="fit.title">블록 채우기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="fit.intro">
       조각을 골라 판에 놓으세요. <b>가로·세로 줄을 꽉 채우면</b> 사라집니다!<br>
@@ -2508,6 +2554,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== NONO SCREEN (픽셀 로직 / 논리) ==================== -->
 <div class="screen" id="screen-nono">
   <div class="card" id="nono-intro-card">
+    <div class="game-scene" data-scene="nono" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="nono.title">픽셀 로직</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="nono.intro">
       가장자리 <b>숫자 힌트</b>로 어떤 칸을 칠할지 추리하세요. 줄마다 연속으로 칠할 칸 수입니다.<br>
@@ -2545,6 +2592,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== ANAGRAM SCREEN (글자 맞추기 / 언어) ==================== -->
 <div class="screen" id="screen-anagram">
   <div class="card" id="anagram-intro-card">
+    <div class="game-scene" data-scene="anagram" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="anagram.title">글자 맞추기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="anagram.intro">
       뒤섞인 글자를 <b>올바른 순서</b>로 배열해 단어를 완성하세요!<br>
@@ -2587,6 +2635,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== WORDSEARCH SCREEN (숨은 단어 찾기 / 언어) ==================== -->
 <div class="screen" id="screen-wordsearch">
   <div class="card" id="wordsearch-intro-card">
+    <div class="game-scene" data-scene="wordsearch" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="wordsearch.title">숨은 단어 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="wordsearch.intro">
       글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>
@@ -2627,6 +2676,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== DIFF SCREEN (틀린 그림 찾기 / 관찰) ==================== -->
 <div class="screen" id="screen-diff">
   <div class="card" id="diff-intro-card">
+    <div class="game-scene" data-scene="diff" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="diff.title">틀린 그림 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="diff.intro">
       위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>
@@ -2666,6 +2716,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== PITCH SCREEN (높은음 찾기 / 청각) ==================== -->
 <div class="screen" id="screen-pitch">
   <div class="card" id="pitch-intro-card">
+    <div class="game-scene" data-scene="pitch" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="pitch.title">높은음 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="pitch.intro">
       패드들이 소리를 냅니다. 그중 <b>딱 하나만 살짝 높은 음</b>이에요. 잘 듣고 그 패드를 누르세요!<br>
@@ -2708,6 +2759,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 <!-- ==================== TRACE SCREEN (길 따라가기 / 협응) ==================== -->
 <div class="screen" id="screen-trace">
   <div class="card" id="trace-intro-card">
+    <div class="game-scene" data-scene="trace" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="trace.title">길 따라가기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="trace.intro">
       <b>초록 점</b>에서 출발해 길을 벗어나지 않고 손가락(마우스)으로 <b>빨간 점</b>까지 이어보세요!<br>
@@ -2874,7 +2926,36 @@ const GAME_SCENES={
   react:  mallowSVG('focus',{size:80,variant:'mint'}) + `<div class="gs-bolt">⚡</div>`,
   cards:  mallowSVG('happy',{size:78,variant:'sky'}) + `<div class="gs-cardfan">🂠</div><div class="gs-cardfan two">🃏</div>`,
   sudoku: `<div class="gs-grid sudoku">${[5,3,'','',7,'','','',''].map(v=>`<div class="gs-cell${v===''?' empty':''}">${v}</div>`).join('')}</div>`,
-  stroop: `<div class="gs-stroop"><span style="color:#e05555">빨강</span><span style="color:#3a7bd5">파랑</span><span style="color:#2fa56b">초록</span></div>`
+  stroop: `<div class="gs-stroop"><span style="color:#e05555">빨강</span><span style="color:#3a7bd5">파랑</span><span style="color:#2fa56b">초록</span></div>`,
+  /* --- 확장: 나머지 인앱 게임 --- */
+  flash:  mallowSVG('focus',{size:80,variant:'lemon'}) + `<div class="gs-bignum">7</div>`,
+  count:  mallowSVG('default',{size:76,variant:'cream'}) + `<div class="gs-emoji">🏠</div>`,
+  nback:  mallowSVG('focus',{size:76,variant:'sky'}) + `<div class="gs-bignum">N</div>`,
+  trail:  `<div class="gs-dots">${[1,2,3,4,5].map(v=>`<span class="gs-dot">${v}</span>`).join('')}</div>`,
+  switch: mallowSVG('default',{size:76,variant:'grape'}) + `<div class="gs-emoji">🔀</div>`,
+  chop:   mallowSVG('happy',{size:82,variant:'pink'}) + `<div class="gs-emoji">🍡</div>`,
+  run:    mallowSVG('happy',{size:78,variant:'lemon'}) + `<div class="gs-emoji">🏃</div>`,
+  whack:  mallowSVG('happy',{size:80,variant:'cream'}) + `<div class="gs-emoji">🔨</div>`,
+  melody: mallowSVG('happy',{size:78,variant:'sky'}) + `<div class="gs-emoji">🎵</div>`,
+  spot:   `<div class="gs-tile" style="--c:#ffd6a0"></div><div class="gs-tile" style="--c:#ffcf96"></div><div class="gs-tile" style="--c:#ffd6a0"></div>`,
+  odd:    `<div class="gs-arrow">➤</div><div class="gs-arrow tilt">➤</div><div class="gs-arrow">➤</div>`,
+  rotate: mallowSVG('focus',{size:76,variant:'mint'}) + `<div class="gs-emoji rot">🔄</div>`,
+  math:   `<div class="gs-bignum">3+5</div>`,
+  bubble: `<div class="gs-bubble"></div><div class="gs-bubble b2"></div><div class="gs-bubble b3"></div>`,
+  iq:     mallowSVG('focus',{size:80,variant:'grape'}) + `<div class="gs-emoji">🧠</div>`,
+  sort:   `<div class="gs-vial" style="--c1:#ff8a9e;--c2:#ffd6a0"></div><div class="gs-vial" style="--c1:#7bc4ff;--c2:#c9f0d8"></div>`,
+  flank:  `<div class="gs-arrowrow">◀◀<b>▶</b>◀◀</div>`,
+  guess:  mallowSVG('default',{size:76,variant:'lemon'}) + `<div class="gs-emoji">📊</div>`,
+  rev:    mallowSVG('focus',{size:76,variant:'pink'}) + `<div class="gs-bignum">⇦</div>`,
+  rhythm: mallowSVG('happy',{size:78,variant:'grape'}) + `<div class="gs-emoji">🥁</div>`,
+  catch:  basketSVG(64) + `<div class="gs-emoji fall">🍡</div>`,
+  fit:    `<div class="gs-block" style="--c:#a5d8ff"></div><div class="gs-block" style="--c:#ffd6a0"></div><div class="gs-block" style="--c:#c9f0d8"></div>`,
+  nono:   `<div class="gs-grid nono">${[1,0,1,0,1,1,1,0,1].map(v=>`<div class="gs-cell${v?'':' empty'}"></div>`).join('')}</div>`,
+  anagram:`<div class="gs-tile" style="--c:#ffe9c9">ㄱ</div><div class="gs-tile" style="--c:#d3ecff">ㅏ</div><div class="gs-tile" style="--c:#c9f0d8">A</div>`,
+  wordsearch:`<div class="gs-grid word">${'단어찾기'.split('').concat(['','','']).slice(0,9).map(v=>`<div class="gs-cell${v?'':' empty'}">${v}</div>`).join('')}</div>`,
+  diff:   `<div class="gs-emoji">🍎</div><div class="gs-emoji">🍎</div><div class="gs-emoji diffmark">🍏</div>`,
+  pitch:  mallowSVG('focus',{size:76,variant:'sky'}) + `<div class="gs-emoji">🎧</div>`,
+  trace:  `<svg viewBox="0 0 90 40" width="86" height="40" aria-hidden="true"><path d="M6 32 Q 30 6 52 24 T 86 12" fill="none" stroke="#4f7cff" stroke-width="3" stroke-linecap="round" opacity=".8"/><circle cx="6" cy="32" r="4.5" fill="#21a67a"/><circle cx="86" cy="12" r="4.5" fill="#ff5f6d"/></svg>`
 };
 function initGameScenes(){
   document.querySelectorAll('.game-scene[data-scene]').forEach(el=>{

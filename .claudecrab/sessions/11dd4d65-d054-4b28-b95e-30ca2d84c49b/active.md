@@ -1,7 +1,20 @@
 # Active Session State
 
 ## Current task
-완료 — UX·성장 구조 개편 5종 (사용자 "순서대로 해줘" 요청에 따라 A→B→C→E→D 순 실행)
+완료 — UX·성장 구조 개편 5종 + D 2차(상위 게임 씬 SVG)까지 모두 배포
+
+## D 2차 완료 (bb1a5fe, pushed)
+- GAME_SCENES 맵 + initGameScenes(): merge/slide/react/cards/sudoku/stroop 6종 인트로 카드에
+  테마 씬 SVG(2048타일/슬라이딩그리드/번개/카드팬/스도쿠판/스트룹텍스트 + 마스코트)
+- 카드 우상단 배치, 텍스트 max-width로 겹침 방지. 파일 없는 인라인 SVG(이미지 생성 안 씀 — 가볍고 빠름)
+- errcheck ALL 34 CLEAN, 스크린샷으로 시각 확인 후 push 완료
+
+## Earlier completed (all pushed)
+- A 사운드팩 5118482 / B 능력치10축 0ad74e9 / C 홈개편 7000ac3 / E 등급진행 21e9ece / D1차 전환 6a0dc74 / docs bd39c24
+
+## 후속 후보
+- 더 많은 게임에 씬 확장 (whack/catch/melody 등) 또는 AI 생성 배경 이미지로 한 단계 업
+- 애드센스(pub-id 대기), GA 상위 게임 데이터 기반 콘텐츠
 
 ## Completed (committed)
 - **A. 사운드 팩** (5118482): `_tone()` 레이어드 신스, sfx 12종, UI 탭 위임 리스너, 신기록 팡파르, 60초 게임 타이머 틱 11곳
