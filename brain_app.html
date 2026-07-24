@@ -855,6 +855,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .home-cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
 .home-cat{background:#fff;border:1px solid rgba(205,213,229,.8);border-radius:999px;padding:.5rem 1.05rem;font-size:.85rem;font-weight:700;color:var(--text2);cursor:pointer;font-family:inherit;transition:.14s;box-shadow:var(--shadow-sm)}
 .home-cat:hover{border-color:var(--purple2);color:var(--purple);background:var(--purple3);transform:translateY(-1px)}
+/* 전체 게임 보기 큰 버튼 — 홈 상단 게임 진입 동선 */
+.home-allgames{display:block;width:100%;margin:.2rem 0 1.1rem;padding:.95rem;border:none;border-radius:var(--radius2);background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 20px rgba(79,124,255,.3);transition:transform .15s,box-shadow .15s}
+.home-allgames:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(79,124,255,.4)}
+.home-allgames:active{transform:translateY(0)}
 /* 내 기록 */
 .rec-row{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:.7rem .9rem;margin-bottom:.5rem;box-shadow:var(--shadow-sm);transition:transform .14s,box-shadow .14s,border-color .14s}
 .rec-row:hover{border-color:var(--purple2);box-shadow:var(--shadow);transform:translateX(3px)}
@@ -942,6 +946,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   <div class="home-hi" data-i18n="home.title">오늘의 두뇌 체조</div>
   <p class="home-intro" data-i18n="home.intro"><strong>플레이말로우</strong>는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트예요. 오늘의 추천부터 가볍게 시작해보세요.</p>
   <button class="card home-feature" id="home-feature" onclick="featureStart()"></button>
+  <button class="home-allgames" onclick="showScreen('games')" data-i18n="home.allgames">🎮 전체 게임 보기</button>
   <div class="card home-goals">
     <div class="hg-title" data-i18n="goals.title">오늘의 목표</div>
     <div class="hg-row">
@@ -952,12 +957,12 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   </div>
   <button class="card home-install" id="pwa-install" style="display:none" onclick="pwaInstall()">📲 <span data-i18n="install.button">홈 화면에 앱으로 설치</span></button>
   <div class="card home-ios-hint" id="ios-hint" style="display:none"><span data-i18n="install.ios">iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요</span><button class="ios-hint-x" onclick="dismissIosHint()">✕</button></div>
-  <div class="home-section-title" data-i18n="home.browse">게임 모음</div>
-  <div class="home-cats" id="home-cats"></div>
   <div class="home-section-title" data-i18n="home.daily">오늘의 데일리</div>
   <div class="home-grid" id="home-daily"></div>
   <div class="home-section-title" data-i18n="home.foryou">추천 게임</div>
   <div class="home-grid" id="home-popular"></div>
+  <div class="home-section-title" data-i18n="home.browse">게임 모음</div>
+  <div class="home-cats" id="home-cats"></div>
   <div id="home-fun-wrap" style="display:none;margin-top:1.5rem">
     <div class="home-section-title" data-i18n="home.fun">재미로 보는 운세</div>
     <div class="home-grid" id="home-fun"></div>
@@ -3765,6 +3770,7 @@ const I18N = {
   "records.overallSub": {ko:"게임 숙련도 70% + 다양한 게임 경험 30%", en:"70% skill + 30% game variety", th:"70% ทักษะ + 30% ความหลากหลาย"},
   "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
   "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
+  "home.allgames": {ko:"🎮 전체 게임 보기", en:"🎮 Browse All Games", th:"🎮 ดูเกมทั้งหมด"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "game.usesAbility": {ko:"이 게임이 쓰는 능력", en:"Abilities you'll use", th:"ทักษะที่ได้ใช้"},
@@ -7755,7 +7761,17 @@ function renderHome(){
   const catWrap=document.getElementById('home-cats');
   if(catWrap){ catWrap.innerHTML=''; cats.forEach(c=>{ const b=document.createElement('button'); b.className='home-cat'; b.textContent=t(c); b.onclick=()=>{ showScreen('games'); setTimeout(()=>{ const el=document.getElementById('grp-'+c.replace('.','-')); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },60); }; catWrap.appendChild(b); }); }
   // 랜딩 내부링크 푸터는 ko에서만
-  const ftr=document.getElementById('site-footer'); if(ftr) ftr.style.display=(CURRENT_LANG==='ko')?'':'none';
+  const ftr=document.getElementById('site-footer');
+  if(ftr){
+    if(!ftr.dataset.ko) ftr.dataset.ko=ftr.innerHTML; // ko 원본 보존(언어 전환 시 복원용)
+    ftr.style.display='';
+    if(CURRENT_LANG==='en'||CURRENT_LANG==='th'){
+      const L=CURRENT_LANG;
+      ftr.innerHTML='<a href="sudoku/?lang=en">Free Sudoku</a> · <a href="2048/?lang=en">2048</a> · <a href="iq-test/?lang=en">IQ Test</a> · <a href="braintype/?lang=en">Brain Type Test</a> · <a href="reaction-time/?lang=en">Reaction Test</a> · <a href="queens/?lang='+L+'">Mallow Crown</a> · <a href="tango/?lang='+L+'">Mallow Tango</a><br><a href="zodiac/?lang='+L+'">Zodiac</a> · <a href="tarot/?lang='+L+'">Tarot</a> · <a href="persona/?lang='+L+'">Personality Test</a> · <a href="privacy/?lang=en">Privacy</a>';
+    } else {
+      ftr.innerHTML=ftr.dataset.ko;
+    }
+  }
   // 오늘의 데일리 (매일 새 판이 나오는 콘텐츠 — 재방문 훅)
   const daily=document.getElementById('home-daily');
   if(daily){
