@@ -3,6 +3,15 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## AI 배경 전면 적용 (2026-07-24) — 34종 게임 + 홈/신기록 완성
+- **달성**: 인앱 아케이드 **34종 전부**에 AI 생성 플레이 배경 적용 + 홈 히어로 + 신기록 배경 = **총 36개 자산**(`assets/*.jpg`).
+- **파이프라인**: `__media__`(gpt-image-2-t2i, nano-banana보다 빠름) 생성 → `generated_images/` 저장 → PIL로 중앙 정사각 크롭·900px·품질82 → `assets/<id>-bg.jpg` (29~53KB) → CSS `#<id>-game-card{background:linear-gradient(오버레이),url(...)} center/cover` 적용. 오버레이로 중앙 가독성 확보.
+- **테마 매칭**: 각 게임 메커니즘을 형상화(2048=숫자타일, whack=구멍 마시멜로, catch=바구니, trail=번호경로, count=집·사람, rev=숫자카드·되감기 등).
+- **신기록 배경**: `bt_recordScore`→`markRecordCard()`가 보이는 결과 카드에 `is-record` 클래스 추가 → 골드 컨페티 배경.
+- **인원수세기 수정**(f67b182): 캐릭터 top 레인 34~66%→58~82%로 낮춰 지붕이 아닌 문 쪽으로 이동.
+- **배포(git push)**: credential helper가 자격증명 없이 hang → Fine-grained PAT(`github_pat_`)을 `.env`의 `GITHUB_TOKEN`에 저장(`.gitignore`에 `.env` 이미 등록). **Contents: Read and write 권한 필수**(Admin만으론 403). push는 `git push "https://x-access-token:${TOKEN}@github.com/budlove-billy/typing.git" master:main` (URL에 토큰 일회성 포함, 저장 안 함).
+- **검증**: `.logs/errcheck.mjs`(34종 무결), 각 배경마다 playwright 스크린샷으로 시각 확인 후 push.
+
 ## UX·성장 구조 개편 (2026-07-23) — 사운드/능력치/홈/등급/전환
 - **배경**: 게임 45종 시대에 사운드(3종뿐)·7축 능력치·하드코딩 홈·서버리스 랭킹 부재가 체감 품질을 깎음. 5개 작업 순차 배포.
 - **A. 사운드 팩**(`_tone()` 신설): 파일 없이 WebAudio 합성 유지하되 메인+옥타브 서브 레이어·노이즈(타격감)·글라이드·어택 엔벌로프.
