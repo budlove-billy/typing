@@ -83,6 +83,14 @@ main{width:100%;max-width:480px;padding:18px 14px 56px;}
 .summary{margin-top:10px;text-align:center;font-size:14px;font-weight:700;line-height:1.7;color:var(--p);background:#f2ecff;border-radius:12px;padding:13px;}
 .sum-label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--pink);margin-bottom:4px;}
 .btns{display:flex;gap:10px;margin-top:14px;} .btns .btn{margin-top:0;}
+/* 추천 게임 퍼널 — 운세 → 게임 */
+.game-funnel{margin-top:16px;background:linear-gradient(135deg,#f2ecff,#fdf0f6);border:1px solid #e3d8fb;border-radius:14px;padding:13px 14px;}
+.gf-title{font-size:12.5px;font-weight:800;color:var(--p);margin-bottom:9px;text-align:center;}
+.gf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gf-card{display:flex;flex-direction:column;align-items:center;gap:4px;background:#fff;border:1.5px solid #e7e1f8;border-radius:11px;padding:11px 6px;text-decoration:none;color:var(--text);transition:.15s;}
+.gf-card:hover{border-color:var(--p);transform:translateY(-2px);box-shadow:0 5px 14px rgba(139,111,240,.2);}
+.gf-emoji{font-size:24px;line-height:1;}
+.gf-name{font-size:11px;font-weight:700;text-align:center;line-height:1.25;}
 .disc{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.6;}
 footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
 .seo{max-width:480px;margin:0 auto;padding:0 14px 8px}
@@ -143,6 +151,10 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     <div class="btns">
       <button class="btn" id="shareBtn">📷 결과 공유</button>
       <button class="btn sub" id="againBtn">다시 뽑기</button>
+    </div>
+    <div class="game-funnel" id="gameFunnel">
+      <div class="gf-title" id="gf-title">🎮 이 운세에 딱 맞는 두뇌게임</div>
+      <div class="gf-grid" id="gf-grid"></div>
     </div>
     <div class="disc" id="t-disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909), Pamela Colman Smith · 퍼블릭 도메인</span></div>
   </div>
@@ -258,6 +270,26 @@ const CARD_TH=MAJOR_TH.slice();
 
 let LANG='ko';
 function detectLang(){ let l=null; try{l=new URLSearchParams(location.search).get('lang');}catch(e){} if(!l){try{l=localStorage.getItem('brain.lang');}catch(e){}} return l==='th'?'th':'ko'; }
+/* 추천 게임 퍼널 — 운세 결과 아래 게임 3개 (날짜 시드로 매일 바뀜) */
+const GF_GAMES=[
+ {id:'sudoku',e:'🔢',ko:'스도쿠',th:'ซูโดกุ'},
+ {id:'merge',e:'🍭',ko:'말랑 2048',th:'2048'},
+ {id:'iq',e:'🧠',ko:'IQ 테스트',th:'ไอคิว'},
+ {id:'cards',e:'🃏',ko:'카드 짝 맞추기',th:'จับคู่การ์ด'},
+ {id:'stroop',e:'🎨',ko:'색깔 맞추기',th:'จับสี'},
+ {id:'react',e:'⏱️',ko:'반응 속도',th:'ความไว'},
+ {id:'spot',e:'🌈',ko:'다른 색 찾기',th:'หาสีต่าง'},
+ {id:'nono',e:'🖼️',ko:'픽셀 로직',th:'นอนแกรม'},
+ {id:'melody',e:'🎵',ko:'멜로디 기억',th:'จำทำนอง'},
+ {id:'bubble',e:'🫧',ko:'버블 톡톡',th:'ฟองตึก'}
+];
+function renderGameFunnel(){
+  const grid=document.getElementById('gf-grid'); if(!grid) return;
+  document.getElementById('gf-title').textContent=(LANG==='th')?'🎮 เกมสมองที่เข้ากับไพ่วันนี้':'🎮 이 운세에 딱 맞는 두뇌게임';
+  const d=new Date(), seed=d.getFullYear()*372+d.getMonth()*31+d.getDate();
+  const picks=[]; for(let i=0;i<3;i++){ picks.push(GF_GAMES[(seed+i*3)%GF_GAMES.length]); }
+  grid.innerHTML=picks.map(g=>'<a class="gf-card" href="/?game='+g.id+(LANG==='th'?'&lang=th':'')+'"><span class="gf-emoji">'+g.e+'</span><span class="gf-name">'+(LANG==='th'?g.th:g.ko)+'</span></a>').join('');
+}
 function CF(pick){ return (LANG==='th' && CARD_TH[pick.idx]) ? CARD_TH[pick.idx] : pick.card; }
 function setLang(l){ LANG=(l==='th')?'th':'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang();
   document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
@@ -281,6 +313,7 @@ function applyLang(){ const d=TX[LANG];
   document.getElementById('againBtn').textContent=d.again;
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
+  renderGameFunnel();
   document.title=(LANG==='th')?'Mallow ทาโรต์ — ไพ่วันนี้ & ไพ่ 3 ใบ':'말로우 타로 — 오늘의 카드 & 3카드 타로 | Mallow';
 }
 /* Mallow 마스코트(핑크·웃는) — 브랜드 통일 */

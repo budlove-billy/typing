@@ -73,6 +73,14 @@ input[type=date]{width:100%;padding:13px 12px;font-size:16px;border:1.5px solid 
 .say{margin-top:16px;text-align:center;font-size:14.5px;line-height:1.7;font-weight:700;color:var(--p);}
 .disc{font-size:11px;color:var(--sub);text-align:center;margin-top:16px;line-height:1.6;}
 .btns{display:flex;gap:10px;margin-top:16px;} .btns .btn{margin-top:0;}
+/* 추천 게임 퍼널 — 운세 → 게임 */
+.game-funnel{margin-top:16px;background:linear-gradient(135deg,#f2ecff,#fdf0f6);border:1px solid #e3d8fb;border-radius:14px;padding:13px 14px;}
+.gf-title{font-size:12.5px;font-weight:800;color:#8b6ff0;margin-bottom:9px;text-align:center;}
+.gf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gf-card{display:flex;flex-direction:column;align-items:center;gap:4px;background:#fff;border:1.5px solid #e7e1f8;border-radius:11px;padding:11px 6px;text-decoration:none;color:var(--text,#1a1a1a);transition:.15s;}
+.gf-card:hover{border-color:#8b6ff0;transform:translateY(-2px);box-shadow:0 5px 14px rgba(139,111,240,.2);}
+.gf-emoji{font-size:24px;line-height:1;}
+.gf-name{font-size:11px;font-weight:700;text-align:center;line-height:1.25;}
 footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
 body[data-star="5"]{background:radial-gradient(130% 95% at 50% 0%, #ffeab0 0%, #eaf0ff 42%, var(--bg) 72%);}
 body[data-star="4"]{background:radial-gradient(130% 95% at 50% 0%, #ffd9ea 0%, #e7ecff 45%, var(--bg) 74%);}
@@ -133,6 +141,10 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
         <button class="btn xbtn" id="xBtn"></button>
       </div>
       <button class="btn sub" id="againBtn" style="margin-top:10px"></button>
+      <div class="game-funnel" id="gameFunnel">
+        <div class="gf-title" id="gf-title">🎮 오늘 운세에 딱 맞는 두뇌게임</div>
+        <div class="gf-grid" id="gf-grid"></div>
+      </div>
       <div class="disc" id="t-disc"></div>
     </div>
   </div>
@@ -294,7 +306,29 @@ function applyLang(){ const d=L[LANG];
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
   document.querySelectorAll('[data-lang-only]').forEach(el=>{ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
+  renderGameFunnel();
   document.title=(LANG==='ko')?'말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow':(LANG==='th')?'ดวงราศี Mallow — ดูดวงราศีประจำวัน':'Mallow Horoscope — Today\'s Zodiac Fortune';
+}
+/* 추천 게임 퍼널 — 운세 결과 아래 게임 3개 (ko/en/th) */
+const GF_GAMES=[
+ {id:'sudoku',e:'🔢',ko:'스도쿠',en:'Sudoku',th:'ซูโดกุ'},
+ {id:'merge',e:'🍭',ko:'말랑 2048',en:'2048',th:'2048'},
+ {id:'iq',e:'🧠',ko:'IQ 테스트',en:'IQ Test',th:'ไอคิว'},
+ {id:'cards',e:'🃏',ko:'카드 짝 맞추기',en:'Card Match',th:'จับคู่การ์ด'},
+ {id:'stroop',e:'🎨',ko:'색깔 맞추기',en:'Color Match',th:'จับสี'},
+ {id:'react',e:'⏱️',ko:'반응 속도',en:'Reaction',th:'ความไว'},
+ {id:'spot',e:'🌈',ko:'다른 색 찾기',en:'Spot Color',th:'หาสีต่าง'},
+ {id:'nono',e:'🖼️',ko:'픽셀 로직',en:'Nonogram',th:'นอนแกรม'},
+ {id:'melody',e:'🎵',ko:'멜로디 기억',en:'Melody',th:'จำทำนอง'},
+ {id:'bubble',e:'🫧',ko:'버블 톡톡',en:'Bubble Pop',th:'ฟองตึก'}
+];
+const GF_TITLE={ko:'🎮 오늘 운세에 딱 맞는 두뇌게임',en:'🎮 Brain games for your horoscope',th:'🎮 เกมสมองที่เข้ากับดวงวันนี้'};
+function renderGameFunnel(){
+  const grid=document.getElementById('gf-grid'); if(!grid) return;
+  const tl=document.getElementById('gf-title'); if(tl) tl.textContent=GF_TITLE[LANG]||GF_TITLE.ko;
+  const d=new Date(), seed=d.getFullYear()*372+d.getMonth()*31+d.getDate();
+  const picks=[]; for(let i=0;i<3;i++) picks.push(GF_GAMES[(seed+i*3)%GF_GAMES.length]);
+  grid.innerHTML=picks.map(g=>'<a class="gf-card" href="/?game='+g.id+(LANG!=='ko'?'&lang='+LANG:'')+'"><span class="gf-emoji">'+g.e+'</span><span class="gf-name">'+(g[LANG]||g.ko)+'</span></a>').join('');
 }
 
 function signIndex(M,D){ const md=M*100+D; const cuts=[[120,0],[219,1],[321,2],[420,3],[521,4],[622,5],[723,6],[823,7],[923,8],[1024,9],[1123,10],[1222,11]]; let idx=11; for(let i=0;i<cuts.length;i++){ if(md>=cuts[i][0]) idx=cuts[i][1]; } return idx; }
