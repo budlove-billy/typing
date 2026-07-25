@@ -1022,14 +1022,6 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="hg-item"><b id="rec-count">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
   </div>
-  <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
-  <div class="grade-summary" id="grade-summary"></div>
-  <div class="rec-filters" id="rec-filters">
-    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
-    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
-    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
-  </div>
-  <div id="records-body" class="rec-grid"></div>
   <div class="home-section-title" data-i18n="records.abilityTitle">두뇌 능력치</div>
   <div class="card">
     <div class="ab-head"><span class="ab-head-label" data-i18n="records.overall">종합 두뇌 레벨</span><span class="ab-head-val" id="ability-overall">0</span></div>
@@ -1039,6 +1031,14 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div id="ability-graph"></div>
     <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
   </div>
+  <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
+  <div class="grade-summary" id="grade-summary"></div>
+  <div class="rec-filters" id="rec-filters">
+    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
+    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
+    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
+  </div>
+  <div id="records-body" class="rec-grid"></div>
   <div class="home-section-title" data-i18n="backup.title">기록 백업</div>
   <div class="card">
     <p style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem" data-i18n="backup.hint">기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.</p>
