@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-25 — **게임별 최고 기록 PB 목록 개편**: 임의 `GAME_REF` 임계값으로 만든 다이아·메달·Lv·진행바를 UI와 결과 화면에서 제거. 플레이한 게임만 `HOME_GAMES` 고정 순서로 노출하고 인지 영역 필터, 게임 아이콘·이름·대표 난이도·실제 최고점 중심의 개인 기록 목록으로 단순화. `GAME_REF`는 능력치·추천 내부 계산에만 유지.
+
 - 2026-07-15 — **모아모아 색인 콘텐츠 보강**: `/moamoa/` title·description을 한국어 낱말 퍼즐 의도로 정리하고, 게임 아래 고정 소개·3단계 방법·김치 묶기 예시·난이도·FAQ·관련 게임 링크 추가. WebApplication+FAQPage JSON-LD 반영. 핵심 타깃 시장=한국어·영어, 태국어=보조 지원으로 확정.
 
 - 2026-07-15 — **브랜드 SEO·홈·마스코트·두뇌유형 보강**: `플레이말로우(Mallow)`·`무료 두뇌게임·웹게임` 검색 신호, JSON-LD, ko/en/th/x-default hreflang과 언어별 canonical을 보강. 루트는 한국어로 고정. 상단 캐릭터를 점눈·한입 실루엣의 **한입 말랑 큐브** SVG로 교체. 두뇌유형을 6→12문항 플레이 스타일 테스트로 확장하고 재미용 면책·검색 랜딩 갱신. JS 문법·12문항·sitemap·manifest·미러 정합성 검증.

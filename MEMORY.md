@@ -3,6 +3,11 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## 내 기록 UI 원칙 (2026-07-25)
+- 게임별 최고 기록은 임의 임계값 기반 **다이아·메달·Lv·진행바를 노출하지 않는다**. 게임마다 점수 체계가 달라 `GAME_REF` 정규화값을 사용자 등급처럼 보이면 객관적 경쟁 지표로 오해될 수 있다.
+- 화면에는 플레이한 게임만 `개인 최고 기록(PB)` 목록으로 보여준다. `HOME_GAMES`의 고정 순서, 인지 영역 필터, 게임 아이콘·이름·대표 난이도·실제 최고점으로 구성한다.
+- `GAME_REF`와 `gameLevel()`은 능력치·추천 계산용 내부 지표로만 유지한다. 향후 메달은 연속 플레이, 특정 게임 횟수처럼 달성 조건이 명확한 업적 시스템에만 사용한다.
+
 ## AI 배경 전면 적용 (2026-07-24) — 34종 게임 + 홈/신기록 완성
 - **달성**: 인앱 아케이드 **34종 전부**에 AI 생성 플레이 배경 적용 + 홈 히어로 + 신기록 배경 = **총 36개 자산**(`assets/*.jpg`).
 - **파이프라인**: `__media__`(gpt-image-2-t2i, nano-banana보다 빠름) 생성 → `generated_images/` 저장 → PIL로 중앙 정사각 크롭·900px·품질82 → `assets/<id>-bg.jpg` (29~53KB) → CSS `#<id>-game-card{background:linear-gradient(오버레이),url(...)} center/cover` 적용. 오버레이로 중앙 가독성 확보.

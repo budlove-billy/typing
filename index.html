@@ -873,11 +873,6 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ability-sub{font-size:.7rem;color:var(--text3);margin-bottom:.2rem;line-height:1.4}
 .ability-sub2{font-size:.68rem;color:var(--text3);margin-bottom:.9rem;line-height:1.4;opacity:.85}
 .grade-chip{display:inline-block;font-size:.85rem;margin-right:.3rem;vertical-align:-.08em;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
-.grade-0{filter:drop-shadow(0 0 5px rgba(79,124,255,.65))}
-.grade-1{filter:drop-shadow(0 0 4px rgba(255,183,3,.6))}
-.grade-line{display:flex;flex-direction:column;align-items:center;gap:.15rem;margin:0 auto .8rem;padding:.5rem .8rem;border-radius:12px;background:linear-gradient(135deg,rgba(79,124,255,.07),rgba(138,92,246,.07));border:1px solid rgba(79,124,255,.14);max-width:22rem}
-.gl-cur{font-size:1.02rem;font-weight:800}
-.gl-next{font-size:.78rem;color:var(--text2)}
 .gl-max{color:var(--green);font-weight:700}
 .ab-row{margin-bottom:.5rem}
 .ab-line{display:flex;align-items:center;gap:.5rem;cursor:pointer}
@@ -901,31 +896,26 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ab-fill.up{box-shadow:0 0 9px rgba(33,166,122,.55)}
 .ab-head-val.up{display:inline-block;animation:abPop .9s ease}
 .rec-row.isnew{border-color:#ffcf87;background:linear-gradient(90deg,#fff8ea,#fff);box-shadow:0 2px 12px rgba(230,160,60,.18)}
-/* ===== 게임별 기록 — 등급 카드 그리드 ===== */
-.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
-@media (max-width:560px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
-.rec-card2{position:relative;display:flex;flex-direction:column;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:.85rem .5rem .7rem;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s;text-align:center}
-.rec-card2:hover{border-color:var(--purple2);box-shadow:var(--shadow);transform:translateY(-3px)}
-.rec-card2:active{transform:translateY(-1px)}
-.rec-card2.unplayed{opacity:.55}
-.rec-card2 .rc-grade{font-size:1.9rem;line-height:1;margin-bottom:.2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))}
-.rec-card2 .rc-emoji{font-size:1.35rem;line-height:1;margin-bottom:.3rem}
-.rec-card2 .rc-name{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:.45rem;min-height:2em;display:flex;align-items:center}
-.rec-card2 .rc-bar{width:100%;height:5px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-bottom:.35rem}
-.rec-card2 .rc-fill{height:100%;background:linear-gradient(90deg,var(--purple2),var(--purple));border-radius:99px;transition:width .6s ease}
-.rec-card2 .rc-meta{font-size:.66rem;color:var(--text3);font-weight:700}
-.rec-card2 .rc-best{font-size:.78rem;font-weight:800;color:var(--amber2);margin-top:.15rem}
-.rec-card2.isnew{border-color:#ffcf87;background:linear-gradient(160deg,#fff8ea,#fff)}
-.rec-card2 .rec-new-badge{position:absolute;top:.35rem;right:.35rem;margin-left:0;font-size:.55rem}
-/* 등급 요약 헤더 */
-.grade-summary{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem .6rem;background:linear-gradient(135deg,#fff8ea,#fdf0f6);border:1px solid #f0dfc0;border-radius:var(--radius2);padding:.6rem .85rem;margin-bottom:.7rem;font-size:.82rem;font-weight:700;color:var(--text2)}
-.grade-summary .gs-top{color:var(--amber2);font-weight:800}
-.grade-summary .gs-chip{background:#fff;border:1px solid var(--border);border-radius:999px;padding:.12rem .5rem;font-size:.72rem;font-weight:800}
-/* 필터 탭 */
-.rec-filters{display:flex;gap:.4rem;margin-bottom:.8rem}
-.rec-filter{flex:1;padding:.5rem 0;font-size:.8rem;font-weight:700;color:var(--text2);background:#fff;border:1px solid var(--border2);border-radius:999px;cursor:pointer;font-family:inherit;transition:.14s}
+/* ===== 게임별 최고 기록 — 개인 최고점 중심 목록 ===== */
+.record-summary{font-size:.82rem;color:var(--text2);margin:-.25rem .15rem .7rem}
+.rec-filters{display:flex;gap:.4rem;margin:0 -.1rem .75rem;padding:.1rem .1rem .2rem;overflow-x:auto;scrollbar-width:none}
+.rec-filters::-webkit-scrollbar{display:none}
+.rec-filter{flex:0 0 auto;padding:.46rem .75rem;font-size:.77rem;font-weight:700;color:var(--text2);background:#fff;border:1px solid var(--border2);border-radius:999px;cursor:pointer;font-family:inherit;transition:.14s;white-space:nowrap}
 .rec-filter.on{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 3px 10px rgba(79,124,255,.3)}
-.rec-empty{grid-column:1/-1;text-align:center;color:var(--text3);font-size:.85rem;padding:2rem 0}
+.rec-list{display:flex;flex-direction:column;gap:.5rem}
+.rec-item{width:100%;display:grid;grid-template-columns:2.65rem minmax(0,1fr) auto .8rem;align-items:center;gap:.7rem;padding:.72rem .75rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);box-shadow:var(--shadow-sm);cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:transform .14s,box-shadow .14s,border-color .14s}
+.rec-item:hover{border-color:var(--purple2);box-shadow:var(--shadow);transform:translateX(3px)}
+.rec-item:active{transform:translateX(1px) scale(.995)}
+.rec-item.isnew{border-color:#ffcf87;background:linear-gradient(90deg,#fff9ed,#fff)}
+.rec-icon{width:2.65rem;height:2.65rem;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--bg2);font-size:1.45rem}
+.rec-info{min-width:0}
+.rec-game-name{display:flex;align-items:center;gap:.35rem;font-size:.88rem;font-weight:800;line-height:1.25}
+.rec-game-meta{font-size:.7rem;color:var(--text3);margin-top:.24rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-score{text-align:right;white-space:nowrap}
+.rec-score strong{display:block;font-size:1rem;font-weight:850;color:var(--text);font-variant-numeric:tabular-nums}
+.rec-score span{display:block;font-size:.65rem;color:var(--text3);margin-top:.08rem}
+.rec-arrow{font-size:1rem;color:var(--text3)}
+.rec-empty{text-align:center;color:var(--text3);font-size:.85rem;padding:2rem 0;background:#fff;border:1px dashed var(--border2);border-radius:var(--radius2)}
 .rec-new-badge{display:inline-block;font-size:.58rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff8a5b,#ff5f9e);padding:.12rem .42rem;border-radius:999px;margin-left:.45rem;vertical-align:middle;letter-spacing:.04em;box-shadow:0 2px 6px rgba(255,95,158,.35);animation:abPop .85s ease}
 @media (max-width:640px){
   .home-hi{font-size:1.15rem}
@@ -1032,13 +1022,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
   </div>
   <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
-  <div class="grade-summary" id="grade-summary"></div>
-  <div class="rec-filters" id="rec-filters">
-    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
-    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
-    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
-  </div>
-  <div id="records-body" class="rec-grid"></div>
+  <div class="record-summary" id="record-summary"></div>
+  <div class="rec-filters" id="rec-filters"></div>
+  <div id="records-body" class="rec-list"></div>
   <div class="home-section-title" data-i18n="backup.title">기록 백업</div>
   <div class="card">
     <p style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem" data-i18n="backup.hint">기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.</p>
@@ -3798,18 +3784,14 @@ const I18N = {
   "records.abilitySub": {ko:"게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)", en:"Based on game performance · recent play (not an actual intelligence measure)", th:"อิงจากผลการเล่นเกม · ล่าสุด (ไม่ใช่การวัดสติปัญญาจริง)"},
   "records.abilityHint": {ko:"막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요", en:"Tap a bar to see which games contribute", th:"แตะแถบเพื่อดูว่าเกมใดมีส่วนช่วย"},
   "records.noData": {ko:"아직 기록 없음 — 관련 게임을 해보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
-  "records.noData": {ko:"아직 기록 없음 — 관련 게임을 합보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
-  "grade.next": {ko:"다음 등급", en:"next rank", th:"ระดับถัดไป"},
-  "grade.max": {ko:"최고 등급 달성!", en:"Top rank achieved!", th:"ถึงระดับสูงสุดแล้ว!"},
-  "grade.left": {ko:"점 남음", en:"pts to go", th:"อีก"},
   "records.overallSub": {ko:"게임 숙련도 70% + 다양한 게임 경험 30%", en:"70% skill + 30% game variety", th:"70% ทักษะ + 30% ความหลากหลาย"},
   "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
   "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
   "home.allgames": {ko:"🎮 전체 게임 보기", en:"🎮 Browse All Games", th:"🎮 ดูเกมทั้งหมด"},
-  "rec.filterPlayed": {ko:"플레이함", en:"Played", th:"เล่นแล้ว"},
   "rec.filterAll": {ko:"전체", en:"All", th:"ทั้งหมด"},
-  "rec.filterUnplayed": {ko:"미플레이", en:"Not played", th:"ยังไม่เล่น"},
-  "rec.topGrade": {ko:"최고 등급", en:"Top rank", th:"อันดับสูงสุด"},
+  "rec.summary": {ko:"{n}개 게임의 개인 최고 기록", en:"Personal bests in {n} games", th:"สถิติส่วนตัวใน {n} เกม"},
+  "rec.bestLabel": {ko:"최고 기록", en:"Personal best", th:"สถิติสูงสุด"},
+  "rec.scoreUnit": {ko:"점", en:"pts", th:"คะแนน"},
   "rec.noPlayed": {ko:"아직 플레이한 게임이 없어요. 게임을 시작해 보세요!", en:"No games played yet. Start playing!", th:"ยังไม่ได้เล่นเกม ลองเล่นดูสิ!"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
@@ -7728,15 +7710,6 @@ function renderRecs(cur){
   const card = document.getElementById(cur+'-result-card'); if(!card) return;
   const old = card.querySelector('.rec-box'); if(old) old.remove();
   const oldG = card.querySelector('.grade-line'); if(oldG) oldG.remove();
-  // 등급 진행 표시 (등급 배지 + 다음 등급까지)
-  if(GAME_REF[cur]){
-    const gr=gradeOf(cur), nx=gradeNext(cur);
-    let gh='<div class="grade-line"><span class="gl-cur grade-'+gr.tier+'">'+gr.g.emoji+' '+gradeName(gr.g)+'</span>';
-    if(nx){ gh+='<span class="gl-next">'+t('grade.next')+' '+nx.g.emoji+' '+gradeName(nx.g)+' — <b>'+Math.max(0,nx.need-nx.cur)+'</b> '+t('grade.left')+'</span>'; }
-    else { gh+='<span class="gl-next gl-max">'+t('grade.max')+'</span>'; }
-    gh+='</div>';
-    card.insertAdjacentHTML('afterbegin', gh);
-  }
   const recs = recommendGames(cur, 3); if(!recs.length) return;
   let html = '<div class="rec-box"><div class="rec-title">'+t('rec.title')+'</div><div class="rec-grid">';
   recs.forEach(g=>{ html += '<button class="rec-card" onclick="showScreen(\''+g.id+'\')"><span class="rec-emoji">'+g.emoji+'</span><span class="rec-name">'+t(g.key)+'</span></button>'; });
@@ -7908,33 +7881,6 @@ function gameBestVal(id){
   try{ return parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){ return 0; }
 }
 function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(100,Math.round(gameBestVal(id)/ref*100))); }
-// ===== 등급 배지 (게임별 레벨 → 6단계) =====
-const GRADES=[
-  {min:90, emoji:'💎', ko:'다이아', en:'Diamond', th:'เพชร'},
-  {min:70, emoji:'🏆', ko:'골드', en:'Gold', th:'ทอง'},
-  {min:50, emoji:'🥈', ko:'실버', en:'Silver', th:'เงิน'},
-  {min:30, emoji:'🥉', ko:'브론즈', en:'Bronze', th:'ทองแดง'},
-  {min:10, emoji:'🌱', ko:'새싹', en:'Sprout', th:'ต้นอ่อน'},
-  {min:0,  emoji:'🐣', ko:'입문', en:'Rookie', th:'มือใหม่'}
-];
-function gradeOf(id){
-  const lv=gameLevel(id);
-  for(let i=0;i<GRADES.length;i++) if(lv>=GRADES[i].min) return {tier:i, lv:lv, g:GRADES[i]};
-  return {tier:GRADES.length-1, lv:lv, g:GRADES[GRADES.length-1]};
-}
-function gradeName(g){ return (CURRENT_LANG==='en'?g.en:CURRENT_LANG==='th'?g.th:g.ko); }
-// 다음 등급까지 필요한 최고점 (등급 경계 = min% of GAME_REF)
-function gradeNext(id){
-  const lv=gameLevel(id), ref=GAME_REF[id]||100;
-  for(let i=0;i<GRADES.length;i++){
-    if(lv>=GRADES[i].min){
-      if(i===0) return null; // 다이아(최고)
-      const need=Math.ceil(GRADES[i-1].min/100*ref);
-      return {g:GRADES[i-1], need:need, cur:gameBestVal(id)};
-    }
-  }
-  return null;
-}
 function abilityScores(){
   const num={},den={}; ABILITIES.forEach(a=>{num[a]=0;den[a]=0;});
   Object.keys(ABILITY_MAP).forEach(id=>{
@@ -8022,61 +7968,69 @@ function drawRadar(sc){
   ctx.closePath(); ctx.fillStyle='rgba(79,124,255,0.22)'; ctx.fill(); ctx.strokeStyle='#4f7cff'; ctx.lineWidth=2; ctx.stroke();
   ctx.fillStyle='#4f7cff'; for(let i=0;i<n;i++){ const ang=-Math.PI/2+i/n*2*Math.PI, val=(sc[ABILITIES[i]]||0)/100, rr=R*val, x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fill(); }
 }
-let REC_FILTER='played';
-function setRecFilter(f){ REC_FILTER=f;
+let REC_FILTER='all';
+function recordDifficultyName(d){
+  const names={
+    ko:{easy:'쉬움',normal:'보통',hard:'어려움'},
+    en:{easy:'Easy',normal:'Normal',hard:'Hard'},
+    th:{easy:'ง่าย',normal:'ปกติ',hard:'ยาก'}
+  };
+  return (names[CURRENT_LANG]||names.ko)[d]||'';
+}
+function gameBestRecord(g){
+  if(!g.best) return {score:gameBestVal(g.id),diff:''};
+  const b=bt_loadBest(g.best);
+  // 동점이면 더 높은 난이도를 대표 기록으로 표시한다.
+  const best=['hard','normal','easy'].map(d=>({diff:d,score:Number((b[d]&&b[d].all)||0)}))
+    .sort((a,b)=>b.score-a.score)[0];
+  return best||{score:0,diff:''};
+}
+function recordGames(){
+  return HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external
+      && (!g.koOnly||CURRENT_LANG==='ko') && (!g.langs||g.langs.includes(CURRENT_LANG))
+      && gameBestVal(g.id)>0);
+}
+function setRecFilter(f){
+  REC_FILTER=f;
   document.querySelectorAll('.rec-filter').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
   renderGameRecords();
+}
+function renderRecordFilters(played){
+  const box=document.getElementById('rec-filters'); if(!box) return;
+  const groups=[]; played.forEach(g=>{if(!groups.includes(g.grp))groups.push(g.grp);});
+  if(REC_FILTER!=='all'&&!groups.includes(REC_FILTER)) REC_FILTER='all';
+  box.innerHTML='';
+  [{key:'all',label:t('rec.filterAll')}].concat(groups.map(k=>({key:k,label:t(k)}))).forEach(x=>{
+    const b=document.createElement('button');
+    b.className='rec-filter'+(REC_FILTER===x.key?' on':'');
+    b.dataset.f=x.key; b.textContent=x.label; b.onclick=()=>setRecFilter(x.key);
+    box.appendChild(b);
+  });
 }
 function renderGameRecords(){
   const body=document.getElementById('records-body'); if(!body) return;
   body.innerHTML='';
-  const newSet=_getNewRecords();
-  // 전체 인앱 게임 + 등급 계산 후 정렬(등급 높은 순 → 레벨 높은 순)
-  const all=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external).map(g=>{
-    const mx=gameBestVal(g.id), lv=gameLevel(g.id), gr=mx>0?gradeOf(g.id):null;
-    return {g, mx, lv, gr, played:mx>0, isNew:newSet.has(g.id)&&mx>0};
-  });
-  let vis=all;
-  if(REC_FILTER==='played') vis=all.filter(x=>x.played);
-  else if(REC_FILTER==='unplayed') vis=all.filter(x=>!x.played);
-  // 정렬: 플레이한 건 등급 tier 낮은(높은 등급) 순·레벨 내림차순, 미플레이는 뒤
-  vis.sort((a,b)=>{
-    if(a.played!==b.played) return a.played?-1:1;
-    if(a.played&&b.played){ if(a.gr.tier!==b.gr.tier) return a.gr.tier-b.gr.tier; return b.lv-a.lv; }
-    return t(a.g.key).localeCompare(t(b.g.key));
-  });
+  const played=recordGames(), newSet=_getNewRecords();
+  renderRecordFilters(played);
+  const summary=document.getElementById('record-summary');
+  if(summary) summary.textContent=t('rec.summary').replace('{n}',played.length);
+  const vis=REC_FILTER==='all'?played:played.filter(g=>g.grp===REC_FILTER);
   if(!vis.length){ body.innerHTML='<div class="rec-empty">'+t('rec.noPlayed')+'</div>'; return; }
-  vis.forEach(x=>{
-    const card=document.createElement('div');
-    card.className='rec-card2'+(x.played?'':' unplayed')+(x.isNew?' isnew':'');
-    card.setAttribute('role','button'); card.tabIndex=0;
-    card.onclick=()=>showScreen(x.g.id);
-    card.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); showScreen(x.g.id); } };
-    const gradeEmoji=x.gr?x.gr.g.emoji:'🎮';
-    const lvl=x.played?x.lv:0;
-    card.innerHTML=
-      (x.isNew?'<span class="rec-new-badge">NEW</span>':'')+
-      '<div class="rc-grade'+(x.gr?(' grade-'+x.gr.tier):'')+'">'+gradeEmoji+'</div>'+
-      '<div class="rc-emoji">'+x.g.emoji+'</div>'+
-      '<div class="rc-name">'+t(x.g.key)+'</div>'+
-      '<div class="rc-bar"><div class="rc-fill" style="width:'+lvl+'%"></div></div>'+
-      '<div class="rc-meta">'+(x.played?('Lv.'+x.lv+' · '+gradeName(x.gr.g)):'—')+'</div>'+
-      (x.played?('<div class="rc-best">🏆 '+x.mx+'</div>'):'');
-    body.appendChild(card);
+  vis.forEach(g=>{
+    const rec=gameBestRecord(g), isNew=newSet.has(g.id);
+    const item=document.createElement('button');
+    item.type='button'; item.className='rec-item'+(isNew?' isnew':'');
+    item.onclick=()=>showScreen(g.id);
+    item.setAttribute('aria-label',t(g.key)+' '+t('rec.bestLabel')+' '+rec.score);
+    const meta=[t(g.grp),rec.diff?recordDifficultyName(rec.diff):''].filter(Boolean).join(' · ');
+    item.innerHTML=
+      '<span class="rec-icon">'+g.emoji+'</span>'+
+      '<span class="rec-info"><span class="rec-game-name">'+t(g.key)+(isNew?'<span class="rec-new-badge">NEW</span>':'')+'</span>'+
+      '<span class="rec-game-meta">'+meta+'</span></span>'+
+      '<span class="rec-score"><strong>'+Number(rec.score).toLocaleString()+'</strong><span>'+t('rec.scoreUnit')+'</span></span>'+
+      '<span class="rec-arrow">›</span>';
+    body.appendChild(item);
   });
-}
-function renderGradeSummary(){
-  const el=document.getElementById('grade-summary'); if(!el) return;
-  const played=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external&&gameBestVal(g.id)>0);
-  if(!played.length){ el.style.display='none'; return; }
-  el.style.display='';
-  // 등급 분포 + 최고 등급 게임
-  const dist={}; let top=null;
-  played.forEach(g=>{ const gr=gradeOf(g.id); dist[gr.tier]=(dist[gr.tier]||0)+1;
-    if(!top||gr.tier<top.gr.tier||(gr.tier===top.gr.tier&&gameLevel(g.id)>top.lv)) top={g, gr, lv:gameLevel(g.id)}; });
-  let html='<span class="gs-top">'+t('rec.topGrade')+': '+top.gr.g.emoji+' '+t(top.g.key)+'</span>';
-  GRADES.forEach((gd,i)=>{ if(dist[i]) html+='<span class="gs-chip">'+gd.emoji+' '+dist[i]+'</span>'; });
-  el.innerHTML=html;
 }
 function renderRecords(){
   const v=homeVisit();
@@ -8086,7 +8040,6 @@ function renderRecords(){
   HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('rec-streak', v.streak); setTxt('rec-days', v.total||1); setTxt('rec-mission', plays+'/'+set.length); setTxt('rec-count', rec);
   renderAbility();
-  renderGradeSummary();
   renderGameRecords();
 }
 
