@@ -889,6 +889,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ab-name{width:66px;font-size:.78rem;font-weight:600;color:var(--text2);flex-shrink:0}
 .ab-bar{flex:1;height:10px;background:var(--bg3);border-radius:6px;overflow:hidden}
 .ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
+/* 능력치 강/약점 색 구분 */
+.ab-fill.ab-hi{background:linear-gradient(90deg,#1fa07a,#34d399)}
+.ab-fill.ab-mid{background:linear-gradient(90deg,#4f7cff,#7ba3ff)}
+.ab-fill.ab-lo{background:linear-gradient(90deg,#f59e42,#fbbf6f)}
 .ab-val{width:26px;text-align:right;font-size:.82rem;font-weight:700;color:var(--text)}
 .ab-delta{width:34px;font-size:.66rem;font-weight:700;color:var(--teal2)}
 @keyframes abPop{0%{transform:scale(1)}28%{transform:scale(1.55)}100%{transform:scale(1)}}
@@ -1018,6 +1022,14 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="hg-item"><b id="rec-count">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
   </div>
+  <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
+  <div class="grade-summary" id="grade-summary"></div>
+  <div class="rec-filters" id="rec-filters">
+    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
+    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
+    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
+  </div>
+  <div id="records-body" class="rec-grid"></div>
   <div class="home-section-title" data-i18n="records.abilityTitle">두뇌 능력치</div>
   <div class="card">
     <div class="ab-head"><span class="ab-head-label" data-i18n="records.overall">종합 두뇌 레벨</span><span class="ab-head-val" id="ability-overall">0</span></div>
@@ -1027,14 +1039,6 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div id="ability-graph"></div>
     <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
   </div>
-  <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
-  <div class="grade-summary" id="grade-summary"></div>
-  <div class="rec-filters" id="rec-filters">
-    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
-    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
-    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
-  </div>
-  <div id="records-body" class="rec-grid"></div>
   <div class="home-section-title" data-i18n="backup.title">기록 백업</div>
   <div class="card">
     <p style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem" data-i18n="backup.hint">기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.</p>
@@ -7990,9 +7994,10 @@ function renderAbility(){
     const cons=abilityContributors(a);
     const detail = cons.length ? cons.map(x=>gameMeta(x.id).emoji+' '+t(gameMeta(x.id).key)+' lv.'+x.lvl).join(' · ') : t('records.noData');
     const row=document.createElement('div'); row.className='ab-row';
+    const tierCls = v>=70?' ab-hi':(v>=40?' ab-mid':' ab-lo');
     row.innerHTML='<div class="ab-line" onclick="toggleAbility(\''+a+'\')">'+
         '<span class="ab-name">'+t(ABILITY_CAT[a])+'</span>'+
-        '<div class="ab-bar"><div class="ab-fill'+(justUp?' up':'')+'" data-tw="'+v+'" style="width:'+(justUp?pv:v)+'%"></div></div>'+
+        '<div class="ab-bar"><div class="ab-fill'+tierCls+(justUp?' up':'')+'" data-tw="'+v+'" style="width:'+(justUp?pv:v)+'%"></div></div>'+
         '<span class="ab-val'+(justUp?' up':'')+'">'+(v>0?v:'—')+'</span>'+
         (d>0?'<span class="ab-delta'+(justUp?' up':'')+'">▲'+d+'</span>':'<span class="ab-delta"></span>')+
       '</div>'+
