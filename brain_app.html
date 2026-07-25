@@ -134,6 +134,8 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .nav-mascot svg{width:40px;height:40px;display:block}
 .nav-brand{font-size:1.36rem;font-weight:800;color:var(--purple)}
 .nav-tagline{font-size:.7rem;font-weight:500;color:var(--teal);letter-spacing:0}
+.nav-game{display:none;font-size:1.15rem;font-weight:800;color:var(--purple);margin-left:.4rem;letter-spacing:-.01em;white-space:nowrap}
+body.ingame .nav-game{display:inline}
 /* 게임 중 좌측 상단 나가기 버튼 */
 .nav-exit{display:inline-flex;align-items:center;gap:.15rem;margin-left:.9rem;padding:.5rem .85rem;min-height:40px;font-family:inherit;font-size:.92rem;font-weight:800;color:#e0475a;background:#ffe9ee;border:1.5px solid #f4a9bb;border-radius:11px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(224,71,90,.18);transition:.12s}
 .nav-exit:hover{background:#ffdbe3}
@@ -954,7 +956,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <nav>
   <button id="nav-exit" class="nav-exit" onclick="navTo('home')" style="display:none"><span class="nav-exit-x">←</span> <span data-i18n="nav.exit">나가기</span></button>
-  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-variant="pink" data-mallow-size="40" aria-label="플레이말로우 한입 말랑 큐브 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
+  <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-variant="pink" data-mallow-size="40" aria-label="플레이말로우 한입 말랑 큐브 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-game" id="nav-game"></span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
     <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value,true)">
@@ -4456,6 +4458,9 @@ function showScreen(id){
   const isGameScreen = !(id==='home'||id==='games'||id==='records');
   document.body.classList.toggle('ingame', isGameScreen);
   const navExit=document.getElementById('nav-exit'); if(navExit) navExit.style.display = isGameScreen?'':'none';
+  // 게임 이름을 상단 nav에 표시(플레이 중 어떤 게임인지 항상 보이게)
+  const navGame=document.getElementById('nav-game');
+  if(navGame){ if(isGameScreen){ const meta=(typeof gameMeta==='function')?gameMeta(id):null; navGame.textContent=meta?t(meta.key):''; } else navGame.textContent=''; }
   const tab='tab-'+(TAB_FOR[id]||'games');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   const tb=document.getElementById(tab); if(tb) tb.classList.add('active');
