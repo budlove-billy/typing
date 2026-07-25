@@ -578,6 +578,11 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ca-item.fork{filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 .ca-basket{position:absolute;bottom:2px;line-height:0;transform:translateX(-50%);transition:left .07s;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
 .ft-board{display:grid;gap:2px;max-width:360px;margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
+/* 블록 채우기 시간 게이지 */
+.ft-timebar{max-width:360px;margin:0 auto .7rem;height:9px;background:var(--bg3);border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
+.ft-timebar-fill{height:100%;width:100%;background:linear-gradient(90deg,#21a67a,#4f7cff);border-radius:99px;transition:width .1s linear,background .3s}
+.ft-timebar-fill.low{background:linear-gradient(90deg,#ff8a5b,#ff5f6d)}
+.ft-timebar-fill.mid{background:linear-gradient(90deg,#ffb703,#ff8a5b)}
 .ft-cell{aspect-ratio:1/1;background:var(--bg3);border-radius:4px;cursor:pointer}
 .ft-cell.on{background:var(--purple)}
 .ft-tray{display:flex;justify-content:center;gap:1rem;margin-top:1rem;min-height:70px;align-items:center}
@@ -2585,14 +2590,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="game-scene" data-scene="fit" aria-hidden="true"></div>
     <div class="section-head"><h2 data-i18n="fit.title">블록 채우기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="fit.intro">
-      조각을 골라 판에 놓으세요. <b>가로·세로 줄을 꽉 채우면</b> 사라집니다!<br>
-      더 놓을 곳이 없으면 게임 종료. 얼마나 오래 버틸까요?
+      조각을 판에 놓아 <b>가로·세로 줄을 꽉 채우면</b> 사라져요!<br>
+      줄을 없애면 <b>시간이 회복</b>돼요. 레벨이 오를수록 조각이 커지고 시간은 빨라져요 — 얼마나 높은 레벨까지 갈까요?
     </p>
-    <div class="difficulty-row">
-      <div class="diff-btn" id="ft-diff-easy" onclick="setFitDiff('easy')"><h3>🌱 <span data-i18n="fit.easy">쉬움</span></h3><p data-i18n="fit.easyDesc">6×6</p></div>
-      <div class="diff-btn active" id="ft-diff-normal" onclick="setFitDiff('normal')"><h3>⚡ <span data-i18n="fit.normal">보통</span></h3><p data-i18n="fit.normalDesc">8×8</p></div>
-      <div class="diff-btn" id="ft-diff-hard" onclick="setFitDiff('hard')"><h3>🔥 <span data-i18n="fit.hard">어려움</span></h3><p data-i18n="fit.hardDesc">10×10</p></div>
-    </div>
     <button class="btn" onclick="startFit()" data-i18n="fit.startGame">게임 시작</button>
     <div class="best-line" id="ft-intro-best"></div>
   </div>
@@ -2600,12 +2600,15 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="mg-top-stats">
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="fit.score">SCORE</div><div class="mg-stat-value" id="ft-score">0</div></div>
       <div class="mg-stat-divider"></div>
+      <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="fit.level">LEVEL</div><div class="mg-stat-value" id="ft-level">1</div></div>
+      <div class="mg-stat-divider"></div>
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="fit.best">BEST</div><div class="mg-stat-value" id="ft-bestv">0</div></div>
     </div>
+    <div class="ft-timebar"><div class="ft-timebar-fill" id="ft-timebar-fill"></div></div>
     <div class="gm-status" data-i18n="fit.guide">조각을 고른 뒤 놓을 칸을 누르세요</div>
     <div class="ft-board" id="ft-board"></div>
     <div class="ft-tray" id="ft-tray"></div>
-    <div class="ft-over" id="ft-over" style="display:none"><div class="ft-over-box"><div style="font-size:2.6rem;margin-bottom:.2rem">🧱</div><h3 style="margin:.2rem 0" data-i18n="fit.gameOver">게임 종료!</h3><p style="color:var(--text2);font-size:.9rem;margin:0" data-i18n="fit.noSpace">더 이상 블록을 놓을 수 없어요</p></div></div>
+    <div class="ft-over" id="ft-over" style="display:none"><div class="ft-over-box"><div style="font-size:2.6rem;margin-bottom:.2rem">🧱</div><h3 style="margin:.2rem 0" id="ft-over-title" data-i18n="fit.gameOver">게임 종료!</h3><p style="color:var(--text2);font-size:.9rem;margin:0" id="ft-over-msg" data-i18n="fit.noSpace">더 이상 블록을 놓을 수 없어요</p></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveFit()" data-i18n="fit.leave">나가기</button></div>
   </div>
   <div class="card" id="fit-result-card" style="display:none;text-align:center">
@@ -2613,7 +2616,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <h2 style="margin-bottom:.5rem" id="ft-result-title">게임 종료!</h2>
     <div class="iq-result-score" id="ft-result-score">0</div>
     <div style="font-size:.95rem;color:var(--text2);margin-bottom:1rem" data-i18n="fit.finalScore">최종 점수</div>
-    <div class="result-row"><span data-i18n="fit.difficulty">난이도</span><span id="ft-r-diff">보통</span></div>
+    <div class="result-row"><span data-i18n="fit.levelReached">도달 레벨</span><span id="ft-r-diff">1</span></div>
     <div class="result-row"><span data-i18n="fit.best">최고 기록</span><span id="ft-r-best">0</span></div>
     <div style="margin-top:1.25rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="resetFit()" data-i18n="fit.newGame">새 게임</button><button class="btn btn-outline" onclick="gameShare('fit')" data-i18n="share.button">📷 결과 공유</button><button class="btn btn-outline" onclick="sendChallenge('fit')" data-i18n="ch.send">🎯 도전장</button></div>
   </div>
@@ -3191,13 +3194,16 @@ const I18N = {
   "catch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "catch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "catch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.fit": {ko:"블록 채우기", en:"Block Fit", th:"ต่อบล็อก"},
   "fit.title": {ko:"블록 채우기", en:"Block Fit", th:"ต่อบล็อก"},
-  "fit.intro": {ko:"조각을 골라 판에 놓으세요. <b>가로·세로 줄을 꽉 채우면</b> 사라집니다!<br>더 놓을 곳이 없으면 게임 종료. 얼마나 오래 버틸까요?", en:"Pick a piece and place it on the board. <b>Fill a full row or column</b> to clear it!<br>Game over when nothing fits. How long can you last?", th:"เลือกชิ้นแล้ววางบนกระดาน <b>เติมแถวหรือคอลัมน์ให้เต็ม</b>เพื่อล้าง!<br>จบเกมเมื่อวางไม่ได้ จะอยู่ได้นานแค่ไหน?"},
+  "fit.intro": {ko:"조각을 판에 놓아 <b>가로·세로 줄을 꽉 채우면</b> 사라져요!<br>줄을 없애면 <b>시간이 회복</b>돼요. 레벨이 오를수록 조각이 커지고 시간은 빨라져요 — 얼마나 높은 레벨까지 갈까요?", en:"Place pieces to <b>fill a full row or column</b> and clear it!<br>Clearing lines <b>refills your time</b>. Higher levels bring bigger pieces and faster drain — how high can you climb?", th:"วางชิ้นเพื่อ <b>เติมแถวหรือคอลัมน์ให้เต็ม</b> แล้วมันจะหายไป!<br>เคลียร์แถว <b>เติมเวลา</b> เลเวลสูงขึ้นชิ้นใหญ่ขึ้นและเวลาไวขึ้น — จะไปได้สูงแค่ไหน?"},
   "fit.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "fit.easyDesc": {ko:"6×6", en:"6×6", th:"6×6"},
   "fit.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "fit.normalDesc": {ko:"8×8", en:"8×8", th:"8×8"},
   "fit.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "fit.hardDesc": {ko:"10×10", en:"10×10", th:"10×10"},
   "fit.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "fit.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "fit.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
-  "fit.guide": {ko:"조각을 고른 뒤 놓을 칸을 누르세요", en:"Pick a piece, then tap a cell to place", th:"เลือกชิ้นแล้วแตะช่องเพื่อวาง"},
+  "fit.level": {ko:"LEVEL", en:"LEVEL", th:"เลเวล"},
+  "fit.levelReached": {ko:"도달 레벨", en:"Level Reached", th:"เลเวลที่ถึง"},
+  "fit.timeUp": {ko:"시간이 다 됐어요! 줄을 없애 시간을 채웠어야 해요", en:"Time's up! Clear lines to refill time", th:"หมดเวลา! เคลียร์แถวเพื่อเติมเวลา"},
+  "fit.guide": {ko:"줄을 채워 없애면 시간이 회복돼요", en:"Clear lines to refill your time", th:"เคลียร์แถวเพื่อเติมเวลา"},
   "fit.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "fit.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "fit.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"},
   "fit.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "fit.gameOver": {ko:"게임 종료!", en:"Game Over!", th:"จบเกม!"}, "fit.noSpace": {ko:"더 이상 블록을 놓을 수 없어요", en:"No more moves — the board is stuck!", th:"วางบล็อกไม่ได้แล้ว — กระดานตัน!"}, "fit.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
@@ -9016,17 +9022,34 @@ function resetRun(){ RN.running=false; RN.over=false; cancelAnimationFrame(RN.ra
 document.addEventListener('keydown',e=>{ if((e.code==='Space'||e.code==='ArrowUp') && RN.running){ e.preventDefault(); rnJump(); } });
 
 // ========== 블록 채우기 (공간) ==========
-const FT_CFG={ easy:{n:6}, normal:{n:8}, hard:{n:10} };
-const FT_PIECES=[ [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[1,0]], [[0,0],[0,1],[1,1]], [[0,0],[0,1],[0,2]], [[0,0],[1,0],[2,0]], [[0,0],[0,1],[1,0],[1,1]], [[0,0],[0,1],[0,2],[1,0]], [[0,0],[0,1],[0,2],[0,3]] ];
-const FT={ diff:'normal', n:8, board:[], tray:[], sel:-1, score:0, over:false, running:false, best:bt_loadBest('brain.fit.best') };
-function FT_DIFF_LABEL(d){ return d==='easy'?t('fit.easy'):d==='hard'?t('fit.hard'):t('fit.normal'); }
-function ftUpdateBestLine(){ const el=document.getElementById('ft-intro-best'); if(el) el.textContent=bt_bestLineText(FT.best,FT.diff); }
-function setFitDiff(d){ FT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ft-diff-'+k).classList.toggle('active',k===d)); ftUpdateBestLine(); }
+const FT_N=8; // 고정 판 크기(난이도 선택 제거 — 레벨로 점진 상승)
+// 조각 풀 — tier(레벨대) 별. 레벨↑ 시 큰 조각 등장(테트리스식 점진 난이도)
+const FT_PIECES=[
+  {p:[[0,0]],t:1}, {p:[[0,0],[0,1]],t:1}, {p:[[0,0],[1,0]],t:1},
+  {p:[[0,0],[0,1],[1,0]],t:1}, {p:[[0,0],[0,1],[1,1]],t:1},
+  {p:[[0,0],[0,1],[0,2]],t:1}, {p:[[0,0],[1,0],[2,0]],t:1},
+  {p:[[0,0],[0,1],[1,0],[1,1]],t:2}, {p:[[0,0],[0,1],[0,2],[1,0]],t:2},
+  {p:[[0,0],[0,1],[0,2],[0,3]],t:2}, {p:[[0,0],[1,0],[2,0],[3,0]],t:2},
+  {p:[[1,0],[1,1],[1,2],[0,1]],t:2}, {p:[[0,0],[1,0],[2,0],[2,1]],t:2},
+  {p:[[0,0],[0,1],[1,1],[1,2]],t:3}, {p:[[0,1],[0,2],[1,0],[1,1]],t:3},
+  {p:[[0,0],[1,0],[1,1],[2,1]],t:3}, {p:[[0,1],[1,0],[1,1],[1,2]],t:3},
+  {p:[[0,0],[0,1],[0,2],[0,3],[0,4]],t:4}, {p:[[0,0],[0,1],[0,2],[1,0],[1,1]],t:4},
+  {p:[[0,0],[1,0],[1,1],[1,2],[2,2]],t:4}, {p:[[0,1],[1,0],[1,1],[1,2],[2,1]],t:4},
+  {p:[[0,0],[0,1],[1,0],[1,1],[2,0]],t:4}
+];
+const FT={ diff:'normal', n:FT_N, board:[], tray:[], sel:-1, score:0, over:false, running:false,
+  level:1, lines:0, linesToNext:8, combo:0, time:100, timer:null, best:bt_loadBest('brain.fit.best') };
+function ftMaxTier(lv){ return lv<=2?1 : lv<=4?2 : lv<=6?3 : 4; }
+function ftDrainPerSec(){ return 4.5 + (FT.level-1)*0.9; } // 레벨↑ → 시간 더 빨리 감소
+function FT_DIFF_LABEL(d){ return 'Lv.'+FT.level; }
+function ftUpdateBestLine(){ const el=document.getElementById('ft-intro-best'); if(el) el.textContent=bt_bestLineText(FT.best,'normal'); }
 function ftCanPlace(p,r,c){ for(const q of p){ const rr=r+q[0],cc=c+q[1]; if(rr<0||cc<0||rr>=FT.n||cc>=FT.n||FT.board[rr][cc]) return false; } return true; }
 function ftAnyFit(){ for(const item of FT.tray){ if(item.used) continue; for(let r=0;r<FT.n;r++)for(let c=0;c<FT.n;c++) if(ftCanPlace(item.p,r,c)) return true; } return false; }
-function ftNewTray(){ FT.tray=[0,1,2].map(()=>({p:FT_PIECES[Math.floor(Math.random()*FT_PIECES.length)],used:false})); FT.sel=-1; }
+function ftNewTray(){ const mt=ftMaxTier(FT.level); const pool=FT_PIECES.filter(x=>x.t<=mt);
+  FT.tray=[0,1,2].map(()=>({p:pool[Math.floor(Math.random()*pool.length)].p,used:false})); FT.sel=-1; }
 function ftBounds(p){ let mr=0,mc=0; for(const q of p){ mr=Math.max(mr,q[0]); mc=Math.max(mc,q[1]); } return {mr,mc}; }
-function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; document.getElementById('ft-bestv').textContent=FT.best[FT.diff].all; }
+function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; const lv=document.getElementById('ft-level'); if(lv) lv.textContent=FT.level; document.getElementById('ft-bestv').textContent=Math.max(FT.best.easy.all,FT.best.normal.all,FT.best.hard.all); }
+function ftUpdateTimeBar(){ const f=document.getElementById('ft-timebar-fill'); if(!f) return; const p=Math.max(0,Math.min(100,FT.time)); f.style.width=p+'%'; f.classList.toggle('low',p<=25); f.classList.toggle('mid',p>25&&p<=50); }
 function ftCellPx(){ return Math.floor(340/FT.n); }
 function ftCellEl(r,c){ return document.getElementById('ft-board').children[r*FT.n+c]; }
 function ftRender(){
@@ -9083,21 +9106,43 @@ function ftDoPlace(idx,r,c){ if(FT.over||!FT.running) return; const item=FT.tray
   for(const q of item.p) FT.board[r+q[0]][c+q[1]]=1; FT.score+=item.p.length;
   let full=[]; for(let i=0;i<FT.n;i++){ if(FT.board[i].every(v=>v)) full.push(['r',i]); let cf=true; for(let k=0;k<FT.n;k++) if(!FT.board[k][i]) cf=false; if(cf) full.push(['c',i]); }
   for(const f of full){ if(f[0]==='r') for(let k=0;k<FT.n;k++) FT.board[f[1]][k]=0; else for(let k=0;k<FT.n;k++) FT.board[k][f[1]]=0; }
-  if(full.length) FT.score+=full.length*FT.n*4;
-  item.used=true; sfx(full.length?'win':'good');
+  const lines=full.length;
+  if(lines){
+    FT.combo++;
+    const mult=1+(FT.combo-1)*0.5;                          // 콤보 배수
+    FT.score+=Math.round(lines*FT.n*4*mult*(1+(FT.level-1)*0.12)); // 멀티라인×콤보×레벨
+    FT.time=Math.min(100, FT.time+13*lines+FT.combo*2);     // 줄 삭제 → 시간 회복
+    FT.lines+=lines;
+    if(FT.combo>=2) fxCombo('x'+FT.combo+' COMBO!');
+    while(FT.lines>=FT.linesToNext){ FT.level++; FT.linesToNext+=8; FT.time=Math.min(100,FT.time+12); ftLevelUp(); } // 레벨업
+    sfx(lines>=2?'win':'good');
+  } else { FT.combo=0; sfx('good'); }
+  item.used=true;
   if(FT.tray.every(x=>x.used)) ftNewTray();
-  ftRender(); if(!ftAnyFit()) ftGameOver(); }
-function ftGameOver(){ if(FT.over) return; FT.over=true; sfx('bad'); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='flex';
-  clearTimeout(FT.overT); FT.overT=setTimeout(()=>{ const o=document.getElementById('ft-over'); if(o) o.style.display='none'; if(FT.running) finishFit(); }, 1300); }
-function startFit(){ FT.n=FT_CFG[FT.diff].n; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0)); FT.score=0; FT.over=false; FT.running=true; ftNewTray(); clearTimeout(FT.overT); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none';
-  document.getElementById('fit-intro-card').style.display='none'; document.getElementById('fit-result-card').style.display='none'; document.getElementById('fit-game-card').style.display='block'; ftRender(); }
-function finishFit(){ if(!FT.running) return; FT.over=true; FT.running=false;
-  const nr=bt_recordScore(FT.best,FT.diff,FT.score); bt_saveBest('brain.fit.best',FT.best); missionMark('fit');
+  ftRender(); ftUpdateTimeBar();
+  if(!ftAnyFit()) ftGameOver('deadlock'); }
+function ftLevelUp(){ fxCombo('LEVEL '+FT.level+'!'); if(typeof sfx==='function') sfx('level'); }
+function ftTick(){ if(!FT.running||FT.over) return;
+  FT.time-=ftDrainPerSec()*0.1;
+  if(FT.time<=0){ FT.time=0; ftUpdateTimeBar(); ftGameOver('time'); return; }
+  ftUpdateTimeBar(); }
+function ftGameOver(reason){ if(FT.over) return; FT.over=true; clearInterval(FT.timer); sfx('bad');
+  const ov=document.getElementById('ft-over'); const msg=document.getElementById('ft-over-msg');
+  if(msg) msg.textContent=(reason==='time')?t('fit.timeUp'):t('fit.noSpace');
+  if(ov) ov.style.display='flex';
+  clearTimeout(FT.overT); FT.overT=setTimeout(()=>{ const o=document.getElementById('ft-over'); if(o) o.style.display='none'; if(FT.running||FT.over) finishFit(); }, 1300); }
+function startFit(){ FT.n=FT_N; FT.board=Array.from({length:FT.n},()=>Array(FT.n).fill(0));
+  FT.score=0; FT.over=false; FT.running=true; FT.level=1; FT.lines=0; FT.linesToNext=8; FT.combo=0; FT.time=100;
+  ftNewTray(); clearTimeout(FT.overT); clearInterval(FT.timer); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none';
+  document.getElementById('fit-intro-card').style.display='none'; document.getElementById('fit-result-card').style.display='none'; document.getElementById('fit-game-card').style.display='block';
+  ftRender(); ftUpdateTimeBar(); FT.timer=setInterval(ftTick,100); }
+function finishFit(){ if(!FT.running&&!FT.over) return; FT.over=true; FT.running=false; clearInterval(FT.timer);
+  const nr=bt_recordScore(FT.best,'normal',FT.score); bt_saveBest('brain.fit.best',FT.best); missionMark('fit');
   document.getElementById('fit-game-card').style.display='none'; document.getElementById('fit-result-card').style.display='block';
   document.getElementById('ft-result-emoji').textContent=nr?'🏆':'🧱'; document.getElementById('ft-result-title').textContent=nr?t('fit.newRecord'):t('fit.gameOver');
-  document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent=FT_DIFF_LABEL(FT.diff); document.getElementById('ft-r-best').textContent=FT.best[FT.diff].all; ftUpdateBestLine(); }
+  document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent='Lv.'+FT.level; document.getElementById('ft-r-best').textContent=Math.max(FT.best.easy.all,FT.best.normal.all,FT.best.hard.all); ftUpdateBestLine(); }
 function leaveFit(){ resetFit(); showScreen('games'); }
-function resetFit(){ FT.running=false; FT.over=false; clearTimeout(FT.overT); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none'; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
+function resetFit(){ FT.running=false; FT.over=false; clearTimeout(FT.overT); clearInterval(FT.timer); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none'; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
 
 // ========== 픽셀 로직 / 노노그램 (논리) ==========
 const NO_CFG={ easy:{n:5,dens:0.55,base:500}, normal:{n:8,dens:0.55,base:1100}, hard:{n:10,dens:0.55,base:1800} };
