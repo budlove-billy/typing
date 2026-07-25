@@ -897,6 +897,31 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ab-fill.up{box-shadow:0 0 9px rgba(33,166,122,.55)}
 .ab-head-val.up{display:inline-block;animation:abPop .9s ease}
 .rec-row.isnew{border-color:#ffcf87;background:linear-gradient(90deg,#fff8ea,#fff);box-shadow:0 2px 12px rgba(230,160,60,.18)}
+/* ===== 게임별 기록 — 등급 카드 그리드 ===== */
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+@media (max-width:560px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
+.rec-card2{position:relative;display:flex;flex-direction:column;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:.85rem .5rem .7rem;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s;text-align:center}
+.rec-card2:hover{border-color:var(--purple2);box-shadow:var(--shadow);transform:translateY(-3px)}
+.rec-card2:active{transform:translateY(-1px)}
+.rec-card2.unplayed{opacity:.55}
+.rec-card2 .rc-grade{font-size:1.9rem;line-height:1;margin-bottom:.2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))}
+.rec-card2 .rc-emoji{font-size:1.35rem;line-height:1;margin-bottom:.3rem}
+.rec-card2 .rc-name{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:.45rem;min-height:2em;display:flex;align-items:center}
+.rec-card2 .rc-bar{width:100%;height:5px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-bottom:.35rem}
+.rec-card2 .rc-fill{height:100%;background:linear-gradient(90deg,var(--purple2),var(--purple));border-radius:99px;transition:width .6s ease}
+.rec-card2 .rc-meta{font-size:.66rem;color:var(--text3);font-weight:700}
+.rec-card2 .rc-best{font-size:.78rem;font-weight:800;color:var(--amber2);margin-top:.15rem}
+.rec-card2.isnew{border-color:#ffcf87;background:linear-gradient(160deg,#fff8ea,#fff)}
+.rec-card2 .rec-new-badge{position:absolute;top:.35rem;right:.35rem;margin-left:0;font-size:.55rem}
+/* 등급 요약 헤더 */
+.grade-summary{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem .6rem;background:linear-gradient(135deg,#fff8ea,#fdf0f6);border:1px solid #f0dfc0;border-radius:var(--radius2);padding:.6rem .85rem;margin-bottom:.7rem;font-size:.82rem;font-weight:700;color:var(--text2)}
+.grade-summary .gs-top{color:var(--amber2);font-weight:800}
+.grade-summary .gs-chip{background:#fff;border:1px solid var(--border);border-radius:999px;padding:.12rem .5rem;font-size:.72rem;font-weight:800}
+/* 필터 탭 */
+.rec-filters{display:flex;gap:.4rem;margin-bottom:.8rem}
+.rec-filter{flex:1;padding:.5rem 0;font-size:.8rem;font-weight:700;color:var(--text2);background:#fff;border:1px solid var(--border2);border-radius:999px;cursor:pointer;font-family:inherit;transition:.14s}
+.rec-filter.on{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 3px 10px rgba(79,124,255,.3)}
+.rec-empty{grid-column:1/-1;text-align:center;color:var(--text3);font-size:.85rem;padding:2rem 0}
 .rec-new-badge{display:inline-block;font-size:.58rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff8a5b,#ff5f9e);padding:.12rem .42rem;border-radius:999px;margin-left:.45rem;vertical-align:middle;letter-spacing:.04em;box-shadow:0 2px 6px rgba(255,95,158,.35);animation:abPop .85s ease}
 @media (max-width:640px){
   .home-hi{font-size:1.15rem}
@@ -1003,7 +1028,13 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
   </div>
   <div class="home-section-title" data-i18n="records.byGame">게임별 최고 기록</div>
-  <div id="records-body"></div>
+  <div class="grade-summary" id="grade-summary"></div>
+  <div class="rec-filters" id="rec-filters">
+    <button class="rec-filter on" data-f="played" onclick="setRecFilter('played')" data-i18n="rec.filterPlayed">플레이함</button>
+    <button class="rec-filter" data-f="all" onclick="setRecFilter('all')" data-i18n="rec.filterAll">전체</button>
+    <button class="rec-filter" data-f="unplayed" onclick="setRecFilter('unplayed')" data-i18n="rec.filterUnplayed">미플레이</button>
+  </div>
+  <div id="records-body" class="rec-grid"></div>
   <div class="home-section-title" data-i18n="backup.title">기록 백업</div>
   <div class="card">
     <p style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem" data-i18n="backup.hint">기록은 이 기기에만 저장됩니다. 폰을 바꾸거나 브라우저를 옮길 때는 코드를 복사해 새 기기에서 붙여넣으세요.</p>
@@ -3771,6 +3802,11 @@ const I18N = {
   "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
   "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
   "home.allgames": {ko:"🎮 전체 게임 보기", en:"🎮 Browse All Games", th:"🎮 ดูเกมทั้งหมด"},
+  "rec.filterPlayed": {ko:"플레이함", en:"Played", th:"เล่นแล้ว"},
+  "rec.filterAll": {ko:"전체", en:"All", th:"ทั้งหมด"},
+  "rec.filterUnplayed": {ko:"미플레이", en:"Not played", th:"ยังไม่เล่น"},
+  "rec.topGrade": {ko:"최고 등급", en:"Top rank", th:"อันดับสูงสุด"},
+  "rec.noPlayed": {ko:"아직 플레이한 게임이 없어요. 게임을 시작해 보세요!", en:"No games played yet. Start playing!", th:"ยังไม่ได้เล่นเกม ลองเล่นดูสิ!"},
   "home.grpMemory": {ko:"🧠 기억", en:"🧠 Memory", th:"🧠 ความจำ"},
   "cat.memory": {ko:"기억력", en:"Memory", th:"ความจำ"},
   "game.usesAbility": {ko:"이 게임이 쓰는 능력", en:"Abilities you'll use", th:"ทักษะที่ได้ใช้"},
@@ -7981,6 +8017,62 @@ function drawRadar(sc){
   ctx.closePath(); ctx.fillStyle='rgba(79,124,255,0.22)'; ctx.fill(); ctx.strokeStyle='#4f7cff'; ctx.lineWidth=2; ctx.stroke();
   ctx.fillStyle='#4f7cff'; for(let i=0;i<n;i++){ const ang=-Math.PI/2+i/n*2*Math.PI, val=(sc[ABILITIES[i]]||0)/100, rr=R*val, x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fill(); }
 }
+let REC_FILTER='played';
+function setRecFilter(f){ REC_FILTER=f;
+  document.querySelectorAll('.rec-filter').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
+  renderGameRecords();
+}
+function renderGameRecords(){
+  const body=document.getElementById('records-body'); if(!body) return;
+  body.innerHTML='';
+  const newSet=_getNewRecords();
+  // 전체 인앱 게임 + 등급 계산 후 정렬(등급 높은 순 → 레벨 높은 순)
+  const all=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external).map(g=>{
+    const mx=gameBestVal(g.id), lv=gameLevel(g.id), gr=mx>0?gradeOf(g.id):null;
+    return {g, mx, lv, gr, played:mx>0, isNew:newSet.has(g.id)&&mx>0};
+  });
+  let vis=all;
+  if(REC_FILTER==='played') vis=all.filter(x=>x.played);
+  else if(REC_FILTER==='unplayed') vis=all.filter(x=>!x.played);
+  // 정렬: 플레이한 건 등급 tier 낮은(높은 등급) 순·레벨 내림차순, 미플레이는 뒤
+  vis.sort((a,b)=>{
+    if(a.played!==b.played) return a.played?-1:1;
+    if(a.played&&b.played){ if(a.gr.tier!==b.gr.tier) return a.gr.tier-b.gr.tier; return b.lv-a.lv; }
+    return t(a.g.key).localeCompare(t(b.g.key));
+  });
+  if(!vis.length){ body.innerHTML='<div class="rec-empty">'+t('rec.noPlayed')+'</div>'; return; }
+  vis.forEach(x=>{
+    const card=document.createElement('div');
+    card.className='rec-card2'+(x.played?'':' unplayed')+(x.isNew?' isnew':'');
+    card.setAttribute('role','button'); card.tabIndex=0;
+    card.onclick=()=>showScreen(x.g.id);
+    card.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); showScreen(x.g.id); } };
+    const gradeEmoji=x.gr?x.gr.g.emoji:'🎮';
+    const lvl=x.played?x.lv:0;
+    card.innerHTML=
+      (x.isNew?'<span class="rec-new-badge">NEW</span>':'')+
+      '<div class="rc-grade'+(x.gr?(' grade-'+x.gr.tier):'')+'">'+gradeEmoji+'</div>'+
+      '<div class="rc-emoji">'+x.g.emoji+'</div>'+
+      '<div class="rc-name">'+t(x.g.key)+'</div>'+
+      '<div class="rc-bar"><div class="rc-fill" style="width:'+lvl+'%"></div></div>'+
+      '<div class="rc-meta">'+(x.played?('Lv.'+x.lv+' · '+gradeName(x.gr.g)):'—')+'</div>'+
+      (x.played?('<div class="rc-best">🏆 '+x.mx+'</div>'):'');
+    body.appendChild(card);
+  });
+}
+function renderGradeSummary(){
+  const el=document.getElementById('grade-summary'); if(!el) return;
+  const played=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external&&gameBestVal(g.id)>0);
+  if(!played.length){ el.style.display='none'; return; }
+  el.style.display='';
+  // 등급 분포 + 최고 등급 게임
+  const dist={}; let top=null;
+  played.forEach(g=>{ const gr=gradeOf(g.id); dist[gr.tier]=(dist[gr.tier]||0)+1;
+    if(!top||gr.tier<top.gr.tier||(gr.tier===top.gr.tier&&gameLevel(g.id)>top.lv)) top={g, gr, lv:gameLevel(g.id)}; });
+  let html='<span class="gs-top">'+t('rec.topGrade')+': '+top.gr.g.emoji+' '+t(top.g.key)+'</span>';
+  GRADES.forEach((gd,i)=>{ if(dist[i]) html+='<span class="gs-chip">'+gd.emoji+' '+dist[i]+'</span>'; });
+  el.innerHTML=html;
+}
 function renderRecords(){
   const v=homeVisit();
   const set=missionToday(), m=missionLoad();
@@ -7989,26 +8081,8 @@ function renderRecords(){
   HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('rec-streak', v.streak); setTxt('rec-days', v.total||1); setTxt('rec-mission', plays+'/'+set.length); setTxt('rec-count', rec);
   renderAbility();
-  const body=document.getElementById('records-body'); if(!body) return;
-  body.innerHTML='';
-  const recVis=HOME_GAMES.filter(g=>g.id!=='braintype'&&!g.external);
-  const recOrder=[], recByGrp={};               // 같은 카테고리끼리 인접 표시
-  recVis.forEach(g=>{ if(!recByGrp[g.grp]){ recByGrp[g.grp]=[]; recOrder.push(g.grp); } recByGrp[g.grp].push(g); });
-  const newSet=_getNewRecords();
-  recOrder.forEach(grp=>recByGrp[grp].forEach(g=>{
-    const mx=gameBestVal(g.id);
-    const isNew=newSet.has(g.id) && mx>0;
-    const row=document.createElement('div'); row.className='rec-row'+(isNew?' isnew':'');
-    row.style.cursor='pointer'; row.setAttribute('role','button'); row.tabIndex=0;
-    row.onclick=()=>showScreen(g.id);
-    row.onkeydown=(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); showScreen(g.id); } };
-    const gr=mx>0?gradeOf(g.id):null;
-    const grChip=gr?'<span class="grade-chip grade-'+gr.tier+'" title="'+gradeName(gr.g)+'">'+gr.g.emoji+'</span>':'';
-    row.innerHTML='<span class="rec-game">'+grChip+g.emoji+' '+t(g.key)+'</span>'+
-      '<span class="rec-cat">'+t(g.grp)+'</span>'+
-      '<span class="rec-best'+(isNew?' up':'')+'">'+(mx>0?('🏆 '+mx):'—')+(isNew?'<span class="rec-new-badge">NEW</span>':'')+'</span>';
-    body.appendChild(row);
-  }));
+  renderGradeSummary();
+  renderGameRecords();
 }
 
 // ========== 규칙 바꾸기 (Rule Switch / 과제 전환) ==========
