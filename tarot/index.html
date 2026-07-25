@@ -420,11 +420,36 @@ const MINOR={
 const RANK_NAMES=['에이스','2','3','4','5','6','7','8','9','10','페이지','나이트','퀸','킹'];
 ['완드','컵','소드','펜타클'].forEach(suit=>{ const meta=SUIT_META[suit];
   MINOR[suit].forEach((mean,i)=>{
-    DECK.push({ n:suit+' '+RANK_NAMES[i], e:meta.e,
+    DECK.push({ n:suit+' '+RANK_NAMES[i], e:meta.e, suit:suit,
       up:'['+meta.th+'] '+mean[0], rev:'['+meta.th+'] '+mean[1],
+      upBare:mean[0], revBare:mean[1],
       tip:mean[0], rtip:mean[1] });
   });
 });
+/* 주제(연애/일·학업/재물)별 해석 프레임 — 슈트 기운을 주제 맥락으로 연결.
+   카드 자체 의미는 그대로 두고, 주제에 맞게 읽히도록 앞뒤를 붙임. */
+const SUIT_LENS={
+ 완드:{love:'열정',work:'추진력',money:'기회'},
+ 컵:{love:'마음',work:'인간관계',money:'풍요로운 감정'},
+ 소드:{love:'솔직한 대화',work:'판단력',money:'계획'},
+ 펜타클:{love:'현실적 안정',work:'실력·성과',money:'재물'}
+};
+const CAT_FRAME={
+ love:{open:'연애운으로 본다면, ',suit:'이 기운은 관계 속 ',tail:'와(과) 맞닿아 있어요.'},
+ work:{open:'일·학업운으로 본다면, ',suit:'이 기운은 지금의 ',tail:'(으)로 작용해요.'},
+ money:{open:'재물운으로 본다면, ',suit:'이 기운은 ',tail:'에 영향을 줘요.'}
+};
+/* 카드 의미를 주제 맥락으로 감싸 반환 (메이저/마이너 공통) */
+function lensMeaning(pick, cat, cf){
+  const suit=pick.card.suit; const bare=pick.rev?(cf.revBare||cf.rev):(cf.upBare||cf.up);
+  const f=CAT_FRAME[cat]; if(!f) return bare;
+  if(!suit||!SUIT_LENS[suit]){ // 메이저(슈트 없음): 주제 프레임만 앞에
+    const MAJOR_OPEN={love:'연애운으로 본다면, ',work:'일·학업운으로 본다면, ',money:'재물운으로 본다면, '};
+    return (MAJOR_OPEN[cat]||'')+bare;
+  }
+  const lens=SUIT_LENS[suit][cat];
+  return f.open+bare+' '+f.suit+'「'+lens+'」'+f.tail;
+}
 const POS3={ love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['과거의 재물운','현재의 흐름','다가올 기회'] };
 const CATNAME={love:'💗 연애',work:'📚 일·학업',money:'💰 재물'};
 const SUM_UP=['카드들이 밝은 기운을 전해요. 오늘의 나를 믿어봐요! ✨','좋은 흐름이 보여요. 한 걸음씩 나아가면 돼요 🌈','마음이 향하는 대로, 지금이 좋은 타이밍이에요 💫'];
@@ -483,7 +508,7 @@ function drawThree(){
   }, 250+i*260); });
   LAST={mode:'three',cards:picks,cat:CAT};
   setTimeout(()=>{
-    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const cf=CF(p); const m=p.rev?cf.rev:cf.up;
+    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const cf=CF(p); const m=lensMeaning(p,CAT,cf);
       return '<div class="reading"><div class="rh">'+p.card.e+' '+cf.n+(p.rev?'<span class="rv">'+TX[LANG].revShort+'</span>':'')+'</div><div class="rp">'+pos[i]+'</div><div class="rt">'+m+'</div></div>'; }).join('');
     const good=picks.filter(p=>!p.rev).length; const sr=mulberry32(hashStr(seed+'|s'));
     document.getElementById('summary').textContent=(good>=2?TX[LANG].sumUp:TX[LANG].sumMid)[Math.floor(sr()*3)];
