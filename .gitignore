@@ -10,3 +10,4 @@ venv/
 shared/
 generated_images/
 .mcp.json
+tstory/
