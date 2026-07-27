@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-27 — **글자 맞추기(anagram) 전면 개선(7종)**: ① 터치 버튼 44→56px(모바일 60px)·폰트 1.65rem·gap .55rem·그라데+광택·진동, used 타일 hidden→흐리게(위치 고정) ② 정답 조립 영역 `.ag-assemble` 박스(min-h 96px)+안내문구로 하단 이동 ③ 셔플백(`AG.bag` key=lang|diff, 재셔플 첫 단어≠직전)으로 단어 반복 차단(검증 6/6 고유) ④ ko ABAB 반복어(말랑말랑 등) 전량 제거 ⑤ 난이도 재설계 `AG_LEN` 쉬움 ko[2,3]/en[3,4]·보통 ko[4]/en[5]·어려움 ko[5,6]/en[6], ko 2/5/6글자 pool 신설 ⑥ `AG_HINTS`{3,2,1}·`AG_PENALTY`{0,1,2}s 오답 시간차감·`AG_MULT`{1.0,1.4,2.0}+속도보너스(≤10) ⑦ i18n `anagram.prompt`+난이도 설명 갱신. 헤드리스 스모크(easy/normal/hard 각 6판+오답+힌트) pageerror 0.
+
 - 2026-07-24 — **AI 배경 전면 적용(34종 완성)**: 인앱 아케이드 34종 플레이 배경 전부 AI 이미지화 + 홈 히어로·신기록 배경 = 36개 자산(`assets/*.jpg`). gpt-image-2-t2i 생성→PIL 최적화(900px·~45KB)→CSS 오버레이 배경. 테마 매칭(2048=타일, whack=구멍마시멜로, trail=번호경로 등). 인원수세기 캐릭터 문 쪽 이동 수정. git push용 Fine-grained PAT(`.env`의 GITHUB_TOKEN, Contents RW 권한) 설정. 상세=MEMORY.md.
 
 - 2026-07-23 — **UX·성장 구조 개편 5종**: ① 사운드 팩(`_tone` 레이어드 신스, sfx 12종, UI 탭 위임, 신기록 팡파르, 타이머 틱) ② 능력치 10축(+협응/청각/관찰) + overall=숙련도70%+커버리지30% ③ 등급 배지 6단계(🐣~💎) 내 기록 칩 + 결과 화면 다음 등급까지 N점 ④ 홈 '오늘의 데일리' 섹션 + 인기게임 하드코딩→개인화 추천 ⑤ 화면 전환 애니메이션. 검증 errcheck 34종 무결. 상세=MEMORY.md.
@@ -344,12 +346,12 @@ this project — files written anywhere else are NOT reachable from chat.
 
 ### How to deliver — paste the REAL public URL
 For a file at `generated_images/<name>.<ext>`, its public URL is exactly
-`/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
+`/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
 correctly in web and Telegram/Discord:
-- Image → `![<alt>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.png)` — shows inline
-- Video → `[<title>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
-- Audio → `[<title>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.mp3)` — web embeds an audio player
-- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/408e2703-2854-45a5-8493-cb5fde0b2d68/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
+- Image → `![<alt>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.png)` — shows inline
+- Video → `[<title>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
+- Audio → `[<title>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.mp3)` — web embeds an audio player
+- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
 
 Always give the user the link for anything you produce — never just say "saved to
 generated_images/" without the URL.
