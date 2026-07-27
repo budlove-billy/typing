@@ -4426,12 +4426,23 @@ function sfx(kind){
   }
 }
 // UI 버튼 탭 사운드 — 위임 리스너(개별 onclick 수정 없이 전역 적용)
-if(typeof document!=='undefined') document.addEventListener('pointerdown',function(e){
-  try{
-    const b=e.target&&e.target.closest?e.target.closest('button,.diff-btn,.home-card,.rec-card,.tab-btn,.home-cat,.rec-row'):null;
-    if(b && !b.disabled) sfx('tap');
-  }catch(_){}
-},{passive:true});
+if(typeof document!=='undefined'){
+  // 탭 사운드: pointerdown에서 바로 울리면 '스크롤 시작 터치'에도 소리가 남.
+  // 이동량이 작고(=드래그/스크롤 아님) 같은 요소에서 손을 떼는 '진짜 탭'일 때만 재생.
+  const _TAP_SEL='button,.diff-btn,.home-card,.rec-card,.tab-btn,.home-cat,.rec-row';
+  let _tapCand=null;
+  document.addEventListener('pointerdown',function(e){
+    try{ const b=e.target&&e.target.closest?e.target.closest(_TAP_SEL):null;
+      _tapCand=(b&&!b.disabled)?{el:b,x:e.clientX,y:e.clientY}:null; }catch(_){ _tapCand=null; }
+  },{passive:true});
+  document.addEventListener('pointerup',function(e){
+    try{ const c=_tapCand; _tapCand=null; if(!c) return;
+      if(Math.abs(e.clientX-c.x)>10||Math.abs(e.clientY-c.y)>10) return; // 스크롤/드래그
+      const up=e.target&&e.target.closest?e.target.closest(_TAP_SEL):null;
+      if(up===c.el) sfx('tap'); }catch(_){}
+  },{passive:true});
+  document.addEventListener('pointercancel',function(){ _tapCand=null; },{passive:true});
+}
 // 오디오 언락: AudioContext를 첫 사용자 제스처 안에서 생성·resume(+iOS 무음버퍼)해야 이후 setTimeout 사운드(멜로디/리듬)가 확실히 남.
 function _audioUnlock(){
   try{
