@@ -615,14 +615,20 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .no-clue span{padding:0 1px}
 .no-corner{background:var(--bg3)}
 .no-tools{display:flex;justify-content:center;gap:.6rem;margin:.2rem 0 1rem}
-.ag-slots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:52px;margin-bottom:1.1rem}
+.ag-assemble{margin:1.75rem 0 1.5rem;padding:1.1rem .8rem 1.25rem;background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;min-height:96px;display:flex;flex-direction:column;justify-content:center}
+.ag-prompt{text-align:center;font-size:.82rem;color:var(--text2);margin-bottom:.85rem;font-weight:600}
+.ag-slots{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;min-height:60px;align-items:center}
 .ag-slots.miss{animation:bbShake .3s ease 1}
-.ag-slot{min-width:44px;height:44px;padding:0 .35rem;border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:var(--text)}
-.ag-slot.filled{border-style:solid;border-color:var(--purple);background:var(--purple3);cursor:pointer}
-.ag-tiles{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:52px}
-.ag-tile{min-width:44px;height:44px;padding:0 .4rem;border:none;border-radius:8px;background:var(--purple);color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer}
-.ag-tile:active{transform:scale(.95)}
-.ag-tile.used{visibility:hidden}
+.ag-slot{min-width:56px;height:56px;padding:0 .4rem;border:2px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.65rem;font-weight:700;color:var(--text);background:var(--bg);transition:transform .12s ease}
+.ag-slot.filled{border-style:solid;border-color:var(--purple);background:var(--purple3);cursor:pointer;box-shadow:0 2px 6px rgba(120,90,220,.18)}
+.ag-tiles{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;min-height:60px;margin-top:.2rem}
+.ag-tile{min-width:56px;height:56px;padding:0 .45rem;border:none;border-radius:12px;background:linear-gradient(180deg,#a988fb 0%,var(--purple) 70%);color:#fff;font-size:1.65rem;font-weight:700;cursor:pointer;box-shadow:0 3px 8px rgba(120,90,220,.32),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .1s ease,opacity .15s ease}
+.ag-tile:active{transform:scale(.9);box-shadow:0 1px 3px rgba(120,90,220,.3)}
+.ag-tile.used{opacity:.24;box-shadow:none;pointer-events:none;background:var(--purple)}
+@media(max-width:480px){
+  .ag-slot,.ag-tile{min-width:60px;height:60px;font-size:1.75rem;border-radius:14px}
+  .ag-slots,.ag-tiles{gap:.5rem}
+}
 .rec-box{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem}
 .rec-title{font-size:.85rem;color:var(--text2);margin-bottom:.7rem;font-weight:600;text-align:center}
 .rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem}
@@ -1106,7 +1112,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="streak-bar" id="streak-bar"></div>
       <div class="word-card">
         <div class="word-en" id="w-en">—</div>
-        <div class="word-phon" id="w-phon">/—/</div>
+        <div class="word-phon" id="w-phon">[—]</div>
         <div class="word-ko" id="w-ko">—</div>
         <div class="word-progress" id="w-prog"></div>
       </div>
@@ -2685,8 +2691,11 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="mg-stat-divider"></div>
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="anagram.combo">COMBO</div><div class="mg-stat-value" id="ag-combo">0</div></div>
     </div>
-    <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="ag-timer">01:00</div></div>
-    <div class="ag-slots" id="ag-slots"></div>
+    <div style="text-align:center;margin-bottom:.4rem"><div class="mg-timer" id="ag-timer">01:00</div></div>
+    <div class="ag-assemble">
+      <div class="ag-prompt" data-i18n="anagram.prompt">글자를 순서대로 눌러 단어를 완성하세요</div>
+      <div class="ag-slots" id="ag-slots"></div>
+    </div>
     <div class="ag-tiles" id="ag-tiles"></div>
     <div style="display:flex;justify-content:center;gap:.5rem;margin-top:1.1rem">
       <button class="btn btn-outline" id="ag-hint-btn" onclick="agHint()">💡 <span data-i18n="anagram.hint">힌트</span> (<span id="ag-hint-n">3</span>)</button>
@@ -3224,9 +3233,10 @@ const I18N = {
   "nav.anagram": {ko:"글자 맞추기", en:"Word Scramble", th:"เรียงอักษร"},
   "anagram.title": {ko:"글자 맞추기", en:"Word Scramble", th:"เรียงอักษร"},
   "anagram.intro": {ko:"뒤섞인 글자를 <b>올바른 순서</b>로 배열해 단어를 완성하세요!<br>60초 동안 최대한 많은 단어를 맞혀보세요. 막히면 힌트를 쓰세요.", en:"Arrange the scrambled letters in the <b>right order</b> to spell the word!<br>Solve as many as you can in 60 seconds. Stuck? Use a hint.", th:"เรียงอักษรที่สลับให้<b>ถูกลำดับ</b>เป็นคำ!<br>ทำให้ได้มากที่สุดใน 60 วินาที ติดขัดก็ใช้คำใบ้"},
-  "anagram.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "anagram.easyDesc": {ko:"짧은 단어", en:"Short words", th:"คำสั้น"},
-  "anagram.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "anagram.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "anagram.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "anagram.hardDesc": {ko:"긴 단어", en:"Long words", th:"คำยาว"},
+  "anagram.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "anagram.easyDesc": {ko:"2~3글자 · 힌트3", en:"2-3 letters · 3 hints", th:"2-3 ตัว · ใบ้3"},
+  "anagram.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "anagram.normalDesc": {ko:"4글자 · 힌트2", en:"4 letters · 2 hints", th:"4 ตัว · ใบ้2"},
+  "anagram.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "anagram.hardDesc": {ko:"5~6글자 · 힌트1 · 점수2배", en:"5-6 letters · 1 hint · x2", th:"5-6 ตัว · ใบ้1 · x2"},
+  "anagram.prompt": {ko:"글자를 순서대로 눌러 단어를 완성하세요", en:"Tap the letters in order to spell the word", th:"แตะตัวอักษรตามลำดับเพื่อสะกดคำ"},
   "anagram.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "anagram.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "anagram.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"}, "anagram.hint": {ko:"힌트", en:"Hint", th:"ใบ้"},
   "anagram.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -3528,9 +3538,9 @@ const I18N = {
   "nono.timeUsed": {ko:"걸린 시간", en:"Time", th:"เวลาที่ใช้"},
   "nono.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "nono.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
-  "anagram.easyDesc": {ko:"짧은 단어", en:"Short words", th:"คำสั้น"},
-  "anagram.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "anagram.hardDesc": {ko:"긴 단어", en:"Long words", th:"คำยาว"},
+  "anagram.easyDesc": {ko:"2~3글자 · 힌트3", en:"2-3 letters · 3 hints", th:"2-3 ตัว · ใบ้3"},
+  "anagram.normalDesc": {ko:"4글자 · 힌트2", en:"4 letters · 2 hints", th:"4 ตัว · ใบ้2"},
+  "anagram.hardDesc": {ko:"5~6글자 · 힌트1 · 점수2배", en:"5-6 letters · 1 hint · x2", th:"5-6 ตัว · ใบ้1 · x2"},
   "anagram.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "anagram.hint": {ko:"힌트", en:"Hint", th:"คำใบ้"},
   "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -4416,12 +4426,23 @@ function sfx(kind){
   }
 }
 // UI 버튼 탭 사운드 — 위임 리스너(개별 onclick 수정 없이 전역 적용)
-if(typeof document!=='undefined') document.addEventListener('pointerdown',function(e){
-  try{
-    const b=e.target&&e.target.closest?e.target.closest('button,.diff-btn,.home-card,.rec-card,.tab-btn,.home-cat,.rec-row'):null;
-    if(b && !b.disabled) sfx('tap');
-  }catch(_){}
-},{passive:true});
+if(typeof document!=='undefined'){
+  // 탭 사운드: pointerdown에서 바로 울리면 '스크롤 시작 터치'에도 소리가 남.
+  // 이동량이 작고(=드래그/스크롤 아님) 같은 요소에서 손을 떼는 '진짜 탭'일 때만 재생.
+  const _TAP_SEL='button,.diff-btn,.home-card,.rec-card,.tab-btn,.home-cat,.rec-row';
+  let _tapCand=null;
+  document.addEventListener('pointerdown',function(e){
+    try{ const b=e.target&&e.target.closest?e.target.closest(_TAP_SEL):null;
+      _tapCand=(b&&!b.disabled)?{el:b,x:e.clientX,y:e.clientY}:null; }catch(_){ _tapCand=null; }
+  },{passive:true});
+  document.addEventListener('pointerup',function(e){
+    try{ const c=_tapCand; _tapCand=null; if(!c) return;
+      if(Math.abs(e.clientX-c.x)>10||Math.abs(e.clientY-c.y)>10) return; // 스크롤/드래그
+      const up=e.target&&e.target.closest?e.target.closest(_TAP_SEL):null;
+      if(up===c.el) sfx('tap'); }catch(_){}
+  },{passive:true});
+  document.addEventListener('pointercancel',function(){ _tapCand=null; },{passive:true});
+}
 // 오디오 언락: AudioContext를 첫 사용자 제스처 안에서 생성·resume(+iOS 무음버퍼)해야 이후 setTimeout 사운드(멜로디/리듬)가 확실히 남.
 function _audioUnlock(){
   try{
@@ -4770,7 +4791,7 @@ function renderCurrentWord(){
   const words=WORDS[S.diff][S.level];
   const w=words[S.wordIdx];
   document.getElementById('w-en').textContent=w.w;
-  document.getElementById('w-phon').textContent=w.p;
+  document.getElementById('w-phon').textContent=w.p?('['+w.p.replace(/\//g,'')+']'):''; // /ipa/ → [ipa]: 앞뒤 슬래시가 URL(/.../)로 오인돼 구글봇 404 크롤되던 것 차단
   document.getElementById('w-ko').textContent=wordMeaning(w);
   document.getElementById('w-prog').textContent=(S.wordIdx+1)+' / '+words.length;
   refreshStreakBar();
@@ -9200,40 +9221,55 @@ function resetNono(){ clearInterval(NO.timer); NO.running=false; const g=documen
 
 // ========== 글자 맞추기 / 애너그램 (언어) ==========
 const AG_WORDS={
-  ko:{ 3:['고양이','강아지','코끼리','원숭이','다람쥐','호랑이','거북이','물고기','도서관','자전거','냉장고','컴퓨터','자동차','비행기','운동화','손수건','무지개','바나나','고구마','개구리','병아리','두더지','진달래','개나리','민들레','무궁화','떡볶이','순두부','도토리','보름달'],
-       4:['말랑말랑','두근두근','반짝반짝','알록달록','새콤달콤','조물조물','몽글몽글','소곤소곤','간질간질','폭신폭신','도란도란','방글방글','싱글벙글','울퉁불퉁','보들보들','모락모락','꼬물꼬물','토닥토닥','쫀득쫀득','말캉말캉','해바라기','고슴도치','무당벌레','코스모스'] },
+  ko:{ 2:['사과','우산','토끼','기차','학교','시계','모자','안경','포도','수박','딸기','구름','바람','나무','바다','하늘','다리','거울','창문','의자','책상','연필','지갑','우유','참외','호박','양파','오이','배추','버섯'],
+       3:['고양이','강아지','코끼리','원숭이','다람쥐','호랑이','거북이','물고기','도서관','자전거','냉장고','컴퓨터','자동차','비행기','운동화','손수건','무지개','바나나','고구마','개구리','병아리','두더지','진달래','개나리','민들레','무궁화','떡볶이','순두부','도토리','보름달'],
+       4:['해바라기','고슴도치','무당벌레','코스모스','청개구리','딱따구리','소금쟁이','미끄럼틀','놀이기구','단풍나무','은행나무','진달래꽃','봉숭아꽃','강아지풀','무지개떡','김치찌개','된장찌개','비빔국수','잔치국수','어린이날','어버이날','도라지꽃'],
+       5:['아이스크림','순두부찌개','크리스마스','무지개다리','자동판매기','김치볶음밥','오므라이스','방울토마토','산타클로스','카레라이스','소고기국밥','돼지갈비찜','초콜릿과자','안녕하세요','감사합니다','사랑합니다','스파게티면'],
+       6:['함박스테이크','초콜릿케이크','아이스크림콘','바닐라아이스','스마트폰게임'] },
   en:{ 3:['CAT','SUN','MAP','BOX','CUP','DOG','HAT','KEY','PEN','BUS','EGG','FOX','JAM','OWL','TOY','BEE','ANT','COW','PIG','BAT','CAP','FAN','ICE','LEG','NUT','POT','VAN','WEB','ZIP','SKY'],
        4:['STAR','MOON','TREE','FISH','CAKE','LION','BOOK','RAIN','SNOW','GOLD','WIND','LEAF','BEAR','SHIP','MILK','FROG','DUCK','BIRD','DOOR','LAMP','RING','KITE','DESK','ROSE','CORN','WOLF','BOAT','SALT','MASK','MOTH'],
        5:['APPLE','HOUSE','TIGER','MUSIC','LEMON','CLOUD','RIVER','PLANT','SUGAR','BREAD','HONEY','ROBOT','SMILE','OCEAN','PIANO','GRAPE','TRAIN','CANDY','BEACH','LIGHT','WATCH','ZEBRA','PANDA','MANGO','OLIVE','PEARL','STORM','TOAST','CROWN','GHOST'],
        6:['GARDEN','ORANGE','FLOWER','PLANET','ROCKET','CASTLE','DRAGON','BASKET','PENCIL','WINTER','GUITAR','MONKEY','TURTLE','BRIDGE','CANDLE','ISLAND','JUNGLE','MIRROR','PEPPER','YELLOW','PURPLE','BUTTON','COOKIE','DONKEY'] } };
-const AG_LEN={ easy:{ko:[3],en:[3,4]}, normal:{ko:[3,4],en:[4,5]}, hard:{ko:[4],en:[5,6]} };
+const AG_LEN={ easy:{ko:[2,3],en:[3,4]}, normal:{ko:[4],en:[5]}, hard:{ko:[5,6],en:[6]} };
+const AG_HINTS={ easy:3, normal:2, hard:1 };
+const AG_PENALTY={ easy:0, normal:1, hard:2 };   // 오답 시 시간(초) 차감
+const AG_MULT={ easy:1.0, normal:1.4, hard:2.0 }; // 난이도 점수 배율
 const AG_TIME=60;
-const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, best:bt_loadBest('brain.anagram.best') };
+const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, wordStart:0, bag:{}, best:bt_loadBest('brain.anagram.best') };
 function AG_DIFF_LABEL(d){ return d==='easy'?t('anagram.easy'):d==='hard'?t('anagram.hard'):t('anagram.normal'); }
 function agUpdateBestLine(){ const el=document.getElementById('ag-intro-best'); if(el) el.textContent=bt_bestLineText(AG.best,AG.diff); }
 function setAnagramDiff(d){ AG.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ag-diff-'+k).classList.toggle('active',k===d)); agUpdateBestLine(); }
 function agStats(){ document.getElementById('ag-score').textContent=AG.score; document.getElementById('ag-combo').textContent=AG.combo; document.getElementById('ag-hint-n').textContent=AG.hints; }
 function agTimer(){ const el=document.getElementById('ag-timer'); const m=Math.floor(AG.timeLeft/60),s=AG.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=AG.timeLeft<=10?'var(--red)':''; }
-function agPick(){ const lang=(CURRENT_LANG==='ko')?'ko':'en'; const lens=AG_LEN[AG.diff][lang]; const len=lens[Math.floor(Math.random()*lens.length)]; const pool=AG_WORDS[lang][len]; AG.word=pool[Math.floor(Math.random()*pool.length)];
+function agNextWord(lang){
+  const pool=AG_LEN[AG.diff][lang].reduce((a,l)=>a.concat(AG_WORDS[lang][l]||[]),[]);
+  const key=lang+'|'+AG.diff; let bag=AG.bag[key];
+  if(!bag || bag.i>=bag.words.length){ let words=shuffleArr(pool);
+    if(bag && bag.last && words.length>1 && words[0]===bag.last){ const t=words[0]; words[0]=words[1]; words[1]=t; }
+    bag={words:words, i:0, last:bag?bag.last:null}; AG.bag[key]=bag; }
+  const w=bag.words[bag.i++]; bag.last=w; return w; }
+function agPick(){ const lang=(CURRENT_LANG==='ko')?'ko':'en'; AG.word=agNextWord(lang);
   const chars=[...AG.word]; let order; do{ order=chars.map((c,i)=>i); for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=order[i]; order[i]=order[j]; order[j]=tmp; } }while(order.map(i=>chars[i]).join('')===AG.word && chars.length>1);
-  AG.tiles=order.map(i=>({ch:chars[i],used:false})); AG.slots=[]; }
+  AG.tiles=order.map(i=>({ch:chars[i],used:false})); AG.slots=[]; AG.wordStart=Date.now(); }
 function agRender(){ const wl=[...AG.word].length; const ss=document.getElementById('ag-slots'); ss.innerHTML='';
   for(let i=0;i<wl;i++){ const ti=AG.slots[i]; const d=document.createElement('div'); d.className='ag-slot'+(ti!=null?' filled':''); d.textContent=ti!=null?AG.tiles[ti].ch:''; if(ti!=null) d.onclick=()=>agUnplace(i); ss.appendChild(d); }
   const ts=document.getElementById('ag-tiles'); ts.innerHTML='';
   AG.tiles.forEach((tile,idx)=>{ const b=document.createElement('button'); b.className='ag-tile'+(tile.used?' used':''); b.textContent=tile.ch; b.onclick=()=>agTapTile(idx); ts.appendChild(b); }); agStats(); }
-function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; AG.slots.push(idx); tile.used=true; agRender();
+function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; if(navigator.vibrate) navigator.vibrate(8); AG.slots.push(idx); tile.used=true; agRender();
   if(AG.slots.length===[...AG.word].length) agSubmit(); }
-function agUnplace(i){ if(!AG.running||AG.slots[i]==null) return; const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
+function agUnplace(i){ if(!AG.running||AG.slots[i]==null) return; if(navigator.vibrate) navigator.vibrate(6); const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
 function agSubmit(){ const asm=AG.slots.map(i=>AG.tiles[i].ch).join('');
-  if(asm===AG.word){ AG.combo++; AG.maxCombo=Math.max(AG.maxCombo,AG.combo); AG.score+=[...AG.word].length*5+(AG.combo-1)*3; sfx('good'); agStats(); agPick(); agRender(); }
-  else{ AG.combo=0; sfx('bad'); const ss=document.getElementById('ag-slots'); ss.classList.add('miss'); setTimeout(()=>ss.classList.remove('miss'),320); AG.tiles.forEach(t=>t.used=false); AG.slots=[]; agRender(); } }
+  if(asm===AG.word){ AG.combo++; AG.maxCombo=Math.max(AG.maxCombo,AG.combo);
+    const wlen=[...AG.word].length, base=wlen*5, spent=Math.floor((Date.now()-AG.wordStart)/1000), speed=Math.max(0,10-spent), comboB=(AG.combo-1)*2;
+    AG.score+=Math.round((base+speed+comboB)*AG_MULT[AG.diff]); sfx('good'); agStats(); agPick(); agRender(); }
+  else{ AG.combo=0; const pen=AG_PENALTY[AG.diff]; if(pen>0){ AG.timeLeft=Math.max(0,AG.timeLeft-pen); agTimer(); } sfx('bad'); const ss=document.getElementById('ag-slots'); ss.classList.add('miss'); setTimeout(()=>ss.classList.remove('miss'),320); AG.tiles.forEach(t=>t.used=false); AG.slots=[]; agRender(); if(AG.timeLeft<=0) finishAnagram(); } }
 function agHint(){ if(!AG.running||AG.hints<=0) return; const wc=[...AG.word]; const p=AG.slots.length; if(p>=wc.length) return; const need=wc[p];
   let found=-1; for(let i=0;i<AG.tiles.length;i++){ if(!AG.tiles[i].used && AG.tiles[i].ch===need){ found=i; break; } } if(found<0) return;
   AG.hints--; AG.slots.push(found); AG.tiles[found].used=true; agRender(); if(AG.slots.length===wc.length) agSubmit(); }
-function startAnagram(){ AG.score=0;AG.combo=0;AG.maxCombo=0;AG.timeLeft=AG_TIME;AG.hints=3;AG.running=true;
+function startAnagram(){ AG.score=0;AG.combo=0;AG.maxCombo=0;AG.timeLeft=AG_TIME;AG.hints=AG_HINTS[AG.diff];AG.bag={};AG.running=true;
   document.getElementById('anagram-intro-card').style.display='none'; document.getElementById('anagram-result-card').style.display='none'; document.getElementById('anagram-game-card').style.display='block';
   agPick(); agRender(); agTimer(); clearInterval(AG.timer); AG.timer=setInterval(()=>{ AG.timeLeft--; agTimer(); if(AG.timeLeft<=0) finishAnagram(); },1000); }
-function finishAnagram(){ clearInterval(AG.timer); AG.running=false;
+function finishAnagram(){ if(!AG.running) return; clearInterval(AG.timer); AG.running=false;
   const nr=bt_recordScore(AG.best,AG.diff,AG.score); bt_saveBest('brain.anagram.best',AG.best); missionMark('anagram');
   document.getElementById('anagram-game-card').style.display='none'; document.getElementById('anagram-result-card').style.display='block';
   document.getElementById('ag-result-emoji').textContent=nr?'🏆':'🔤'; document.getElementById('ag-result-title').textContent=nr?t('anagram.newRecord'):t('anagram.timeOver');

@@ -1112,7 +1112,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="streak-bar" id="streak-bar"></div>
       <div class="word-card">
         <div class="word-en" id="w-en">—</div>
-        <div class="word-phon" id="w-phon">/—/</div>
+        <div class="word-phon" id="w-phon">[—]</div>
         <div class="word-ko" id="w-ko">—</div>
         <div class="word-progress" id="w-prog"></div>
       </div>
@@ -4791,7 +4791,7 @@ function renderCurrentWord(){
   const words=WORDS[S.diff][S.level];
   const w=words[S.wordIdx];
   document.getElementById('w-en').textContent=w.w;
-  document.getElementById('w-phon').textContent=w.p;
+  document.getElementById('w-phon').textContent=w.p?('['+w.p.replace(/\//g,'')+']'):''; // /ipa/ → [ipa]: 앞뒤 슬래시가 URL(/.../)로 오인돼 구글봇 404 크롤되던 것 차단
   document.getElementById('w-ko').textContent=wordMeaning(w);
   document.getElementById('w-prog').textContent=(S.wordIdx+1)+' / '+words.length;
   refreshStreakBar();
