@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-29 — **SEO 진단 지적사항 수정**: ① H1 부재/계층 오류 — 홈 `div.home-hi` → `h1.home-hi`(문서 첫 제목, i18n `home.title` 유지, `.home-hi` 클래스가 UA 기본값을 덮어 시각 변화 0) → H1 1개·H1→H2→H3 정상 ② `bt-share-img` `alt=""` → 의미있는 alt + `loading="lazy"`, 카드 생성 시 실제 유형명으로 alt 갱신(i18n `braintype.shareAlt` 신설) ③ 보안헤더 3종(X-Frame-Options SAMEORIGIN·X-Content-Type-Options nosniff·Referrer-Policy strict-origin-when-cross-origin) — 호스팅이 **Vercel**임을 응답헤더로 확인, `vercel.json` 신규 생성(배포 후 적용). 검증: 헤드리스 H1/스타일/alt/i18n 확인 + errcheck 34종 pageerror 0. 참고: `brain_app.html`은 미링크 레거시 사본(canonical=루트), `privacy/`는 ko/en 블록으로 H1 2개(의도된 다국어 구조).
+
 - 2026-07-27 — **탭 사운드 스크롤 오발 수정**: 홈 데일리·운세 카드를 스크롤(터치)할 때 `sfx('tap')`이 울리던 버그. 원인=UI 탭 사운드 위임이 `pointerdown`(손 닿는 순간)에 발생 → 스크롤 시작 터치도 트리거. 수정=`pointerdown`에서 후보만 기록하고 `pointerup`에서 이동량 ≤10px & 동일 요소일 때만 재생(`pointercancel`로 취소). 헤드리스 검증: 스크롤/드래그 0, 진짜 탭 1, pageerror 0.
 
 - 2026-07-27 — **글자 맞추기(anagram) 전면 개선(7종)**: ① 터치 버튼 44→56px(모바일 60px)·폰트 1.65rem·gap .55rem·그라데+광택·진동, used 타일 hidden→흐리게(위치 고정) ② 정답 조립 영역 `.ag-assemble` 박스(min-h 96px)+안내문구로 하단 이동 ③ 셔플백(`AG.bag` key=lang|diff, 재셔플 첫 단어≠직전)으로 단어 반복 차단(검증 6/6 고유) ④ ko ABAB 반복어(말랑말랑 등) 전량 제거 ⑤ 난이도 재설계 `AG_LEN` 쉬움 ko[2,3]/en[3,4]·보통 ko[4]/en[5]·어려움 ko[5,6]/en[6], ko 2/5/6글자 pool 신설 ⑥ `AG_HINTS`{3,2,1}·`AG_PENALTY`{0,1,2}s 오답 시간차감·`AG_MULT`{1.0,1.4,2.0}+속도보너스(≤10) ⑦ i18n `anagram.prompt`+난이도 설명 갱신. 헤드리스 스모크(easy/normal/hard 각 6판+오답+힌트) pageerror 0.
@@ -248,6 +250,23 @@ task to a specialist sub-agent**, or to **create a new role** while chatting wit
   auto-favorited, so they immediately show in the create-project picker.
 
 Codes look like `R0042`; keys look like `engineering-backend-architect`. Either is accepted.
+
+### Your OWN identity for this project (`identity`)
+
+Separate from the library above: `identity` reads and changes **your own persona** for
+this project (what `ROLE.md` holds). Use it when the user tells you who to be — e.g.
+"from now on also act as a security reviewer" → `identity append "..."`.
+
+- `identity show` — the current identity.
+- `identity set "<text>"` — REPLACE it. `identity clear` — remove it.
+- `identity append "<text>"` — ADD to it, keeping what's already there.
+- `--file <path>` instead of inline text for long personas.
+
+Changes apply on your **NEXT** message (the identity loads when a turn starts), and keep
+the saved role, `ROLE.md` and the project-settings UI in sync. **Never hand-edit
+`ROLE.md`** — it is generated from the saved role, so a direct edit is silently
+discarded the next time the role is saved. Confirm with the user before replacing or
+clearing an identity they didn't ask you to change.
 <!-- ROLES_TOOL_END -->
 
 <!-- SKILLS_TOOL_BEGIN -->
@@ -291,7 +310,8 @@ polluting your own memory, or to keep a **backup** you can promote later. Tasks 
 **async** — dispatch, keep working, fetch the result when ready.
 
 - `clone fork [--label L]` — snapshot THIS session into a new clone; prints its `session`.
-- `clone run <session> "<task>"` — dispatch a task to a clone (async); prints a `job` id.
+- `clone run <session> "<task>" [--report]` — dispatch a task to a clone (async); prints a
+  `job` id. With `--report`, the finished result is posted into the main chat by itself.
 - `clone result <job> [--wait]` — fetch a job's status/result (`--wait` polls to completion).
 - `clone list` — clones + recent jobs for this project.
 - `clone discard <session>` — delete a clone (its transcript + memory).
@@ -299,6 +319,34 @@ polluting your own memory, or to keep a **backup** you can promote later. Tasks 
 Reach for a clone when a task would clutter your working memory or can run in parallel —
 e.g. fork, dispatch the grind, keep talking to the user, then collect the result. Discard
 clones you no longer need. (The user can also manage clones in Project Settings → Clones.)
+
+### Parallel fan-out — when the user asks for several things AT ONCE
+
+When the user says 「同时 / 并行 / 分别做 A、B、C」 (or lists independent jobs), split the
+work across clones instead of doing it serially. HARD RULES:
+
+1. **Only parallelize file-disjoint tasks.** All clones share this work_dir — two clones
+   editing the same files overwrite each other. If tasks might touch the same files, run
+   those serially (or do them yourself) and say why. This binds YOU too: while clones
+   run, don't touch the files they're working on.
+2. **Present the split and get a YES before forking.** Clones cost real tokens. Show one
+   short plan — 「我准备开 N 个分身:① … ② … ③ …,互不冲突,确认?」 — and wait. Never
+   fan out silently, and don't fan out at all unless the user asked for parallel work.
+   Keep it to **at most 3 clones at once** — each is a full engine process.
+3. **Dispatch with `--report`, then end your turn.** `clone fork` + `clone run <sid>
+   "<task>" --report` per task, reply 「已派发,完成后结果会自动出现在聊天里」, and stop —
+   each result posts itself into the chat (「🌿 分身「X」已完成(任务:…)」). Don't sit
+   in `clone result --wait` loops unless the user wants ONE synthesized answer, in which
+   case wait for all jobs and merge them yourself.
+4. Give each clone a self-contained task brief (it inherits context up to the fork, but
+   NOT anything you learned after). A `--report` clone is **cleaned up automatically**
+   after it succeeds; `clone discard` anything else you won't reuse.
+5. **Results reach you automatically.** Reports that arrived while you were away are
+   injected at the start of your next turn as 「[分身回报 …]」 — absorb them before
+   answering. Order is arbitrary (C may finish before A; each report names its task),
+   and dispatching MORE tasks later is fine — the same flow handles trickled dispatch.
+   You stay fully available while clones run: keep chatting and working on OTHER things,
+   and check progress anytime with `clone result <job>` (no --wait) or `clone list`.
 <!-- CLONE_TOOL_END -->
 
 <!-- MCP_TOOL_BEGIN -->
@@ -449,3 +497,24 @@ mdbox-media skill to generate the poster.
 
 Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first** before responding, and let it shape your tone, focus, and what you proactively bring up.
 <!-- ROLE_REF_END -->
+
+<!-- MEMORY_TOOL_BEGIN -->
+## Retrievable memory — search, don't carry (`memory`)
+
+MEMORY.md is loaded whole every session, so it must stay SMALL. Durable knowledge goes
+into retrievable facts instead — one markdown file per fact under
+`.claudecrab/memory/facts/`, FTS-indexed:
+
+- `memory search "<query>"` — find relevant facts. **Do this FIRST** when a question
+  touches past decisions, conventions, or user preferences.
+- `memory add "<title>" --body "<text>" [--tags a,b]` — save ONE durable fact (a
+  decision + why, a gotcha, a preference). Specific titles beat vague ones.
+- `memory list` / `memory show <slug>` / `memory forget <slug>` / `memory reindex`.
+- `memory import-legacy` — one-time: split an overgrown MEMORY.md's `##` sections into
+  facts (MEMORY.md itself is left untouched).
+
+Division of labor: MEMORY.md keeps only the few lines that matter EVERY session
+(architecture, port map, active conventions); everything else becomes a fact you can
+recall on demand. When MEMORY.md grows past ~60 lines, move the stable parts out with
+`memory import-legacy` + trim.
+<!-- MEMORY_TOOL_END -->

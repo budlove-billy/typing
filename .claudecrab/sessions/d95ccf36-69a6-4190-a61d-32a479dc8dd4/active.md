@@ -15,5 +15,12 @@
 ## Files
 - index.html: CSS(618-625), 게임카드HTML(2688-2690), i18n(3227-3229), AG 로직(9202-9235)
 
+## Current task
+SEO 지적사항 수정 — index.html + vercel.json
+1. H1 없음/계층: index.html:978 `div.home-hi` → `h1.home-hi` (문서 첫 제목, i18n home.title 유지)
+2. img alt 없음: index.html:1957 bt-share-img → alt + loading="lazy", 생성 시(6570) i18n alt 갱신
+3. 보안 헤더 3종(X-Frame-Options/X-Content-Type-Options/Referrer-Policy) → 호스팅=Vercel 확인, vercel.json 신규 생성
+- 참고: privacy/index.html은 H1 2개(ko/en 블록, en은 display:none) — 다국어 구조상 의도된 것, 보고만
+
 ## Status
-완료 — 커밋 4df875a. 헤드리스 스모크 통과(pageerror 0, 반복 6/6 고유). 필요 시 라이브 실기기 터치감 확인 권장.
+작업 중

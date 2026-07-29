@@ -975,7 +975,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 <!-- ==================== HOME / DASHBOARD ==================== -->
 <div class="screen active" id="screen-home">
-  <div class="home-hi" data-i18n="home.title">오늘의 두뇌 체조</div>
+  <h1 class="home-hi" data-i18n="home.title">오늘의 두뇌 체조</h1>
   <p class="home-intro" data-i18n="home.intro"><strong>플레이말로우</strong>는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트예요. 오늘의 추천부터 가볍게 시작해보세요.</p>
   <button class="card home-feature" id="home-feature" onclick="featureStart()"></button>
   <button class="home-allgames" onclick="showScreen('games')" data-i18n="home.allgames">🎮 전체 게임 보기</button>
@@ -1954,7 +1954,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div style="font-size:.85rem;color:var(--text3)" data-i18n="braintype.resultTitle">당신의 두뇌 유형은</div>
     <div class="bt-type-name" id="bt-name"></div>
     <div class="bt-type-desc" id="bt-desc"></div>
-    <img class="bt-share-img" id="bt-share-img" alt="">
+    <img class="bt-share-img" id="bt-share-img" loading="lazy" alt="두뇌 유형 테스트 결과 공유 카드">
     <div class="bt-rec-box">
       <div class="bt-rec-label" data-i18n="braintype.recommend">추천 트레이닝</div>
       <div class="bt-rec-game" id="bt-rec-game"></div>
@@ -3839,6 +3839,7 @@ const I18N = {
   "braintype.retry": {ko:"다시 테스트", en:"Retake", th:"ทำใหม่"},
   "braintype.saveImg": {ko:"📷 결과 이미지 저장/공유", en:"📷 Save / Share image", th:"📷 บันทึก / แชร์รูป"},
   "braintype.cardTag": {ko:"두뇌 유형 테스트", en:"Brain Type Test", th:"แบบทดสอบประเภทสมอง"},
+  "braintype.shareAlt": {ko:"결과 공유 카드", en:"result share card", th:"การ์ดแชร์ผลลัพธ์"},
 
   "share.button": {ko:"📷 결과 공유", en:"📷 Share result", th:"📷 แชร์ผล"},
   "share.myScore": {ko:"나의 기록 🏆", en:"My score 🏆", th:"คะแนนของฉัน 🏆"},
@@ -6567,7 +6568,9 @@ function btShowResult(key){
   document.getElementById('bt-rec-btn').onclick=()=>showScreen(ty.rec);
   _btCard=makeShareCard({emoji:ty.emoji, title:btL(ty.name), subtitle:t('braintype.cardTag'),
     desc:btL(ty.desc), note:'👉 '+t('braintype.recommend')+': '+t('nav.'+ty.rec)});
-  document.getElementById('bt-share-img').src=_btCard.toDataURL('image/png');
+  const _btImg=document.getElementById('bt-share-img');
+  _btImg.src=_btCard.toDataURL('image/png');
+  _btImg.alt=btL(ty.name)+' · '+t('braintype.cardTag')+' '+t('braintype.shareAlt');
 }
 function leaveBrainType(){ resetBrainType(); }
 function resetBrainType(){

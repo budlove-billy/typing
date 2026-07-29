@@ -11615,3 +11615,95 @@ A 5118482 / B 0ad74e9 / C 7000ac3 / E 21e9ece / D1차 6a0dc74 / D2차씬 bb1a5fe
 - GA 데이터 기반 콘텐츠/최적화
 - 외부 정적 페이지(queens/tango/운세류)에도 배경 적용 가능
 
+---
+
+## Session d95ccf36-69a6-4190-a61d-32a479dc8dd4 — 2026-07-27T06:28:34.900065+00:00
+
+
+# Active Session State
+
+## Current task
+글자 맞추기(anagram) 게임 전면 개선 — index.html. 7개 항목 전부 적용.
+
+## Plan / Decisions
+1. 터치 버튼 44→56px(모바일 60px), 폰트 1.3→1.65rem, gap .4→.55rem, used 타일 hidden→dim(위치 고정), :active+진동
+2. 정답 조립 영역 아래로: .ag-assemble 박스(min-h 96px)+안내문구, 여백
+3. 셔플백(AG.bag, key=lang|diff)으로 단어 반복 방지 + 재셔플 첫 단어≠직전
+4. ko 반복형(ABAB) 단어 제거
+5. AG_LEN 재설계 easy ko[2,3]/en[3,4], normal ko[4]/en[5], hard ko[5,6]/en[6]. ko:2/5/6 신규 pool. 셔플백은 length 합산 pool
+6. AG_HINTS{3,2,1}, AG_PENALTY{0,1,2}s 오답 시간차감, AG_MULT{1.0,1.4,2.0}+속도보너스(최대10)
+7. i18n anagram.prompt 추가
+
+## Files
+- index.html: CSS(618-625), 게임카드HTML(2688-2690), i18n(3227-3229), AG 로직(9202-9235)
+
+## Status
+완료.
+- 글자 맞추기 개편: 커밋 4df875a
+- 탭 사운드 스크롤 오발 수정: 커밋 4f9ce8b (pointerdown→pointerup 이동량 판정, 헤드리스 검증 통과)
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-28T00:57:59.275814+00:00
+
+
+# Active Session State
+
+_This file is automatically injected into Claude's context at the start of every session and before any compaction. Update it whenever you make a significant decision or change._
+
+## Current task
+
+(nothing yet — describe what you're working on right now)
+
+## Decisions
+
+(append as you go)
+
+## Files in progress
+
+(list paths and a one-line status)
+
+## Open questions
+
+(things you need user confirmation on)
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-28T01:04:02.050353+00:00
+
+
+# Active Session State
+
+## Current task
+구글 서치콘솔 색인 리포트 6개 카테고리 진단.
+- 정상(신생 SPA): ?game=slide=대체페이지(정상 canonical), http/www 리디렉션(정상), guide 발견-미크롤(크롤대기), ?lang=en 중복(클라이언트 i18n 한계), 크롤됨/발견됨-미색인(도메인 신생 7/10, 시간+트래픽 필요)
+- **유일한 실질 항목**: 404 IPA URL 7개. 출처=vocab(비활성 영어단어게임) 발음필드 `p:'/ˈnjuːɑːns/'` → 앞뒤 슬래시가 루트상대 URL(/.../)처럼 보여 구글봇이 링크 오인 크롤. 404는 무해(구글이 올바로 버림). 크롤버짓 소량 낭비뿐.
+- 새 랜딩 5종+stroop: 다른 세션이 JSON-LD(WebApplication+BreadcrumbList) 추가함. 되돌리지 말 것.
+
+## Decisions
+- 색인 지연은 오류 아님. 재검증 남발 금지. 처방=시간+홍보(트래픽/링크).
+- IPA 404 수정 여부는 사용자 확인 후(발음이 href인지 텍스트인지에 따라).
+
+## Open questions
+- IPA 404 청소할지(선택) — 리포트만 지저분, 실제 피해 없음.
+
+---
+
+## Session 6ed2d3fb-b648-4f95-ab42-f74f491f24fa — 2026-07-28T01:09:44.699935+00:00
+
+
+# Active Session State
+
+## Current task
+(완료) GSC 색인 리포트 진단 + IPA 404 청소.
+- IPA 404 수정 배포됨(862f2a5): vocab 발음 /ipa/→[ipa] (index.html line 4794 render + line 1115 placeholder /—/→[—]). index=brain_app 동기화. 라이브 확인.
+- GSC 6개 카테고리 중 5개는 오류 아님(신생 SPA 정상): ?game=slide 대체페이지, http/www 리디렉션, guide 발견-미크롤, ?lang=en 중복(i18n 한계), 크롤됨/발견됨-미색인(도메인 신생). → 시간+홍보로 해결.
+- 새 랜딩 5종+stroop: 다른 세션이 JSON-LD 추가함. 되돌리지 말 것.
+
+## Decisions
+- 색인 지연은 오류 아님. 재검증 남발 금지. 처방=시간+홍보(트래픽/링크).
+- GSC 기존 404들은 자연 소멸 대기(구글 재크롤 시 사라짐). 급하면 "수정 검증" 1회.
+
+## Open questions
+- (없음) 다음: 2주 데이터 리뷰(리마인더 7/27 예약됨) 또는 홍보 시딩.
+
