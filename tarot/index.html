@@ -158,7 +158,7 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     </div>
     <div class="disc" id="t-disc">본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909), Pamela Colman Smith · 퍼블릭 도메인</span></div>
   </div>
-  <section class="seo">
+  <section class="seo" data-lang-only="ko">
     <div class="card">
       <h2>타로란?</h2>
       <p>타로는 78장의 카드에 담긴 상징으로 지금의 마음과 상황을 비춰 보는 오랜 점술입니다. 말로우 타로는 라이더-웨이트-스미스 카드 78장으로 오늘의 카드 한 장과 연애·일·재물을 보는 3카드 스프레드를 무료로, 가입·설치 없이 바로 뽑아 볼 수 있습니다.</p>
@@ -313,6 +313,8 @@ function applyLang(){ const d=TX[LANG];
   document.getElementById('againBtn').textContent=d.again;
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
+  // 한국어 전용 고정 HTML(SEO 섹션)은 다른 언어에서 숨김 — zodiac과 동일 규칙
+  document.querySelectorAll('[data-lang-only]').forEach(el=>{ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
   renderGameFunnel();
   document.title=(LANG==='th')?'Mallow ทาโรต์ — ไพ่วันนี้ & ไพ่ 3 ใบ':'말로우 타로 — 오늘의 카드 & 3카드 타로 | Mallow';
 }

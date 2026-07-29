@@ -65,6 +65,9 @@ main{width:100%;max-width:520px;padding:12px 12px 32px;}
 .btn.primary{background:var(--text);color:var(--bg);border-color:var(--text);}
 #lives{text-align:center;margin-top:14px;font-size:14px;color:var(--sub);}
 #lives .heart{font-size:16px;letter-spacing:3px;}
+#lives .sep{margin:0 8px;opacity:.5;}
+#playTime{font-variant-numeric:tabular-nums;font-weight:700;color:#5b574f;}
+#shareCard{width:100%;max-width:320px;border-radius:12px;display:block;margin:12px auto 2px;box-shadow:0 3px 12px rgba(0,0,0,.14);}
 #toast{
   position:fixed;top:14%;left:50%;transform:translateX(-50%);
   background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;
@@ -113,7 +116,7 @@ footer{font-size:11.5px;color:#a09a8e;padding:10px 16px 24px;text-align:center;l
 <main>
   <div id="solvedRows"></div>
   <div id="grid"></div>
-  <div id="lives">남은 기회 <span class="heart" id="heartRow"></span></div>
+  <div id="lives">남은 기회 <span class="heart" id="heartRow"></span><span class="sep">·</span><span id="playTime">⏱ 0:00</span></div>
   <div id="controls">
     <button class="btn" id="shuffleBtn">섞기</button>
     <button class="btn" id="clearBtn">선택 해제</button>
@@ -155,7 +158,7 @@ footer{font-size:11.5px;color:#a09a8e;padding:10px 16px 24px;text-align:center;l
   <div id="modal">
     <h2 id="resultTitle"></h2>
     <div class="sub" id="resultSub"></div>
-    <div id="shareGrid"></div>
+    <img id="shareCard" alt="모아모아 결과 공유 카드">
     <div class="statrow">
       <div class="stat"><b id="stPlayed">0</b><span>플레이</span></div>
       <div class="stat"><b id="stWinRate">0%</b><span>성공률</span></div>
@@ -434,16 +437,19 @@ const PIDX = puzzleIndex();
 const PUZZLE = PUZZLES[PIDX];
 const DIFF_COLOR = ['var(--y)','var(--g)','var(--b)','var(--p)'];
 const DIFF_EMOJI = ['🟨','🟩','🟦','🟪'];
-const MAX_MISS = 4;
+const MAX_MISS = 3;
+const MAX_ONEAWAY = 2; // "하나만 달라요" 힌트 제공 횟수(이후엔 그냥 오답 처리)
 
 /* ══════════════ 저장 (localStorage) ══════════════ */
 const LS_STATE='moamoa_state_v1', LS_STATS='moamoa_stats_v1';
 function loadJSON(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v??d; }catch(e){ return d; } }
-let stats = loadJSON(LS_STATS,{played:0,wins:0,streak:0,maxStreak:0,lastWinDate:null,lastPlayDate:null});
+let stats = loadJSON(LS_STATS,{played:0,wins:0,streak:0,maxStreak:0,lastWinDate:null,lastPlayDate:null,bestSec:null});
 let state = loadJSON(LS_STATE,null);
 if(!state || state.date!==todayKey){
-  state = {date:todayKey, solved:[], guesses:[], miss:0, done:false, win:false};
+  state = {date:todayKey, solved:[], guesses:[], miss:0, done:false, win:false, sec:0, oneAway:0};
 }
+if(typeof state.sec!=='number') state.sec=0;
+if(typeof state.oneAway!=='number') state.oneAway=0;
 
 /* ══════════════ 게임 상태 ══════════════ */
 // 낱말 → 그룹 인덱스 맵
@@ -489,8 +495,24 @@ function render(){
   document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>tapTile(t.dataset.w));
   // 목숨
   $('heartRow').textContent = '●'.repeat(MAX_MISS-state.miss) + '○'.repeat(state.miss);
+  $('playTime').textContent = '⏱ ' + fmtSec(state.sec);
   $('submitBtn').disabled = selected.length!==4 || state.done;
 }
+/* ══════════════ 플레이 시간 ══════════════ */
+// 제한이 아니라 '기록'으로서의 시간 — 첫 선택에 시작해 정답/실패로 끝나며, 성공 시 최단 기록으로 남는다.
+function fmtSec(s){ const m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
+let clockTm=null;
+function startClock(){
+  if(clockTm || state.done) return;
+  clockTm=setInterval(()=>{
+    if(state.done || document.visibilityState!=='visible') return;
+    state.sec++;
+    $('playTime').textContent='⏱ '+fmtSec(state.sec);
+    if(state.sec%10===0) save();
+  },1000);
+}
+function stopClock(){ if(clockTm){ clearInterval(clockTm); clockTm=null; } }
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && !state.done && state.sec>0) startClock(); });
 function toast(msg){
   const t=$('toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),1600);
@@ -499,6 +521,7 @@ function toast(msg){
 /* ══════════════ 조작 ══════════════ */
 function tapTile(w){
   if(state.done) return;
+  startClock();
   const i = selected.indexOf(w);
   if(i>=0) selected.splice(i,1);
   else if(selected.length<4) selected.push(w);
@@ -528,7 +551,8 @@ $('submitBtn').onclick=()=>{
     else toast(PUZZLE.groups[gi].name+' 정답!');
   }else{
     state.miss++;
-    if(best===3) toast('하나만 달라요!');
+    // "하나만 달라요"는 강력한 힌트라 횟수를 제한한다(소진 후엔 그냥 오답).
+    if(best===3 && state.oneAway<MAX_ONEAWAY){ state.oneAway++; toast('하나만 달라요!'); }
     else toast('틀렸어요');
     document.querySelectorAll('.tile.sel').forEach(t=>t.classList.add('shake'));
     if(state.miss>=MAX_MISS){
@@ -543,12 +567,14 @@ $('submitBtn').onclick=()=>{
 
 /* ══════════════ 종료·통계·공유 ══════════════ */
 function finish(win){
+  stopClock();
   if(!state.done){
     state.done=true; state.win=win;
     stats.played++;
     stats.lastPlayDate=todayKey;
     if(win){
       stats.wins++;
+      if(state.sec>0 && (stats.bestSec==null || state.sec<stats.bestSec)) stats.bestSec=state.sec;
       // 어제 이겼으면 streak+1, 아니면 1부터
       const y = new Date(kstNow()-86400000).toISOString().slice(0,10);
       stats.streak = (stats.lastWinDate===y)? stats.streak+1 : 1;
@@ -565,12 +591,64 @@ function save(){ localStorage.setItem(LS_STATE,JSON.stringify(state)); }
 
 function shareText(){
   const rows = state.guesses.map(g=>g.diffs.map(d=>DIFF_EMOJI[d]).join('')).join('\n');
-  return `모아모아 #${PIDX+1} ${state.win?`(${state.guesses.length}번 만에 성공)`:'(다음 기회에…)'}\n${rows}`;
+  const head = state.win ? `(${state.guesses.length}번 · ${fmtSec(state.sec)})` : '(다음 기회에…)';
+  return `모아모아 #${PIDX+1} ${head}\n${rows}\nplaymallow.com/moamoa`;
+}
+
+/* ══════════════ 공유 카드(canvas) ══════════════ */
+// 이모지 폰트는 기기마다 흐릿하게 렌더링되므로 색 블록을 직접 그린다. DPR 배율로 선명하게.
+const CARD_HEX = ['#f5d547','#9fc25f','#78a9d1','#b07fc7'];
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
+}
+function buildShareCard(){
+  const rows = state.guesses.length;
+  const W = 480, CELL = 46, GAP = 8;
+  const gridH = rows*CELL + (rows-1)*GAP;
+  const H = 232 + gridH + 74;
+  const dpr = Math.min(3, Math.max(2, window.devicePixelRatio||1));
+  const cv = document.createElement('canvas');
+  cv.width = W*dpr; cv.height = H*dpr;
+  const c = cv.getContext('2d');
+  c.scale(dpr,dpr);
+  c.textAlign='center'; c.textBaseline='middle';
+  const F = "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+
+  c.fillStyle='#faf8f4'; c.fillRect(0,0,W,H);
+  c.fillStyle='#efece6'; roundRect(c,16,16,W-32,H-32,22); c.fill();
+
+  c.fillStyle='#1a1a1a'; c.font='800 34px '+F;
+  c.fillText('모아 · 모아', W/2, 74);
+  c.fillStyle='#6b6b6b'; c.font='600 17px '+F;
+  c.fillText(`#${PIDX+1} · ${todayKey}`, W/2, 108);
+
+  c.fillStyle = state.win ? '#4f7351' : '#a2564f';
+  c.font='800 25px '+F;
+  c.fillText(state.win ? `${state.guesses.length}번 만에 성공! 🎉` : '아쉽게 실패…', W/2, 152);
+  c.fillStyle='#6b6b6b'; c.font='600 16px '+F;
+  c.fillText(state.win ? `걸린 시간 ${fmtSec(state.sec)}` : `걸린 시간 ${fmtSec(state.sec)} · 내일 다시!`, W/2, 182);
+
+  const gridW = 4*CELL + 3*GAP, gx0 = (W-gridW)/2, gy0 = 216;
+  state.guesses.forEach((g,r)=>{
+    g.diffs.forEach((d,i)=>{
+      c.fillStyle = CARD_HEX[d];
+      roundRect(c, gx0+i*(CELL+GAP), gy0+r*(CELL+GAP), CELL, CELL, 11);
+      c.fill();
+    });
+  });
+
+  c.fillStyle='#8a857c'; c.font='700 16px '+F;
+  c.fillText('playmallow.com/moamoa', W/2, gy0+gridH+44);
+  return cv;
 }
 function showModal(){
   $('resultTitle').textContent = state.win? '축하해요! 🎉':'아쉬워요!';
-  $('resultSub').textContent = state.win? `${state.guesses.length}번의 시도로 모두 맞혔어요`:'내일 다시 도전해 보세요';
-  $('shareGrid').innerHTML = state.guesses.map(g=>g.diffs.map(d=>DIFF_EMOJI[d]).join('')).join('<br>');
+  $('resultSub').textContent = state.win
+    ? `${state.guesses.length}번의 시도 · ${fmtSec(state.sec)}` + (stats.bestSec!=null?` (최단 ${fmtSec(stats.bestSec)})`:'')
+    : `${fmtSec(state.sec)} 동안 도전했어요 · 내일 다시 만나요`;
+  try{ $('shareCard').src = buildShareCard().toDataURL('image/png'); }catch(e){}
   $('stPlayed').textContent=stats.played;
   $('stWinRate').textContent=stats.played? Math.round(stats.wins/stats.played*100)+'%':'0%';
   $('stStreak').textContent=stats.streak;
@@ -581,6 +659,23 @@ function showModal(){
 $('closeBtn').onclick=()=>$('overlay').classList.remove('show');
 $('shareBtn').onclick=async()=>{
   const txt=shareText();
+  // 이미지(PNG) 우선 공유 → 미지원 브라우저는 다운로드, 그마저 안 되면 텍스트 복사
+  try{
+    const cv=buildShareCard();
+    const blob=await new Promise(res=>cv.toBlob(res,'image/png'));
+    if(blob){
+      const file=new File([blob],`모아모아-${todayKey}.png`,{type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], text:txt});
+        return;
+      }
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob); a.download=`모아모아-${todayKey}.png`;
+      a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+      toast('결과 이미지를 저장했어요!');
+      return;
+    }
+  }catch(e){}
   try{
     if(navigator.share){ await navigator.share({text:txt}); }
     else{ await navigator.clipboard.writeText(txt); toast('결과가 복사되었어요!'); }

@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-29 — **지적 5종 수정(모아모아 3·타로 1·앱 1)**: ① **게임 중 화면 좌우 흔들림** — 원인=`nav`의 세 자식(`nav-exit`/`nav-logo`/`lang-select-wrap`)이 모두 `flex-shrink:0`이라 게임명이 붙는 순간 상단바가 화면보다 넓어짐(390px 뷰포트에서 문서폭 429~469px). 홈은 게임명이 비어 정상. 수정=`body.ingame .nav-logo{flex-shrink:1;min-width:0}`+`.nav-game` 말줄임, ≤480px 게임 중 브랜드명·마스코트 숨김·`lang-select` 76px, `body{overflow-x:clip;overscroll-behavior-x:none}`. 검증: 34종 전부 docSW=cw(390/360 모두 타이틀 잘림 0). ② **타로 태국어에 한글 혼출** — 원인=`tarot/index.html`의 `<section class="seo">`(타로란?/FAQ 등 한국어 고정 HTML)를 `applyLang()`이 건드리지 않음. 카드 데이터(CARD_TH 78장)는 정상. 수정=zodiac 선례대로 `data-lang-only="ko"`+토글 1줄 → th 화면 한글 0자, ko는 h2 6개 유지. ③ **모아모아 제한시간** — 실제로 시간 개념 자체가 없었음(유일한 시간 UI는 결과모달의 '다음 퍼즐까지' 대기 카운트다운). 신설=첫 선택에 시작하는 플레이 경과 타이머(탭 전환 시 정지, 10초마다 저장, 종료 시 정지) + 최단 기록(`stats.bestSec`) + 결과/공유 문구에 시간. 데일리 퍼즐 특성상 하드 제한 대신 '기록'으로 설계. ④ **모아모아 난이도** — `MAX_MISS` 4→3, "하나만 달라요" 힌트를 판당 2회로 제한(`MAX_ONEAWAY`). ⑤ **모아모아 공유 이미지** — 기존엔 이미지가 아예 없고 텍스트+이모지뿐이었음. `buildShareCard()` canvas 카드 신설(DPR 2~3배, 480×H, 이모지 대신 색 블록 직접 렌더 → 기기별 흐림 제거), 결과 모달 미리보기 + `navigator.share({files})` → 다운로드 → 텍스트 순 폴백.
+
 - 2026-07-29 — **SEO 진단 지적사항 수정**: ① H1 부재/계층 오류 — 홈 `div.home-hi` → `h1.home-hi`(문서 첫 제목, i18n `home.title` 유지, `.home-hi` 클래스가 UA 기본값을 덮어 시각 변화 0) → H1 1개·H1→H2→H3 정상 ② `bt-share-img` `alt=""` → 의미있는 alt + `loading="lazy"`, 카드 생성 시 실제 유형명으로 alt 갱신(i18n `braintype.shareAlt` 신설) ③ 보안헤더 3종(X-Frame-Options SAMEORIGIN·X-Content-Type-Options nosniff·Referrer-Policy strict-origin-when-cross-origin) — 호스팅이 **Vercel**임을 응답헤더로 확인, `vercel.json` 신규 생성(배포 후 적용). 검증: 헤드리스 H1/스타일/alt/i18n 확인 + errcheck 34종 pageerror 0. 참고: `brain_app.html`은 미링크 레거시 사본(canonical=루트), `privacy/`는 ko/en 블록으로 H1 2개(의도된 다국어 구조).
 
 - 2026-07-27 — **탭 사운드 스크롤 오발 수정**: 홈 데일리·운세 카드를 스크롤(터치)할 때 `sfx('tap')`이 울리던 버그. 원인=UI 탭 사운드 위임이 `pointerdown`(손 닿는 순간)에 발생 → 스크롤 시작 터치도 트리거. 수정=`pointerdown`에서 후보만 기록하고 `pointerup`에서 이동량 ≤10px & 동일 요소일 때만 재생(`pointercancel`로 취소). 헤드리스 검증: 스크롤/드래그 0, 진짜 탭 1, pageerror 0.
@@ -299,7 +301,6 @@ the project stays lean.
 
 Codes look like `S0042`; keys look like `mdbox-media`. Either is accepted.
 <!-- SKILLS_TOOL_END -->
-
 <!-- CLONE_TOOL_BEGIN -->
 ## Session clones — 分身 (`clone`)
 
@@ -454,6 +455,7 @@ Project conventions: always save outputs under `generated_images/` in the
 project working directory, use descriptive filenames, and after saving tell the
 user the relative path so they can preview/download it in the file browser.
 <!-- MDBOX_MULTIMODAL_END -->
+
 
 <!-- CAPABILITY_AUTOPILOT_BEGIN -->
 ## Capability autopilot — the task pulls in capabilities (MUST follow)
