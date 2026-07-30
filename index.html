@@ -970,6 +970,28 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ml-pad.lit{opacity:1;box-shadow:0 0 18px rgba(0,0,0,.18)}
 .ml-p0{background:#2fb96a}.ml-p1{background:#e0475a}.ml-p2{background:#f0b429}.ml-p3{background:#4f7cff}
 @media (max-width:640px){ .wk-sprite img{width:64px} .wk-sprite.bomb{font-size:3.4rem} .wk-board,.wk-wrap{max-width:340px} .wk-count{font-size:2.6rem} .ml-pads{max-width:300px} }
+/* ── 결과 화면 공통 블록(최고기록까지·봇 대결·바로 다시) ── */
+.pg-box{margin-top:1rem;padding:.85rem .9rem;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.55)}
+.pg-line{font-size:.86rem;color:var(--text2);line-height:1.5;margin:.18rem 0}
+.pg-line.pg-good{color:var(--text);font-weight:700}
+.pg-line.pg-week{opacity:.72;font-size:.8rem}
+.pg-actions{display:flex;gap:.5rem;margin-top:.7rem}
+.pg-btn{flex:1;min-width:0;border:0;border-radius:12px;padding:.72rem .4rem;font-size:.92rem;font-weight:800;cursor:pointer;font-family:inherit}
+.pg-retry{background:linear-gradient(180deg,#ff9db8,#f4789c);color:#fff;box-shadow:0 3px 0 #d9648a}
+.pg-retry:active{transform:translateY(2px);box-shadow:0 1px 0 #d9648a}
+.pg-chal{background:#fff;color:var(--text);border:1px solid var(--border)}
+/* ── 홈: 주간 챌린지 ── */
+.wk-card{padding:.9rem 1rem}
+.wk-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.wk-title{font-size:.86rem;font-weight:800;color:var(--text)}
+.wk-tier{font-size:.8rem;font-weight:700;color:var(--text2);white-space:nowrap}
+.wk-pts{display:flex;align-items:baseline;gap:.3rem;margin:.35rem 0 .5rem}
+.wk-pts b{font-size:1.65rem;font-weight:900;color:var(--text);line-height:1}
+.wk-pts span{font-size:.82rem;color:var(--text2)}
+.wk-pts em{margin-left:auto;font-style:normal;font-size:.78rem;color:var(--text2)}
+.wk-bar{height:7px;border-radius:99px;background:var(--border);overflow:hidden}
+.wk-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffc46b,#ff8fb1)}
+.wk-sub{margin-top:.45rem;font-size:.78rem;color:var(--text2);line-height:1.45}
 </style>
 </head>
 <body>
@@ -993,6 +1015,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   <p class="home-intro" data-i18n="home.intro"><strong>플레이말로우</strong>는 가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트예요. 오늘의 추천부터 가볍게 시작해보세요.</p>
   <button class="card home-feature" id="home-feature" onclick="featureStart()"></button>
   <button class="home-allgames" onclick="showScreen('games')" data-i18n="home.allgames">🎮 전체 게임 보기</button>
+  <div class="card wk-card" id="home-week"></div>
   <div class="card home-goals">
     <div class="hg-title" data-i18n="goals.title">오늘의 목표</div>
     <div class="hg-row">
@@ -2157,7 +2180,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="section-head"><h2 data-i18n="cards.title">카드 짝 맞추기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="cards.intro">
       뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>
-      한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 60초 안에 몇 쌍이나?
+      한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 제한 시간 안에 몇 쌍이나? (난이도가 오르면 시간도 늘어납니다)
     </p>
     <div class="difficulty-row">
       <div class="diff-btn" id="cm-diff-easy" onclick="setCardsDiff('easy')">
@@ -2735,7 +2758,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="section-head"><h2 data-i18n="wordsearch.title">숨은 단어 찾기</h2></div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1rem;line-height:1.6" data-i18n="wordsearch.intro">
       글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>
-      60초 동안 최대한 많은 단어를 찾아보세요.
+      제한 시간 안에 최대한 많은 단어를 찾아보세요. (난이도가 오르면 시간도 늘어납니다)
     </p>
     <div class="difficulty-row">
       <div class="diff-btn" id="ws-diff-easy" onclick="setWordsearchDiff('easy')"><h3>🌱 <span data-i18n="wordsearch.easy">쉬움</span></h3><p data-i18n="wordsearch.easyDesc">6×6·3단어</p></div>
@@ -3257,9 +3280,32 @@ const I18N = {
   "anagram.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "anagram.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "anagram.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "anagram.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "anagram.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "anagram.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "rec.title": {ko:"💪 이 게임으로 약점을 채워보세요", en:"💪 Train your weak spots", th:"💪 ฝึกจุดที่ยังอ่อน"},
+  "pg.pbNew": {ko:"내 최고 기록을 {n}점 넘었어요!", en:"You beat your best by {n}!", th:"ทำลายสถิติเดิม {n} คะแนน!"},
+  "pg.pbGap": {ko:"내 최고 기록 {best}점 — {n}점만 더!", en:"Your best is {best} — just {n} more!", th:"สถิติเดิม {best} — อีกแค่ {n}!"},
+  "pg.pbFirst": {ko:"첫 기록 {n}점을 세웠어요!", en:"First record set: {n}!", th:"ทำสถิติแรก {n} คะแนน!"},
+  "bot.none": {ko:"점수를 내면 말로우 봇이 도전장을 보내요", en:"Score some points and Mallow Bot will challenge you", th:"ทำคะแนนแล้วบอทมาร์ชเมลโล่จะมาท้า"},
+  "pg.retry": {ko:"바로 다시", en:"Play again", th:"เล่นอีกครั้ง"},
+  "pg.chal": {ko:"친구에게 도전장", en:"Challenge a friend", th:"ท้าเพื่อน"},
+  "bot.seed": {ko:"말로우 봇이 도전장을 냈어요 — 다음 목표 {n}점", en:"Mallow Bot challenges you — next target {n}", th:"บอทมาร์ชเมลโล่ท้าคุณ — เป้าหมายถัดไป {n}"},
+  "bot.win": {ko:"말로우 봇 Lv.{lv} 승리! 다음 봇 목표는 {n}점", en:"You beat Mallow Bot Lv.{lv}! Next target {n}", th:"ชนะบอท Lv.{lv}! เป้าหมายถัดไป {n}"},
+  "bot.gap": {ko:"말로우 봇 Lv.{lv} 목표 {target}점 — {n}점 부족", en:"Mallow Bot Lv.{lv} target {target} — {n} short", th:"บอท Lv.{lv} เป้า {target} — ขาด {n}"},
+  "wk.title": {ko:"이번 주 챌린지", en:"This week's challenge", th:"ชาเลนจ์สัปดาห์นี้"},
+  "wk.unit": {ko:"점", en:"pts", th:"คะแนน"},
+  "wk.plays": {ko:"{n}판", en:"{n} plays", th:"{n} รอบ"},
+  "wk.gain": {ko:"주간 챌린지 +{n}점 (이번 주 {total}점)", en:"Weekly challenge +{n} (total {total})", th:"ชาเลนจ์สัปดาห์ +{n} (รวม {total})"},
+  "wk.next": {ko:"{tier}까지 {n}점", en:"{n} pts to {tier}", th:"อีก {n} ถึง {tier}"},
+  "wk.top": {ko:"최고 등급 달성!", en:"Top tier reached!", th:"ถึงระดับสูงสุดแล้ว!"},
+  "wk.first": {ko:"한 판만 해도 10점이 올라가요", en:"Every play adds 10 points", th:"เล่นหนึ่งรอบได้ 10 คะแนน"},
+  "wk.ahead": {ko:"지난 주보다 {n}점 앞서고 있어요", en:"{n} ahead of last week", th:"นำสัปดาห์ก่อน {n}"},
+  "wk.behind": {ko:"지난 주 {last}점 — {n}점만 더 하면 넘어서요", en:"Last week {last} — {n} more to pass it", th:"สัปดาห์ก่อน {last} — อีก {n} ก็แซง"},
+  "wk.t1": {ko:"브론즈", en:"Bronze", th:"บรอนซ์"},
+  "wk.t2": {ko:"실버", en:"Silver", th:"ซิลเวอร์"},
+  "wk.t3": {ko:"골드", en:"Gold", th:"โกลด์"},
+  "wk.t4": {ko:"플래티넘", en:"Platinum", th:"แพลทินัม"},
+  "wk.t5": {ko:"챌린저", en:"Challenger", th:"แชลเลนเจอร์"},
   "nav.wordsearch": {ko:"숨은 단어 찾기", en:"Word Search", th:"หาคำที่ซ่อน"},
   "wordsearch.title": {ko:"숨은 단어 찾기", en:"Word Search", th:"หาคำที่ซ่อน"},
-  "wordsearch.intro": {ko:"글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>60초 동안 최대한 많은 단어를 찾아보세요.", en:"Drag to find the <b>hidden words</b> in the letter grid! They hide across and down (diagonally on Hard).<br>Find as many as you can in 60 seconds.", th:"ลากเพื่อหา<b>คำที่ซ่อน</b>ในตารางอักษร! ซ่อนแนวนอน·ตั้ง (ยาก=ทแยง)<br>หาให้ได้มากที่สุดใน 60 วินาที"},
+  "wordsearch.intro": {ko:"글자 격자 속에 <b>숨은 단어</b>를 드래그해서 찾으세요! 가로·세로(어려움은 대각선)로 숨어 있어요.<br>제한 시간 안에 최대한 많은 단어를 찾아보세요. (난이도가 오르면 시간도 늘어납니다)", en:"Drag to find the <b>hidden words</b> in the letter grid! They hide across and down (diagonally on Hard).<br>Find as many as you can before time runs out — harder levels give you more time.", th:"ลากเพื่อหา<b>คำที่ซ่อน</b>ในตารางอักษร! ซ่อนแนวนอน·ตั้ง (ยาก=ทแยง)<br>หาให้ได้มากที่สุดก่อนหมดเวลา — ระดับยากได้เวลามากขึ้น"},
   "wordsearch.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "wordsearch.easyDesc": {ko:"6×6·3단어", en:"6×6 · 3 words", th:"6×6 · 3 คำ"},
   "wordsearch.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "wordsearch.normalDesc": {ko:"8×8·4단어", en:"8×8 · 4 words", th:"8×8 · 4 คำ"},
   "wordsearch.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "wordsearch.hardDesc": {ko:"9×9·대각선", en:"9×9 · diagonal", th:"9×9 · ทแยง"},
@@ -3270,7 +3316,7 @@ const I18N = {
   "wordsearch.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"}, "wordsearch.timeOver": {ko:"타임 오버!", en:"Time Over!", th:"หมดเวลา!"}, "wordsearch.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.diff": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
   "diff.title": {ko:"틀린 그림 찾기", en:"Spot the Difference", th:"หาจุดต่าง"},
-  "diff.intro": {ko:"위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 차이가 많아집니다. <b>판마다 30초</b>(판을 깰 때마다 리셋)!", en:"Compare the two boards and tap <b>every cell that differs</b>!<br>Higher levels bring bigger boards and more differences. <b>30 seconds per board</b> (resets each clear)!", th:"เทียบสองกระดานแล้วแตะ<b>ทุกช่องที่ต่าง</b>!<br>เลเวลสูงขึ้น กระดานใหญ่ขึ้นและต่างมากขึ้น <b>30 วินาทีต่อกระดาน</b> (รีเซ็ตทุกครั้งที่ผ่าน)!"},
+  "diff.intro": {ko:"위아래 두 그림판을 비교해 <b>다른 칸을 모두</b> 찾아 누르세요!<br>레벨이 오를수록 판이 커지고 차이가 많아집니다. <b>판마다 제한 시간</b>이 있고, 판을 깰 때마다 리셋됩니다(난이도가 오르면 시간도 늘어납니다)!", en:"Compare the two boards and tap <b>every cell that differs</b>!<br>Higher levels bring bigger boards and more differences. Each board has its own timer that resets on every clear — harder levels give you more time.", th:"เทียบสองกระดานแล้วแตะ<b>ทุกช่องที่ต่าง</b>!<br>เลเวลสูงขึ้น กระดานใหญ่ขึ้นและต่างมากขึ้น แต่ละกระดานมีเวลาของตัวเองและรีเซ็ตทุกครั้งที่ผ่าน — ระดับยากได้เวลามากขึ้น"},
   "diff.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "diff.easyDesc": {ko:"작은 판", en:"Small", th:"เล็ก"},
   "diff.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "diff.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
   "diff.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "diff.hardDesc": {ko:"큰 판", en:"Large", th:"ใหญ่"},
@@ -3995,7 +4041,7 @@ const I18N = {
 
   "nav.cards": {ko:"카드 짝", en:"Card Match", th:"จับคู่การ์ด"},
   "cards.title": {ko:"카드 짝 맞추기", en:"Card Match", th:"จับคู่การ์ด"},
-  "cards.intro": {ko:"뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 60초 안에 몇 쌍이나?", en:"Flip two cards at a time to <b>find matching pictures.</b><br>Clear a board and the next has more cards. How many pairs in 60s?", th:"เปิดการ์ดทีละสองใบเพื่อ <b>หาภาพที่เหมือนกัน</b><br>เคลียร์กระดานแล้วกระดานถัดไปจะมีการ์ดมากขึ้น จับคู่ได้กี่คู่ใน 60 วินาที?"},
+  "cards.intro": {ko:"뒤집힌 카드를 두 장씩 열어 <b>같은 그림을 찾으세요.</b><br>한 판을 다 맞히면 다음 판은 카드가 더 많아집니다. 제한 시간 안에 몇 쌍이나? (난이도가 오르면 시간도 늘어납니다)", en:"Flip two cards at a time to <b>find matching pictures.</b><br>Clear a board and the next has more cards. How many pairs before time runs out? Harder levels give you more time.", th:"เปิดการ์ดทีละสองใบเพื่อ <b>หาภาพที่เหมือนกัน</b><br>เคลียร์กระดานแล้วกระดานถัดไปจะมีการ์ดมากขึ้น จับคู่ได้กี่คู่ก่อนหมดเวลา? ระดับยากได้เวลามากขึ้น"},
   "cards.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"},
   "cards.easyDesc": {ko:"4쌍부터", en:"From 4 pairs", th:"เริ่ม 4 คู่"},
   "cards.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
@@ -5957,6 +6003,19 @@ function resetMathGame(){
 }
 
 // ========== MEMORY GAMES — shared localStorage best (순간기억 / 인원수 세기) ==========
+/* ───────── 난이도 배수 ─────────
+   문제: 대부분의 게임이 정답 1개에 난이도와 무관하게 같은 점수(10+콤보)를 줬다.
+   어려움은 한 판에 처리할 수 있는 문제 수가 줄어드니 '어려움 = 항상 낮은 점수'가 되어
+   어려움을 고를 이유가 없었다. 정답당 점수에 난이도 배수를 곱해 보상한다.
+   (anagram의 AG_MULT가 같은 값으로 먼저 도입돼 있어 그 기준을 전 게임으로 확장)
+   판 크기·기준점수(base)로 난이도가 이미 공정하게 반영된 게임(sort/slide)만 제외. */
+const DMULT={easy:1, normal:1.4, hard:2};
+/* 게임별 특수 배수 — 난이도가 '판 크기'라서 총점 규모 자체가 수십 배 차이 나는 경우.
+   기본 배수(1.4/2)로는 보정이 안 된다. merge(2048)는 .logs/merge_sim.mjs 400판 시뮬로
+   중앙값 easy 20916 / normal 2880 / hard 272 를 측정 → 세 난이도가 같은 눈금이 되도록 산출. */
+const DMULT_GAME={ merge:{easy:1, normal:7, hard:70} };
+function dm(d,game){ const o=game&&DMULT_GAME[game]; return (o&&o[d])||DMULT[d]||1; }
+function dmScore(d,pts,game){ return Math.round(pts*dm(d,game)); }
 function bt_today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function bt_loadBest(key){
   const empty={easy:{all:0,day:0,date:''},normal:{all:0,day:0,date:''},hard:{all:0,day:0,date:''}};
@@ -5969,19 +6028,49 @@ function bt_loadBest(key){
   }catch(e){ return empty; }
 }
 function bt_saveBest(key,obj){
+  /* 신기록 배지는 '난이도별' 자기 기록 갱신으로 판정한다.
+     기존엔 세 난이도의 최댓값만 비교해서, 어려움에서 개인 최고를 세워도
+     쉬움 기록보다 낮으면 아무 기록도 안 남는 것처럼 보였다. */
   try{ const m=/^brain\.([a-z0-9]+)\.best$/.exec(key);
-    if(m){ const old=bt_loadBest(key); const oldMax=Math.max(old.easy.all,old.normal.all,old.hard.all);
-      const nm=Math.max((obj.easy&&obj.easy.all)||0,(obj.normal&&obj.normal.all)||0,(obj.hard&&obj.hard.all)||0);
-      if(nm>oldMax) _markNewRecord(m[1]);
+    if(m){ const old=bt_loadBest(key);
+      const up=['easy','normal','hard'].some(d=>(((obj[d]&&obj[d].all)||0) > ((old[d]&&old[d].all)||0)));
+      if(up) _markNewRecord(m[1]);
     } }catch(e){}
   try{ localStorage.setItem(key,JSON.stringify(obj)); }catch(e){}
 }
+/* ══════════ 점수 눈금 마이그레이션 ══════════
+   난이도 배수를 도입하면서 보통·어려움의 '한 판 점수 단위'가 바뀌었다. 옛 기록을 그대로 두면
+   업데이트 직후 아무 판이나 한 번 하면 무조건 '신기록'이 떠서 기록의 의미가 사라진다.
+   그래서 기존 기록을 새 눈금으로 환산해 둔다(체감 난이도는 그대로, 숫자만 같은 자로 통일).
+   nono는 예외 — 옛 점수식이 보통·어려움에서 최저점(50)에 고정돼 있어 환산할 기준이 없다. */
+const SCALE_MIGR={ chop:{easy:10,normal:14,hard:20}, merge:{easy:1,normal:7,hard:70} };
+const SCALE_MIGR_STD=['bubble','cards','catch','diff','flank','flash','guess','melody','nback','odd','pitch','react','rev','rhythm','rotate','run','spot','stroop','switch','trace','trail','whack','wordsearch'];
+(function migrateScales(){
+  try{
+    if(localStorage.getItem('brain.scaleMigr')==='1') return;
+    const tbl=Object.assign({}, SCALE_MIGR);
+    SCALE_MIGR_STD.forEach(id=>{ tbl[id]={easy:1,normal:1.4,hard:2}; });
+    Object.keys(tbl).forEach(id=>{
+      const key='brain.'+id+'.best', raw=localStorage.getItem(key); if(!raw) return;
+      const o=JSON.parse(raw);
+      ['easy','normal','hard'].forEach(d=>{
+        if(o[d]){ o[d].all=Math.round((Number(o[d].all)||0)*tbl[id][d]); o[d].day=Math.round((Number(o[d].day)||0)*tbl[id][d]); }
+      });
+      localStorage.setItem(key,JSON.stringify(o));
+    });
+    localStorage.setItem('brain.scaleMigr','1');
+  }catch(e){}
+})();
+/* 마지막 한 판의 결과 — 결과 화면 공통 블록(최고기록까지 N점·봇 대결)에서 쓴다 */
+let _LR=null;
 function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기록(전체)이면 true
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
+  _LR={diff:diff, score:score, prev:Number(b.all)||0, isNew:false};
   let newAll=false;
   if(score>b.all){ b.all=score; newAll=true; sfx('record'); setTimeout(celebrateRecordScreen,140); markRecordCard(); }
   if(score>b.day){ b.day=score; }
+  _LR.isNew=newAll;
   return newAll;
 }
 /* 신기록 시 현재 보이는 결과 카드에 is-record 표시 → 축하 배경 CSS 적용 */
@@ -6064,7 +6153,7 @@ function fmTapCell(cellIdx){
 }
 function fmClear(){
   FM.phase='idle';
-  FM.score+=FM.n; FM.maxLevel=Math.max(FM.maxLevel, FM.n);
+  FM.score+=dmScore(FM.diff, FM.n); FM.maxLevel=Math.max(FM.maxLevel, FM.n);
   FM.n=Math.min(FM.n+1, FM_GRID);
   fmSetStatus('flash.cleared','good'); fmUpdateStats();
   clearTimeout(FM.timer); FM.timer=setTimeout(fmNewRound, 900);
@@ -6317,7 +6406,7 @@ function stAnswer(key, btn){
   if(!ST.running) return;
   if(key===ST.inkKey){
     ST.correct++; ST.combo++; ST.maxCombo=Math.max(ST.maxCombo,ST.combo);
-    ST.score += 10 + (ST.combo-1)*2;
+    ST.score += dmScore(ST.diff, 10 + (ST.combo-1)*2);
     sfx('good');
   }else{
     ST.combo=0; sfx('bad');
@@ -6425,7 +6514,7 @@ function trTapNode(num,node){
   if(num===TR.next){
     node.classList.add('done'); node.onclick=null; TR.next++; sfx('good');
     if(TR.next>TR.n){ // 판 클리어
-      TR.boards++; TR.score+=TR.n; TR.n++;
+      TR.boards++; TR.score+=dmScore(TR.diff, TR.n); TR.n++;
       trUpdateStats();
       setTimeout(()=>{ if(TR.running) trNewBoard(); }, 350);
     }else{ trUpdateStats(); }
@@ -6914,7 +7003,7 @@ function cpChop(side){
   CP.segs.shift();
   CP.segs.push(cpNewSeg());
   if(CP.segs[0]===side){ cpRender(); cpDie('fork'); return; }
-  CP.score++;
+  CP.score += dmScore(CP.diff, 10);
   CP.gauge=Math.min(100, CP.gauge+CP_CFG[CP.diff].gain);
   _beep(700+Math.random()*80,0.05,'square',0.12);
   try{ navigator.vibrate&&navigator.vibrate(10); }catch(_){}
@@ -7030,7 +7119,7 @@ function mrMove(dir){ // 'left'|'right'|'up'|'down'
   }
   if(!moved) return;
   MR.prev={grid:before, score:MR.score};
-  MR.score+=gain;
+  MR.score+=dmScore(MR.diff, gain, 'merge');
   if(gain>0) sfx('good'); else sfx('whoosh');
   mrSpawn();
   const mx=Math.max.apply(null,MR.grid);
@@ -7280,7 +7369,7 @@ function spTap(isOdd,el){
   if(isOdd){
     SP.lock=true;
     SP.combo++; SP.maxCombo=Math.max(SP.maxCombo,SP.combo);
-    SP.score += 10 + (SP.combo-1)*2;
+    SP.score += dmScore(SP.diff, 10 + (SP.combo-1)*2);
     SP.level++;
     sfx('good'); spUpdateStats();
     spNewRound();
@@ -7383,7 +7472,7 @@ function odTap(isOdd,el){
   if(isOdd){
     OD.lock=true;
     OD.combo++; OD.maxCombo=Math.max(OD.maxCombo,OD.combo);
-    OD.score += 10 + (OD.combo-1)*2;
+    OD.score += dmScore(OD.diff, 10 + (OD.combo-1)*2);
     OD.level++;
     sfx('good'); odUpdateStats();
     odNewRound();
@@ -7498,7 +7587,7 @@ function bbTap(i,el){
   if(sum===BB.target){
     BB.lock=true;
     BB.combo++; BB.maxCombo=Math.max(BB.maxCombo,BB.combo);
-    BB.score += 10 + (BB.combo-1)*2;
+    BB.score += dmScore(BB.diff, 10 + (BB.combo-1)*2);
     BB.rounds++; BB.level++;
     sfx('good'); bbUpdateStats();
     const cur=document.getElementById('bb-current'); cur.textContent='🫧 '+t('bubble.clear'); cur.style.color='var(--teal2)';
@@ -7728,6 +7817,8 @@ function missionSave(o){ try{ localStorage.setItem('brain.mission', JSON.stringi
 function missionMark(id){
   track('game_finish', {game:id, level:(typeof gameLevel==='function'?gameLevel(id):0), best:(typeof gameBestVal==='function'?gameBestVal(id):0)}); // 아케이드 finish가 모두 여기를 거침(레벨·최고점 포함 → 완주율·숙련 분포 분석)
   if(typeof chCheck==='function') chCheck(id);
+  // 결과 화면 공통 블록(최고기록까지 N점·봇 대결·바로 다시)을 추천보다 먼저 붙인다
+  try{ const r=(_LR&&_LR.diff)?_LR:null; _LR=null; afterGame(id,r); }catch(e){}
   if(typeof renderRecs==='function') renderRecs(id); // 결과 화면 하단 약점 보완 추천
   if(!missionToday().includes(id)) return;
   const m=missionLoad();
@@ -7735,6 +7826,92 @@ function missionMark(id){
     m.done.push(id); missionSave(m);
     if(missionToday().every(g=>m.done.includes(g))){ track('mission_complete', {}); sfx('win'); }
   }
+}
+/* ══════════════ 말로우 봇 · 주간 챌린지 · 결과 화면 공통 블록 ══════════════
+   지인 테스트 피드백: "한 판 하고 끝난다(재도전 동기 없음)", "경쟁 상대가 없다".
+   설계 원칙
+   - 봇의 목표 점수를 게임마다 손으로 정하지 않는다. '내 첫 기록'에서 출발해 이길 때마다
+     조금씩 올라가는 사다리 → 34종 어디에 붙여도 항상 아슬아슬한 상대가 된다.
+   - 주간 챌린지 점수는 '플레이했다는 사실'로만 오른다(임의 임계값 기반 게임별 등급 재도입 금지 원칙 유지).
+   - 결과 화면엔 항상 '최고 기록까지 몇 점'과 '바로 다시'를 둔다 → 다음 한 판까지의 거리를 최대한 짧게. */
+const BOT_SEED=1.05, BOT_STEP=1.07;
+function botLoad(id){ try{ return JSON.parse(localStorage.getItem('brain.bot.'+id)||'{}')||{}; }catch(e){ return {}; } }
+function botSave(id,o){ try{ localStorage.setItem('brain.bot.'+id,JSON.stringify(o)); }catch(e){} }
+function botGet(id,diff){ const b=botLoad(id)[diff]; return (b&&b.target>0)?b:null; }
+function botSeed(id,diff,score){ const o=botLoad(id); o[diff]={lv:1,target:Math.max(1,Math.round(score*BOT_SEED))}; botSave(id,o); return o[diff]; }
+function botLevelUp(id,diff,score){ const o=botLoad(id), b=o[diff]||{lv:1,target:score};
+  o[diff]={lv:(b.lv||1)+1, target:Math.max((b.target||0)+1, Math.round(Math.max(score,b.target||0)*BOT_STEP))};
+  botSave(id,o); return o[diff]; }
+
+/* 주간 챌린지 — 한국시간 월요일 시작. 한 판 10점, 개인기록 경신 +15, 봇 승리 +10 */
+const WK_PTS={play:10, pb:15, bot:10};
+const WK_TIERS=[{p:0,e:'🥉',k:'wk.t1'},{p:100,e:'🥈',k:'wk.t2'},{p:250,e:'🥇',k:'wk.t3'},{p:450,e:'💠',k:'wk.t4'},{p:700,e:'👑',k:'wk.t5'}];
+function wkId(){ const d=new Date(Date.now()+9*3600*1000); const day=(d.getUTCDay()+6)%7; d.setUTCDate(d.getUTCDate()-day); return d.toISOString().slice(0,10); }
+function wkLoad(){
+  let o=null; try{ o=JSON.parse(localStorage.getItem('brain.week')||'null'); }catch(e){}
+  if(!o||typeof o!=='object') o={wk:wkId(), pts:0, plays:0, last:0};
+  if(o.wk!==wkId()){ o={wk:wkId(), pts:0, plays:0, last:Number(o.pts)||0};
+    try{ localStorage.setItem('brain.week',JSON.stringify(o)); }catch(e){} }
+  return o;
+}
+function wkAdd(pts,play){ const o=wkLoad(); o.pts=(o.pts|0)+pts; if(play) o.plays=(o.plays|0)+1;
+  try{ localStorage.setItem('brain.week',JSON.stringify(o)); }catch(e){} return o; }
+function wkTier(p){ let r=WK_TIERS[0]; WK_TIERS.forEach(x=>{ if(p>=x.p) r=x; }); return r; }
+function wkNext(p){ for(let i=0;i<WK_TIERS.length;i++) if(WK_TIERS[i].p>p) return WK_TIERS[i]; return null; }
+function renderWeek(){
+  const el=document.getElementById('home-week'); if(!el) return;
+  const o=wkLoad(), tr=wkTier(o.pts), nx=wkNext(o.pts);
+  const goal = nx ? t('wk.next').replace('{n}',(nx.p-o.pts)).replace('{tier}',t(nx.k)) : t('wk.top');
+  let sub;
+  if(o.last>0) sub = (o.pts>o.last) ? t('wk.ahead').replace('{n}',(o.pts-o.last))
+                                    : t('wk.behind').replace('{last}',o.last).replace('{n}',(o.last-o.pts+1));
+  else sub = t('wk.first');
+  const pct = nx ? Math.max(3, Math.min(100, Math.round((o.pts-tr.p)/(nx.p-tr.p)*100))) : 100;
+  el.innerHTML='<div class="wk-top"><span class="wk-title">📅 '+t('wk.title')+'</span><span class="wk-tier">'+tr.e+' '+t(tr.k)+'</span></div>'+
+    '<div class="wk-pts"><b>'+o.pts+'</b><span>'+t('wk.unit')+'</span><em>'+t('wk.plays').replace('{n}',(o.plays|0))+'</em></div>'+
+    '<div class="wk-bar"><i style="width:'+pct+'%"></i></div>'+
+    '<div class="wk-sub">'+goal+' · '+sub+'</div>';
+}
+
+/* 결과 화면 '바로 다시' — 게임별 시작 함수 */
+const PG_START={flash:'startFlash',count:'startCount',nback:'startNback',cards:'startCards',stroop:'startStroop',switch:'startSwitch',trail:'startTrail',react:'startReact',chop:'startChop',run:'startRun',whack:'startWhack',melody:'startMelody',spot:'startSpot',odd:'startOdd',rotate:'startRotate',slide:'startSlide',math:'startMathGame',bubble:'startBubble',merge:'startMerge',iq:'startIQTest',sudoku:'startSudoku',sort:'startSort',flank:'startFlank',rev:'startRev',rhythm:'startRhythm',catch:'startCatch',fit:'startFit',guess:'startGuess',nono:'startNono',anagram:'startAnagram',wordsearch:'startWordsearch',diff:'startDiff',pitch:'startPitch',trace:'startTrace'};
+function pgRetry(id){ const f=PG_START[id]; if(typeof window[f]==='function'){ track('retry',{game:id}); sfx('tap'); window[f](); } }
+function afterGame(id, r){
+  const card=document.getElementById(id+'-result-card'); if(!card) return;
+  const old=card.querySelector('.pg-box'); if(old) old.remove();
+  let pts=WK_PTS.play, html='';
+  if(r){
+    if(r.isNew && r.prev<=0){
+      pts+=WK_PTS.pb;
+      html+='<div class="pg-line pg-good">🎉 '+t('pg.pbFirst').replace('{n}', r.score)+'</div>';
+    }else if(r.isNew){
+      pts+=WK_PTS.pb;
+      html+='<div class="pg-line pg-good">🏆 '+t('pg.pbNew').replace('{n}', Math.max(0, r.score-r.prev))+'</div>';
+    }else if(r.prev>0){
+      html+='<div class="pg-line">🎯 '+t('pg.pbGap').replace('{best}', r.prev).replace('{n}', Math.max(1, r.prev-r.score+1))+'</div>';
+    }
+    const bot=botGet(id, r.diff);
+    // 0점으로 끝난 판에서는 봇을 만들지 않는다(목표 1점짜리 허수 상대가 생김)
+    if(!bot && r.score<=0){
+      html+='<div class="pg-line pg-bot">🤖 '+t('bot.none')+'</div>';
+    }else if(!bot){
+      const nb=botSeed(id, r.diff, r.score);
+      html+='<div class="pg-line pg-bot">🤖 '+t('bot.seed').replace('{n}', nb.target)+'</div>';
+    }else if(r.score>=bot.target){
+      const nb=botLevelUp(id, r.diff, r.score); pts+=WK_PTS.bot;
+      html+='<div class="pg-line pg-good">🤖 '+t('bot.win').replace('{lv}', bot.lv).replace('{n}', nb.target)+'</div>';
+    }else{
+      html+='<div class="pg-line pg-bot">🤖 '+t('bot.gap').replace('{lv}', bot.lv).replace('{target}', bot.target).replace('{n}', (bot.target-r.score))+'</div>';
+    }
+  }
+  const w=wkAdd(pts,true);
+  html+='<div class="pg-line pg-week">📅 '+t('wk.gain').replace('{n}',pts).replace('{total}',w.pts)+'</div>';
+  let act='';
+  if(PG_START[id]) act+='<button class="pg-btn pg-retry" onclick="pgRetry(\''+id+'\')">🔄 '+t('pg.retry')+'</button>';
+  let hasCh=false; try{ hasCh=(typeof chState==='function') && !!chState(id); }catch(e){}
+  if(hasCh) act+='<button class="pg-btn pg-chal" onclick="sendChallenge(\''+id+'\')">🎯 '+t('pg.chal')+'</button>';
+  if(act) html+='<div class="pg-actions">'+act+'</div>';
+  card.insertAdjacentHTML('beforeend','<div class="pg-box">'+html+'</div>');
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
 // external(운세 정적페이지)로 이동 시 현재 앱 언어를 ?lang= 로 전달(별자리/타로 다국어 자동 적용)
@@ -7798,6 +7975,7 @@ function renderHome(){
   let rec=0;
   HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('hg-plays', plays+'/'+set.length); setTxt('hg-streak', v.streak); setTxt('hg-records', rec);
+  try{ renderWeek(); }catch(e){}
   // 큰 추천 카드
   const next=set.find(id=>!m.done.includes(id));
   const fEl=document.getElementById('home-feature');
@@ -7922,8 +8100,12 @@ const ABILITY_MAP={
   wordsearch:{lang:50,sight:30,focus:20}, diff:{sight:55,focus:25,space:20}, pitch:{sound:55,focus:25,memory:20}, trace:{coord:55,focus:25,space:20}
 };
 // 각 게임 최고점이 레벨 100에 대응하는 기준값
-const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:6000,chop:130,run:600,sort:650,flank:650,guess:600,rev:130,rhythm:130,catch:450,fit:800,nono:1300,anagram:350,wordsearch:400,diff:600,pitch:500,trace:600};
-function saveFlatBest(id,val){ track('game_finish', {game:id, score:val}); try{ const c=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; if(val>c) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){} }
+const GAME_REF={flash:80,count:250,nback:120,cards:350,stroop:600,switch:600,trail:350,react:1600,rotate:450,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:500,melody:400,bubble:350,spot:400,odd:400,slide:700,merge:20000,chop:1300,run:600,sort:650,flank:650,guess:600,rev:130,rhythm:130,catch:450,fit:800,nono:1300,anagram:350,wordsearch:400,diff:600,pitch:500,trace:600};
+function saveFlatBest(id,val){ track('game_finish', {game:id, score:val});
+  let prev=0; try{ prev=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){}
+  try{ if(val>prev) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){}
+  // 난이도 구분이 없는 게임은 'all' 한 칸으로 봇 사다리를 굴린다
+  try{ afterGame(id,{diff:'all', score:val, prev:prev, isNew:val>prev}); }catch(e){} }
 function gameBestVal(id){
   const g=HOME_GAMES.find(x=>x.id===id);
   if(g && g.best){ const b=bt_loadBest(g.best); return Math.max(b.easy.all,b.normal.all,b.hard.all); }
@@ -8157,7 +8339,7 @@ function swAnswer(btn){
   if(!SW.running) return;
   if(btn.dataset.k===SW.answer){
     SW.correct++; SW.combo++; SW.maxCombo=Math.max(SW.maxCombo,SW.combo);
-    SW.score += 10 + (SW.combo-1)*2;
+    SW.score += dmScore(SW.diff, 10 + (SW.combo-1)*2);
     sfx('good');
   }else{
     SW.combo=0; sfx('bad'); SW.timeLeft=Math.max(0, SW.timeLeft-2); updateSwTimerDisplay();
@@ -8262,7 +8444,7 @@ function nbPress(){
   const el=document.getElementById('nb-stim');
   if(NB.isMatch){
     NB.hits++; NB.combo++; NB.maxCombo=Math.max(NB.maxCombo,NB.combo);
-    NB.score += 10 + (NB.combo-1)*2;
+    NB.score += dmScore(NB.diff, 10 + (NB.combo-1)*2);
     sfx('good');
     el.classList.add('hit');
   }else{
@@ -8353,7 +8535,7 @@ function rtAnswer(ans, btn){
   if(btn&&btn.blur) btn.blur();
   if(ans===RT.answer){
     RT.correct++; RT.combo++; RT.maxCombo=Math.max(RT.maxCombo,RT.combo);
-    RT.score += 10 + (RT.combo-1)*2;
+    RT.score += dmScore(RT.diff, 10 + (RT.combo-1)*2);
     sfx('good');
   }else{
     RT.combo=0; sfx('bad'); RT.timeLeft=Math.max(0, RT.timeLeft-2); updateRtTimer();
@@ -8390,11 +8572,12 @@ function resetRotate(){
 
 // ========== 카드 짝 맞추기 (Card Match / 시각기억) ==========
 const CM_PAIRS={easy:4, normal:6, hard:8};
+const CM_TIME={easy:60, normal:75, hard:90}; // 카드 8/12/16장 — 뒤집는 시간 자체가 늘어난다
 const CM_EMOJIS=['🍎','🍌','🍇','🍒','🍑','🍉','🥝','🍍','🥑','🍊','🫐','🥥','🍓','🍈'];
 const CM = {
   diff:'normal', pairs:6, score:0, combo:0, maxCombo:0, boards:0,
   matched:0, first:null, lock:false, deck:[],
-  timeLeft:60, timer:null, flipT:null, running:false,
+  timeLeft:CM_TIME.normal, timer:null, flipT:null, running:false,
   best:bt_loadBest('brain.cards.best')
 };
 function CM_DIFF_LABEL(d){ return d==='easy'?t('cards.easy'):d==='normal'?t('cards.normal'):t('cards.hard'); }
@@ -8405,7 +8588,7 @@ function setCardsDiff(d){
   cmUpdateBestLine();
 }
 function startCards(){
-  CM.pairs=CM_PAIRS[CM.diff]; CM.score=0; CM.combo=0; CM.maxCombo=0; CM.boards=0; CM.timeLeft=60; CM.running=true;
+  CM.pairs=CM_PAIRS[CM.diff]; CM.score=0; CM.combo=0; CM.maxCombo=0; CM.boards=0; CM.timeLeft=CM_TIME[CM.diff]; CM.running=true;
   document.getElementById('cards-intro-card').style.display='none';
   document.getElementById('cards-result-card').style.display='none';
   document.getElementById('cards-game-card').style.display='block';
@@ -8454,10 +8637,10 @@ function cmFlip(i,b){
     f.b.classList.remove('up'); f.b.classList.add('done');
     b.classList.remove('up'); b.classList.add('done');
     CM.combo++; CM.maxCombo=Math.max(CM.maxCombo,CM.combo);
-    CM.score += 10 + (CM.combo-1)*2; CM.matched++; sfx('good');
+    CM.score += dmScore(CM.diff, 10 + (CM.combo-1)*2); CM.matched++; sfx('good');
     cmUpdateStats();
     if(CM.matched>=CM.pairs){ // 판 클리어
-      CM.boards++; CM.score += 20; CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
+      CM.boards++; CM.score += dmScore(CM.diff, 20); CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
       cmUpdateStats(); CM.lock=true;
       CM.flipT=setTimeout(()=>{ if(CM.running) cmNewBoard(); }, 550);
     }
@@ -8553,7 +8736,7 @@ function rcSignal(){
 function rcSurviveNoGo(){
   if(!RC.running) return;
   RC.state='resolved';
-  RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=120; RC.done++;
+  RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=dmScore(RC.diff, 120); RC.done++;
   sfx('good'); rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+120'); rcSchedNext();
 }
 function rcTap(){
@@ -8562,7 +8745,7 @@ function rcTap(){
     const rt=Math.round(_rcNow()-RC.goAt);
     RC.state='resolved'; RC.rtSum+=rt; RC.rtCount++;
     RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo);
-    const pts=Math.max(20, Math.round(500 - rt*0.5)); RC.score+=pts; RC.done++;
+    const pts=Math.max(20, Math.round(500 - rt*0.5)); RC.score+=dmScore(RC.diff, pts); RC.done++;
     sfx('good'); rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
   }else if(RC.state==='waiting'){
     clearTimeout(RC.waitT);
@@ -8697,7 +8880,7 @@ function wkTap(i){
     WK.timeLeft=Math.max(0, WK.timeLeft-3); updateWkTimer();
   }else{
     sfx('good'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
-    const gain=10 + (WK.combo-1)*2; WK.score += gain;
+    const gain=10 + (WK.combo-1)*2; WK.score += dmScore(WK.diff, gain);
     const cell=document.getElementById('wk-cell-'+i);
     if(cell) fxCelebrate(cell,'+'+gain);
     if(WK.combo>=3 && WK.combo%3===0) fxCombo('x'+WK.combo+' COMBO!');
@@ -8783,7 +8966,7 @@ function mlTap(i){
     ML.pos++;
     if(ML.pos>=ML.seq.length){ // 라운드 성공
       ML.playing=true;
-      ML.score += ML.len*10; ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
+      ML.score += dmScore(ML.diff, ML.len*10); ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
       mlSetStatus('melody.goodRound','good'); mlUpdateStats(); sfx('good');
       ML.timers.push(setTimeout(mlNewRound, 900));
     }
@@ -8831,7 +9014,7 @@ function fkTimer(){ const el=document.getElementById('fk-timer'); const m=Math.f
 function fkRound(){ const cfg=FK_CFG[FK.diff]; FK.cur=Math.random()<0.5?-1:1; const fl=(Math.random()<cfg.incong)?-FK.cur:FK.cur; const A=v=>v<0?'◀':'▶';
   document.getElementById('fk-row').innerHTML=A(fl)+A(fl)+' <b>'+A(FK.cur)+'</b> '+A(fl)+A(fl); FK.lock=false; }
 function fkAns(dir){ if(!FK.running||FK.lock) return;
-  if(dir===FK.cur){ FK.lock=true; FK.combo++; FK.maxCombo=Math.max(FK.maxCombo,FK.combo); FK.score+=10+(FK.combo-1)*2; sfx('good'); fkStats(); fkRound(); }
+  if(dir===FK.cur){ FK.lock=true; FK.combo++; FK.maxCombo=Math.max(FK.maxCombo,FK.combo); FK.score+=dmScore(FK.diff, 10+(FK.combo-1)*2); sfx('good'); fkStats(); fkRound(); }
   else{ FK.combo=0; sfx('bad'); FK.timeLeft=Math.max(0,FK.timeLeft-2); fkTimer(); fkStats(); if(FK.timeLeft<=0) finishFlank(); } }
 function startFlank(){ FK.score=0;FK.combo=0;FK.maxCombo=0;FK.timeLeft=FK_TIME;FK.running=true;
   document.getElementById('flank-intro-card').style.display='none'; document.getElementById('flank-result-card').style.display='none'; document.getElementById('flank-game-card').style.display='block';
@@ -8867,7 +9050,7 @@ function guRound(){ const g=guGen(GU_CFG[GU.diff].mx); GU.correct=g.correct;
   const box=document.getElementById('gu-choices'); box.innerHTML=''; const order=g.choices.slice().sort(()=>Math.random()-0.5);
   order.forEach(v=>{ const b=document.createElement('button'); b.className='gu-choice'; b.textContent=v; b.onclick=()=>guAns(v,b); box.appendChild(b); }); GU.lock=false; }
 function guAns(v,el){ if(!GU.running||GU.lock) return;
-  if(v===GU.correct){ GU.lock=true; GU.combo++; GU.maxCombo=Math.max(GU.maxCombo,GU.combo); GU.score+=10+(GU.combo-1)*2; sfx('good'); guStats(); setTimeout(guRound,140); }
+  if(v===GU.correct){ GU.lock=true; GU.combo++; GU.maxCombo=Math.max(GU.maxCombo,GU.combo); GU.score+=dmScore(GU.diff, 10+(GU.combo-1)*2); sfx('good'); guStats(); setTimeout(guRound,140); }
   else{ GU.combo=0; sfx('bad'); GU.timeLeft=Math.max(0,GU.timeLeft-2); guTimer(); guStats(); el.classList.add('no'); setTimeout(()=>el.classList.remove('no'),300); if(GU.timeLeft<=0) finishGuess(); } }
 function startGuess(){ GU.score=0;GU.combo=0;GU.maxCombo=0;GU.timeLeft=GU_TIME;GU.running=true;
   document.getElementById('guess-intro-card').style.display='none'; document.getElementById('guess-result-card').style.display='none'; document.getElementById('guess-game-card').style.display='block';
@@ -8882,7 +9065,7 @@ function leaveGuess(){ resetGuess(); showScreen('games'); }
 function resetGuess(){ clearInterval(GU.timer); GU.running=false; const g=document.getElementById('guess-game-card');if(g)g.style.display='none'; const r=document.getElementById('guess-result-card');if(r)r.style.display='none'; const i=document.getElementById('guess-intro-card');if(i)i.style.display='block'; guUpdateBestLine(); }
 
 // ========== 거꾸로 기억 (기억) ==========
-const RV_CFG={ easy:{start:3,speed:900}, normal:{start:4,speed:750}, hard:{start:4,speed:600} };
+const RV_CFG={ easy:{start:3,speed:900}, normal:{start:4,speed:750}, hard:{start:5,speed:600} }; // hard가 normal과 같은 4로 시작해 사실상 동일했음
 const RV={ diff:'normal', len:3, seq:[], entry:[], score:0, lives:3, maxLen:0, phase:'idle', running:false, timers:[], best:bt_loadBest('brain.rev.best') };
 function RV_DIFF_LABEL(d){ return d==='easy'?t('rev.easy'):d==='hard'?t('rev.hard'):t('rev.normal'); }
 function rvUpdateBestLine(){ const el=document.getElementById('rv-intro-best'); if(el) el.textContent=bt_bestLineText(RV.best,RV.diff); }
@@ -8900,7 +9083,7 @@ function rvShow(){ rvClear(); RV.phase='show'; RV.seq=Array.from({length:RV.len}
 function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); if(sndOn()) _beep(680,0.05,'sine',0.12); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
 function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); if(sndOn()) _beep(360,0.05,'sine',0.10); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
 function rvCheck(){ RV.phase='wait'; const target=RV.seq.slice().reverse(); const ok=RV.entry.every((v,i)=>v===target[i]);
-  if(ok){ RV.score+=RV.len*10; RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
+  if(ok){ RV.score+=dmScore(RV.diff, RV.len*10); RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
   else{ RV.lives--; sfx('bad'); rvStatus('rev.miss','bad'); rvStats(); if(RV.lives<=0) RV.timers.push(setTimeout(finishRev,900)); else RV.timers.push(setTimeout(rvShow,1100)); } }
 function finishRev(){ rvClear(); RV.running=false;
   const nr=bt_recordScore(RV.best,RV.diff,RV.score); bt_saveBest('brain.rev.best',RV.best); missionMark('rev');
@@ -8913,7 +9096,7 @@ function leaveRev(){ if(RV.running && !confirm(t('melody.confirmLeave'))) return
 function resetRev(){ rvClear(); RV.running=false; document.getElementById('rev-result-card').style.display='none'; document.getElementById('rev-game-card').style.display='none'; document.getElementById('rev-intro-card').style.display='block'; rvUpdateBestLine(); }
 
 // ========== 리듬 따라하기 (청각) ==========
-const RH_CFG={ easy:{start:2,base:460}, normal:{start:3,base:400}, hard:{start:3,base:340} };
+const RH_CFG={ easy:{start:2,base:460}, normal:{start:3,base:400}, hard:{start:4,base:340} }; // hard가 normal과 같은 3으로 시작해 사실상 동일했음
 const RH={ diff:'normal', len:2, pattern:[], taps:[], score:0, lives:3, maxLen:0, phase:'idle', running:false, timers:[], best:bt_loadBest('brain.rhythm.best') };
 function RH_DIFF_LABEL(d){ return d==='easy'?t('rhythm.easy'):d==='hard'?t('rhythm.hard'):t('rhythm.normal'); }
 function rhUpdateBestLine(){ const el=document.getElementById('rh-intro-best'); if(el) el.textContent=bt_bestLineText(RH.best,RH.diff); }
@@ -8933,7 +9116,7 @@ function rhPlay(){ rhClear(); RH.phase='play'; RH.pattern=rhGenPattern(RH.len); 
 function rhTap(){ if(!RH.running||RH.phase!=='input') return; rhFlash(); RH.taps.push(performance.now()); if(RH.taps.length===RH.pattern.length+1) rhCheck(); }
 function rhCheck(){ RH.phase='wait'; const gaps=[]; for(let i=1;i<RH.taps.length;i++) gaps.push(RH.taps[i]-RH.taps[i-1]);
   let ok; if(!gaps.length){ ok=true; } else { const mn=Math.min.apply(null,gaps); const cls=gaps.map(g=>g/mn<1.7?1:2); ok=cls.every((v,i)=>v===RH.pattern[i]); }
-  if(ok){ RH.score+=RH.len*10; RH.maxLen=Math.max(RH.maxLen,RH.len); RH.len++; sfx('good'); rhStatus('rhythm.good','good'); rhStats(); RH.timers.push(setTimeout(rhPlay,900)); }
+  if(ok){ RH.score+=dmScore(RH.diff, RH.len*10); RH.maxLen=Math.max(RH.maxLen,RH.len); RH.len++; sfx('good'); rhStatus('rhythm.good','good'); rhStats(); RH.timers.push(setTimeout(rhPlay,900)); }
   else{ RH.lives--; sfx('bad'); rhStatus('rhythm.miss','bad'); rhStats(); if(RH.lives<=0) RH.timers.push(setTimeout(finishRhythm,900)); else RH.timers.push(setTimeout(rhPlay,1100)); } }
 function finishRhythm(){ rhClear(); RH.running=false;
   const nr=bt_recordScore(RH.best,RH.diff,RH.score); bt_saveBest('brain.rhythm.best',RH.best); missionMark('rhythm');
@@ -8963,7 +9146,7 @@ function caFlash(bad){ const a=caArea(); if(!a) return; a.style.background=bad?'
 function caTick(){ if(!CA.running) return; const a=caArea(); if(!a) return; const H=a.clientHeight||330, line=H-42, cfg=CA_CFG[CA.diff];
   for(let i=CA.items.length-1;i>=0;i--){ const it=CA.items[i]; it.y+=cfg.spd*0.04; it.el.style.top=it.y+'px';
     if(it.y>=line){ if(it.bad){ if(it.lane===CA.lane){ CA.combo=0; CA.timeLeft=Math.max(0,CA.timeLeft-3); caFlash(true); caStats(); caTimer(); sfx('bad'); } }
-      else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); const gain=10+(CA.combo-1)*2; CA.score+=gain; sfx('good'); caStats(); const bk=document.getElementById('ca-basket'); if(bk) fxCelebrate(bk,'+'+gain); if(CA.combo>=4 && CA.combo%4===0) fxCombo('x'+CA.combo+' COMBO!'); } else { CA.combo=0; caStats(); } }
+      else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); const gain=10+(CA.combo-1)*2; CA.score+=dmScore(CA.diff, gain); sfx('good'); caStats(); const bk=document.getElementById('ca-basket'); if(bk) fxCelebrate(bk,'+'+gain); if(CA.combo>=4 && CA.combo%4===0) fxCombo('x'+CA.combo+' COMBO!'); } else { CA.combo=0; caStats(); } }
       it.el.remove(); CA.items.splice(i,1); if(CA.timeLeft<=0){ finishCatch(); return; } } } }
 function startCatch(){ CA.score=0;CA.combo=0;CA.maxCombo=0;CA.timeLeft=CA_TIME;CA.lane=1;CA.running=true;CA.items=[];
   document.getElementById('catch-intro-card').style.display='none'; document.getElementById('catch-result-card').style.display='none'; document.getElementById('catch-game-card').style.display='block';
@@ -9016,7 +9199,7 @@ function rnLoop(){
   const last=RN.obs[RN.obs.length-1];
   if(!last || (RN.W - last.x) >= RN.nextGap){ RN.obs.push({x:RN.W}); RN.nextGap=rnNextGap(); }
   RN.clouds.forEach(cl=>{ cl.x-=RN.spd*cl.s; if(cl.x<-30) cl.x=RN.W+30; });
-  RN.dist+=RN.spd; RN.score=Math.floor(RN.dist/12); document.getElementById('rn-score').textContent=RN.score;
+  RN.dist+=RN.spd; RN.score=Math.floor(RN.dist*dm(RN.diff)/12); document.getElementById('rn-score').textContent=RN.score;
   // 충돌(AABB): 플레이어[px,px+PW]×[py,py+PH] vs 장애물[x,x+OBW]×[0,OBH]
   const pxL=RN.px, pxR=RN.px+RN_PW;
   for(const o of RN.obs){ if(o.x+RN_OBW < pxL) continue; if(o.x > pxR) break; if(RN.py < RN_OBH){ rnGameOver(); return; } }
@@ -9091,7 +9274,7 @@ function ftAnyFit(){ for(const item of FT.tray){ if(item.used) continue; for(let
 function ftNewTray(){ const mt=ftMaxTier(FT.level); const pool=FT_PIECES.filter(x=>x.t<=mt);
   FT.tray=[0,1,2].map(()=>({p:pool[Math.floor(Math.random()*pool.length)].p,used:false})); FT.sel=-1; }
 function ftBounds(p){ let mr=0,mc=0; for(const q of p){ mr=Math.max(mr,q[0]); mc=Math.max(mc,q[1]); } return {mr,mc}; }
-function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; const lv=document.getElementById('ft-level'); if(lv) lv.textContent=FT.level; document.getElementById('ft-bestv').textContent=Math.max(FT.best.easy.all,FT.best.normal.all,FT.best.hard.all); }
+function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; const lv=document.getElementById('ft-level'); if(lv) lv.textContent=FT.level; document.getElementById('ft-bestv').textContent=FT.best.normal.all; }
 function ftUpdateTimeBar(){ const f=document.getElementById('ft-timebar-fill'); if(!f) return; const p=Math.max(0,Math.min(100,FT.time)); f.style.width=p+'%'; f.classList.toggle('low',p<=25); f.classList.toggle('mid',p>25&&p<=50); }
 // 셀 크기를 실제 컨테이너 폭에서 계산한다. 340px 고정이면 좁은 화면(폴더블 내측·PC
 // 에뮬레이터)에서 판이 화면 밖으로 밀려 페이지가 좌우로 흔들린다. (4=보드 padding, gap 2px)
@@ -9192,12 +9375,12 @@ function finishFit(){ if(!FT.running&&!FT.over) return; FT.over=true; FT.running
   const nr=bt_recordScore(FT.best,'normal',FT.score); bt_saveBest('brain.fit.best',FT.best); missionMark('fit');
   document.getElementById('fit-game-card').style.display='none'; document.getElementById('fit-result-card').style.display='block';
   document.getElementById('ft-result-emoji').textContent=nr?'🏆':'🧱'; document.getElementById('ft-result-title').textContent=nr?t('fit.newRecord'):t('fit.gameOver');
-  document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent='Lv.'+FT.level; document.getElementById('ft-r-best').textContent=Math.max(FT.best.easy.all,FT.best.normal.all,FT.best.hard.all); ftUpdateBestLine(); }
+  document.getElementById('ft-result-score').textContent=FT.score; document.getElementById('ft-r-diff').textContent='Lv.'+FT.level; document.getElementById('ft-r-best').textContent=FT.best.normal.all; ftUpdateBestLine(); }
 function leaveFit(){ resetFit(); showScreen('games'); }
 function resetFit(){ FT.running=false; FT.over=false; clearTimeout(FT.overT); clearInterval(FT.timer); const ov=document.getElementById('ft-over'); if(ov) ov.style.display='none'; if(FT.drag){ document.removeEventListener('pointermove', ftDragMove); document.removeEventListener('pointerup', ftDragEnd); document.removeEventListener('pointercancel', ftDragEnd); if(FT.drag.ghost) FT.drag.ghost.remove(); FT.drag=null; } if(typeof ftClearPreview==='function') ftClearPreview(); const g=document.getElementById('fit-game-card');if(g)g.style.display='none'; const r=document.getElementById('fit-result-card');if(r)r.style.display='none'; const i=document.getElementById('fit-intro-card');if(i)i.style.display='block'; ftUpdateBestLine(); }
 
 // ========== 픽셀 로직 / 노노그램 (논리) ==========
-const NO_CFG={ easy:{n:5,dens:0.55,base:500}, normal:{n:8,dens:0.55,base:1100}, hard:{n:10,dens:0.55,base:1800} };
+const NO_CFG={ easy:{n:5,dens:0.55,base:500,rate:5}, normal:{n:8,dens:0.55,base:1100,rate:3.5}, hard:{n:10,dens:0.55,base:1800,rate:2.6} };
 const NO={ diff:'normal', n:8, sol:[], grid:[], mark:'fill', started:0, timer:null, running:false, best:bt_loadBest('brain.nono.best') };
 function NO_DIFF_LABEL(d){ return d==='easy'?t('nono.easy'):d==='hard'?t('nono.hard'):t('nono.normal'); }
 function noUpdateBestLine(){ const el=document.getElementById('no-intro-best'); if(el) el.textContent=bt_bestLineText(NO.best,NO.diff); }
@@ -9236,7 +9419,7 @@ function startNono(){ const cfg=NO_CFG[NO.diff]; NO.n=cfg.n; NO.sol=noGen(cfg.n,
   document.getElementById('nono-intro-card').style.display='none'; document.getElementById('nono-result-card').style.display='none'; document.getElementById('nono-game-card').style.display='block';
   const b=document.getElementById('no-mode-btn'); b.innerHTML='🖌️ <span>'+t('nono.fillMode')+'</span>'; noBuild(); noTimer(); clearInterval(NO.timer); NO.timer=setInterval(noTimer,1000); }
 function finishNono(){ if(!NO.running) return; clearInterval(NO.timer); NO.running=false; const secs=Math.floor((Date.now()-NO.started)/1000);
-  const score=Math.max(50, NO_CFG[NO.diff].base - secs*Math.round(NO.n*1.5)); sfx('win');
+  const score=Math.max(50, NO_CFG[NO.diff].base - Math.round(secs*NO_CFG[NO.diff].rate)); sfx('win');
   const nr=bt_recordScore(NO.best,NO.diff,score); bt_saveBest('brain.nono.best',NO.best); NO.score=score; missionMark('nono');
   document.getElementById('nono-game-card').style.display='none'; document.getElementById('nono-result-card').style.display='block';
   document.getElementById('no-result-emoji').textContent=nr?'🏆':'🖼️'; document.getElementById('no-result-title').textContent=nr?t('nono.newRecord'):t('nono.complete');
@@ -9321,9 +9504,9 @@ const WS_THEMES={
     {n:{ko:'📦 사물',en:'📦 Objects',th:'📦 สิ่งของ'}, w:['MAP','BOX','CUP','KEY','PEN','BUS','HAT','CAP','FAN','POT','VAN','BOOK','LAMP','RING','KITE','DESK','DOOR','MASK','ROBOT','PIANO','GUITAR','PENCIL','BASKET','BUTTON','MIRROR','ROCKET','CASTLE']}
   ]
 };
-const WS_TIME=60;
+const WS_TIME={easy:60, normal:80, hard:100}; // 판 6×6/8×8/9×9·단어 3/4/5개(어려움은 대각선)
 const WS_FILL_KO='가나다라마바사아자차카타파하고노도로모보소오조기니디리미비시이지구누두루무부수우주';
-const WS={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:WS_TIME, timer:null, running:false, n:8, grid:[], targets:[], drag:null, best:bt_loadBest('brain.wordsearch.best') };
+const WS={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:WS_TIME.normal, timer:null, running:false, n:8, grid:[], targets:[], drag:null, best:bt_loadBest('brain.wordsearch.best') };
 function WS_DIFF_LABEL(d){ return d==='easy'?t('wordsearch.easy'):d==='hard'?t('wordsearch.hard'):t('wordsearch.normal'); }
 function wsUpdateBestLine(){ const el=document.getElementById('ws-intro-best'); if(el) el.textContent=bt_bestLineText(WS.best,WS.diff); }
 function setWordsearchDiff(d){ WS.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ws-diff-'+k).classList.toggle('active',k===d)); wsUpdateBestLine(); }
@@ -9371,12 +9554,12 @@ function wsHighlight(cells){ document.querySelectorAll('.ws-cell.sel').forEach(e
 function wsCommit(){ if(!WS.drag) return; const cells=wsLine(WS.drag.start,WS.drag.cur); document.querySelectorAll('.ws-cell.sel').forEach(e=>e.classList.remove('sel'));
   const str=cells.map(p=>WS.grid[p.r][p.c]).join(''), rev=cells.slice().reverse().map(p=>WS.grid[p.r][p.c]).join(''); WS.drag=null;
   const tt=WS.targets.find(t=>!t.found&&(t.word===str||t.word===rev));
-  if(tt){ tt.found=true; WS.combo++; WS.maxCombo=Math.max(WS.maxCombo,WS.combo); WS.score+=[...tt.word].length*4+(WS.combo-1)*2; sfx('good');
+  if(tt){ tt.found=true; WS.combo++; WS.maxCombo=Math.max(WS.maxCombo,WS.combo); WS.score+=dmScore(WS.diff, [...tt.word].length*4+(WS.combo-1)*2); sfx('good');
     cells.forEach(p=>{ const el=wsCellEl(p.r,p.c); if(el) el.classList.add('found'); }); wsRenderWords(); wsStats();
-    if(WS.targets.every(t=>t.found)){ WS.score+=20; sfx('win'); if(wsBuild()) wsRender(); wsStats(); } }
+    if(WS.targets.every(t=>t.found)){ WS.score+=dmScore(WS.diff, 20); sfx('win'); if(wsBuild()) wsRender(); wsStats(); } }
   else { WS.combo=0; wsStats(); }
 }
-function startWordsearch(){ WS.score=0;WS.combo=0;WS.maxCombo=0;WS.timeLeft=WS_TIME;WS.running=true;WS.drag=null;
+function startWordsearch(){ WS.score=0;WS.combo=0;WS.maxCombo=0;WS.timeLeft=WS_TIME[WS.diff];WS.running=true;WS.drag=null;
   document.getElementById('wordsearch-intro-card').style.display='none'; document.getElementById('wordsearch-result-card').style.display='none'; document.getElementById('wordsearch-game-card').style.display='block';
   if(!wsBuild()){ WS.grid=Array.from({length:WS.n},()=>Array(WS.n).fill('?')); WS.targets=[]; } wsRender(); wsStats(); wsTimer();
   const g=document.getElementById('ws-grid');
@@ -9397,8 +9580,8 @@ function resetWordsearch(){ clearInterval(WS.timer); WS.running=false; WS.drag=n
 // ========== 틀린 그림 찾기 (관찰) ==========
 const DF_POOL=['🍎','🍊','🍋','🍇','🍓','🫐','🥝','🍑','🍒','🥥','🌸','🌼','🌻','🌷','⭐','⚡','❤️','💙','💚','🧡','🐶','🐱','🐰','🐸','🐵','🦊','🐢','🐬','🦋','🐝','🚗','🚀','⚽','🏀','🎈','🎁','🔔','🍀','🌈','🌟'];
 const DF_CFG={ easy:{nStart:3,nMax:5}, normal:{nStart:4,nMax:6}, hard:{nStart:5,nMax:7} };
-const DF_TIME=30;
-const DF={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:DF_TIME, timer:null, running:false, lock:false, n:4, g1:[], g2:[], diffs:[], foundSet:null, found:0, best:bt_loadBest('brain.diff.best') };
+const DF_TIME={easy:30, normal:40, hard:50}; // 판마다 리셋 · 차이 개수 3~5/4~6/5~7
+const DF={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:DF_TIME.normal, timer:null, running:false, lock:false, n:4, g1:[], g2:[], diffs:[], foundSet:null, found:0, best:bt_loadBest('brain.diff.best') };
 function DF_DIFF_LABEL(d){ return d==='easy'?t('diff.easy'):d==='hard'?t('diff.hard'):t('diff.normal'); }
 function dfUpdateBestLine(){ const el=document.getElementById('df-intro-best'); if(el) el.textContent=bt_bestLineText(DF.best,DF.diff); }
 function setDiffDiff(d){ DF.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('df-diff-'+k).classList.toggle('active',k===d)); dfUpdateBestLine(); }
@@ -9409,7 +9592,7 @@ function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   const base=Array.from({length:total},()=>DF_POOL[Math.floor(Math.random()*DF_POOL.length)]); const g2=base.slice();
   const idx=shuffleArr(base.map((_,i)=>i)).slice(0,p.k); DF.diffs=idx.slice(); DF.foundSet=new Set(); DF.found=0;
   idx.forEach(i=>{ let e; do{ e=DF_POOL[Math.floor(Math.random()*DF_POOL.length)]; }while(e===base[i]); g2[i]=e; });
-  DF.g1=base; DF.g2=g2; DF.timeLeft=DF_TIME; if(typeof dfTimer==='function') dfTimer(); dfRender(); dfCount();
+  DF.g1=base; DF.g2=g2; DF.timeLeft=DF_TIME[DF.diff]; if(typeof dfTimer==='function') dfTimer(); dfRender(); dfCount();
 }
 function dfCount(){ const el=document.getElementById('df-count'); if(!el) return; const total=DF.diffs.length, found=DF.found, rem=Math.max(0,total-found);
   let pips=''; for(let i=0;i<total;i++){ pips += i<found ? '<span style="color:#f0b429">●</span>' : '<span style="color:#c9d0e8">○</span>'; }
@@ -9425,11 +9608,11 @@ function dfRender(){
 }
 function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
 function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
-  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=10+(DF.combo-1)*2; sfx('good'); dfMark(i); dfStats(); dfCount();
-    if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; DF.timeLeft=DF_TIME; dfTimer(); sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
+  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=dmScore(DF.diff, 10+(DF.combo-1)*2); sfx('good'); dfMark(i); dfStats(); dfCount();
+    if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true; DF.timeLeft=DF_TIME[DF.diff]; dfTimer(); sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
   else { DF.combo=0; sfx('bad'); DF.timeLeft=Math.max(0,DF.timeLeft-2); dfTimer(); dfStats(); el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320); if(DF.timeLeft<=0) finishDiff(); }
 }
-function startDiff(){ DF.score=0;DF.combo=0;DF.maxCombo=0;DF.level=1;DF.timeLeft=DF_TIME;DF.running=true;DF.lock=false;
+function startDiff(){ DF.score=0;DF.combo=0;DF.maxCombo=0;DF.level=1;DF.timeLeft=DF_TIME[DF.diff];DF.running=true;DF.lock=false;
   document.getElementById('diff-intro-card').style.display='none'; document.getElementById('diff-result-card').style.display='none'; document.getElementById('diff-game-card').style.display='block';
   dfBuild(); dfStats(); dfTimer(); clearInterval(DF.timer); DF.timer=setInterval(()=>{ DF.timeLeft--; dfTimer(); if(DF.timeLeft<=0) finishDiff(); },1000); }
 function finishDiff(){ clearInterval(DF.timer); DF.running=false;
@@ -9442,9 +9625,9 @@ function leaveDiff(){ resetDiff(); showScreen('games'); }
 function resetDiff(){ clearInterval(DF.timer); DF.running=false; const g=document.getElementById('diff-game-card');if(g)g.style.display='none'; const r=document.getElementById('diff-result-card');if(r)r.style.display='none'; const i=document.getElementById('diff-intro-card');if(i)i.style.display='block'; dfUpdateBestLine(); }
 
 // ========== 높은음 찾기 (청각) ==========
-const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:26}, hard:{nStart:4,nMax:7,c0:62,cStep:5,cMin:18} };
-const PT_TIME=60;
-const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME, timer:null, running:false, lock:false, pause:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
+const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:26}, hard:{nStart:5,nMax:7,c0:62,cStep:5,cMin:18} }; // hard가 normal과 같은 4로 시작해 사실상 동일했음
+const PT_TIME={easy:60, normal:75, hard:90}; // 패드 수↑ = 한 라운드 청음 시간↑
+const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME.normal, timer:null, running:false, lock:false, pause:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
 function PT_DIFF_LABEL(d){ return d==='easy'?t('pitch.easy'):d==='hard'?t('pitch.hard'):t('pitch.normal'); }
 function ptUpdateBestLine(){ const el=document.getElementById('pt-intro-best'); if(el) el.textContent=bt_bestLineText(PT.best,PT.diff); }
 function setPitchDiff(d){ PT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('pt-diff-'+k).classList.toggle('active',k===d)); ptUpdateBestLine(); }
@@ -9461,9 +9644,9 @@ function ptRound(){ const cfg=PT_CFG[PT.diff]; const n=Math.min(cfg.nMax,cfg.nSt
   ptRenderPads(n); PT.lock=true; ptStatus('pitch.listen'); PT.timers.push(setTimeout(()=>{ PT.pause=false; },300)); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptReplay(){ if(!PT.running||PT.lock) return; PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptTap(i){ if(!PT.running||PT.lock) return; ptFlash(i,PT.freqs[i],300);
-  if(i===PT.odd){ PT.lock=true; PT.pause=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=10+(PT.combo-1)*2; PT.level++; sfx('good'); ptStats(); ptStatus('pitch.nextRound','good'); PT.timers.push(setTimeout(ptRound,1100)); }
+  if(i===PT.odd){ PT.lock=true; PT.pause=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=dmScore(PT.diff, 10+(PT.combo-1)*2); PT.level++; sfx('good'); ptStats(); ptStatus('pitch.nextRound','good'); PT.timers.push(setTimeout(ptRound,1100)); }
   else { PT.combo=0; sfx('bad'); PT.timeLeft=Math.max(0,PT.timeLeft-2); ptTimer(); ptStats(); if(PT.timeLeft<=0) finishPitch(); } }
-function startPitch(){ PT.score=0;PT.combo=0;PT.maxCombo=0;PT.level=1;PT.timeLeft=PT_TIME;PT.running=true;PT.pause=false;
+function startPitch(){ PT.score=0;PT.combo=0;PT.maxCombo=0;PT.level=1;PT.timeLeft=PT_TIME[PT.diff];PT.running=true;PT.pause=false;
   document.getElementById('pitch-intro-card').style.display='none'; document.getElementById('pitch-result-card').style.display='none'; document.getElementById('pitch-game-card').style.display='block';
   ptStats(); ptTimer(); ptRound(); clearInterval(PT.timer); PT.timer=setInterval(()=>{ if(PT.pause) return; PT.timeLeft--; ptTimer(); if(PT.timeLeft<=0) finishPitch(); },1000); }
 function finishPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false;
@@ -9510,7 +9693,7 @@ function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail
 function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>=3){ TC.trail.push({x:p.x,y:p.y}); const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points', TC.trail.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ')); }
   const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
 function tcStray(){ if(!TC.active) return; TC.active=false; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
-function tcClearLevel(){ TC.active=false; TC.level++; TC.score+=30+TC.level*10; sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
+function tcClearLevel(){ TC.active=false; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
 function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.active=false;
   document.getElementById('trace-intro-card').style.display='none'; document.getElementById('trace-result-card').style.display='none'; document.getElementById('trace-game-card').style.display='block';
   tcStats(); tcRender();
