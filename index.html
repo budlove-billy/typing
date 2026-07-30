@@ -185,6 +185,16 @@ body.ingame .nav-logo{flex-shrink:1;min-width:0;overflow:hidden}
   .nav-brand{font-size:1.08rem}
   .nav-tagline{font-size:.6rem}
 }
+/* 아주 좁은 프레임(폴더블 내측·PC 에뮬레이터 등). 여기서 상단바가 화면보다 넓어지면
+   문서 전체가 좌우로 밀려 '화면 흔들림'이 된다 → 태그라인을 접고 언어 선택기도 줄어들게. */
+@media (max-width:359px){
+  .nav-tagline{display:none}
+  .nav-mascot svg{width:30px;height:30px}
+  .nav-logo{padding:0 .35rem 0 .5rem}
+  .lang-select-wrap{flex-shrink:1;min-width:0;padding:0 .35rem 0 .2rem}
+  .lang-select{max-width:82px;text-overflow:ellipsis}
+  .screen{padding:.7rem}
+}
 
 /* SCREENS */
 .screen{display:none;padding:1.5rem;max-width:860px;margin:0 auto;width:100%}
@@ -583,7 +593,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ca-item.good{filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
 .ca-item.fork{filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 .ca-basket{position:absolute;bottom:2px;line-height:0;transform:translateX(-50%);transition:left .07s;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
-.ft-board{display:grid;gap:2px;max-width:360px;margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
+.ft-board{display:grid;gap:2px;justify-content:center;max-width:360px;margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
 /* 블록 채우기 시간 게이지 */
 .ft-timebar{max-width:360px;margin:0 auto .7rem;height:9px;background:var(--bg3);border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
 .ft-timebar-fill{height:100%;width:100%;background:linear-gradient(90deg,#21a67a,#4f7cff);border-radius:99px;transition:width .1s linear,background .3s}
@@ -9083,7 +9093,16 @@ function ftNewTray(){ const mt=ftMaxTier(FT.level); const pool=FT_PIECES.filter(
 function ftBounds(p){ let mr=0,mc=0; for(const q of p){ mr=Math.max(mr,q[0]); mc=Math.max(mc,q[1]); } return {mr,mc}; }
 function ftStatsBar(){ document.getElementById('ft-score').textContent=FT.score; const lv=document.getElementById('ft-level'); if(lv) lv.textContent=FT.level; document.getElementById('ft-bestv').textContent=Math.max(FT.best.easy.all,FT.best.normal.all,FT.best.hard.all); }
 function ftUpdateTimeBar(){ const f=document.getElementById('ft-timebar-fill'); if(!f) return; const p=Math.max(0,Math.min(100,FT.time)); f.style.width=p+'%'; f.classList.toggle('low',p<=25); f.classList.toggle('mid',p>25&&p<=50); }
-function ftCellPx(){ return Math.floor(340/FT.n); }
+// 셀 크기를 실제 컨테이너 폭에서 계산한다. 340px 고정이면 좁은 화면(폴더블 내측·PC
+// 에뮬레이터)에서 판이 화면 밖으로 밀려 페이지가 좌우로 흔들린다. (4=보드 padding, gap 2px)
+function ftCellPx(){
+  const bd=document.getElementById('ft-board');
+  const pw=(bd&&bd.parentElement)?bd.parentElement.clientWidth:340;
+  const avail=Math.min(344,Math.max(200,pw))-4-2*(FT.n-1);
+  return Math.max(20,Math.floor(avail/FT.n));
+}
+let _ftResizeT=null;
+window.addEventListener('resize',()=>{ if(!FT.running||FT.over) return; clearTimeout(_ftResizeT); _ftResizeT=setTimeout(()=>{ if(FT.running&&!FT.over) ftRender(); },150); });
 function ftCellEl(r,c){ return document.getElementById('ft-board').children[r*FT.n+c]; }
 function ftRender(){
   const bd=document.getElementById('ft-board'); const cs=ftCellPx(); bd.style.gridTemplateColumns='repeat('+FT.n+','+cs+'px)'; bd.innerHTML='';

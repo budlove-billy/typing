@@ -1,16 +1,17 @@
 # Active Session State
 
 ## Current task
-없음 (지적 5종 수정 완료)
+없음 (모아모아 시계 제거 + 좁은 폭 최적화 완료)
 
 ## 직전 완료
-사용자 지적 5종 — 모아모아 3 + 타로 1 + 앱 1. 상세는 CLAUDE.md 2026-07-29 항목.
-- 게임 중 좌우 흔들림 = nav flex-shrink:0 3형제로 상단바 오버플로 → 34종 docSW=cw 확인
-- 타로 th 한글 = section.seo 미번역 → data-lang-only="ko" (zodiac 선례)
-- 모아모아 = 경과 타이머+최단기록 신설 / MAX_MISS 4→3 + one-away 2회 제한 / canvas 공유카드 신설
+- 모아모아 인게임 시계 삭제(표시만) — 측정은 유지, 결과/공유카드의 '걸린 시간'·최단 기록으로만. 실패 시 시간 문구 제거.
+- ≤359px 미디어쿼리로 상단바 오버플로 해소(태그라인 접기·lang-select 축소). 360px 이상 무변경(갤럭시 실기기 보존).
+- fit 보드 `ftCellPx()` 340px 하드코딩 → 컨테이너 clientWidth 기반 + resize 재렌더 + 컬럼 중앙정렬.
+상세는 CLAUDE.md 2026-07-30 항목.
 
 ## 검증
-errcheck 34종 pageerror 0, overflow 진단 0, moamoa 승/패 시나리오 pageerror 0, tarot th 한글 0자
+280/320/390px 34종 오버플로 0 · errcheck 34종 pageerror 0 · 모아모아 승/패 pageerror 0
+진단 스크립트: .logs/{overflow,overflow320,overflow280,narrow_scan,errcheck8176,moamoa_check,moamoa_check2,moamoa_noclock,fit_shot,moamoa_card}.mjs
 
 ## 미결(사용자 결정 대기)
 - 보안헤더 vercel.json 배포 후 `curl -sI https://playmallow.com/` 재확인

@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-07-30 — **모아모아 인게임 시계 제거 + 좁은 폭(≤360px) 최적화**: ① **모아모아** — 플레이 화면의 경과 시계(`#playTime`)가 *제한시간*처럼 읽혀 압박을 준다는 지적. 데일리 퍼즐에 시간 압박은 불필요하므로 **화면 표시만 삭제**(HTML/CSS/`render()` 라인), 측정은 그대로 유지해 결과 모달 `걸린 시간`·`최단`·공유카드 기록으로만 사용. 실패 시엔 시간 언급 자체를 제거(`내일 새 퍼즐로 다시 만나요`) — 짧게 진 기록을 들이미는 게 조롱처럼 읽힘. ② **≤359px 상단바** — `lang-select-wrap`이 `flex-shrink:0`이라 350px 미만에서 상단바가 문서를 넘김(280/300/320/340에서 +66/+46/+26/+6px). `@media(max-width:359px)`로 `.nav-tagline` 접기·마스코트 30px·`lang-select-wrap{flex-shrink:1;min-width:0}`·`lang-select{max-width:82px}`·`.screen{padding:.7rem}`. **360px 이상은 손대지 않음**(갤럭시 실기기 레이아웃 보존). ③ **`fit`(블록 채우기) 보드** — `ftCellPx()`가 `340/n` 하드코딩이라 320px에서 판이 화면을 넘김(docSW 379). 컨테이너 `clientWidth` 기반으로 전환(`min(344, parentW) - 보드padding4 - gap2*(n-1)`, 최소 20px) + 디바운스 `resize` 재렌더(diff 선례) + `.ft-board{justify-content:center}`로 컬럼 중앙정렬. 검증: 280/320/390px 전 34종 오버플로 0, errcheck 34종 pageerror 0, 모아모아 승·패 시나리오 pageerror 0. **참고**: 사용자 첨부(PC 에뮬 우측 잘림)는 CSS 폭 자체는 정상이고 에뮬 프레임이 렌더 폭보다 좁게 크롭한 것 — 그래도 280px까지 깨지지 않게 만들어 크롭된 프레임에서도 온전히 보이게 함.
+
 - 2026-07-29 — **지적 5종 수정(모아모아 3·타로 1·앱 1)**: ① **게임 중 화면 좌우 흔들림** — 원인=`nav`의 세 자식(`nav-exit`/`nav-logo`/`lang-select-wrap`)이 모두 `flex-shrink:0`이라 게임명이 붙는 순간 상단바가 화면보다 넓어짐(390px 뷰포트에서 문서폭 429~469px). 홈은 게임명이 비어 정상. 수정=`body.ingame .nav-logo{flex-shrink:1;min-width:0}`+`.nav-game` 말줄임, ≤480px 게임 중 브랜드명·마스코트 숨김·`lang-select` 76px, `body{overflow-x:clip;overscroll-behavior-x:none}`. 검증: 34종 전부 docSW=cw(390/360 모두 타이틀 잘림 0). ② **타로 태국어에 한글 혼출** — 원인=`tarot/index.html`의 `<section class="seo">`(타로란?/FAQ 등 한국어 고정 HTML)를 `applyLang()`이 건드리지 않음. 카드 데이터(CARD_TH 78장)는 정상. 수정=zodiac 선례대로 `data-lang-only="ko"`+토글 1줄 → th 화면 한글 0자, ko는 h2 6개 유지. ③ **모아모아 제한시간** — 실제로 시간 개념 자체가 없었음(유일한 시간 UI는 결과모달의 '다음 퍼즐까지' 대기 카운트다운). 신설=첫 선택에 시작하는 플레이 경과 타이머(탭 전환 시 정지, 10초마다 저장, 종료 시 정지) + 최단 기록(`stats.bestSec`) + 결과/공유 문구에 시간. 데일리 퍼즐 특성상 하드 제한 대신 '기록'으로 설계. ④ **모아모아 난이도** — `MAX_MISS` 4→3, "하나만 달라요" 힌트를 판당 2회로 제한(`MAX_ONEAWAY`). ⑤ **모아모아 공유 이미지** — 기존엔 이미지가 아예 없고 텍스트+이모지뿐이었음. `buildShareCard()` canvas 카드 신설(DPR 2~3배, 480×H, 이모지 대신 색 블록 직접 렌더 → 기기별 흐림 제거), 결과 모달 미리보기 + `navigator.share({files})` → 다운로드 → 텍스트 순 폴백.
 
 - 2026-07-29 — **SEO 진단 지적사항 수정**: ① H1 부재/계층 오류 — 홈 `div.home-hi` → `h1.home-hi`(문서 첫 제목, i18n `home.title` 유지, `.home-hi` 클래스가 UA 기본값을 덮어 시각 변화 0) → H1 1개·H1→H2→H3 정상 ② `bt-share-img` `alt=""` → 의미있는 alt + `loading="lazy"`, 카드 생성 시 실제 유형명으로 alt 갱신(i18n `braintype.shareAlt` 신설) ③ 보안헤더 3종(X-Frame-Options SAMEORIGIN·X-Content-Type-Options nosniff·Referrer-Policy strict-origin-when-cross-origin) — 호스팅이 **Vercel**임을 응답헤더로 확인, `vercel.json` 신규 생성(배포 후 적용). 검증: 헤드리스 H1/스타일/alt/i18n 확인 + errcheck 34종 pageerror 0. 참고: `brain_app.html`은 미링크 레거시 사본(canonical=루트), `privacy/`는 ko/en 블록으로 H1 2개(의도된 다국어 구조).
@@ -152,347 +154,171 @@ If the model is asking "where was I?" the answer is always: **read the active st
   적응형 난이도 + `localStorage` 최고기록. 설계: `기억축-게임-스펙.md`.
 
 <!-- PORTS_BEGIN -->
-## Service
+## Service (MUST follow)
 
-This project is allocated the port range **8176-8180** (5 ports total).
+Ports **8176-8180** (5 total) are yours — ANY service you start MUST use one of them, never outside the range (need more → ask the user). Record the port-to-service mapping in `MEMORY.md`.
 
-**Rules (MUST follow):**
-- When starting ANY service (dev server, API, websocket, db, etc.), you MUST pick a port from `8176-8180`.
-- **DO NOT** use any port outside this range.
-- Decide the port-to-service mapping yourself, but record it in `MEMORY.md` once chosen so it stays consistent across sessions.
-- If you need more ports, ask the user to expand the range — don't reach outside.
+**Showing a web page:** put the page AND every asset it references (images, css, js, fonts) under `public/`, and reference them with RELATIVE paths (`./img/x.png`, not an absolute path or another folder) — a page in `public/` that points at `generated_images/` or elsewhere previews with broken images. Then give a clickable markdown link `[打开页面](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/public/<file>.html)` (served directly; no server needed). If you generated an image into `generated_images/` and want it IN a page, copy it into `public/` first. Bare paths render as dead text; **NEVER** give a `http://localhost:<port>/…` link — only start a real server when a live backend is needed.
 
-**Showing the user a web page / preview (MUST follow):**
-- A static page or site (HTML/CSS/JS, no live backend) — save it (with its assets) under `public/` in your work dir, then give the user a **clickable markdown link** (never a bare path — a bare path renders as dead plain text the user can't click):
-  `[打开页面](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/public/<file>.html)`
-  SmartJ serves that folder directly, so the link always opens — NO server and NO port needed. (`generated_images/` is served the same way.)
-- **NEVER** hand the user a `http://localhost:<port>/…` link or hardcode a port like `:8000` — they cannot reach your local dev server that way.
-- Only start a real server (on a port from the range above) when the page needs a live backend/API; for anything static, always use the `public/` link.
-
-**Env vars injected into your shell:** `PROJECT_PORT_START=8176`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8180`
+Env: `PROJECT_PORT_START=8176`, `PROJECT_PORT_COUNT=5`, `PROJECT_PORT_END=8180`
 <!-- PORTS_END -->
 
 <!-- BACKGROUND_SERVICES_BEGIN -->
 ## Long-running services (CRITICAL)
 
-Each chat turn spawns a fresh `claude` subprocess. When the turn ends and the
-subprocess exits, the OS sends SIGHUP to its children — **any dev server, watcher,
-queue worker, or REPL you started in this turn dies with it**, and the next turn
-will have no record of it.
-
-**Rules:**
-
-- For ANYTHING that should outlive the current turn (dev server, build watcher,
-  test runner in watch mode, MCP servers, database, queue workers, etc.) you
-  MUST detach from the controlling terminal. Use one of:
-  ```
-  setsid nohup <cmd> > .logs/<service>.log 2>&1 &
-  # or
-  nohup <cmd> > .logs/<service>.log 2>&1 < /dev/null &
-  disown
-  ```
-  Plain `<cmd> &` is NOT enough — bash sends SIGHUP to backgrounded jobs when
-  the shell exits.
-
-- Make a `.logs/` directory if it doesn't exist before redirecting.
-
-- After starting a service, record what's running and on which port in
-  `MEMORY.md` so future turns know what's alive without having to probe.
-
-- Before starting a service, check whether it's already running:
-  ```
-  ss -ltn | grep ":<port> "  # or  lsof -i :<port>
-  ```
-  Don't start a second copy.
-
-- Foreground-only commands (one-shot builds, tests, scripts that exit on their
-  own) DON'T need this — only persistent processes.
+Each turn is a fresh subprocess; when it exits, SIGHUP kills its children — any dev
+server/watcher/worker you started dies with the turn. Anything that must OUTLIVE the
+turn MUST detach (plain `<cmd> &` is NOT enough):
+```
+mkdir -p .logs && setsid nohup <cmd> > .logs/<service>.log 2>&1 &
+# or: nohup <cmd> > .logs/<service>.log 2>&1 < /dev/null & disown
+```
+Before starting, check it isn't already running (`ss -ltn | grep ":<port> "`); after
+starting, record what runs on which port in `MEMORY.md`. One-shot commands that exit
+on their own don't need any of this.
 <!-- BACKGROUND_SERVICES_END -->
 
 <!-- WEB_RESEARCH_BEGIN -->
 ## Web research (live internet)
 
-You have two complementary ways to reach the live web:
-
-1. **`websearch "<query>"`** — a CLI that returns search results as JSON
-   (`title` / `url` / `snippet`). Use it to DISCOVER relevant pages.
-   - `websearch -n 5 "<query>"` caps the result count; `--text` for readable output.
-   - It is keyless and free (no API key, no per-search quota).
-2. **The `WebFetch` tool** — reads the full content of a specific URL. Use it to
-   READ the pages a search surfaced.
-3. **`webread <url>`** — renders a page in a headless browser (runs its
-   JavaScript) and prints the visible text. Use it when `WebFetch` returns an
-   empty/near-empty result or the page is a JS app (SPA) whose content is built
-   client-side. `webread <url> --html` returns the rendered DOM;
-   `webread <url> --screenshot out.png` captures a PNG.
+- `websearch "<query>"` [-n 5] [--text] — keyless search, JSON title/url/snippet (DISCOVER).
+- `WebFetch` tool — read a specific URL's content.
+- `webread <url>` [--html|--screenshot out.png] — headless-browser render; use when
+  WebFetch comes back empty or the page is a JS app (SPA).
 
 **Prefer `websearch`** for discovery — the built-in WebSearch tool returns no results in this (gateway) deployment, so do not rely on it.
 
-**Research workflow** (use this for "联网调研" / "search the web" / current-events
-/ fact-finding tasks): search to find candidate URLs → `WebFetch` the most
-relevant 2–5 (→ `webread` if a page comes back empty/JS-only) → synthesize, and
-cite each source as a markdown link. Never invent facts or URLs — if a search
-returns nothing useful, say so.
+Workflow for 联网调研/fact-finding: search → WebFetch the top 2–5 (→ webread if
+empty/JS-only) → synthesize, citing each source as a markdown link. Never invent facts
+or URLs — say so when a search finds nothing useful.
 <!-- WEB_RESEARCH_END -->
 
 <!-- ROLES_TOOL_BEGIN -->
-## Role library & sub-agents (`roles`)
+## Role library & sub-agents (`roles`) · your own identity (`identity`)
 
-A catalog of ready-made expert personas (engineering, design, marketing, security,
-GIS, finance, …) is available via the `roles` CLI. Use it to **delegate a focused
-task to a specialist sub-agent**, or to **create a new role** while chatting with the user.
+`roles` = a library of expert personas to DELEGATE to: `roles search <query>` /
+`roles show <code|key>` / `roles add <code|key>` (installs `./.claude/agents/<name>.md`;
+spawn via Task tool `subagent_type="<name>"`) / `roles create --label … --category …
+--description … --body-file <file>` (new reusable role; auto-favorited). Codes `R0042`,
+keys `engineering-backend-architect` — either works.
 
-- `roles search <query> [--category CAT]` — find roles by name/description/code.
-- `roles show <code|key>` — print a role's full persona.
-- `roles add <code|key>` — install it as `./.claude/agents/<name>.md`, then spawn it with the
-  Task tool: `subagent_type="<name>"`. Use this to hand a focused sub-task to an expert persona.
-- `roles create --label "<name>" --category <cat> --description "<one line>" --body-file <file>`
-  — add a NEW role to the shared library (body via `--body-file`, `--body`, or stdin). Use this
-  when the user asks to turn a persona you've discussed into a reusable role. New roles are
-  auto-favorited, so they immediately show in the create-project picker.
-
-Codes look like `R0042`; keys look like `engineering-backend-architect`. Either is accepted.
-
-### Your OWN identity for this project (`identity`)
-
-Separate from the library above: `identity` reads and changes **your own persona** for
-this project (what `ROLE.md` holds). Use it when the user tells you who to be — e.g.
-"from now on also act as a security reviewer" → `identity append "..."`.
-
-- `identity show` — the current identity.
-- `identity set "<text>"` — REPLACE it. `identity clear` — remove it.
-- `identity append "<text>"` — ADD to it, keeping what's already there.
-- `--file <path>` instead of inline text for long personas.
-
-Changes apply on your **NEXT** message (the identity loads when a turn starts), and keep
-the saved role, `ROLE.md` and the project-settings UI in sync. **Never hand-edit
-`ROLE.md`** — it is generated from the saved role, so a direct edit is silently
-discarded the next time the role is saved. Confirm with the user before replacing or
-clearing an identity they didn't ask you to change.
+`identity` = YOUR OWN persona for THIS project (what ROLE.md holds). User says who to
+be → `identity append "…"` (add) / `set "…"` (replace) / `show` / `clear`; `--file` for
+long text. Applies on your NEXT message and keeps ROLE.md + settings UI in sync.
+**Never hand-edit ROLE.md** (generated; edits get overwritten). Confirm before
+replacing/clearing an identity the user didn't ask to change.
 <!-- ROLES_TOOL_END -->
-
 <!-- SKILLS_TOOL_BEGIN -->
 ## Skills — pluggable capabilities (`skills`)
 
-A skill is a folder (SKILL.md + optional scripts) that Claude Code auto-loads by
-relevance. There's a shared **library** of skills; it costs no tokens until you **plug**
-one into THIS project. Plug only what the current task needs, and unplug when done — so
-the project stays lean.
+A skill (SKILL.md + optional scripts) auto-loads by relevance once PLUGGED into this
+project. Plug only what the task needs, unplug when done (keeps context lean).
 
-- `skills search <query> [--category CAT]` — find skills by name/description/code.
-- `skills show <code|key>` — print a skill's SKILL.md + file list.
-- `skills add <code|key>` — **plug** it into `./.claude/skills/<key>/` (Claude then
-  auto-loads it when relevant). `skills remove <code|key>` to **unplug**.
-- `skills list` — what's plugged into this project right now.
-- `skills create --dir <folder>` — author a NEW skill into the library. Write the folder
-  per the spec (run `skills spec` to read it): a SKILL.md (frontmatter name + a strong
-  *when to use* description) plus any scripts/references. When the user points you at a
-  website / GitHub repo / zip, or just describes a capability, gather the material with
-  your tools (webread / git / unzip / the chat) and **author a clean skill to the
-  template** — don't dump the raw source. New skills are added unfavorited; the user
-  favorites the keepers on the Skills page to make them pluggable in projects.
-- `skills update <code|key> [--dir <folder>] [--name N] [--category C] [--description D]`
-  — update an EXISTING skill in place (same key/code/favorite state). **When editing a
-  skill, ALWAYS use `update` — never `create` a near-duplicate with a suffixed name.**
-  With `--dir` the folder REPLACES the skill's files (must include SKILL.md); without
-  it, only the metadata changes.
-- `skills delete <code|key>` — delete a skill from the LIBRARY (`remove` merely unplugs
-  it from this project). Builtin skills can't be deleted.
+- `skills search <query>` / `skills show <code|key>` / `skills list` (what's plugged).
+- `skills add <code|key>` plug into `./.claude/skills/<key>/` · `skills remove` unplug.
+- `skills create --dir <folder>` author a NEW skill (run `skills spec` for the format:
+  SKILL.md with a strong *when-to-use* description + scripts). Given a site/repo/zip or a
+  description, gather the material yourself and author a CLEAN skill — don't dump raw
+  source. Added unfavorited; user favorites keepers.
+- `skills update <code|key> [--dir <folder>] …` edit in place — **always `update`, never
+  `create` a suffixed near-duplicate.** `skills delete` removes from the library.
 
-Codes look like `S0042`; keys look like `mdbox-media`. Either is accepted.
+Codes `S0042`, keys `mdbox-media` — either works.
 <!-- SKILLS_TOOL_END -->
+
 <!-- CLONE_TOOL_BEGIN -->
 ## Session clones — 分身 (`clone`)
 
-A **clone** is a fork of YOUR current session: it inherits your conversation context up
-to the fork, then runs in its own session/memory inside the shared work_dir. Use a clone
-to **farm out a side-task** (research, a risky experiment, a repetitive job) WITHOUT
-polluting your own memory, or to keep a **backup** you can promote later. Tasks run
-**async** — dispatch, keep working, fetch the result when ready.
+A clone forks YOUR session (context up to the fork) and runs async in its own
+session/memory inside the shared work_dir — for side-tasks that would clutter your
+memory, parallel grind, or a promotable backup.
 
-- `clone fork [--label L]` — snapshot THIS session into a new clone; prints its `session`.
-- `clone run <session> "<task>" [--report]` — dispatch a task to a clone (async); prints a
-  `job` id. With `--report`, the finished result is posted into the main chat by itself.
-- `clone result <job> [--wait]` — fetch a job's status/result (`--wait` polls to completion).
-- `clone list` — clones + recent jobs for this project.
-- `clone discard <session>` — delete a clone (its transcript + memory).
+- `clone fork [--label L]` → prints `session` | `clone run <session> "<task>" [--report]`
+  → async, prints `job`; with `--report` the result posts itself into the main chat |
+  `clone result <job> [--wait]` | `clone list` | `clone discard <session>`.
 
-Reach for a clone when a task would clutter your working memory or can run in parallel —
-e.g. fork, dispatch the grind, keep talking to the user, then collect the result. Discard
-clones you no longer need. (The user can also manage clones in Project Settings → Clones.)
-
-### Parallel fan-out — when the user asks for several things AT ONCE
-
-When the user says 「同时 / 并行 / 分别做 A、B、C」 (or lists independent jobs), split the
-work across clones instead of doing it serially. HARD RULES:
-
-1. **Only parallelize file-disjoint tasks.** All clones share this work_dir — two clones
-   editing the same files overwrite each other. If tasks might touch the same files, run
-   those serially (or do them yourself) and say why. This binds YOU too: while clones
-   run, don't touch the files they're working on.
-2. **Present the split and get a YES before forking.** Clones cost real tokens. Show one
-   short plan — 「我准备开 N 个分身:① … ② … ③ …,互不冲突,确认?」 — and wait. Never
-   fan out silently, and don't fan out at all unless the user asked for parallel work.
-   Keep it to **at most 3 clones at once** — each is a full engine process.
-3. **Dispatch with `--report`, then end your turn.** `clone fork` + `clone run <sid>
-   "<task>" --report` per task, reply 「已派发,完成后结果会自动出现在聊天里」, and stop —
-   each result posts itself into the chat (「🌿 分身「X」已完成(任务:…)」). Don't sit
-   in `clone result --wait` loops unless the user wants ONE synthesized answer, in which
-   case wait for all jobs and merge them yourself.
-4. Give each clone a self-contained task brief (it inherits context up to the fork, but
-   NOT anything you learned after). A `--report` clone is **cleaned up automatically**
-   after it succeeds; `clone discard` anything else you won't reuse.
-5. **Results reach you automatically.** Reports that arrived while you were away are
-   injected at the start of your next turn as 「[分身回报 …]」 — absorb them before
-   answering. Order is arbitrary (C may finish before A; each report names its task),
-   and dispatching MORE tasks later is fine — the same flow handles trickled dispatch.
-   You stay fully available while clones run: keep chatting and working on OTHER things,
-   and check progress anytime with `clone result <job>` (no --wait) or `clone list`.
+### Parallel fan-out — 「同时/并行/分别做 A、B、C」 HARD RULES
+1. **File-disjoint tasks only** — clones share this work_dir; overlapping edits clobber.
+   Overlapping tasks run serially (say why). You too: don't touch files a clone is on.
+2. **Show the split, get a YES first** (「我准备开 N 个分身:①…②…③…,互不冲突,确认?」).
+   Never fan out silently or uninvited. **≤3 clones at once.**
+3. **Dispatch each with `--report`, reply 「已派发,结果会自动出现在聊天里」, END your
+   turn.** No `--wait` loops — unless the user wants ONE synthesized answer (then wait
+   for all and merge).
+4. Task briefs must be self-contained (clones don't see anything after the fork).
+   `--report` clones auto-clean on success; `clone discard` the rest.
+5. **Results reach you automatically**: 「[分身回报 …]」 is injected at your next turn —
+   absorb before answering. Completion order is arbitrary; trickled dispatch is fine;
+   you stay fully available meanwhile (`clone result <job>` / `clone list` to peek).
 <!-- CLONE_TOOL_END -->
 
 <!-- MCP_TOOL_BEGIN -->
-## MCP servers — connect to external tools/data (`mcp`)
+## MCP servers (`mcp`)
 
-MCP servers give you NEW tools (named `mcp__<name>__*`) to reach external systems — GitHub,
-Postgres, Slack, internal APIs, a filesystem, etc. Configure them for THIS project with the
-`mcp` CLI when the user asks to connect something (and has given you the endpoint/token).
-
-- `mcp add <name> [-e KEY=VAL …] -- <command> [args…]` — add a **stdio** server
-  (e.g. `mcp add github -e GITHUB_TOKEN=… -- npx -y @modelcontextprotocol/server-github`).
-- `mcp add <name> --http <url> [--header "K: V" …]` — add an **http** server.
-- `mcp list` — this project's servers. `mcp remove <name>` / `mcp enable|disable <name>`.
-
-**Important:** a newly added server is loaded on your **NEXT message**, not the current one
-(MCP servers attach when a turn starts). So: add it, tell the user it's ready, and use its
-`mcp__<name>__*` tools from the next turn. Secrets you pass are stored encrypted.
+MCP servers add `mcp__<name>__*` tools for external systems (GitHub/Postgres/APIs…).
+`mcp add <name> [-e K=V …] -- <cmd> [args…]` (stdio) · `mcp add <name> --http <url>
+[--header "K: V"]` · `mcp list` / `remove` / `enable|disable`. A new server loads on
+your **NEXT message** — add it, tell the user, use its tools next turn. Secrets are
+stored encrypted.
 <!-- MCP_TOOL_END -->
 
 <!-- PLUGINS_TOOL_BEGIN -->
-## Plugins — enable bundled capabilities (`plugins`)
+## Plugins (`plugins`)
 
-A Claude Code plugin bundles commands / sub-agents / skills / hooks / MCP servers. The
-admin installs plugins into a library; you can enable the ones THIS project needs.
-
-- `plugins list` — the library plugins (✓ = enabled for this project).
-- `plugins enable <key>` / `plugins disable <key>` — toggle one for this project.
-
-A newly enabled plugin loads on your **NEXT message** (plugins attach when a turn starts).
-Installing NEW plugins from a marketplace runs code and is admin-only (the Plugins page) —
-this tool only toggles plugins already in the library.
+A plugin bundles commands/sub-agents/skills/hooks/MCP servers. `plugins list` (✓ =
+enabled here) · `plugins enable|disable <key>`. Loads on your **NEXT message**.
+Installing NEW plugins is admin-only; this only toggles library ones.
 <!-- PLUGINS_TOOL_END -->
 See WORKSPACE.md for related bots in this workspace.
 
 <!-- MDBOX_MULTIMODAL_BEGIN -->
 ## Generating & delivering files (images, video, audio, documents)
 
-Generate images/video/audio by emitting a **`__media__` directive** (the platform
-intercepts it and runs generation for you — details below). Do NOT look for or run a
-local `mdbox`/`kone` binary for generation; generation is a directive, not a command.
-Produce any other file (PDF, HTML, Excel/Word/PPT, CSV, ZIP, …) with your normal tools.
+**Save every user-facing file into `./generated_images/`** (`mkdir -p` first) — the only
+publicly served folder. Then paste its REAL public URL `/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>`
+in chat, formatted by type (never just say "saved to generated_images/"):
+- Image → `![alt](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.png)` (inline)
+- Video/Audio → `[title](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.mp4)` (web embeds a player)
+- PDF/HTML/Office/other → `[filename](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>)` (clickable link)
 
-### Where to save — ALWAYS `./generated_images/`
-Save EVERY file you want the user to see or download into `./generated_images/`
-(run `mkdir -p generated_images` first). Only this folder is publicly served for
-this project — files written anywhere else are NOT reachable from chat.
-
-### How to deliver — paste the REAL public URL
-For a file at `generated_images/<name>.<ext>`, its public URL is exactly
-`/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>`. Output it in chat **by type** so it renders
-correctly in web and Telegram/Discord:
-- Image → `![<alt>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.png)` — shows inline
-- Video → `[<title>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.mp4)` — web embeds a player; TG/Discord show a link
-- Audio → `[<title>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.mp3)` — web embeds an audio player
-- PDF / HTML / Excel / Word / PPT / any other → `[<filename>](/api/v1/media/fb690805-ecbb-4c17-b9d8-55981f8fd1ce/generated_images/<name>.<ext>)` — a clickable link that opens in a new tab (or downloads)
-
-Always give the user the link for anything you produce — never just say "saved to
-generated_images/" without the URL.
-
-### Generating an image/video/audio — ALWAYS use the __media__ directive
-To generate ANY image/video/audio, you MUST emit a `__media__` directive — do NOT
-run `mdbox gen` for generation (it blocks your whole turn until the file is done).
-Emit the directive on its own line and finish your reply right away — the system
-submits it, shows a live progress card, and delivers the result into the chat
-automatically. You do NOT run a command, wait, or paste a URL for it.
+**Generate image/video/audio ONLY by emitting a `__media__` directive** on its own line,
+once per file, then end your reply — the platform runs it, shows progress, and delivers
+the result into chat. Never run a local binary for generation.
 
 ```
 {"__media__": {"kind": "image", "model": "nano-banana-pro", "prompt": "a red fox in snow, cinematic"}}
 ```
 
-- `kind`: image | video | audio. `prompt`: required. `model`: a current model name — good
-  defaults: image `nano-banana-pro`, video `sora-2`, audio `elevenlabs`; run `mdbox models`
-  or `mdbox guide` for the full list if that CLI is available (it may not be — the directive
-  works regardless, the platform validates the model).
-- For GPT-style images, use the explicit task variant **`gpt-image-2-t2i`** (text-to-image)
-  or `gpt-image-2-i2i` (image-to-image) — they finish in ~40s. **Avoid the bare `gpt-image-2`
-  alias**: it is queue-bound on the gateway and often takes many minutes (can hit the
-  generation timeout and fail). Same rule for any model: prefer a specific `-t2i`/`-i2i`
-  variant over a bare family name.
-- Image-to-image / image-to-video: put the reference image's **local path** straight
-  into `params.metadata.image` — a file you saved under `generated_images/`, or an
-  image the user attached (its path is in the `[Available files]` context). The
-  platform uploads it for you, so you do NOT run `mdbox upload` and do NOT need a URL.
+- `kind`: image|video|audio; `prompt` required. Model defaults: image `nano-banana-pro`,
+  video `sora-2`, audio `elevenlabs` (`mdbox models` lists all; prefer a specific
+  `-t2i`/`-i2i` variant like `gpt-image-2-t2i` over a bare family name — bare aliases can
+  be queue-bound and time out).
+- Image-to-image / image-to-video: put the reference image's LOCAL path in
+  `params.metadata.image` (file under `generated_images/`, a user attachment path, or an
+  https URL; list for multiple refs). The platform uploads it — no `mdbox upload` needed:
   `{"__media__": {"kind":"image","model":"nano-banana","prompt":"make it a watercolor","params":{"metadata":{"image":"generated_images/photo.png"}}}}`
-  Multiple references: `"image": ["generated_images/a.png","generated_images/b.png"]`.
-  An https URL also works as-is. (Good i2i models: `nano-banana`, `gpt-image-2-i2i`.)
-- Emit the directive ONCE per file; don't also run `mdbox gen` for the same thing.
 
-Use the synchronous `mdbox gen` below ONLY when you need the generated file IN THIS
-SAME TURN (e.g. generate an image, then immediately feed it into a video).
-
-### mdbox multimodal
-You can generate and process media (image / video / audio / music) with the
-`mdbox` CLI — text-to-image/video, image-to-image/video, cutout (background
-removal), and image/video upscaling are all supported.
-
-**Run `mdbox guide` for the full reference.** For GENERATION, use the `__media__`
-directive above — NOT `mdbox gen`. The `mdbox` CLI here is for: `mdbox models`
-(list current models), `mdbox upload <file>` (local file → the https URL that
-reference inputs require), and `mdbox guide`. `mdbox gen --model <model> --prompt
-"<text>" -o generated_images/<name>.png` runs a SYNCHRONOUS (blocking) generation —
-use it ONLY for the same-turn chained case noted above, never for a plain request.
-
-Project conventions: always save outputs under `generated_images/` in the
-project working directory, use descriptive filenames, and after saving tell the
-user the relative path so they can preview/download it in the file browser.
+The `mdbox` CLI is for `mdbox models` / `mdbox upload <file>` / `mdbox guide` (full
+reference incl. cutout & upscaling). `mdbox gen -o generated_images/<name>.png` runs a
+BLOCKING generation — use it ONLY when the file is needed in this same turn (e.g. image
+→ feed into video), never for a plain request.
 <!-- MDBOX_MULTIMODAL_END -->
 
-
 <!-- CAPABILITY_AUTOPILOT_BEGIN -->
-## Capability autopilot — the task pulls in capabilities (MUST follow)
+## Capability autopilot (MUST follow)
 
-SmartJ users are non-programmers. They will NEVER browse the skills / roles /
-connectors / plugins libraries themselves — they only type what they want. YOU are
-the one who notices what a task needs and equips this project:
+Users are non-programmers who never browse the libraries — YOU notice what a task
+needs: for an unfamiliar task kind, check `skills search <kw>` / `connectors search
+<kw>` / `plugins list` first. Found a fit → SUGGEST in one line in the user's language
+and WAIT; equip only after a YES (`skills add` / `connectors enable` / `plugins
+enable`), never behind the user's back. If it needs the user's account/API key/money,
+say so when asking. Suggest unplugging capabilities no longer needed (they cost
+context). For deep domain sub-tasks: `roles search` → suggest → on OK `roles add
+<code>` and delegate to that sub-agent.
 
-1. When a task is of a kind you haven't handled here before (make a PPT, scrape a
-   site, process video, talk to an external service, ...), FIRST spend a few seconds
-   checking the library: `skills search <keyword>`; for an external system
-   `connectors search <keyword>`; for bundled capability packs `plugins list`.
-2. Found a fit → SUGGEST it, don't install it. One short line in the user's
-   language, e.g. 「这个任务用『数据图表』技能效果更好,要我启用吗?」 — then WAIT.
-   Only after the user agrees do you equip it (`skills add ...`,
-   `connectors enable ...`, `plugins enable ...`), and confirm in one line. Never
-   install anything the user hasn't approved.
-3. Anything additionally needing the USER's account / API key / money (connector
-   credentials, paid services) → explain what's needed when you ask, and collect
-   the credential conversationally after they agree.
-4. When an approved capability is clearly no longer needed, you may suggest
-   unplugging it (`skills remove ...`) — plugged capabilities cost context tokens.
-5. For a sub-task needing deep domain expertise, `roles search` and suggest the
-   expert; on OK, `roles add <code>` and delegate to that sub-agent.
-
-Be proactive about NOTICING and SUGGESTING — never wait for the user to name a
-tool, and never equip one behind their back. The user describes the outcome and
-stays in charge; you scout the toolkit.
-
-## Explicit ability references
-
-A message may begin with one or more `[skill: <key>]`, `[connector: <key>]`,
-`[plugin: <key>]` or `[mcp: <key>]` tags — the user picked those abilities in the
-composer to say "use THIS for what follows." Treat it as an explicit instruction:
-use that ability for the request. It's already enabled on the project, so just use
-it (no need to ask). Example: `[skill: mdbox-media] 生成一张海报` → use the
-mdbox-media skill to generate the poster.
+A message starting with `[skill: <key>]` / `[connector: <key>]` / `[plugin: <key>]` /
+`[mcp: <key>]` tags means the user explicitly picked that ability for this request — it's
+already enabled; just use it, no need to ask.
 <!-- CAPABILITY_AUTOPILOT_END -->
 <!-- ROLE_REF_BEGIN -->
 ## Your role
@@ -503,20 +329,11 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 <!-- MEMORY_TOOL_BEGIN -->
 ## Retrievable memory — search, don't carry (`memory`)
 
-MEMORY.md is loaded whole every session, so it must stay SMALL. Durable knowledge goes
-into retrievable facts instead — one markdown file per fact under
-`.claudecrab/memory/facts/`, FTS-indexed:
-
-- `memory search "<query>"` — find relevant facts. **Do this FIRST** when a question
-  touches past decisions, conventions, or user preferences.
-- `memory add "<title>" --body "<text>" [--tags a,b]` — save ONE durable fact (a
-  decision + why, a gotcha, a preference). Specific titles beat vague ones.
-- `memory list` / `memory show <slug>` / `memory forget <slug>` / `memory reindex`.
-- `memory import-legacy` — one-time: split an overgrown MEMORY.md's `##` sections into
-  facts (MEMORY.md itself is left untouched).
-
-Division of labor: MEMORY.md keeps only the few lines that matter EVERY session
-(architecture, port map, active conventions); everything else becomes a fact you can
-recall on demand. When MEMORY.md grows past ~60 lines, move the stable parts out with
-`memory import-legacy` + trim.
+MEMORY.md loads whole every session → keep only the few always-relevant lines there
+(architecture, port map, active conventions). Everything else = one fact per file under
+`.claudecrab/memory/facts/`, FTS-indexed: `memory search "<q>"` (**do FIRST** when a
+question touches past decisions/conventions/preferences) · `memory add "<title>"
+--body "<text>" [--tags a,b]` (one durable fact; specific titles) · `list` / `show
+<slug>` / `forget <slug>` / `reindex` · `import-legacy` (one-time: split an overgrown
+MEMORY.md's ## sections into facts). MEMORY.md past ~60 lines → import-legacy + trim.
 <!-- MEMORY_TOOL_END -->

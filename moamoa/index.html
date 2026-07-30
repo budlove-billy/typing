@@ -65,8 +65,6 @@ main{width:100%;max-width:520px;padding:12px 12px 32px;}
 .btn.primary{background:var(--text);color:var(--bg);border-color:var(--text);}
 #lives{text-align:center;margin-top:14px;font-size:14px;color:var(--sub);}
 #lives .heart{font-size:16px;letter-spacing:3px;}
-#lives .sep{margin:0 8px;opacity:.5;}
-#playTime{font-variant-numeric:tabular-nums;font-weight:700;color:#5b574f;}
 #shareCard{width:100%;max-width:320px;border-radius:12px;display:block;margin:12px auto 2px;box-shadow:0 3px 12px rgba(0,0,0,.14);}
 #toast{
   position:fixed;top:14%;left:50%;transform:translateX(-50%);
@@ -116,7 +114,7 @@ footer{font-size:11.5px;color:#a09a8e;padding:10px 16px 24px;text-align:center;l
 <main>
   <div id="solvedRows"></div>
   <div id="grid"></div>
-  <div id="lives">남은 기회 <span class="heart" id="heartRow"></span><span class="sep">·</span><span id="playTime">⏱ 0:00</span></div>
+  <div id="lives">남은 기회 <span class="heart" id="heartRow"></span></div>
   <div id="controls">
     <button class="btn" id="shuffleBtn">섞기</button>
     <button class="btn" id="clearBtn">선택 해제</button>
@@ -495,11 +493,11 @@ function render(){
   document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>tapTile(t.dataset.w));
   // 목숨
   $('heartRow').textContent = '●'.repeat(MAX_MISS-state.miss) + '○'.repeat(state.miss);
-  $('playTime').textContent = '⏱ ' + fmtSec(state.sec);
   $('submitBtn').disabled = selected.length!==4 || state.done;
 }
 /* ══════════════ 플레이 시간 ══════════════ */
-// 제한이 아니라 '기록'으로서의 시간 — 첫 선택에 시작해 정답/실패로 끝나며, 성공 시 최단 기록으로 남는다.
+// 제한시간이 아니다. 플레이 중에는 아무것도 표시하지 않고(시계가 보이면 압박이 된다)
+// 조용히 재기만 해서, 끝난 뒤 결과·공유카드의 '걸린 시간' 기록으로만 쓴다.
 function fmtSec(s){ const m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
 let clockTm=null;
 function startClock(){
@@ -507,7 +505,6 @@ function startClock(){
   clockTm=setInterval(()=>{
     if(state.done || document.visibilityState!=='visible') return;
     state.sec++;
-    $('playTime').textContent='⏱ '+fmtSec(state.sec);
     if(state.sec%10===0) save();
   },1000);
 }
@@ -628,7 +625,7 @@ function buildShareCard(){
   c.font='800 25px '+F;
   c.fillText(state.win ? `${state.guesses.length}번 만에 성공! 🎉` : '아쉽게 실패…', W/2, 152);
   c.fillStyle='#6b6b6b'; c.font='600 16px '+F;
-  c.fillText(state.win ? `걸린 시간 ${fmtSec(state.sec)}` : `걸린 시간 ${fmtSec(state.sec)} · 내일 다시!`, W/2, 182);
+  c.fillText(state.win ? `걸린 시간 ${fmtSec(state.sec)}` : '내일 새 퍼즐로 다시!', W/2, 182);
 
   const gridW = 4*CELL + 3*GAP, gx0 = (W-gridW)/2, gy0 = 216;
   state.guesses.forEach((g,r)=>{
@@ -647,7 +644,7 @@ function showModal(){
   $('resultTitle').textContent = state.win? '축하해요! 🎉':'아쉬워요!';
   $('resultSub').textContent = state.win
     ? `${state.guesses.length}번의 시도 · ${fmtSec(state.sec)}` + (stats.bestSec!=null?` (최단 ${fmtSec(stats.bestSec)})`:'')
-    : `${fmtSec(state.sec)} 동안 도전했어요 · 내일 다시 만나요`;
+    : `내일 새 퍼즐로 다시 만나요`;
   try{ $('shareCard').src = buildShareCard().toDataURL('image/png'); }catch(e){}
   $('stPlayed').textContent=stats.played;
   $('stWinRate').textContent=stats.played? Math.round(stats.wins/stats.played*100)+'%':'0%';
