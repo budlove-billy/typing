@@ -1,12 +1,17 @@
 # Active Session State
 
 ## 진행 중인 작업
-없음 — 게임 전면 개선(난이도·점수 공정성·지속성·경쟁) 작업 완료·커밋함.
+없음 — 게임 전면 개선(난이도·점수 공정성·지속성·경쟁) 작업 완료·커밋·**실서버 배포까지 완료**
+(2026-07-31, master→origin/main 푸시, Vercel 자동배포, 실서버 스모크 통과).
 상세 내역은 CLAUDE.md 체인지로그 2026-07-30 첫 항목, 재사용 규칙은 MEMORY.md
 "점수·난이도 공정성 규칙" / "지속성·경쟁 구조" 참조.
 
+## 배포 방법(확인됨)
+로컬 브랜치는 `master`, 원격 배포 브랜치는 `main`. 푸시는
+`git push "https://x-access-token:$GITHUB_TOKEN@github.com/budlove-billy/typing.git" master:main`
+(토큰은 `.env`의 `GITHUB_TOKEN`). 푸시 후 1분이면 Vercel 반영.
+
 ## 미결(사용자 결정 대기)
-- 보안헤더 `vercel.json` 배포 후 `curl -sI https://playmallow.com/` 재확인
 - 레거시 `brain_app.html` 정리 여부
 - GA4 리뷰 리마인더 미실행(사용자 확인 없이는 실행 금지)
 
