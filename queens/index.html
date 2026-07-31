@@ -59,6 +59,19 @@ main{width:100%;max-width:480px;padding:8px 14px 44px;}
 footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#2a2140;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:50;}
 .toast.show{opacity:.95;}
+/* ── 검색·소개용 고정 콘텐츠(한국어 전용) ── */
+.seo{width:100%;}
+.seo .card{text-align:left;}
+.seo h2{font-size:16px;margin:0 0 8px;font-weight:800;color:var(--text);}
+.seo p{font-size:13.5px;line-height:1.75;color:var(--text);margin:0 0 8px;}
+.seo p:last-child{margin-bottom:0;}
+.seo ol,.seo ul{margin:0 0 8px;padding-left:18px;}
+.seo li{font-size:13.5px;line-height:1.75;color:var(--text);margin-bottom:4px;}
+.seo .sub{color:var(--sub);font-size:12.5px;}
+.seo .links{font-size:13.5px;line-height:2;}
+.seo .links a{color:var(--p);font-weight:700;text-decoration:none;}
+.seo .tlist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;}
+.seo .tlist li{font-size:12.5px;}
 </style>
 </head>
 <body>
@@ -85,6 +98,46 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     <div class="hint" id="t-hint"></div>
     <div class="disc" id="t-disc"></div>
   </div>
+  <section class="seo" data-lang-only="ko">
+    <div class="card">
+      <h2>말로우 크라운(왕관 퍼즐)은 어떤 게임인가요?</h2>
+      <p>말로우 크라운은 색으로 나뉜 정사각형 판 위에서 <b>왕관을 놓을 자리를 논리로 찾아내는</b> 데일리 퍼즐입니다. 찍거나 운으로 맞히는 퍼즐이 아니라 규칙을 하나씩 따져 나가면 <b>정답이 단 하나로 좁혀지는</b> 방식이라, 다 풀고 나면 개운합니다. 매일 자정(한국 시간)에 새 퍼즐이 올라오며, 회원가입이나 앱 설치 없이 브라우저에서 바로 무료로 즐길 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>규칙은 세 줄이면 끝납니다</h2>
+      <ol>
+        <li><b>가로줄마다 왕관 1개</b> — 어느 줄에도 왕관이 두 개 있으면 안 됩니다.</li>
+        <li><b>세로줄마다 왕관 1개</b> — 위아래 방향도 마찬가지입니다.</li>
+        <li><b>색깔 구역마다 왕관 1개</b> — 같은 색으로 묶인 칸 덩어리에도 하나씩만 놓습니다.</li>
+      </ol>
+      <p>여기에 조건이 하나 더 붙습니다. <b>왕관끼리는 서로 닿을 수 없습니다.</b> 위아래·양옆은 물론 <b>대각선으로도</b> 붙으면 안 되므로, 왕관 사이는 언제나 한 칸 이상 떨어져 있어야 합니다.</p>
+      <p class="sub">칸을 탭하면 👑 → ✕ → 빈칸 순서로 바뀝니다. ✕는 "여기는 아니다"라고 스스로 남겨 두는 메모라서, 헷갈릴 때 후보를 지워 나가는 데 쓰면 훨씬 수월합니다.</p>
+    </div>
+    <div class="card">
+      <h2>처음이라면 이렇게 풀어 보세요</h2>
+      <ul>
+        <li><b>가장 작은 색 구역부터.</b> 칸이 두세 개뿐인 구역은 왕관이 들어갈 자리가 얼마 없어 가장 먼저 확정됩니다.</li>
+        <li><b>한 줄 안에만 있는 색을 찾으세요.</b> 어떤 색이 한 가로줄 안에서만 보인다면, 그 줄의 왕관은 반드시 그 색 안에 있습니다. 그 줄의 나머지 칸은 전부 ✕로 지울 수 있습니다.</li>
+        <li><b>왕관을 놓았으면 곧바로 주변을 정리하세요.</b> 같은 줄, 같은 칸, 같은 색, 그리고 맞닿은 여덟 칸이 한꺼번에 후보에서 빠집니다. 이 정리를 부지런히 할수록 다음 왕관이 저절로 드러납니다.</li>
+        <li><b>막히면 왕관 대신 ✕부터.</b> 어디에 놓을지 고민하는 대신 확실히 아닌 칸을 지워 나가면, 남은 한 칸이 답이 됩니다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>판 크기 6×6 · 7×7 · 8×8</h2>
+      <p>같은 날 퍼즐을 세 가지 크기로 즐길 수 있습니다. <b>6×6</b>은 규칙에 익숙해지기 좋고, <b>7×7</b>은 하루 한 판으로 적당하며, <b>8×8</b>은 색 구역 모양이 복잡해져 제법 오래 붙잡게 됩니다. 크기를 바꿔도 그날의 퍼즐은 모두에게 똑같이 나오기 때문에, 같은 판을 놓고 걸린 시간을 견줘 볼 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>자주 묻는 질문</h2>
+      <p><b>Q. 정말 무료인가요?</b><br>네. 가입도 앱 설치도 필요 없습니다. 주소를 열면 오늘의 퍼즐이 바로 시작됩니다.</p>
+      <p><b>Q. 답이 여러 개일 수도 있나요?</b><br>아니요. 모든 퍼즐은 만들어질 때 <b>정답이 하나뿐인지 검사</b>를 거칩니다. 논리만으로 끝까지 풀 수 있어 찍을 필요가 없습니다.</p>
+      <p><b>Q. 기록은 어디에 저장되나요?</b><br>걸린 시간은 지금 쓰는 기기 안에만 저장되고 서버로 보내지 않습니다. 다 풀면 결과 카드를 만들어 친구에게 공유할 수 있습니다.</p>
+      <p><b>Q. 오늘 퍼즐을 벌써 풀었어요.</b><br>판 크기를 바꾸면 같은 날에도 다른 퍼즐을 풀 수 있고, 다음 퍼즐은 자정에 올라옵니다.</p>
+    </div>
+    <div class="card">
+      <h2>다른 데일리 퍼즐도 있어요</h2>
+      <p class="links"><a href="/tango/">말로우 탱고(해·달 퍼즐)</a> · <a href="/moamoa/">모아모아 낱말 퍼즐</a> · <a href="/nonogram/">네모로직</a> · <a href="/sudoku/">스도쿠</a> · <a href="/">두뇌게임 홈</a></p>
+    </div>
+  </section>
 </main>
 <footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
@@ -262,6 +315,8 @@ function share(t){ gtag('event','queens_share',{}); const cv=drawCard(t);
 /* ===== 언어/사이즈 UI ===== */
 function applyLang(){const d=TX[LANG];
   document.getElementById('langSel').value=LANG;
+  // 한국어 전용 고정 콘텐츠(소개·규칙·FAQ)는 다른 언어에서 숨긴다
+  document.querySelectorAll('[data-lang-only]').forEach(function(el){ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
   document.getElementById('t-home').textContent=d.home;
   document.getElementById('t-title').textContent=d.title;
   document.getElementById('t-tagline').textContent=d.tagline;

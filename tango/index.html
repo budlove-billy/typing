@@ -59,6 +59,19 @@ main{width:100%;max-width:480px;padding:8px 14px 44px;}
 footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} footer a{color:var(--sub);}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#2a2140;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:50;}
 .toast.show{opacity:.95;}
+/* ── 검색·소개용 고정 콘텐츠(한국어 전용) ── */
+.seo{width:100%;}
+.seo .card{text-align:left;}
+.seo h2{font-size:16px;margin:0 0 8px;font-weight:800;color:var(--text);}
+.seo p{font-size:13.5px;line-height:1.75;color:var(--text);margin:0 0 8px;}
+.seo p:last-child{margin-bottom:0;}
+.seo ol,.seo ul{margin:0 0 8px;padding-left:18px;}
+.seo li{font-size:13.5px;line-height:1.75;color:var(--text);margin-bottom:4px;}
+.seo .sub{color:var(--sub);font-size:12.5px;}
+.seo .links{font-size:13.5px;line-height:2;}
+.seo .links a{color:var(--p);font-weight:700;text-decoration:none;}
+.seo .tlist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;}
+.seo .tlist li{font-size:12.5px;}
 </style>
 </head>
 <body>
@@ -85,6 +98,44 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     <div class="hint" id="t-hint"></div>
     <div class="disc" id="t-disc"></div>
   </div>
+  <section class="seo" data-lang-only="ko">
+    <div class="card">
+      <h2>말로우 탱고(해·달 퍼즐)는 어떤 게임인가요?</h2>
+      <p>말로우 탱고는 빈칸을 <b>☀️ 해</b>와 <b>🌙 달</b> 두 가지로만 채우는 데일리 논리 퍼즐입니다. 숫자도 계산도 필요 없고 규칙은 단 두 가지뿐이지만, 그 두 규칙이 서로 맞물리면서 <b>정답이 하나로 정해집니다.</b> 몇 칸은 처음부터 채워져 있어 거기서부터 실마리를 풀어 나가면 됩니다. 매일 자정(한국 시간)에 새 퍼즐이 올라오고, 가입이나 설치 없이 브라우저에서 무료로 즐길 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>규칙은 두 가지뿐입니다</h2>
+      <ol>
+        <li><b>같은 것이 세 개 연속이면 안 됩니다.</b> 가로로도 세로로도 ☀️☀️☀️ 또는 🌙🌙🌙은 만들 수 없습니다. 두 개까지는 괜찮습니다.</li>
+        <li><b>줄마다 해와 달의 개수가 같아야 합니다.</b> 6×6이면 한 줄에 해 셋·달 셋, 8×8이면 넷·넷입니다. 가로줄과 세로줄 모두 지켜야 합니다.</li>
+      </ol>
+      <p class="sub">칸을 탭하면 ☀️ → 🌙 → 빈칸 순서로 바뀝니다. 처음부터 놓여 있는 칸은 바뀌지 않으며, 그 칸들이 퍼즐을 푸는 출발점입니다.</p>
+    </div>
+    <div class="card">
+      <h2>처음이라면 이 세 가지만 기억하세요</h2>
+      <ul>
+        <li><b>같은 것 두 개가 나란히 있으면 양옆은 반대입니다.</b> ☀️☀️가 붙어 있다면 그 양쪽 칸은 셋 연속을 막기 위해 무조건 🌙이 됩니다. 가장 자주 쓰는 수입니다.</li>
+        <li><b>한 칸 띄고 같은 것이 있으면 그 사이는 반대입니다.</b> ☀️ ⬜ ☀️ 라면 가운데는 반드시 🌙입니다. 해를 넣는 순간 세 개가 연속되기 때문입니다.</li>
+        <li><b>한쪽을 다 채웠으면 남은 칸은 전부 반대입니다.</b> 6×6에서 한 줄에 해가 이미 세 개라면, 그 줄의 남은 칸은 고민할 것 없이 전부 달입니다.</li>
+      </ul>
+      <p>이 세 가지를 번갈아 적용하다 보면 대부분의 판은 막히는 곳 없이 끝까지 풀립니다. 어느 한 곳이 막혔다면 아직 위 세 가지를 적용할 수 있는 자리가 판 어딘가에 남아 있다는 뜻입니다.</p>
+    </div>
+    <div class="card">
+      <h2>판 크기 6×6 · 8×8</h2>
+      <p><b>6×6</b>은 규칙에 익숙해지기 좋은 크기로 몇 분이면 끝납니다. <b>8×8</b>은 한 줄에 넣어야 할 개수가 늘고 미리 채워진 칸이 상대적으로 적어 훨씬 오래 붙잡게 됩니다. 두 크기 모두 그날의 퍼즐은 모두에게 똑같이 나오므로, 같은 판을 놓고 걸린 시간을 견줘 볼 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>자주 묻는 질문</h2>
+      <p><b>Q. 정말 무료인가요?</b><br>네. 가입도 앱 설치도 필요 없습니다. 주소를 열면 오늘의 퍼즐이 바로 시작됩니다.</p>
+      <p><b>Q. 찍어야 하는 순간이 오나요?</b><br>아니요. 모든 퍼즐은 만들어질 때 <b>정답이 하나뿐인지 검사</b>를 거치므로, 규칙만으로 끝까지 풀 수 있습니다.</p>
+      <p><b>Q. 스도쿠와 무엇이 다른가요?</b><br>스도쿠는 아홉 가지 숫자를 다루지만 탱고는 해와 달 두 가지뿐입니다. 대신 "셋 연속 금지"와 "개수 맞추기"가 맞물리며 숫자 없이도 촘촘한 추론이 이어집니다.</p>
+      <p><b>Q. 기록은 어디에 저장되나요?</b><br>걸린 시간은 지금 쓰는 기기 안에만 저장되고 서버로 보내지 않습니다. 다 풀면 결과 카드를 만들어 공유할 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>다른 데일리 퍼즐도 있어요</h2>
+      <p class="links"><a href="/queens/">말로우 크라운(왕관 퍼즐)</a> · <a href="/moamoa/">모아모아 낱말 퍼즐</a> · <a href="/nonogram/">네모로직</a> · <a href="/sudoku/">스도쿠</a> · <a href="/">두뇌게임 홈</a></p>
+    </div>
+  </section>
 </main>
 <footer><a href="/">playmallow.com</a> · <span id="t-footer">가볍게 즐기는 두뇌게임</span></footer>
 <canvas id="shareCanvas" width="600" height="820" style="display:none"></canvas>
@@ -255,6 +306,8 @@ function share(t){ gtag('event','tango_share',{}); const cv=drawCard(t);
 /* ===== UI ===== */
 function applyLang(){const d=TX[LANG];
   document.getElementById('langSel').value=LANG;
+  // 한국어 전용 고정 콘텐츠(소개·규칙·FAQ)는 다른 언어에서 숨긴다
+  document.querySelectorAll('[data-lang-only]').forEach(function(el){ el.style.display=(el.getAttribute('data-lang-only')===LANG)?'':'none'; });
   document.getElementById('t-home').textContent=d.home;
   document.getElementById('t-title').textContent=d.title;
   document.getElementById('t-tagline').textContent=d.tagline;
