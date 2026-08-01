@@ -50,7 +50,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 
 ## 수익화(애드센스) & SEO 강화 (2026-07-21)
 - **목표**: 트래픽 유입 → 구글 애드센스 → 꾸준한 수익. 사이트는 살아있고 문제는 트래픽/수익화 0.
-- **애드센스 상태**: 아직 **미신청**(pub-id 없음, 신규 신청 예정). 사용자가 신청 후 `ca-pub-...` 주면 → head 스니펫 + `ads.txt`(`google.com, pub-XXX, DIRECT, f08c47fec0942fa0`) + 광고 슬롯 일괄 삽입 예정. 배치는 **정책 안전 위치만**(랜딩/가이드/운세 결과/게임 결과카드/홈·기록), **게임 플레이 화면 금지**(오클릭=밴). 신청 이메일=contact@playmallow.com(사용자가 추후 연결). 켜면 "광고 없음" 카피 수정 필요: `2048/`·`sudoku/`·`water-sort/`. 가이드=`애드센스-신청-가이드.md`.
+- **애드센스 상태(2026-07-31 갱신)**: pub-id `ca-pub-8615421634491307` 발급받아 **연결 코드 삽입·배포 완료** — 배포 27쪽 head 스니펫 + 루트 `ads.txt` + "광고 없이" 카피 정정(전 사이트 grep 결과 `2048/` 한 곳뿐이었음). **남은 건 사용자가 대시보드에서 "검토 요청"** 누르는 것. 승인되면 광고 단위(슬롯) 배치 — **정책 안전 위치만**(랜딩/가이드/운세 결과/게임 결과카드/홈·기록), **게임 플레이 화면·버튼 근처·팝업 위 영구 금지**(오클릭=밴). 신청 이메일=contact@playmallow.com. 가이드=`애드센스-신청-가이드.md`.
 - **개인정보처리방침** `/privacy/`(ko/en) 신설 — 애드센스 승인 하드블로커. 쿠키·GA4·localStorage·AdSense 제3자쿠키 고지 + opt-out. 홈 푸터·sitemap 등재.
 - **구조화 데이터 완비**: 정적 랜딩 17/17 JSON-LD(WebApplication/GameApplication + BreadcrumbList), 운세 4종은 WebApp+FAQPage+Breadcrumb, 가이드 6종 Article+Breadcrumb(author/publisher/date). moamoa·home은 기존 보유.
 - **운세 4종 콘텐츠 보강(핵심)**: unse/zodiac/ttirank/tarot가 **얇은 JS 위젯**(크롤텍스트 100~449자)이라 랭킹·애드센스 저품질 반려 위험 → `</main>` 앞에 고정 SEO 콘텐츠(소개·십이지/별자리 날짜표·오행/아르카나 설명·이용법·FAQ·관련운세 내부링크·면책) 추가로 **865~1223자**로 상향(moamoa 952·sudoku 758 리치 수준 초과). `.seo` 스타일 각 페이지 head에 주입(var fallback). 교훈: **운세/게임 정적 페이지는 위젯만 두지 말고 크롤용 고정 콘텐츠를 항상 붙일 것**(moamoa 원칙과 동일).
@@ -59,6 +59,14 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - **push 이슈**: 이 환경 Git Credential Manager가 종종 hang → `taskkill //F //IM git-credential-manager.exe` 후 `GIT_TERMINAL_PROMPT=0 git push origin master:main` 재시도하면 캐시 자격증명으로 성공. 원격은 `github.com/budlove-billy/typing.git`, push는 master→main.
 - **남은 후보(우선순위 낮거나 gated)**: 애드센스 실삽입(pub-id 대기), 운세 페이지별 OG 이미지(공유 클릭률), 시즌 랜딩(수능 11월·신년 1월), 고수요 무랜딩 게임(스트룹) 랜딩 검토.
 
+
+## 콘텐츠 금지선 — 도박·복권 (2026-08-01 조사·결정)
+- **로또/복권 번호 추천은 만들지 않는다**(태국 로또 `หวย` 포함). 조사 결론:
+  ① **애드센스** — 구글의 restricted 정의는 "실제 돈이 걸린 도박 참여를 가능케 하는 콘텐츠"라 *예측만 하는* 페이지는 명시 대상은 아니지만, AdSense 도박 카테고리 설명에는 `tips·odds·handicapping`이 함께 열거되고 판정은 자동분류 → **한 페이지 때문에 도메인 전체가 restricted 판정**을 받을 위험. 심사 중에는 특히 금물.
+  ② **태국 법** — Gambling Act B.E.2478 + 관련 규제상 **정부 복권조차 "광고·홍보로 구매를 권유"하는 행위가 금지**이고 20세 미만 판매 금지. Mallow는 연령 게이트가 없고 전 연령 대상 → 태국 사용자에게 노출되는 순간 위험이 가장 큰 조합.
+  ③ **브랜드** — "훈련하면 늘어난다"는 기록·능력치 체계가 제품의 신뢰 근거인데, 예측 불가능한 난수를 "추천"하면 그 신뢰를 스스로 부순다.
+- **대안(안전)**: 태국 문화 기반 *비도박* 재미 콘텐츠 — 예) `สีมงคลประจำวันเกิด`(요일별 행운색), 태국 12띠·요일 부처. 기존 `재미(cat.fun)` 운세 계열에 그대로 들어가고 법·정책 리스크 0.
+- 유사 요청(스포츠 토토·주식 종목 추천 등)이 오면 같은 기준으로 판단할 것.
 
 ## 브랜드 검색·언어 SEO (2026-07-15)
 - 한국어 공식 표기는 **플레이말로우**, 영문 표기는 **Mallow / Play Mallow**. 메인 검색 의도는 `무료 두뇌게임·웹게임`이며 title·description·OG·manifest·홈 가시 본문에 자연스럽게 함께 쓴다.
