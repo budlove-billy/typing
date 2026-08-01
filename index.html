@@ -4137,9 +4137,13 @@ function syncLanguageSEO(lang,syncUrl){
   set('meta[name="twitter:title"]','content',seo.title);
   set('meta[name="twitter:description"]','content',seo.desc);
   if(syncUrl && history.replaceState){
+    // 주소창을 공유 가능한 형태로: 한국어 '/', 영어 '/en', 태국어 '/th'.
+    // ?lang= 주소는 원본 HTML의 og태그가 한국어로 고정돼 있어 공유 미리보기가 한글로 나온다.
+    // (슬래시 없는 경로라 상대경로 자산은 '/' 기준으로 그대로 해석된다)
     const u=new URL(location.href);
-    if(lang==='ko') u.searchParams.delete('lang'); else u.searchParams.set('lang',lang);
-    history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
+    u.searchParams.delete('lang');
+    const q=u.searchParams.toString();
+    history.replaceState(null,'',(lang==='ko'?'/':'/'+lang)+(q?'?'+q:'')+u.hash);
   }
 }
 function setLanguage(lang,syncUrl){
@@ -7704,7 +7708,7 @@ let CH=null; // 수신한 도전 {game,score,diff}
 function chDiffLabel(d){ return t('ch.'+d); }
 function sendChallenge(game){
   const st=chState(game); if(!st) return;
-  const url='https://playmallow.com/?c='+game+'.'+st.score+'.'+st.diff;
+  const url='https://playmallow.com'+(CURRENT_LANG==='ko'?'/':'/'+CURRENT_LANG)+'?c='+game+'.'+st.score+'.'+st.diff;
   const txt=t('ch.msg').replace('{name}',t(gameMeta(game).key)).replace('{score}',st.score)+' '+url;
   track('challenge_send',{game:game,score:st.score});
   if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); }
@@ -9715,13 +9719,15 @@ function leaveTrace(){ resetTrace(); showScreen('games'); }
 function resetTrace(){ TC.running=false; TC.active=false; const g=document.getElementById('trace-game-card');if(g)g.style.display='none'; const r=document.getElementById('trace-result-card');if(r)r.style.display='none'; const i=document.getElementById('trace-intro-card');if(i)i.style.display='block'; tcUpdateBestLine(); }
 
 // INIT
-// 언어: URL ?lang= 우선 → 저장값 → 한국어. 루트 URL은 항상 한국어 문서로 유지한다.
+// 언어: URL ?lang= 우선 → 저장값 → 한국어.
+// 정해진 언어는 곧바로 주소창에 반영한다(/ · /en · /th) — 그래야 주소를 복사해 공유해도
+// 미리보기 문구가 그 언어로 나온다.
 (function(){
   let lang=null;
   try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
   if(!lang){ try{ lang=localStorage.getItem('brain.lang'); }catch(e){} }
-  if(lang && ['ko','en','th'].includes(lang)){ setLanguage(lang,!new URLSearchParams(location.search).get('lang')); }
-  else setLanguage('ko',false);
+  if(lang && ['ko','en','th'].includes(lang)){ setLanguage(lang,true); }
+  else setLanguage('ko',true);
 })();
 renderLevelTabs();
 renderExamInfo();

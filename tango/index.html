@@ -177,7 +177,7 @@ const TX={
    date:d=>'📅 '+d+' Daily Puzzle',hint:'🌗 <b>Goal</b> — fill every cell with a ☀️ sun or 🌙 moon.<br>① Never <b>3 of the same in a row</b> (across or down).<br>② Each row and column needs an <b>equal number</b> of suns and moons.<br>👆 Tap a cell to cycle ☀️ → 🌙 → empty.',
    disc:'A new puzzle every midnight (KST). Each one has a single answer solvable by <b>pure logic</b> 🌗',footer:'brain games, made light',
    newGame:'New puzzle',share:'📷 Share result',again:'Play again',won:'Solved! 🌗',wonTime:t=>'Time '+t,
-   share1:'Mallow Tango',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Tango! 🌗 '+t+' playmallow.com/tango',docTitle:'Mallow Tango — Daily Sun & Moon Puzzle | Mallow',
+   share1:'Mallow Tango',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Tango! 🌗 '+t+' playmallow.com/tango/en',docTitle:'Mallow Tango — Daily Sun & Moon Puzzle | Mallow',
    toastBad:'Rule broken! Check the red cells.'},
  th:{home:'หน้าแรก',title:'แทงโก้',tagline:'เติมดวงอาทิตย์และดวงจันทร์',clear:'ล้าง',
    date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'🌗 <b>เป้าหมาย</b> — เติมทุกช่องด้วย ☀️ อาทิตย์ หรือ 🌙 จันทร์<br>① ห้ามเหมือนกัน <b>3 ช่องติด</b> (ทั้งแนวนอนและแนวตั้ง)<br>② แต่ละแถวและคอลัมน์ต้องมีอาทิตย์กับจันทร์ <b>จำนวนเท่ากัน</b><br>👆 แตะช่องเพื่อสลับ ☀️ → 🌙 → ว่าง',
@@ -324,7 +324,12 @@ function applyLang(){const d=TX[LANG];
 }
 function renderSizes(){const wrap=document.getElementById('sizes');wrap.innerHTML='';
   [6,8].forEach(n=>{const b=document.createElement('button');b.textContent=n+'×'+n;b.className=n===N?'on':'';b.onclick=()=>{N=n;renderSizes();newPuzzle(DAILY);};wrap.appendChild(b);});}
-function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();}
+function syncLangUrl(){ try{ if(!history.replaceState) return;
+  var u=new URL(location.href); u.searchParams.delete('lang');
+  var q=u.searchParams.toString();
+  history.replaceState(null,'','/tango/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
+ }catch(e){} }
+function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();syncLangUrl();}
 document.getElementById('clearBtn').onclick=()=>{ if(WON)return; ST=GIVEN.map(row=>row.slice()); paint(); };
 
 LANG=detectLang(); document.documentElement.lang=LANG;

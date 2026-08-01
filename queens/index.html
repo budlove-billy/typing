@@ -178,7 +178,7 @@ const TX={
    date:d=>'📅 '+d+' Daily Puzzle',hint:'👑 <b>Goal</b> — place exactly <b>one crown</b> in every row, every column and every <b>color region</b>.<br>🚫 No two crowns may <b>touch</b>, not even diagonally (keep them at least one cell apart).<br>👆 Tap a cell to cycle <b>👑 → ✕</b> (not here) <b>→ empty</b>. The ✕ is just a note to rule a cell out.',
    disc:'A new puzzle every midnight (KST). Each one has a single answer solvable by <b>pure logic</b> 👑',footer:'brain games, made light',
    size:'Size',newGame:'New puzzle',share:'📷 Share result',again:'Play again',won:'Solved! 👑',wonTime:t=>'Time '+t,
-   share1:'Mallow Crown',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Crown! 👑 '+t+' playmallow.com/queens',docTitle:'Mallow Crown — Daily Queens Puzzle | Mallow',
+   share1:'Mallow Crown',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Crown! 👑 '+t+' playmallow.com/queens/en',docTitle:'Mallow Crown — Daily Queens Puzzle | Mallow',
    toastBad:'Crown rule broken! Check the red cells.'},
  th:{home:'หน้าแรก',title:'คราวน์',tagline:'วางมงกุฎ 1 อันต่อแถว คอลัมน์ และโซนสี',clear:'ล้าง',
    date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'👑 <b>เป้าหมาย</b> — วางมงกุฎ <b>1 อัน</b> ในทุกแถว ทุกคอลัมน์ และทุก<b>โซนสี</b><br>🚫 มงกุฎห้าม<b>ติดกัน</b> แม้แต่แนวทแยง (ให้ห่างกันอย่างน้อย 1 ช่อง)<br>👆 แตะช่องเพื่อสลับ <b>👑 → ✕</b> (ไม่ใช่ตรงนี้) <b>→ ว่าง</b> เครื่องหมาย ✕ ใช้จดว่าตัดช่องนี้ออก',
@@ -335,7 +335,12 @@ function renderSizes(){
   const wrap=document.getElementById('sizes'); wrap.innerHTML='';
   [6,7,8].forEach(n=>{const b=document.createElement('button');b.textContent=n+'×'+n;b.className=n===N?'on':'';b.onclick=()=>{N=n;renderSizes();newPuzzle(DAILY);};wrap.appendChild(b);});
 }
-function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();}
+function syncLangUrl(){ try{ if(!history.replaceState) return;
+  var u=new URL(location.href); u.searchParams.delete('lang');
+  var q=u.searchParams.toString();
+  history.replaceState(null,'','/queens/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
+ }catch(e){} }
+function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();syncLangUrl();}
 document.getElementById('clearBtn').onclick=()=>{ if(WON)return; ST=Array.from({length:N},()=>new Array(N).fill(0)); paint(); };
 
 LANG=detectLang(); document.documentElement.lang=LANG;

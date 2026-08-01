@@ -294,7 +294,12 @@ function renderGameFunnel(){
   grid.innerHTML=picks.map(g=>'<a class="gf-card" href="/?game='+g.id+(LANG==='th'?'&lang=th':'')+'"><span class="gf-emoji">'+g.e+'</span><span class="gf-name">'+(LANG==='th'?g.th:g.ko)+'</span></a>').join('');
 }
 function CF(pick){ return (LANG==='th' && CARD_TH[pick.idx]) ? CARD_TH[pick.idx] : pick.card; }
-function setLang(l){ LANG=(l==='th')?'th':'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang();
+function syncLangUrl(){ try{ if(!history.replaceState) return;
+  var u=new URL(location.href); u.searchParams.delete('lang');
+  var q=u.searchParams.toString();
+  history.replaceState(null,'','/tarot/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
+ }catch(e){} }
+function setLang(l){ LANG=(l==='th')?'th':'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang(); syncLangUrl();
   document.getElementById('resultCard').style.display='none'; renderThreeBacks(); resetTodayCard(); }
 function applyLang(){ const d=TX[LANG];
   document.getElementById('langSel').value=LANG;

@@ -413,7 +413,12 @@ function qText(i){ if(LANG==='ko'){ const q=Q[i]; return {s:q.s,t:q.t,a:q.a[0],b
 function typeOf(code){ return LANG==='ko' ? TYPES[code] : Object.assign({}, TYPES[code], TYPES_i18n[LANG][code]); }
 function poleName(code){ return (AXL[LANG]&&AXL[LANG][code]) || code; }
 function gameName(id){ const base=GNAME[id]||['🎮',id]; const nm=(LANG!=='ko'&&GNAME_i18n[LANG]&&GNAME_i18n[LANG][id])||base[1]; return [base[0],nm]; }
-function setLang(l){ LANG=['ko','en','th'].includes(l)?l:'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang();
+function syncLangUrl(){ try{ if(!history.replaceState) return;
+  var u=new URL(location.href); u.searchParams.delete('lang');
+  var q=u.searchParams.toString();
+  history.replaceState(null,'','/persona/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
+ }catch(e){} }
+function setLang(l){ LANG=['ko','en','th'].includes(l)?l:'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang(); syncLangUrl();
   if(resultEl.style.display==='block'&&LASTRES){ finish(); } else if(quizCard.style.display==='block'){ renderQ(); } }
 function applyLang(){ const d=TX[LANG];
   document.getElementById('langSel').value=LANG;
