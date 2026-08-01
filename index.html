@@ -1044,7 +1044,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
   </div>
   <div class="site-footer" id="site-footer">
-    <a href="sudoku/">스도쿠 무료</a>·<a href="2048/">2048</a>·<a href="water-sort/">물 정렬 퍼즐</a>·<a href="nonogram/">네모로직</a>·<a href="memory-game/">기억력 게임</a>·<a href="reaction-time/">반응속도 테스트</a>·<a href="iq-test/">IQ 테스트</a>·<a href="braintype/">두뇌 유형 테스트</a>·<a href="moamoa/">모아모아</a>·<a href="guide/brain-games/">게임 공략</a>·<a href="stroop/">스트룹 테스트</a><br><a href="unse/">오늘의 운세</a>·<a href="zodiac/">별자리 운세</a>·<a href="ttirank/">띠별 운세</a>·<a href="tarot/">타로</a>·<a href="persona/">성격유형 테스트</a>·<a href="queens/">말로우 크라운</a>·<a href="tango/">말로우 탱고</a>·<a href="suneung/">수능 운세</a>·<a href="newyear/">신년운세</a><br><a href="privacy/">개인정보처리방침</a>·<a href="privacy/?lang=en">Privacy</a>
+    <a href="sudoku/">스도쿠 무료</a>·<a href="2048/">2048</a>·<a href="water-sort/">물 정렬 퍼즐</a>·<a href="nonogram/">네모로직</a>·<a href="memory-game/">기억력 게임</a>·<a href="reaction-time/">반응속도 테스트</a>·<a href="iq-test/">IQ 테스트</a>·<a href="braintype/">두뇌 유형 테스트</a>·<a href="moamoa/">모아모아</a>·<a href="guide/brain-games/">게임 공략</a>·<a href="stroop/">스트룹 테스트</a><br><a href="unse/">오늘의 운세</a>·<a href="zodiac/">별자리 운세</a>·<a href="ttirank/">띠별 운세</a>·<a href="tarot/">타로</a>·<a href="persona/">성격유형 테스트</a>·<a href="luckycolor/">태국 행운색</a>·<a href="queens/">말로우 크라운</a>·<a href="tango/">말로우 탱고</a>·<a href="suneung/">수능 운세</a>·<a href="newyear/">신년운세</a><br><a href="privacy/">개인정보처리방침</a>·<a href="privacy/?lang=en">Privacy</a>
   </div>
 </div>
 
@@ -3821,6 +3821,7 @@ const I18N = {
   "nav.zodiac": {ko:"별자리 운세", en:"Horoscope", th:"ดวงราศี"},
   "nav.ttirank": {ko:"띠별 운세", en:"Zodiac Rank", th:"อันดับนักษัตร"},
   "nav.tarot": {ko:"타로 점", en:"Tarot", th:"ไพ่ทาโรต์"},
+  "nav.luckycolor": {ko:"태국 행운색", en:"Lucky Colour", th:"สีมงคลวันเกิด"},
   "nav.persona": {ko:"성격 유형 진단", en:"Persona Type", th:"บุคลิกภาพ"},
   "nav.home": {ko:"홈", en:"Home", th:"หน้าแรก"},
   "home.greeting": {ko:"오늘도 두뇌 체조 한 판!", en:"Time for today's brain workout!", th:"ได้เวลาบริหารสมองวันนี้!"},
@@ -7791,6 +7792,7 @@ const HOME_GAMES=[
   {id:'zodiac', emoji:'⭐', key:'nav.zodiac', grp:'cat.fun', langs:['ko','en','th'], external:'zodiac/'},
   {id:'ttirank', emoji:'🐭', key:'nav.ttirank', grp:'cat.fun', koOnly:true, external:'ttirank/'},
   {id:'tarot', emoji:'🃏', key:'nav.tarot', grp:'cat.fun', langs:['ko','th'], external:'tarot/'},
+  {id:'luckycolor', emoji:'🎨', key:'nav.luckycolor', grp:'cat.fun', langs:['ko','en','th'], external:'luckycolor/'},
   {id:'persona', emoji:'🎭', key:'nav.persona', grp:'cat.fun', langs:['ko','en','th'], external:'persona/'},
 ];
 function bt_yesterday(){ const d=new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -7961,6 +7963,7 @@ function gameCardHTML(g){
   if(g.id==='zodiac'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('zodiac_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='ttirank'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('ttirank_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='tarot'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('tarot_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
+  if(g.id==='luckycolor'){ try{ const kst=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); if(localStorage.getItem('luckycolor_seen')!==kst) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   if(g.id==='persona'){ try{ if(!localStorage.getItem('persona_seen')) best+='<div class="home-card-dot"></div>'; }catch(e){} }
   return best+'<div class="home-card-emoji">'+g.emoji+'</div>'+
     '<div class="home-card-name">'+t(g.key)+'</div>'+
@@ -8014,7 +8017,7 @@ function renderHome(){
     ftr.style.display='';
     if(CURRENT_LANG==='en'||CURRENT_LANG==='th'){
       const L=CURRENT_LANG;
-      ftr.innerHTML='<a href="sudoku/?lang=en">Free Sudoku</a> · <a href="2048/?lang=en">2048</a> · <a href="iq-test/?lang=en">IQ Test</a> · <a href="braintype/?lang=en">Brain Type Test</a> · <a href="reaction-time/?lang=en">Reaction Test</a> · <a href="queens/?lang='+L+'">Mallow Crown</a> · <a href="tango/?lang='+L+'">Mallow Tango</a><br><a href="zodiac/?lang='+L+'">Zodiac</a> · <a href="tarot/?lang='+L+'">Tarot</a> · <a href="persona/?lang='+L+'">Personality Test</a> · <a href="privacy/?lang=en">Privacy</a>';
+      ftr.innerHTML='<a href="sudoku/?lang=en">Free Sudoku</a> · <a href="2048/?lang=en">2048</a> · <a href="iq-test/?lang=en">IQ Test</a> · <a href="braintype/?lang=en">Brain Type Test</a> · <a href="reaction-time/?lang=en">Reaction Test</a> · <a href="queens/?lang='+L+'">Mallow Crown</a> · <a href="tango/?lang='+L+'">Mallow Tango</a><br><a href="zodiac/?lang='+L+'">Zodiac</a> · <a href="tarot/?lang='+L+'">Tarot</a> · <a href="persona/?lang='+L+'">Personality Test</a> · <a href="luckycolor/?lang='+L+'">'+(L==='th'?'สีมงคลวันเกิด':'Thai Lucky Colour')+'</a> · <a href="privacy/?lang=en">Privacy</a>';
     } else {
       ftr.innerHTML=ftr.dataset.ko;
     }
@@ -8049,7 +8052,7 @@ function renderHome(){
   const funWrap=document.getElementById('home-fun-wrap'), fun=document.getElementById('home-fun');
   if(fun){
     fun.innerHTML='';
-    const funByLang={ ko:['unse','zodiac','ttirank','tarot','persona'], en:['zodiac','persona'], th:['zodiac','tarot','persona'] };
+    const funByLang={ ko:['unse','zodiac','ttirank','tarot','persona','luckycolor'], en:['zodiac','persona','luckycolor'], th:['luckycolor','zodiac','tarot','persona'] };
     const funIds=funByLang[CURRENT_LANG]||[];
     funIds.forEach(id=>{ const g=gameMeta(id); if(!g) return; const card=document.createElement('button'); card.className='home-card';
       card.onclick=()=>{ if(g.external){ goExternal(g); return; } showScreen(g.id); };
