@@ -902,6 +902,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ab-head-val{font-size:1.7rem;font-weight:800;color:var(--purple)}
 .ability-sub{font-size:.7rem;color:var(--text3);margin-bottom:.2rem;line-height:1.4}
 .ability-sub2{font-size:.68rem;color:var(--text3);margin-bottom:.9rem;line-height:1.4;opacity:.85}
+.ab-metrics{display:flex;gap:.5rem;margin:.5rem 0 .55rem}
+.ab-metric{flex:1;background:var(--bg3);border-radius:var(--radius);padding:.45rem .3rem;text-align:center}
+.ab-metric span{display:block;font-size:.66rem;color:var(--text3);margin-bottom:.15rem}
+.ab-metric b{font-size:1.05rem;font-weight:800;color:var(--text)}
 .grade-chip{display:inline-block;font-size:.85rem;margin-right:.3rem;vertical-align:-.08em;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
 .gl-max{color:var(--green);font-weight:700}
 .ab-row{margin-bottom:.5rem}
@@ -1067,9 +1071,13 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   </div>
   <div class="home-section-title" data-i18n="records.abilityTitle">두뇌 능력치</div>
   <div class="card">
-    <div class="ab-head"><span class="ab-head-label" data-i18n="records.overall">종합 두뇌 레벨</span><span class="ab-head-val" id="ability-overall">0</span></div>
+    <div class="ab-head"><span class="ab-head-label" data-i18n="records.skill">훈련 숙련도</span><span class="ab-head-val" id="ability-overall">0</span></div>
     <div class="ability-sub" data-i18n="records.abilitySub">게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)</div>
-    <div class="ability-sub2" data-i18n="records.overallSub">게임 숙련도 70% + 다양한 게임 경험 30%</div>
+    <div class="ab-metrics">
+      <div class="ab-metric"><span data-i18n="records.stability">안정성</span><b id="ab-stability">—</b></div>
+      <div class="ab-metric"><span data-i18n="records.variety">해본 게임</span><b id="ab-variety">—</b></div>
+    </div>
+    <div class="ability-sub2" id="ab-next"></div>
     <canvas id="ability-radar" width="320" height="260" style="display:block;max-width:100%;margin:0 auto .5rem"></canvas>
     <div id="ability-graph"></div>
     <div class="ability-hint" data-i18n="records.abilityHint">막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요</div>
@@ -3866,7 +3874,13 @@ const I18N = {
   "records.abilitySub": {ko:"게임 수행 기반 지표 · 최근 플레이 기준 (실제 지능 측정 아님)", en:"Based on game performance · recent play (not an actual intelligence measure)", th:"อิงจากผลการเล่นเกม · ล่าสุด (ไม่ใช่การวัดสติปัญญาจริง)"},
   "records.abilityHint": {ko:"막대를 누르면 어떤 게임이 기여하는지 볼 수 있어요", en:"Tap a bar to see which games contribute", th:"แตะแถบเพื่อดูว่าเกมใดมีส่วนช่วย"},
   "records.noData": {ko:"아직 기록 없음 — 관련 게임을 해보세요", en:"No data yet — try related games", th:"ยังไม่มีข้อมูล — ลองเล่นเกมที่เกี่ยวข้อง"},
-  "records.overallSub": {ko:"게임 숙련도 70% + 다양한 게임 경험 30%", en:"70% skill + 30% game variety", th:"70% ทักษะ + 30% ความหลากหลาย"},
+  "records.skill": {ko:"훈련 숙련도", en:"Training level", th:"ระดับการฝึก"},
+  "records.stability": {ko:"안정성", en:"Consistency", th:"ความสม่ำเสมอ"},
+  "records.variety": {ko:"해본 게임", en:"Games tried", th:"เกมที่เล่นแล้ว"},
+  "rec.nextNew": {ko:"세 판 이상 하면 최근 흐름이 여기에 표시됩니다", en:"Play three or more rounds to see your recent form here", th:"เล่นอย่างน้อยสามรอบเพื่อดูฟอร์มล่าสุดที่นี่"},
+  "rec.nextHigh": {ko:"최근 판이 최고 기록에 가깝습니다 · 난이도를 한 단계 올려보세요", en:"Your recent rounds are close to your best · try one difficulty higher", th:"รอบล่าสุดใกล้สถิติที่ดีที่สุด · ลองเพิ่มระดับความยากอีกขั้น"},
+  "rec.nextMid": {ko:"판마다 기복이 있습니다 · 같은 난이도로 한 판 더 해보세요", en:"Your rounds are uneven · try one more at the same difficulty", th:"ผลแต่ละรอบยังไม่คงที่ · ลองอีกรอบที่ระดับเดิม"},
+  "rec.nextLow": {ko:"최근 점수가 최고 기록과 차이가 큽니다 · 익숙한 게임으로 감을 잡아보세요", en:"Recent scores are well below your best · warm up with a familiar game", th:"คะแนนล่าสุดต่ำกว่าสถิติมาก · เริ่มด้วยเกมที่คุ้นเคยก่อน"},
   "home.daily": {ko:"오늘의 데일리", en:"Today's Daily", th:"ประจำวันนี้"},
   "home.foryou": {ko:"추천 게임", en:"For You", th:"เกมแนะนำ"},
   "home.allgames": {ko:"🎮 전체 게임 보기", en:"🎮 Browse All Games", th:"🎮 ดูเกมทั้งหมด"},
@@ -7886,9 +7900,10 @@ function renderWeek(){
 const PG_START={flash:'startFlash',count:'startCount',nback:'startNback',cards:'startCards',stroop:'startStroop',switch:'startSwitch',trail:'startTrail',react:'startReact',chop:'startChop',run:'startRun',whack:'startWhack',melody:'startMelody',spot:'startSpot',odd:'startOdd',rotate:'startRotate',slide:'startSlide',math:'startMathGame',bubble:'startBubble',merge:'startMerge',iq:'startIQTest',sudoku:'startSudoku',sort:'startSort',flank:'startFlank',rev:'startRev',rhythm:'startRhythm',catch:'startCatch',fit:'startFit',guess:'startGuess',nono:'startNono',anagram:'startAnagram',wordsearch:'startWordsearch',diff:'startDiff',pitch:'startPitch',trace:'startTrace'};
 function pgRetry(id){ const f=PG_START[id]; if(typeof window[f]==='function'){ track('retry',{game:id}); sfx('tap'); window[f](); } }
 function afterGame(id, r){
+  const ratio=rpAdd(id, r);   // 최근 판 비율 기록 — '안정성' 지표의 원자료
   const card=document.getElementById(id+'-result-card'); if(!card) return;
   const old=card.querySelector('.pg-box'); if(old) old.remove();
-  let pts=WK_PTS.play, html='';
+  let pts=WK_PTS.play, html='', botRes='none', botLv=0;
   if(r){
     if(r.isNew && r.prev<=0){
       pts+=WK_PTS.pb;
@@ -7902,18 +7917,24 @@ function afterGame(id, r){
     const bot=botGet(id, r.diff);
     // 0점으로 끝난 판에서는 봇을 만들지 않는다(목표 1점짜리 허수 상대가 생김)
     if(!bot && r.score<=0){
+      botRes='skip';
       html+='<div class="pg-line pg-bot">🤖 '+t('bot.none')+'</div>';
     }else if(!bot){
-      const nb=botSeed(id, r.diff, r.score);
+      const nb=botSeed(id, r.diff, r.score); botRes='seed'; botLv=1;
       html+='<div class="pg-line pg-bot">🤖 '+t('bot.seed').replace('{n}', nb.target)+'</div>';
     }else if(r.score>=bot.target){
-      const nb=botLevelUp(id, r.diff, r.score); pts+=WK_PTS.bot;
+      const nb=botLevelUp(id, r.diff, r.score); pts+=WK_PTS.bot; botRes='win'; botLv=bot.lv;
       html+='<div class="pg-line pg-good">🤖 '+t('bot.win').replace('{lv}', bot.lv).replace('{n}', nb.target)+'</div>';
     }else{
+      botRes='lose'; botLv=bot.lv;
       html+='<div class="pg-line pg-bot">🤖 '+t('bot.gap').replace('{lv}', bot.lv).replace('{target}', bot.target).replace('{n}', (bot.target-r.score))+'</div>';
     }
   }
   const w=wkAdd(pts,true);
+  // 0.5단계: 난이도·봇 단계·최고기록 대비 비율을 판마다 남긴다.
+  // 기존 game_finish는 그대로 두고 새 이벤트를 따로 보낸다(예전 통계와의 연속성 유지).
+  try{ track('game_result',{game:id, diff:(r&&r.diff)||'all', is_best:(r&&r.isNew)?1:0,
+       ratio:(ratio==null?-1:Math.round(ratio*100)), bot:botRes, bot_lv:botLv, wk_pts:pts}); }catch(e){}
   html+='<div class="pg-line pg-week">📅 '+t('wk.gain').replace('{n}',pts).replace('{total}',w.pts)+'</div>';
   let act='';
   if(PG_START[id]) act+='<button class="pg-btn pg-retry" onclick="pgRetry(\''+id+'\')">🔄 '+t('pg.retry')+'</button>';
@@ -8124,7 +8145,7 @@ function gameBestVal(id){
 function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(100,Math.round(gameBestVal(id)/ref*100))); }
 function abilityScores(){
   const num={},den={}; ABILITIES.forEach(a=>{num[a]=0;den[a]=0;});
-  Object.keys(ABILITY_MAP).forEach(id=>{
+  trainingIds().forEach(id=>{
     if(gameBestVal(id)<=0) return; // 레이더(축)는 '해본 게임 성적'만 → 강점이 잘 보이게
     const lvl=gameLevel(id), w=ABILITY_MAP[id];
     Object.keys(w).forEach(a=>{ num[a]+=lvl*w[a]; den[a]+=w[a]; });
@@ -8132,15 +8153,60 @@ function abilityScores(){
   const out={}; ABILITIES.forEach(a=>{ out[a]= den[a]>0?Math.round(num[a]/den[a]):0; });
   return out;
 }
-// 종합 두뇌 레벨 = 숙련도(핸 게임 평균) 70% + 커버리지(핸 게임 비율) 30%
-// → 게임 수가 늘어나도(34종) 신규 유저가 달성 가능하고, 골고루 하면 별도 보상
-function overallLevel(){
-  const ids=Object.keys(ABILITY_MAP); if(!ids.length) return 0;
-  let played=0, sum=0;
+// 진단 검사(한 번 보는 것) — 훈련 지표에서 제외한다. 한 번 본 검사가 매일의 훈련 점수를 부풀리면 안 된다.
+// (게임 인트로의 '이 게임이 쓰는 능력' 칩은 ABILITY_MAP을 그대로 쓰므로 영향 없음)
+const DIAGNOSTIC={iq:1};
+// 훈련 지표의 대상 = 지금 실제로 플레이할 수 있는 게임만.
+// Object.keys(ABILITY_MAP)를 쓰면 비활성 게임(vocab·typing)이 분모에 남아 100%가 구조적으로 불가능해진다.
+function trainingIds(){
+  return HOME_GAMES.filter(g=>!g.external && g.id!=='braintype' && ABILITY_MAP[g.id] && !DIAGNOSTIC[g.id]).map(g=>g.id);
+}
+// 숙련도 = 해본 훈련 게임의 평균 레벨. 게임 가짓수는 여기에 섞지 않는다(많이 눌러봤다고 실력이 오른 건 아니므로).
+function skillLevel(){
+  const ids=trainingIds(); let played=0, sum=0;
   ids.forEach(id=>{ if(gameBestVal(id)>0){ played++; sum+=gameLevel(id); } });
-  if(!played) return 0;
-  const skill=sum/played, coverage=played/ids.length*100;
-  return Math.round(skill*0.7 + coverage*0.3);
+  return played?Math.round(sum/played):0;
+}
+function varietyStat(){
+  const ids=trainingIds(); let played=0;
+  ids.forEach(id=>{ if(gameBestVal(id)>0) played++; });
+  return {played:played, total:ids.length};
+}
+function overallLevel(){ return skillLevel(); }   // 기존 호출부(기록 갱신 표시 등) 호환
+
+/* 최근 판 기록 — 안정성 지표의 원자료.
+   비율 = 이번 점수 / (이전 최고, 이번 점수 중 큰 값) → 신기록이면 100, 못 미치면 그만큼 낮아진다.
+   최고 기록은 평생 최대라 절대 내려가지 않지만, 이 값은 내려간다(그래서 '안정성'이 성립한다). */
+function rpLoad(){ try{ const a=JSON.parse(localStorage.getItem('brain.recent')||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function rpAdd(id, r){
+  if(!r || typeof r.score!=='number') return null;
+  const best=Math.max(Number(r.prev)||0, r.score);
+  if(best<=0) return null;                 // 0점 판은 비율을 낼 수 없다
+  const ratio=Math.max(0, Math.min(1, r.score/best));
+  const a=rpLoad();
+  a.push({g:id, d:r.diff||'all', r:Math.round(ratio*100), t:bt_today()});
+  while(a.length>20) a.shift();
+  try{ localStorage.setItem('brain.recent', JSON.stringify(a)); }catch(e){}
+  return ratio;
+}
+function stabilityPct(){
+  const a=rpLoad(); if(a.length<3) return null;   // 세 판 미만이면 판단하지 않는다
+  const s=a.slice(-10); let sum=0; s.forEach(x=>{ sum+=(Number(x.r)||0); });
+  return Math.round(sum/s.length);
+}
+// 점수 대신 '다음에 할 일' 한 줄
+function nextChallengeKey(){
+  const st=stabilityPct();
+  if(st==null) return 'rec.nextNew';
+  if(st>=85) return 'rec.nextHigh';
+  if(st>=60) return 'rec.nextMid';
+  return 'rec.nextLow';
+}
+function renderTrainStats(){
+  const st=stabilityPct(), vs=varietyStat();
+  const se=document.getElementById('ab-stability'); if(se) se.textContent=(st==null?'—':st);
+  const ve=document.getElementById('ab-variety');   if(ve) ve.textContent=vs.played+'/'+vs.total;
+  const ne=document.getElementById('ab-next');      if(ne) ne.textContent=t(nextChallengeKey());
 }
 // 최근 성장: 최대 7일 전 스냅샷 대비 증가분(주간 롤링)
 function abilityDelta(cur){
@@ -8154,7 +8220,7 @@ function abilityDelta(cur){
   return d;
 }
 function abilityContributors(a){
-  return Object.keys(ABILITY_MAP).filter(id=>ABILITY_MAP[id][a] && gameBestVal(id)>0)
+  return trainingIds().filter(id=>ABILITY_MAP[id][a] && gameBestVal(id)>0)
     .map(id=>({id, lvl:gameLevel(id), w:ABILITY_MAP[id][a]}))
     .sort((x,y)=>y.w-x.w);
 }
@@ -8172,6 +8238,7 @@ function renderAbility(){
   const played=ABILITIES.filter(a=>sc[a]>0);
   const overall = overallLevel();
   setTxt('ability-overall', overall);
+  renderTrainStats();
   const ov=document.getElementById('ability-overall'); if(ov && overall>seenOverall){ ov.classList.remove('up'); void ov.offsetWidth; ov.classList.add('up'); }
   if(typeof drawRadar==='function') drawRadar(sc);
   wrap.innerHTML='';
