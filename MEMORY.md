@@ -322,6 +322,13 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 검증: Godot headless `tests/smoke.gd`에서 `GameCatalog 38/38 script mappings`와 38개 게임+AssessmentFlow 인스턴스 생성 통과, `git diff --check`, editor import 통과. 알려진 출력은 Windows root certificate store 경고와 정상 종료 시 ObjectDB cleanup 경고뿐이다.
 - 최종 APK: `mobile/godot/build/playmallow-debug.apk`, arm64+x86_64, 57,467,033 bytes (약 54.7MB), SHA-256 `97A8096486456B311EFAAE028DE47750AB0D9FA872D7EBC1AD6FEBCA49153FD0`. `PlayMallow_API35` / `emulator-5554`에서 홈, 전체 38개 목록 스크롤, Braintype/Nback 진입과 logcat script/parse/fatal 오류 0을 확인했다. release AAB는 프로젝트 소유 non-debug keystore가 필요하다.
 
+## Godot 게임 탐색 디자인 시스템 (2026-08-06)
+
+- 게임 탭은 긴 아코디언 대신 `4열 12개 카테고리 보드 → 선택 카테고리 헤더 → 3열 게임 카드` 구조를 사용한다. 카드 번호는 제거하고 픽토그램과 게임명을 핵심 정보로 둔다.
+- 분류는 playmallow.com과 동일하게 기억 5, 집중 3, 순발 4, 협응/청각/관찰/공간 각 3, 계산 4, 논리 4, 언어 2, 오늘의 퍼즐 3, 두뇌유형 1이다. `GameCatalog.CATEGORY_GAMES`가 단일 기준이며 smoke test가 38개 중복 없는 전체 포함을 보장한다.
+- Android 폰트/이모지 차이를 피하기 위해 `GameIcon.gd`가 웹 아이콘 의미를 선·도형 기반 네이티브 벡터로 그린다. `WEB_ICON_REFERENCE`는 playmallow.com 의미 대응의 기준이고 실제 UI에는 이모지를 직접 렌더링하지 않는다.
+- 하단 메뉴는 홈·게임·내 기록 각각 픽토그램+라벨을 사용하고, 선택 항목은 브랜드 블루 채움/흰 아이콘으로 즉시 구분한다. 최종 APK SHA-256은 `DAB211FBF649A180C9A8E987118569A1DA10C6EBB920F351CA5905604BF6D093`이며 Android 15 에뮬레이터에서 기억력/오늘의 퍼즐 전환과 런타임 오류 0을 확인했다.
+
 ## 운영 메모
 - **⚠️ 시뮬 교훈(2026-07-12)**: 로직 시뮬은 **앱의 실제 헬퍼 의미**를 그대로 써야 함. sort 멈춤 버그(soGen이 `shuffleArr` 반환값 미사용 → 정렬된 완성판 생성)를
   초기 시뮬이 *제자리 변형* shuffleArr로 대체해 놓쳐 false pass. `shuffleArr(arr)`는 **원본 불변, 섞인 새 배열 반환** — 반드시 반환값 사용. 재현: `.logs/sort_fix_check.mjs`.

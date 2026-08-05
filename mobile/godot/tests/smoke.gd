@@ -58,6 +58,29 @@ func _run() -> void:
 			quit(1)
 			return
 	print("SMOKE PASS: GameCatalog 38/38 script mappings")
+	var categorized_ids: Array[String] = []
+	for category in GameCatalog.categories():
+		for game in GameCatalog.games_for_category(str(category["id"])):
+			var game_id := str(game["id"])
+			if categorized_ids.has(game_id):
+				push_error("Game appears in multiple categories: " + game_id)
+				quit(1)
+				return
+			categorized_ids.append(game_id)
+			if GameCatalog.icon_reference_for(game_id) == "🎮":
+				push_error("Missing playmallow.com icon reference: " + game_id)
+				quit(1)
+				return
+	if categorized_ids.size() != catalog.size():
+		push_error("Category coverage mismatch: " + str(categorized_ids.size()) + "/" + str(catalog.size()))
+		quit(1)
+		return
+	for game in catalog:
+		if not categorized_ids.has(str(game["id"])):
+			push_error("Catalog game missing from categories: " + str(game["id"]))
+			quit(1)
+			return
+	print("SMOKE PASS: 12 categories cover 38 unique games with icon references")
 	for script_path in GAME_SCRIPTS:
 		var script = load(script_path)
 		if script == null:

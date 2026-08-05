@@ -43,42 +43,45 @@ const GAMES := [
 ]
 
 const CATEGORIES := [
-	{"id": "memory", "name_key": "category_memory", "symbol": "M", "color": "#f06f91"},
-	{"id": "focus", "name_key": "category_focus", "symbol": "+", "color": "#d99327"},
-	{"id": "speed", "name_key": "category_speed", "symbol": ">", "color": "#4c6fff"},
-	{"id": "coordination", "name_key": "category_coordination", "symbol": "o", "color": "#1f9d78"},
-	{"id": "sight", "name_key": "category_sight", "symbol": "@", "color": "#4c6fff"},
-	{"id": "space", "name_key": "category_space", "symbol": "◇", "color": "#1f9d78"},
-	{"id": "sound", "name_key": "category_sound", "symbol": "♪", "color": "#9b63d7"},
-	{"id": "calculation", "name_key": "category_calculation", "symbol": "÷", "color": "#4c6fff"},
-	{"id": "logic", "name_key": "category_logic", "symbol": "∴", "color": "#1f9d78"},
-	{"id": "language", "name_key": "category_language", "symbol": "A", "color": "#c9841d"},
-	{"id": "test", "name_key": "category_test", "symbol": "?", "color": "#f06f91"}
+	{"id": "memory", "name_key": "category_memory", "icon": "cat_memory", "color": "#f06f91"},
+	{"id": "focus", "name_key": "category_focus", "icon": "cat_focus", "color": "#d99327"},
+	{"id": "speed", "name_key": "category_speed", "icon": "cat_speed", "color": "#4c6fff"},
+	{"id": "coordination", "name_key": "category_coordination", "icon": "cat_coordination", "color": "#1f9d78"},
+	{"id": "sound", "name_key": "category_sound", "icon": "cat_sound", "color": "#8d62d7"},
+	{"id": "sight", "name_key": "category_sight", "icon": "cat_sight", "color": "#3f82db"},
+	{"id": "space", "name_key": "category_space", "icon": "cat_space", "color": "#16a085"},
+	{"id": "calculation", "name_key": "category_calculation", "icon": "cat_calculation", "color": "#6f61d9"},
+	{"id": "logic", "name_key": "category_logic", "icon": "cat_logic", "color": "#5a6b82"},
+	{"id": "language", "name_key": "category_language", "icon": "cat_language", "color": "#c9841d"},
+	{"id": "daily", "name_key": "category_daily", "icon": "cat_daily", "color": "#e75f88"},
+	{"id": "test", "name_key": "category_test", "icon": "cat_test", "color": "#8d62d7"}
 ]
 
 const CATEGORY_GAMES := {
 	"memory": ["flash", "count", "nback", "cards", "rev"],
-	"focus": ["stroop", "switch"],
-	"speed": ["trail", "react", "chop", "run", "flank"],
+	"focus": ["stroop", "switch", "flank"],
+	"speed": ["trail", "react", "chop", "run"],
 	"coordination": ["whack", "catch", "trace"],
+	"sound": ["melody", "rhythm", "pitch"],
 	"sight": ["spot", "odd", "diff"],
 	"space": ["rotate", "slide", "fit"],
-	"sound": ["melody", "rhythm", "pitch"],
 	"calculation": ["math", "bubble", "merge", "guess"],
-	"logic": ["iq", "sudoku", "sort", "nono", "queens", "tango"],
-	"language": ["anagram", "wordsearch", "moamoa"],
+	"logic": ["iq", "sudoku", "sort", "nono"],
+	"language": ["anagram", "wordsearch"],
+	"daily": ["moamoa", "queens", "tango"],
 	"test": ["braintype"]
 }
 
-const GAME_SYMBOLS := {
-	"flash": "✦", "count": "◌", "nback": "N", "cards": "▦", "stroop": "A",
-	"switch": "↔", "trail": "1", "react": "!", "chop": "/", "run": ">",
-	"whack": "●", "melody": "♪", "spot": "◉", "odd": "!", "rotate": "↻",
-	"slide": "□", "math": "+", "bubble": "○", "merge": "2", "iq": "?",
-	"sudoku": "4", "sort": "≡", "flank": "→", "rev": "↶", "rhythm": "∿",
-	"catch": "∪", "fit": "▧", "guess": "≈", "nono": "▤", "anagram": "A",
-	"wordsearch": "⌕", "diff": "≠", "pitch": "♫", "trace": "⌁", "braintype": "?",
-	"moamoa": "가", "queens": "♛", "tango": "☼"
+# Semantic reference from playmallow.com. Native GameIcon renders matching vector pictograms.
+const WEB_ICON_REFERENCE := {
+	"flash": "⚡", "count": "👥", "nback": "🔡", "cards": "🃏", "rev": "🔁",
+	"stroop": "🎨", "switch": "🔀", "flank": "🎯", "trail": "🔗", "react": "⏱️",
+	"chop": "🍡", "run": "🏃", "whack": "🔨", "catch": "🧺", "trace": "✏️",
+	"melody": "🎵", "rhythm": "🥁", "pitch": "🎧", "spot": "🌈", "odd": "🔎",
+	"diff": "👀", "rotate": "🔄", "slide": "🧊", "fit": "🧱", "math": "➗",
+	"bubble": "🫧", "merge": "🍭", "guess": "📊", "iq": "🧠", "sudoku": "🔢",
+	"sort": "🧪", "nono": "🖼️", "anagram": "🔤", "wordsearch": "🔠",
+	"moamoa": "🧩", "queens": "👑", "tango": "🌗", "braintype": "🔮"
 }
 
 static func all() -> Array:
@@ -104,8 +107,8 @@ static func games_for_category(category_id: String) -> Array:
 			result.append(game)
 	return result
 
-static func symbol_for(game_id: String) -> String:
-	return str(GAME_SYMBOLS.get(game_id, "✦"))
+static func icon_reference_for(game_id: String) -> String:
+	return str(WEB_ICON_REFERENCE.get(game_id, "🎮"))
 
 static func script_path(game_id: String) -> String:
 	var class_names := {"iq": "IQGame"}
