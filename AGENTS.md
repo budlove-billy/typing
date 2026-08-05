@@ -389,3 +389,7 @@ user the relative path so they can preview/download it in the file browser.
 
 Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first** before responding, and let it shape your tone, focus, and what you proactively bring up.
 <!-- ROLE_REF_END -->
+
+## Changelog
+
+- 2026-08-05 — **Android 네이티브 전환 검토**: 현재 웹/PWA는 유지하고 Android-first 네이티브 클라이언트는 Godot 4.7.1 stable로 병행 개발하기로 결정. 전체 포팅 대신 `flash`·`bubble`·`trace` vertical slice부터 시작하며, 모바일 UX·디자인 토큰·사운드/햅틱 이벤트·Godot 저장 데이터 계약·QA 게이트를 `모바일-네이티브-전환-검토.md`에 기록. 이번 턴에는 엔진 도구가 설치되어 있지 않아 APK 빌드는 진행하지 않음.
