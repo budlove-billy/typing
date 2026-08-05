@@ -54,10 +54,11 @@ if (-not $ready) {
     throw "Android emulator did not finish booting within 180 seconds."
 }
 
-& $adb -s emulator-5554 install -r -d $ApkPath
+& $adb -s emulator-5554 install --no-incremental -r -d $ApkPath
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-& $adb -s emulator-5554 shell monkey -p $PackageName 1 | Out-Null
+& $adb -s emulator-5554 shell am force-stop $PackageName | Out-Null
+& $adb -s emulator-5554 shell am start -n "$PackageName/com.godot.game.GodotAppLauncher" | Out-Null
 Write-Output "Running $PackageName on $AvdName (emulator-5554)."

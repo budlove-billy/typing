@@ -9,6 +9,8 @@ This is the first native client slice for Play Mallow. The existing web app rema
 - Versioned local save data under Godot `user://`
 - Korean-first UI with an English localization layer
 - Sound feedback, haptic feedback, and settings toggles
+- Unified mobile design system with padded surfaces, selective text wrapping,
+  48px-or-larger touch targets, and a code-drawn bite Mallow mascot
 - `flash`: card-pair memory game
 - `bubble`: target-sum touch game
 - `trace`: touch path coordination game
@@ -79,6 +81,21 @@ The runner boots the AVD when needed, waits for Android to finish starting,
 installs `mobile/godot/build/playmallow-debug.apk`, and opens the app on
 `emulator-5554`. It targets only this project-local emulator and does not
 operate on a connected physical device.
+
+The runner uses a non-incremental streamed install and launches the Godot
+activity directly. This avoids the ADB incremental-install stalls observed on
+the project-local emulator.
+
+## Mobile UI system
+
+- `ThemeKit.gd` owns palette, borders, card padding, shadows, and button states.
+- `MallowAvatar.gd` draws the bite Mallow mascot at any requested control size.
+- Labels wrap only where copy is expected to span lines; compact rows preserve
+  their natural width instead of collapsing into vertical text.
+- Home, Games, Records, Settings, Result, Flash, Bubble, and Trace share one
+  spacing and interaction hierarchy.
+- Android emulator visual QA covers Home, Games, Records, Flash, Bubble, and
+  Trace at 1080x2400 on Android 15.
 
 ## Structure
 

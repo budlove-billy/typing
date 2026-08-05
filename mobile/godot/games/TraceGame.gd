@@ -7,18 +7,29 @@ var stage: TraceStage
 
 func _ready() -> void:
 	var root := VBoxContainer.new()
-	root.add_theme_constant_override("separation", 14)
+	root.add_theme_constant_override("separation", 12)
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(root)
-	root.add_child(_label(I18n.t("trace_ready"), 16, Color("#66738f"), HORIZONTAL_ALIGNMENT_CENTER))
-	status = _label(I18n.t("tap_start"), 14, Color("#22a77a"), HORIZONTAL_ALIGNMENT_CENTER)
+
+	var intro := PanelContainer.new()
+	intro.add_theme_stylebox_override("panel", ThemeKit.soft_panel(ThemeKit.TEAL_SOFT, 18, 14))
+	root.add_child(intro)
+	var intro_box := VBoxContainer.new()
+	intro_box.add_theme_constant_override("separation", 4)
+	intro.add_child(intro_box)
+	intro_box.add_child(_label("COORDINATION  |  TRACE", 10, ThemeKit.TEAL, HORIZONTAL_ALIGNMENT_LEFT))
+	intro_box.add_child(_label(I18n.t("trace_ready"), 15, ThemeKit.INK, HORIZONTAL_ALIGNMENT_LEFT, true))
+
+	status = _pill(I18n.t("tap_start"), ThemeKit.BLUE_SOFT, ThemeKit.BLUE)
+	status.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	root.add_child(status)
+
 	stage = TraceStage.new()
-	stage.custom_minimum_size = Vector2(0, 430)
+	stage.custom_minimum_size = Vector2(0, 470)
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stage.finished.connect(_stage_finished)
 	root.add_child(stage)
-	root.add_child(_label("Touch  ·  follow the soft line", 12, Color("#98a3b8"), HORIZONTAL_ALIGNMENT_CENTER))
+	root.add_child(_label("PRESS START  |  FOLLOW THE PATH", 10, ThemeKit.SUBTLE, HORIZONTAL_ALIGNMENT_CENTER))
 
 func _stage_finished(success: bool, accuracy: int) -> void:
 	if not success:
@@ -29,13 +40,27 @@ func _stage_finished(success: bool, accuracy: int) -> void:
 	status.text = I18n.t("trace_good")
 	finished.emit({"score": accuracy, "detail": str(accuracy) + "% accuracy"})
 
-func _label(text_value: String, font_size: int, color: Color, align: HorizontalAlignment) -> Label:
+func _pill(text_value: String, fill: Color, color: Color) -> Label:
+	var label := _label(text_value, 12, color, HORIZONTAL_ALIGNMENT_CENTER)
+	var style := ThemeKit.box(fill, 18)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 6
+	style.content_margin_bottom = 6
+	label.add_theme_stylebox_override("normal", style)
+	return label
+
+func _label(text_value: String, font_size: int, color: Color, align: HorizontalAlignment, wrap: bool = false) -> Label:
 	var label := Label.new()
 	label.text = text_value
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", color)
 	label.horizontal_alignment = align
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if wrap:
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	else:
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	return label
 
 class TraceStage extends Control:
@@ -133,14 +158,18 @@ class TraceStage extends Control:
 		return best if best_distance < 68.0 else current_index
 
 	func _draw() -> void:
-		draw_style_box(ThemeKit.box(Color("#f8fbff"), 22, Color("#dbe5f2"), 1, false), Rect2(Vector2.ZERO, size))
+		draw_style_box(ThemeKit.box(Color("#f8fafc"), 22, Color("#dde4ef"), 1, false), Rect2(Vector2.ZERO, size))
 		if path.size() > 1:
-			draw_polyline(path, Color("#c9d5ec"), 18.0, true)
-			draw_polyline(path, Color("#ffffff"), 8.0, true)
+			draw_polyline(path, Color("#d3daea"), 20.0, true)
+			draw_polyline(path, Color.WHITE, 10.0, true)
+			for point in path:
+				draw_circle(point, 4.0, Color("#c3ccdf"))
 		if trail.size() > 1:
-			draw_polyline(trail, Color("#22a77a"), 13.0, true)
+			draw_polyline(trail, ThemeKit.TEAL, 13.0, true)
 		if not path.is_empty():
-			draw_circle(path[0], 21.0, Color("#22a77a"))
-			draw_circle(path[0], 9.0, Color.WHITE)
-			draw_circle(path[path.size() - 1], 24.0, Color("#4f7cff"))
-			draw_circle(path[path.size() - 1], 10.0, Color.WHITE)
+			draw_circle(path[0], 24.0, Color(0.12, 0.62, 0.47, 0.16))
+			draw_circle(path[0], 17.0, ThemeKit.TEAL)
+			draw_circle(path[0], 7.0, Color.WHITE)
+			draw_circle(path[path.size() - 1], 27.0, Color(0.30, 0.44, 1.0, 0.16))
+			draw_circle(path[path.size() - 1], 19.0, ThemeKit.BLUE)
+			draw_circle(path[path.size() - 1], 8.0, Color.WHITE)
