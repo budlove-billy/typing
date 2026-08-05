@@ -396,7 +396,8 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 
 ## Build changelog
 
-- 2026-08-05 — Android build pipeline completed: project-local JDK 17, Android SDK/NDK/CMake, and Godot 4.7.1 export templates installed. Added `mobile/godot/export_presets.cfg`, Mallow launcher icon, reproducible `build-android.ps1`, and produced a signed arm64 debug APK. Release AAB remains gated on a project-owned non-debug keystore.
+- 2026-08-05 — Android build pipeline completed: project-local JDK 17, Android SDK/NDK/CMake, and Godot 4.7.1 export templates installed. Added `mobile/godot/export_presets.cfg`, Mallow launcher icon, reproducible `build-android.ps1`, and produced a signed arm64+x86_64 debug APK. Release AAB remains gated on a project-owned non-debug keystore.
+- 2026-08-05 — Android PC emulator run completed: installed the project-local Android Emulator and Android 35 x86_64 image, created `PlayMallow_API35`, widened the debug APK to arm64+x86_64, and added `mobile/godot/run-android-emulator.ps1` for repeatable boot/install/launch.
 
 ## Changelog
 

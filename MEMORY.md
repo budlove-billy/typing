@@ -11,8 +11,14 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## Android build pipeline (2026-08-05)
 - Project-local build tools are installed under `tools/jdk17`, `tools/android/cmdline-tools/latest`, and `tools/android/sdk`.
 - Android SDK packages: Platform-Tools, Build-Tools 35.0.1, Platform 35, CMake 3.10.2.4988404, NDK 28.1.13356709. Godot export templates are in `tools/godot/export_templates/4.7.1.stable` and mirrored into project-local Godot user data for export.
-- `mobile/godot/build-android.ps1` reproducibly produces `mobile/godot/build/playmallow-debug.apk` using preset `Android`. Current artifact: package `com.playmallow.mallow`, version `0.1.0`, version code `1`, target SDK 36, min SDK 24, arm64, debug-signed.
-- APK verification passed with Android `apksigner` v2/v3 and SHA-256 `BEAD119D8F53F637CFF1895BB57C4A21B24DF11D170F84BBA97E8A8A071510C2`. A release APK/AAB still needs a project-owned non-debug keystore; never publish the debug keystore.
+- `mobile/godot/build-android.ps1` reproducibly produces `mobile/godot/build/playmallow-debug.apk` using preset `Android`. Current artifact: package `com.playmallow.mallow`, version `0.1.0`, version code `1`, target SDK 36, min SDK 24, arm64+x86_64, debug-signed.
+- APK verification passed with Android `apksigner` v2/v3 and SHA-256 `3DCF52A94C445EF8DCA6907FFADA6FD4A6F7A444BB8F2F23A4213CFC809AEEF5`. A release APK/AAB still needs a project-owned non-debug keystore; never publish the debug keystore.
+
+## Android PC emulator (2026-08-05)
+- Project-local Android Emulator and Android 35 `default;x86_64` system image are installed under `tools/android/sdk/`.
+- AVD `PlayMallow_API35` uses Pixel 6 / Android 15 / x86_64 and lives under `tools/android/avd/`.
+- The emulator is currently running as `emulator-5554` on ADB port 5554. `com.playmallow.mallow` is installed and its Godot launcher activity is visible.
+- `mobile/godot/run-android-emulator.ps1` is the repeatable boot, install, and launch entry point. It targets only `emulator-5554`, so a connected physical device is not touched.
 
 ## Godot vertical slice (2026-08-05)
 - `mobile/godot` is the native client start point. It contains a 390×844 portrait shell with Home/Games/Records/Settings/Result, versioned `user://` saves, Korean-first localization with English strings, procedural feedback tones, haptic settings, and independent `flash`/`bubble`/`trace` game modules.

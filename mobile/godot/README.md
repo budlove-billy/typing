@@ -59,9 +59,26 @@ Output:
 mobile/godot/build/playmallow-debug.apk
 ```
 
-The APK is arm64, portrait-oriented, package `com.playmallow.mallow`, version
-`0.1.0` (version code `1`). A release APK/AAB still requires a project-owned
-non-debug keystore; do not reuse the generated debug keystore for Google Play.
+The APK includes arm64 and x86_64, is portrait-oriented, and uses package
+`com.playmallow.mallow`, version `0.1.0` (version code `1`). The x86_64 slice
+allows the debug build to run in the project-local PC emulator. A release
+APK/AAB still requires a project-owned non-debug keystore; do not reuse the
+generated debug keystore for Google Play.
+
+## Android PC emulator
+
+The project-local Android SDK includes a `PlayMallow_API35` AVD (Pixel 6,
+Android 15, x86_64). Build and launch the app from the repository root with:
+
+```powershell
+& .\mobile\godot\build-android.ps1
+& .\mobile\godot\run-android-emulator.ps1
+```
+
+The runner boots the AVD when needed, waits for Android to finish starting,
+installs `mobile/godot/build/playmallow-debug.apk`, and opens the app on
+`emulator-5554`. It targets only this project-local emulator and does not
+operate on a connected physical device.
 
 ## Structure
 
