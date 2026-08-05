@@ -1,28 +1,5 @@
 # Active Session State
 
-## Current task (2026-08-05)
-Godot 4.7.1 stable을 프로젝트 내부 `tools/godot`에 포터블 설치하고 실행 가능 여부를 확인한다.
-
-## Decision
-- 시스템 전역 설치 대신 프로젝트 내부 설치로 작업 범위를 지킨다.
-- 설치 후 `godot --version` 및 프로젝트 import/실행 준비 상태를 확인한다.
-
-## Progress
-- Godot 4.7.1 stable Windows x86_64 portable build downloaded and extracted to `tools/godot`.
-- Headless version check passed: `4.7.1.stable.official.a13da4feb`.
-- Keep the 179MB executable local and add `tools/godot/` to Git ignore before committing project notes.
-
-## Files changed
-- `.gitignore`: ignore `tools/godot/`.
-- `tools/README.md`: record the local Godot executable and verified version.
-- `AGENTS.md`, `MEMORY.md`: record the installation and remaining Android toolchain gap.
-
-## Verification pending
-- Re-run version check from the recorded path, validate Git diff, and commit notes only (not the binary).
-
-## Verification
-- Exact version check passed: `4.7.1.stable.official.a13da4feb`.
-- `tools/godot/` binary and archive are ignored; only `tools/README.md` will be committed.
 
 
 ## Current task
