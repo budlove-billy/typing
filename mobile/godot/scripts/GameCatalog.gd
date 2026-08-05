@@ -2,10 +2,10 @@ class_name GameCatalog
 extends RefCounted
 
 const GAMES := [
-	{"id": "flash", "name_key": "flash_name", "desc_key": "flash_desc", "axis": "기억", "color": "#f06f91"},
-	{"id": "bubble", "name_key": "bubble_name", "desc_key": "bubble_desc", "axis": "계산", "color": "#4c6fff"},
-	{"id": "trace", "name_key": "trace_name", "desc_key": "trace_desc", "axis": "협응", "color": "#1f9d78"},
-	{"id": "react", "name_key": "react_name", "desc_key": "react_desc", "axis": "집중", "color": "#d99327"}
+	{"id": "flash", "name_key": "flash_name", "desc_key": "flash_desc", "axis_key": "memory", "axis": "기억", "color": "#f06f91"},
+	{"id": "bubble", "name_key": "bubble_name", "desc_key": "bubble_desc", "axis_key": "calculation", "axis": "계산", "color": "#4c6fff"},
+	{"id": "trace", "name_key": "trace_name", "desc_key": "trace_desc", "axis_key": "coordination", "axis": "협응", "color": "#1f9d78"},
+	{"id": "react", "name_key": "react_name", "desc_key": "react_desc", "axis_key": "focus", "axis": "집중", "color": "#d99327"}
 ]
 
 static func all() -> Array:

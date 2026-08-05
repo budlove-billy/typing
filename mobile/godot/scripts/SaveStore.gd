@@ -1,7 +1,21 @@
 extends Node
 
 const SAVE_PATH := "user://mallow_save_v1.json"
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
+
+const GAME_AXIS := {
+	"flash": "memory",
+	"react": "focus",
+	"bubble": "calculation",
+	"trace": "coordination"
+}
+
+const GAME_CAP := {
+	"flash": 1000.0,
+	"react": 1000.0,
+	"bubble": 650.0,
+	"trace": 1000.0
+}
 
 var data: Dictionary = {}
 
@@ -17,10 +31,25 @@ func _defaults() -> Dictionary:
 			"music": false,
 			"haptics": true,
 			"streak": 1,
-			"lastSeen": ""
+			"lastSeen": "",
+			"skillScores": _default_skill_scores()
 		},
 		"records": {},
-		"mission": {"date": "", "completed": []}
+		"mission": {"date": "", "completed": []},
+		"assessment": {
+			"completed": false,
+			"source": "pending",
+			"completedAt": "",
+			"scores": _default_skill_scores()
+		}
+	}
+
+func _default_skill_scores() -> Dictionary:
+	return {
+		"memory": 50,
+		"focus": 50,
+		"calculation": 50,
+		"coordination": 50
 	}
 
 func _load() -> void:
@@ -48,6 +77,24 @@ func _merge_defaults(incoming: Dictionary) -> Dictionary:
 		merged["profile"] = profile
 	if not merged.get("records", {}) is Dictionary:
 		merged["records"] = {}
+	var default_profile: Dictionary = _defaults()["profile"]
+	if not merged["profile"].get("skillScores", {}) is Dictionary:
+		merged["profile"]["skillScores"] = _default_skill_scores()
+	else:
+		var profile_scores: Dictionary = _default_skill_scores()
+		for key in merged["profile"]["skillScores"]:
+			profile_scores[key] = int(clampi(int(merged["profile"]["skillScores"][key]), 0, 100))
+		merged["profile"]["skillScores"] = profile_scores
+	if not merged.get("assessment", {}) is Dictionary:
+		merged["assessment"] = _defaults()["assessment"]
+	else:
+		var assessment: Dictionary = _defaults()["assessment"]
+		for key in merged["assessment"]:
+			assessment[key] = merged["assessment"][key]
+		if not assessment.get("scores", {}) is Dictionary:
+			assessment["scores"] = _default_skill_scores()
+		merged["assessment"] = assessment
+	merged["schemaVersion"] = SCHEMA_VERSION
 	return merged
 
 func _save() -> void:
@@ -60,6 +107,46 @@ func get_setting(key: String, fallback = null):
 
 func set_setting(key: String, value) -> void:
 	data["profile"][key] = value
+	_save()
+
+func has_assessment() -> bool:
+	return bool(data.get("assessment", {}).get("completed", false))
+
+func assessment_was_skipped() -> bool:
+	return str(data.get("assessment", {}).get("source", "")) == "skipped"
+
+func assessment_scores() -> Dictionary:
+	var scores: Dictionary = _default_skill_scores()
+	var saved: Variant = data.get("assessment", {}).get("scores", {})
+	if saved is Dictionary:
+		for key in scores:
+			scores[key] = int(clampi(int(saved.get(key, scores[key])), 0, 100))
+	return scores
+
+func get_skill_scores() -> Dictionary:
+	var scores: Dictionary = _default_skill_scores()
+	var saved: Variant = data.get("profile", {}).get("skillScores", {})
+	if saved is Dictionary:
+		for key in scores:
+			scores[key] = int(clampi(int(saved.get(key, scores[key])), 0, 100))
+	return scores
+
+func save_assessment(scores: Dictionary, source: String = "baseline") -> void:
+	var safe_scores: Dictionary = _default_skill_scores()
+	for key in safe_scores:
+		safe_scores[key] = int(clampi(int(scores.get(key, 50)), 0, 100))
+	data["assessment"] = {
+		"completed": true,
+		"source": source,
+		"completedAt": Time.get_datetime_string_from_system(),
+		"scores": safe_scores.duplicate(true)
+	}
+	data["profile"]["skillScores"] = safe_scores.duplicate(true)
+	_save()
+
+func reset_assessment() -> void:
+	data["assessment"] = _defaults()["assessment"]
+	data["profile"]["skillScores"] = _default_skill_scores()
 	_save()
 
 func get_best(game_id: String) -> int:
@@ -75,6 +162,14 @@ func record_result(game_id: String, score: int) -> bool:
 	record["plays"] = int(record.get("plays", 0)) + 1
 	record["last"] = score
 	data["records"][game_id] = record
+	var axis: String = str(GAME_AXIS.get(game_id, ""))
+	if axis != "":
+		var cap: float = float(GAME_CAP.get(game_id, 1000.0))
+		var live_score := clampf(float(score) / cap * 100.0, 0.0, 100.0)
+		var skill_scores := get_skill_scores()
+		var previous: float = float(skill_scores.get(axis, 50))
+		skill_scores[axis] = int(round(previous * 0.65 + live_score * 0.35))
+		data["profile"]["skillScores"] = skill_scores
 	_save()
 	return score > old_best
 

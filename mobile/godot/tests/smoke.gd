@@ -4,7 +4,8 @@ const GAME_SCRIPTS := [
 	"res://games/FlashGame.gd",
 	"res://games/BubbleGame.gd",
 	"res://games/TraceGame.gd",
-	"res://games/ReactGame.gd"
+	"res://games/ReactGame.gd",
+	"res://scripts/AssessmentFlow.gd"
 ]
 
 func _init() -> void:

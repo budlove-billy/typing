@@ -91,6 +91,11 @@ func _new_round() -> void:
 
 func _bubble_pressed(index: int, bubble: Button) -> void:
 	AudioDirector.tap()
+	bubble.pivot_offset = bubble.size * 0.5
+	bubble.scale = Vector2(0.94, 0.94)
+	var tap_tween := create_tween()
+	tap_tween.tween_property(bubble, "scale", Vector2(1.06, 1.06), 0.08).set_trans(Tween.TRANS_BACK)
+	tap_tween.tween_property(bubble, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
 	if index in selected:
 		selected.erase(index)
 		total -= numbers[index]

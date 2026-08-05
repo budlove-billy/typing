@@ -400,6 +400,7 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 - 2026-08-05 — Android PC emulator run completed: installed the project-local Android Emulator and Android 35 x86_64 image, created `PlayMallow_API35`, widened the debug APK to arm64+x86_64, and added `mobile/godot/run-android-emulator.ps1` for repeatable boot/install/launch.
 - 2026-08-05 — Godot mobile UI refinement completed: rebuilt Home/Games/Records/Settings/Result and all three game surfaces around a padded mobile design system, replaced global label wrapping with selective wrapping, redrew the bite Mallow mascot, and passed Android 15 emulator visual QA across six screens.
 - 2026-08-05 — Native game continuation completed: replaced the bite mascot and launcher icon with a hole-free mint slime Mallow, added the four-language-ready `react` reaction-signal game with records/results integration, and verified the first round on the Android 15 emulator.
+- 2026-08-05 — Personalized native onboarding completed: researched Lumosity, Elevate, and CogniFit patterns; added a four-skill baseline assessment, local rolling skill scores, explainable weakness-first recommendations, re-assessment settings flow, animated ambient/slime/game feedback, and Android 15 visual QA through the assessment result screen.
 
 ## Changelog
 

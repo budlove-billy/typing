@@ -6,10 +6,25 @@ var mood := "idle":
 		mood = value
 		queue_redraw()
 
+var idle_tween: Tween
+
 func _ready() -> void:
 	if custom_minimum_size == Vector2.ZERO:
 		custom_minimum_size = Vector2(72, 72)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	call_deferred("_start_idle_motion")
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		pivot_offset = size * 0.5
+
+func _start_idle_motion() -> void:
+	pivot_offset = size * 0.5
+	if idle_tween:
+		idle_tween.kill()
+	idle_tween = create_tween().set_loops()
+	idle_tween.tween_property(self, "scale", Vector2(1.018, 0.982), 0.92).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	idle_tween.tween_property(self, "scale", Vector2(0.985, 1.015), 0.92).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _draw() -> void:
 	var extent := minf(size.x, size.y)

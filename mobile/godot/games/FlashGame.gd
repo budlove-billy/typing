@@ -121,8 +121,14 @@ func _card_pressed(index: int) -> void:
 
 func _reveal(index: int) -> void:
 	if index < cards.size():
+		var card := cards[index]
+		card.pivot_offset = card.size * 0.5
+		card.scale = Vector2(0.90, 0.90)
 		cards[index].text = values[index]
 		cards[index].add_theme_stylebox_override("normal", ThemeKit.box(CARD_OPEN, 18, ThemeKit.PINK, 2, false))
+		var tween := create_tween()
+		tween.tween_property(card, "scale", Vector2(1.04, 1.04), 0.10).set_trans(Tween.TRANS_BACK)
+		tween.tween_property(card, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
 
 func _hide(index: int) -> void:
 	if index < cards.size() and index not in matched:

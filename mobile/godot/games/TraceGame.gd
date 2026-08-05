@@ -71,10 +71,16 @@ class TraceStage extends Control:
 	var current_index := 0
 	var drawing := false
 	var completed := false
+	var pulse := 0.0
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_STOP
+		set_process(true)
 		call_deferred("_make_path")
+
+	func _process(delta: float) -> void:
+		pulse += delta
+		queue_redraw()
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED and size.x > 20 and size.y > 20 and path.is_empty():
@@ -167,9 +173,11 @@ class TraceStage extends Control:
 		if trail.size() > 1:
 			draw_polyline(trail, ThemeKit.TEAL, 13.0, true)
 		if not path.is_empty():
-			draw_circle(path[0], 24.0, Color(0.12, 0.62, 0.47, 0.16))
+			var start_glow := 24.0 + sin(pulse * 3.0) * 2.0
+			draw_circle(path[0], start_glow, Color(0.12, 0.62, 0.47, 0.16))
 			draw_circle(path[0], 17.0, ThemeKit.TEAL)
 			draw_circle(path[0], 7.0, Color.WHITE)
-			draw_circle(path[path.size() - 1], 27.0, Color(0.30, 0.44, 1.0, 0.16))
+			var end_glow := 27.0 + sin(pulse * 3.0 + 0.7) * 3.0
+			draw_circle(path[path.size() - 1], end_glow, Color(0.30, 0.44, 1.0, 0.16))
 			draw_circle(path[path.size() - 1], 19.0, ThemeKit.BLUE)
 			draw_circle(path[path.size() - 1], 8.0, Color.WHITE)

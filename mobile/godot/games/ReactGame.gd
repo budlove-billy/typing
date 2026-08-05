@@ -77,12 +77,16 @@ func _start_round() -> void:
 	can_tap = true
 	go_started_at = Time.get_ticks_msec()
 	arena.text = I18n.t("react_go")
+	arena.pivot_offset = arena.size * 0.5
 	arena.add_theme_color_override("font_color", Color.WHITE)
 	arena.add_theme_color_override("font_hover_color", Color.WHITE)
 	arena.add_theme_stylebox_override("normal", ThemeKit.button_style(ThemeKit.BLUE, 26, ThemeKit.BLUE_DARK))
 	arena.add_theme_stylebox_override("hover", ThemeKit.button_style(ThemeKit.BLUE_DARK, 26, ThemeKit.BLUE_DARK))
 	arena.add_theme_stylebox_override("pressed", ThemeKit.button_style(ThemeKit.BLUE_DARK, 26, ThemeKit.BLUE_DARK))
 	status.text = I18n.t("react_go")
+	var signal_tween := create_tween()
+	signal_tween.tween_property(arena, "scale", Vector2(1.018, 1.018), 0.10).set_trans(Tween.TRANS_BACK)
+	signal_tween.tween_property(arena, "scale", Vector2.ONE, 0.20).set_trans(Tween.TRANS_SINE)
 
 func _arena_pressed() -> void:
 	if waiting_for_go:

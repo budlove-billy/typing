@@ -18,15 +18,18 @@ var nav_buttons: Dictionary = {}
 var current_screen := "home"
 var current_game_id := ""
 var current_game: Control
+var assessment_flow: AssessmentFlow
 
 func _ready() -> void:
 	_build_shell()
 	I18n.language_changed.connect(_refresh_screen)
-	show_home()
+	if SaveStore.has_assessment():
+		show_home()
+	else:
+		show_assessment()
 
 func _build_shell() -> void:
-	var background := ColorRect.new()
-	background.color = BG
+	var background := AmbientBackdrop.new()
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(background)
@@ -111,6 +114,8 @@ func _refresh_screen() -> void:
 		"games": show_games()
 		"records": show_records()
 		"settings": show_settings()
+		"assessment": show_assessment()
+		"assessment_result": show_assessment_result(SaveStore.assessment_scores())
 
 func _navigate(screen_name: String) -> void:
 	AudioDirector.tap()
@@ -168,7 +173,7 @@ func show_home() -> void:
 	hero_text.add_theme_constant_override("separation", 6)
 	hero_row.add_child(hero_text)
 
-	var routine_badge := _pill(I18n.t("today_games") + "  |  3 min", Color(1, 1, 1, 0.16), Color.WHITE, 11)
+	var routine_badge := _pill(I18n.t("for_you") + "  |  3 min", Color(1, 1, 1, 0.16), Color.WHITE, 11)
 	routine_badge.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	hero_text.add_child(routine_badge)
 
@@ -189,6 +194,10 @@ func show_home() -> void:
 	avatar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	avatar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hero_row.add_child(avatar)
+	if SaveStore.assessment_was_skipped():
+		var skipped_hint := _pill(I18n.t("assessment_skipped_hint"), ThemeKit.AMBER_SOFT, ThemeKit.AMBER, 11)
+		skipped_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		body.add_child(skipped_hint)
 
 	body.add_child(_section_heading(I18n.t("mission"), str(SaveStore.mission_count()) + "/3"))
 	var mission := PanelContainer.new()
@@ -216,16 +225,11 @@ func show_home() -> void:
 	mission_text.add_child(progress)
 	mission_row.add_child(_pill(str(SaveStore.mission_count()) + " / 3", ThemeKit.TEAL_SOFT, TEAL, 12))
 
-	body.add_child(_section_heading(I18n.t("today_games"), "3"))
-	var games_grid := GridContainer.new()
-	games_grid.columns = 3
-	games_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	games_grid.add_theme_constant_override("h_separation", 8)
-	games_grid.add_theme_constant_override("v_separation", 8)
-	body.add_child(games_grid)
-	var games := GameCatalog.daily()
-	for i in range(games.size()):
-		games_grid.add_child(_game_tile(games[i], i + 1))
+	body.add_child(_section_heading(I18n.t("for_you"), "3"))
+	body.add_child(_label(I18n.t("for_you_desc"), 12, MUTED, HORIZONTAL_ALIGNMENT_LEFT, true))
+	var recommendations := RecommendationEngine.recommended(3)
+	for i in range(recommendations.size()):
+		body.add_child(_recommended_card(recommendations[i], i + 1))
 
 	var browse := _button(I18n.t("browse_games") + "  >", Color.WHITE, 52)
 	browse.add_theme_color_override("font_color", BLUE)
@@ -262,6 +266,7 @@ func show_records() -> void:
 	summary_row.add_child(_stat(I18n.t("plays"), str(SaveStore.total_plays())))
 	summary_row.add_child(_stat(I18n.t("mission"), str(SaveStore.mission_count()) + "/3"))
 
+	body.add_child(_skills_panel())
 	body.add_child(_section_heading(I18n.t("best"), str(GameCatalog.all().size())))
 	var games := GameCatalog.all()
 	for i in range(games.size()):
@@ -306,6 +311,11 @@ func show_settings() -> void:
 	lang_button.add_theme_color_override("font_color", BLUE)
 	lang_button.pressed.connect(_toggle_language)
 	body.add_child(lang_button)
+	var retake := _button(I18n.t("assessment_retake"), ThemeKit.BLUE_SOFT, 54)
+	retake.add_theme_color_override("font_color", BLUE)
+	retake.add_theme_color_override("font_hover_color", ThemeKit.BLUE_DARK)
+	retake.pressed.connect(_restart_assessment)
+	body.add_child(retake)
 
 func _setting_row(key: String, label_key: String) -> Control:
 	var card := PanelContainer.new()
@@ -336,6 +346,72 @@ func _setting_changed(value: bool, key: String) -> void:
 func _toggle_language() -> void:
 	AudioDirector.tap()
 	I18n.set_language("en" if I18n.language == "ko" else "ko")
+
+func show_assessment() -> void:
+	_set_chrome("assessment", I18n.t("brand"))
+	nav_panel.visible = false
+	_clear_body()
+	assessment_flow = AssessmentFlow.new()
+	assessment_flow.completed.connect(_assessment_completed)
+	assessment_flow.skipped.connect(_assessment_skipped)
+	assessment_flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_child(assessment_flow)
+
+func _assessment_completed(scores: Dictionary) -> void:
+	SaveStore.save_assessment(scores, "baseline")
+	_show_assessment_result(scores)
+
+func _assessment_skipped() -> void:
+	SaveStore.save_assessment({"memory": 50, "focus": 50, "calculation": 50, "coordination": 50}, "skipped")
+	show_home()
+
+func show_assessment_result(scores: Dictionary) -> void:
+	_show_assessment_result(scores)
+
+func _show_assessment_result(scores: Dictionary) -> void:
+	_set_chrome("assessment_result", I18n.t("brand"))
+	nav_panel.visible = false
+	_clear_body()
+	var result_card := PanelContainer.new()
+	result_card.add_theme_stylebox_override("panel", ThemeKit.soft_panel(ThemeKit.BLUE_SOFT, 26, 20))
+	body.add_child(result_card)
+	var result_box := VBoxContainer.new()
+	result_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	result_box.add_theme_constant_override("separation", 8)
+	result_card.add_child(result_box)
+	var avatar := MallowAvatar.new()
+	avatar.mood = "win"
+	avatar.custom_minimum_size = Vector2(104, 104)
+	avatar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	result_box.add_child(avatar)
+	result_box.add_child(_label(I18n.t("assessment_result_title"), 23, INK, HORIZONTAL_ALIGNMENT_CENTER, true))
+	result_box.add_child(_label(I18n.t("assessment_result_desc"), 13, MUTED, HORIZONTAL_ALIGNMENT_CENTER, true))
+
+	body.add_child(_skills_panel(scores))
+	body.add_child(_section_heading(I18n.t("for_you"), "3"))
+	var recommendations := RecommendationEngine.recommended(3)
+	for i in range(recommendations.size()):
+		body.add_child(_recommended_card(recommendations[i], i + 1))
+	if not recommendations.is_empty():
+		var start := _button(I18n.t("assessment_result_start") + "  >", BLUE, 58)
+		start.add_theme_color_override("font_color", Color.WHITE)
+		start.add_theme_color_override("font_hover_color", Color.WHITE)
+		start.pressed.connect(_launch_recommended.bind(recommendations[0]))
+		body.add_child(start)
+	var home := _button(I18n.t("assessment_result_home"), Color.WHITE, 50)
+	home.add_theme_color_override("font_color", MUTED)
+	home.pressed.connect(show_home)
+	body.add_child(home)
+
+func _launch_recommended(item: Dictionary) -> void:
+	var game: Dictionary = item.get("game", {})
+	if not game.is_empty():
+		_launch_game(str(game["id"]))
+
+func _restart_assessment() -> void:
+	AudioDirector.tap()
+	SaveStore.reset_assessment()
+	show_assessment()
 
 func _launch_game(game_id: String) -> void:
 	AudioDirector.tap()
@@ -406,6 +482,71 @@ func _next_game(game_id: String) -> void:
 		if games[i]["id"] == game_id:
 			_launch_game(games[(i + 1) % games.size()]["id"])
 			return
+
+func _recommended_card(item: Dictionary, number: int) -> Control:
+	var game: Dictionary = item.get("game", {})
+	var color := Color(str(game.get("color", "#4c6fff")))
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", ThemeKit.panel_style(Color.WHITE, 20, 12, true))
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	card.add_child(row)
+	row.add_child(_number_badge(number, color))
+	var info := VBoxContainer.new()
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info.add_theme_constant_override("separation", 3)
+	row.add_child(info)
+	info.add_child(_label(I18n.t(str(game.get("name_key", ""))), 16, INK))
+	var axis_line := _label(RecommendationEngine.axis_label(str(item.get("axis_key", "memory"))) + "  ·  " + RecommendationEngine.reason_text(item), 11, MUTED, HORIZONTAL_ALIGNMENT_LEFT, true)
+	info.add_child(axis_line)
+	var skill_bar := ProgressBar.new()
+	skill_bar.max_value = 100
+	skill_bar.value = int(item.get("skill", 50))
+	skill_bar.show_percentage = false
+	skill_bar.custom_minimum_size = Vector2(0, 7)
+	skill_bar.add_theme_stylebox_override("background", ThemeKit.box(Color("#edf0f6"), 8))
+	skill_bar.add_theme_stylebox_override("fill", ThemeKit.box(color, 8))
+	info.add_child(skill_bar)
+	var play := _button(">", color.lightened(0.38), 48)
+	play.custom_minimum_size = Vector2(48, 48)
+	play.add_theme_font_size_override("font_size", 22)
+	play.add_theme_color_override("font_color", color.darkened(0.16))
+	play.add_theme_color_override("font_hover_color", color.darkened(0.16))
+	play.pressed.connect(_launch_recommended.bind(item))
+	row.add_child(play)
+	return card
+
+func _skills_panel(scores: Dictionary = {}) -> Control:
+	var values := SaveStore.get_skill_scores()
+	if not scores.is_empty():
+		for key in scores:
+			values[key] = int(scores[key])
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", ThemeKit.panel_style(Color.WHITE, 20, 14, false))
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 9)
+	panel.add_child(box)
+	box.add_child(_label(I18n.t("skill_now"), 14, INK))
+	for axis in ["memory", "focus", "calculation", "coordination"]:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		var name := _label(I18n.t("skill_" + axis), 12, MUTED)
+		name.custom_minimum_size = Vector2(64, 0)
+		row.add_child(name)
+		var bar := ProgressBar.new()
+		bar.max_value = 100
+		bar.value = int(values.get(axis, 50))
+		bar.show_percentage = false
+		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bar.custom_minimum_size = Vector2(0, 8)
+		bar.add_theme_stylebox_override("background", ThemeKit.box(Color("#edf0f6"), 8))
+		bar.add_theme_stylebox_override("fill", ThemeKit.box(ThemeKit.TEAL, 8))
+		row.add_child(bar)
+		row.add_child(_label(str(int(values.get(axis, 50))), 12, ThemeKit.TEAL, HORIZONTAL_ALIGNMENT_RIGHT))
+		box.add_child(row)
+	box.add_child(_label(I18n.t("skill_hint"), 10, SUBTLE, HORIZONTAL_ALIGNMENT_LEFT, true))
+	return panel
 
 func _game_tile(game: Dictionary, number: int) -> Control:
 	var color := Color(game["color"])

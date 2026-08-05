@@ -9,12 +9,15 @@ This is the first native client slice for Play Mallow. The existing web app rema
 - Versioned local save data under Godot `user://`
 - Korean-first UI with an English localization layer
 - Sound feedback, haptic feedback, and settings toggles
+- First-launch four-skill baseline assessment with a skippable fallback
+- Local skill scores, rolling updates, and explainable daily recommendations
 - Unified mobile design system with padded surfaces, selective text wrapping,
   48px-or-larger touch targets, and a code-drawn mint slime Mallow mascot
 - `flash`: card-pair memory game
 - `bubble`: target-sum touch game
 - `trace`: touch path coordination game
 - `react`: reaction-signal focus game
+- Assessment: memory, focus, calculation, and coordination calibration flow
 
 ## Run locally
 
@@ -93,10 +96,12 @@ the project-local emulator.
 - `MallowAvatar.gd` draws the hole-free mint slime Mallow mascot at any requested control size.
 - Labels wrap only where copy is expected to span lines; compact rows preserve
   their natural width instead of collapsing into vertical text.
-- Home, Games, Records, Settings, Result, Flash, Bubble, and Trace share one
-  spacing and interaction hierarchy.
-- Android emulator visual QA covers Home, Games, Records, Flash, Bubble, and
-  Trace at 1080x2400 on Android 15.
+- Home, Games, Records, Settings, Result, Assessment, Flash, Bubble, Trace, and
+  React share one spacing and interaction hierarchy.
+- Ambient backdrop motion, slime idle breathing, target glows, and tap easing
+  are used for feedback without overwhelming the task.
+- Android emulator visual QA covers the assessment flow and result recommendations
+  at 1080x2400 on Android 15.
 
 ## Structure
 
@@ -107,8 +112,11 @@ scripts/SaveStore.gd      versioned local records/settings
 scripts/AudioDirector.gd  procedural feedback tones and haptics
 scripts/I18n.gd           Korean/English strings
 scripts/ThemeKit.gd       shared mobile visual styles
+scripts/AssessmentFlow.gd first-launch baseline assessment
+scripts/RecommendationEngine.gd explainable daily recommendation ranking
 games/*.gd                independent playable game modules
 tests/smoke.gd            headless module instantiation check
 ```
 
-The next slice should add real art/audio assets, Android back/resume handling, and device testing before porting additional games.
+The next slice should add Android back/resume handling, controlled re-assessment cadence,
+and device testing before porting additional games.
