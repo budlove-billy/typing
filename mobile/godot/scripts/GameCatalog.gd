@@ -42,6 +42,45 @@ const GAMES := [
 	{"id": "tango", "name_key": "tango_name", "desc_key": "tango_desc", "axis_key": "logic", "axis": "논리", "color": "#4c6fff"}
 ]
 
+const CATEGORIES := [
+	{"id": "memory", "name_key": "category_memory", "symbol": "M", "color": "#f06f91"},
+	{"id": "focus", "name_key": "category_focus", "symbol": "+", "color": "#d99327"},
+	{"id": "speed", "name_key": "category_speed", "symbol": ">", "color": "#4c6fff"},
+	{"id": "coordination", "name_key": "category_coordination", "symbol": "o", "color": "#1f9d78"},
+	{"id": "sight", "name_key": "category_sight", "symbol": "@", "color": "#4c6fff"},
+	{"id": "space", "name_key": "category_space", "symbol": "◇", "color": "#1f9d78"},
+	{"id": "sound", "name_key": "category_sound", "symbol": "♪", "color": "#9b63d7"},
+	{"id": "calculation", "name_key": "category_calculation", "symbol": "÷", "color": "#4c6fff"},
+	{"id": "logic", "name_key": "category_logic", "symbol": "∴", "color": "#1f9d78"},
+	{"id": "language", "name_key": "category_language", "symbol": "A", "color": "#c9841d"},
+	{"id": "test", "name_key": "category_test", "symbol": "?", "color": "#f06f91"}
+]
+
+const CATEGORY_GAMES := {
+	"memory": ["flash", "count", "nback", "cards", "rev"],
+	"focus": ["stroop", "switch"],
+	"speed": ["trail", "react", "chop", "run", "flank"],
+	"coordination": ["whack", "catch", "trace"],
+	"sight": ["spot", "odd", "diff"],
+	"space": ["rotate", "slide", "fit"],
+	"sound": ["melody", "rhythm", "pitch"],
+	"calculation": ["math", "bubble", "merge", "guess"],
+	"logic": ["iq", "sudoku", "sort", "nono", "queens", "tango"],
+	"language": ["anagram", "wordsearch", "moamoa"],
+	"test": ["braintype"]
+}
+
+const GAME_SYMBOLS := {
+	"flash": "✦", "count": "◌", "nback": "N", "cards": "▦", "stroop": "A",
+	"switch": "↔", "trail": "1", "react": "!", "chop": "/", "run": ">",
+	"whack": "●", "melody": "♪", "spot": "◉", "odd": "!", "rotate": "↻",
+	"slide": "□", "math": "+", "bubble": "○", "merge": "2", "iq": "?",
+	"sudoku": "4", "sort": "≡", "flank": "→", "rev": "↶", "rhythm": "∿",
+	"catch": "∪", "fit": "▧", "guess": "≈", "nono": "▤", "anagram": "A",
+	"wordsearch": "⌕", "diff": "≠", "pitch": "♫", "trace": "⌁", "braintype": "?",
+	"moamoa": "가", "queens": "♛", "tango": "☼"
+}
+
 static func all() -> Array:
 	return GAMES.duplicate(true)
 
@@ -53,6 +92,20 @@ static func get_game(game_id: String) -> Dictionary:
 		if game["id"] == game_id:
 			return game
 	return {}
+
+static func categories() -> Array:
+	return CATEGORIES.duplicate(true)
+
+static func games_for_category(category_id: String) -> Array:
+	var result: Array = []
+	for game_id in CATEGORY_GAMES.get(category_id, []):
+		var game := get_game(str(game_id))
+		if not game.is_empty():
+			result.append(game)
+	return result
+
+static func symbol_for(game_id: String) -> String:
+	return str(GAME_SYMBOLS.get(game_id, "✦"))
 
 static func script_path(game_id: String) -> String:
 	var class_names := {"iq": "IQGame"}

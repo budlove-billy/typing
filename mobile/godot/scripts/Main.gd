@@ -6,6 +6,7 @@ const MUTED := ThemeKit.MUTED
 const SUBTLE := ThemeKit.SUBTLE
 const BLUE := ThemeKit.BLUE
 const TEAL := ThemeKit.TEAL
+const GameIconControl = preload("res://scripts/GameIcon.gd")
 
 var body: VBoxContainer
 var scroll: ScrollContainer
@@ -20,6 +21,7 @@ var current_game_id := ""
 var current_game: Control
 var drag_scrolling := false
 var drag_moved := false
+var expanded_category := "memory"
 var assessment_flow: AssessmentFlow
 
 func _ready() -> void:
@@ -247,17 +249,30 @@ func show_home() -> void:
 
 func show_games() -> void:
 	_set_chrome("games", I18n.t("games"))
+	_render_games_body(false)
+
+func _render_games_body(preserve_scroll: bool) -> void:
+	var previous_scroll := scroll.scroll_vertical
 	_clear_body()
 	body.add_child(_eyebrow("PLAY MALLOW"))
 	body.add_child(_label(I18n.t("all_games"), 24, INK))
-	body.add_child(_label(I18n.t("home_sub"), 13, MUTED, HORIZONTAL_ALIGNMENT_LEFT, true))
-	var games := GameCatalog.all()
-	for i in range(games.size()):
-		body.add_child(_large_game_card(games[i], i + 1))
+	body.add_child(_label(I18n.t("category_hint"), 13, MUTED, HORIZONTAL_ALIGNMENT_LEFT, true))
+	for category in GameCatalog.categories():
+		body.add_child(_category_section(category))
 	var settings := _button(I18n.t("settings"), Color.WHITE, 52)
 	settings.add_theme_color_override("font_color", MUTED)
 	settings.pressed.connect(show_settings)
 	body.add_child(settings)
+	if preserve_scroll:
+		scroll.call_deferred("set", "scroll_vertical", previous_scroll)
+
+func _toggle_category(category_id: String) -> void:
+	AudioDirector.tap()
+	if expanded_category == category_id:
+		expanded_category = ""
+	else:
+		expanded_category = category_id
+	_render_games_body(true)
 
 func show_records() -> void:
 	_set_chrome("records", I18n.t("records"))
@@ -586,35 +601,82 @@ func _skills_panel(scores: Dictionary = {}) -> Control:
 	box.add_child(_label(I18n.t("skill_hint"), 10, SUBTLE, HORIZONTAL_ALIGNMENT_LEFT, true))
 	return panel
 
-func _game_tile(game: Dictionary, number: int) -> Control:
-	var color := Color(game["color"])
-	var button := _button("", Color.WHITE, 118)
-	button.custom_minimum_size = Vector2(0, 118)
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.add_theme_stylebox_override("normal", ThemeKit.box(Color.WHITE, 18, color.lightened(0.22), 1, false))
-	button.add_theme_stylebox_override("hover", ThemeKit.box(color.lightened(0.45), 18, color.lightened(0.12), 1, false))
-	button.add_theme_stylebox_override("pressed", ThemeKit.box(color.lightened(0.38), 18, color, 1, false))
-	button.add_theme_font_size_override("font_size", 13)
-	button.add_theme_color_override("font_color", INK)
-	button.add_theme_color_override("font_hover_color", INK)
-	button.text = "%02d\n%s\n%s" % [number, I18n.t(game["name_key"]), str(game["axis"])]
-	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	button.pressed.connect(_launch_game.bind(game["id"]))
-	return button
+func _category_section(category: Dictionary) -> Control:
+	var category_id := str(category["id"])
+	var color := Color(category["color"])
+	var section := VBoxContainer.new()
+	section.add_theme_constant_override("separation", 8)
 
-func _large_game_card(game: Dictionary, number: int) -> Control:
+	var header := _button("", color.lightened(0.50), 76)
+	header.add_theme_stylebox_override("normal", ThemeKit.button_style(color.lightened(0.50), 20, color.lightened(0.28)))
+	header.add_theme_stylebox_override("hover", ThemeKit.button_style(color.lightened(0.56), 20, color.lightened(0.18)))
+	header.add_theme_stylebox_override("pressed", ThemeKit.button_style(color.lightened(0.43), 20, color))
+	header.pressed.connect(_toggle_category.bind(category_id))
+
+	var row := HBoxContainer.new()
+	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	row.add_theme_constant_override("separation", 12)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_child(row)
+
+	var category_icon := GameIconControl.new().configure(str(category["symbol"]), color, 48)
+	row.add_child(category_icon)
+
+	var info := VBoxContainer.new()
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info.alignment = BoxContainer.ALIGNMENT_CENTER
+	info.add_theme_constant_override("separation", 1)
+	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	info.add_child(_label(I18n.t(str(category["name_key"])), 17, INK))
+	var games := GameCatalog.games_for_category(category_id)
+	info.add_child(_label(I18n.t("category_count") % games.size(), 11, MUTED))
+	row.add_child(info)
+
+	var chevron := _label("⌃" if expanded_category == category_id else "⌄", 22, color.darkened(0.12), HORIZONTAL_ALIGNMENT_CENTER)
+	chevron.custom_minimum_size = Vector2(28, 0)
+	chevron.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(chevron)
+	section.add_child(header)
+
+	if expanded_category == category_id:
+		var grid := GridContainer.new()
+		grid.columns = 3
+		grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		grid.add_theme_constant_override("h_separation", 8)
+		grid.add_theme_constant_override("v_separation", 8)
+		for i in range(games.size()):
+			grid.add_child(_game_icon_tile(games[i], i + 1))
+		section.add_child(grid)
+	return section
+
+func _game_icon_tile(game: Dictionary, number: int) -> Control:
 	var color := Color(game["color"])
-	var button := _button("", Color.WHITE, 94)
-	button.add_theme_stylebox_override("normal", ThemeKit.button_style(Color.WHITE, 18, color.lightened(0.30)))
-	button.add_theme_stylebox_override("hover", ThemeKit.button_style(color.lightened(0.47), 18, color.lightened(0.18)))
+	var button := _button("", Color.WHITE, 104)
+	button.custom_minimum_size = Vector2(0, 104)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.add_theme_stylebox_override("normal", ThemeKit.button_style(Color.WHITE, 18, color.lightened(0.28)))
+	button.add_theme_stylebox_override("hover", ThemeKit.button_style(color.lightened(0.48), 18, color.lightened(0.15)))
 	button.add_theme_stylebox_override("pressed", ThemeKit.button_style(color.lightened(0.40), 18, color))
-	button.text = "%02d   %s\n%s  |  %s" % [number, I18n.t(game["name_key"]), str(game["axis"]), I18n.t(game["desc_key"])]
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	button.add_theme_font_size_override("font_size", 15)
-	button.add_theme_color_override("font_color", INK)
-	button.add_theme_color_override("font_hover_color", INK)
 	button.pressed.connect(_launch_game.bind(game["id"]))
+
+	var stack := VBoxContainer.new()
+	stack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	stack.alignment = BoxContainer.ALIGNMENT_CENTER
+	stack.add_theme_constant_override("separation", 3)
+	stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(stack)
+
+	var icon := GameIconControl.new().configure(GameCatalog.symbol_for(str(game["id"])), color, 46)
+	icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	stack.add_child(icon)
+	var name := _label(I18n.t(str(game["name_key"])), 12, INK, HORIZONTAL_ALIGNMENT_CENTER, true)
+	name.custom_minimum_size = Vector2(0, 28)
+	name.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stack.add_child(name)
+	var meta := _label("%02d" % number, 9, SUBTLE, HORIZONTAL_ALIGNMENT_CENTER)
+	meta.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stack.add_child(meta)
 	return button
 
 func _section_heading(title: String, meta: String) -> Control:

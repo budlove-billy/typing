@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-08-06 — **네이티브 게임 카테고리 허브 개편**: Android Games 화면을 긴 텍스트 목록에서 기억력·집중력·순발력·협응력 등 11개 인지 카테고리의 컬러 아이콘 헤더로 전환. 카테고리 1개를 펼치면 3열 게임 아이콘 카드(아이콘·이름·번호)가 노출되며, `GameCatalog` 그룹 메타데이터·다국어 라벨·재사용 `GameIcon` 컨트롤 추가. Android 에뮬레이터에서 카테고리 전환·그리드 정렬·스크롤 확인, 런타임 오류 0.
+
 - 2026-08-05 — **Godot vertical slice 구현**: `mobile/godot`에 390×844 세로형 앱 셸(Home/Games/Records/Settings/Result), 버전 저장(`user://`), ko/en 문자열, 프로시저럴 효과음·햅틱, `flash`·`bubble`·`trace` 게임을 추가. Godot 4.7.1 headless import/main run과 3개 게임 smoke test 통과. 웹 앱은 변경하지 않음.
 
 - 2026-08-05 — **Godot 4.7.1 설치**: 프로젝트 내부 `tools/godot/`에 Windows x86_64 포터블 버전을 설치하고 headless 버전 확인(`4.7.1.stable.official.a13da4feb`) 완료. 대용량 실행 파일·압축본은 Git에서 제외하고 `tools/README.md`에 경로를 기록.
