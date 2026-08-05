@@ -50,7 +50,15 @@ const STRINGS := {
 		"correct": "좋아요!",
 		"try_again": "조금만 더",
 		"trace_good": "좋은 흐름이에요!",
-		"trace_short": "조금 더 길게 따라가 볼까요?"
+		"trace_short": "조금 더 길게 따라가 볼까요?",
+		"react_name": "반응 신호",
+		"react_desc": "파란 신호가 보일 때만 빠르게 탭하세요",
+		"react_ready": "파란 신호가 켜지면 최대한 빠르게 탭하세요",
+		"react_go": "지금 탭!",
+		"react_wait": "기다려요",
+		"react_false": "아직 아니에요",
+		"react_round": "라운드",
+		"react_ms": "밀리초"
 	},
 	"en": {
 		"brand": "Play Mallow",
@@ -97,7 +105,15 @@ const STRINGS := {
 		"correct": "Nice!",
 		"try_again": "Almost there",
 		"trace_good": "Great flow!",
-		"trace_short": "Follow a little farther."
+		"trace_short": "Follow a little farther.",
+		"react_name": "Reaction Signal",
+		"react_desc": "Tap only when the blue signal appears",
+		"react_ready": "Wait for blue, then tap as fast as you can",
+		"react_go": "TAP NOW!",
+		"react_wait": "WAIT",
+		"react_false": "Too soon",
+		"react_round": "Round",
+		"react_ms": "ms"
 	}
 }
 

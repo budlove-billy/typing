@@ -64,7 +64,6 @@ func _build_shell() -> void:
 
 	header_avatar = MallowAvatar.new()
 	header_avatar.custom_minimum_size = Vector2(42, 42)
-	header_avatar.backdrop_color = Color.WHITE
 	header_row.add_child(header_avatar)
 
 	var title_box := VBoxContainer.new()
@@ -186,7 +185,6 @@ func show_home() -> void:
 
 	var avatar := MallowAvatar.new()
 	avatar.mood = "good"
-	avatar.backdrop_color = BLUE
 	avatar.custom_minimum_size = Vector2(94, 94)
 	avatar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	avatar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -225,7 +223,7 @@ func show_home() -> void:
 	games_grid.add_theme_constant_override("h_separation", 8)
 	games_grid.add_theme_constant_override("v_separation", 8)
 	body.add_child(games_grid)
-	var games := GameCatalog.all()
+	var games := GameCatalog.daily()
 	for i in range(games.size()):
 		games_grid.add_child(_game_tile(games[i], i + 1))
 
@@ -383,7 +381,6 @@ func _show_result(game_id: String, score: int, is_new: bool, detail: String) -> 
 
 	var avatar := MallowAvatar.new()
 	avatar.mood = "win" if is_new else "good"
-	avatar.backdrop_color = ThemeKit.BLUE_SOFT
 	avatar.custom_minimum_size = Vector2(104, 104)
 	avatar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	result_box.add_child(avatar)

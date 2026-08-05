@@ -10,10 +10,11 @@ This is the first native client slice for Play Mallow. The existing web app rema
 - Korean-first UI with an English localization layer
 - Sound feedback, haptic feedback, and settings toggles
 - Unified mobile design system with padded surfaces, selective text wrapping,
-  48px-or-larger touch targets, and a code-drawn bite Mallow mascot
+  48px-or-larger touch targets, and a code-drawn mint slime Mallow mascot
 - `flash`: card-pair memory game
 - `bubble`: target-sum touch game
 - `trace`: touch path coordination game
+- `react`: reaction-signal focus game
 
 ## Run locally
 
@@ -89,7 +90,7 @@ the project-local emulator.
 ## Mobile UI system
 
 - `ThemeKit.gd` owns palette, borders, card padding, shadows, and button states.
-- `MallowAvatar.gd` draws the bite Mallow mascot at any requested control size.
+- `MallowAvatar.gd` draws the hole-free mint slime Mallow mascot at any requested control size.
 - Labels wrap only where copy is expected to span lines; compact rows preserve
   their natural width instead of collapsing into vertical text.
 - Home, Games, Records, Settings, Result, Flash, Bubble, and Trace share one

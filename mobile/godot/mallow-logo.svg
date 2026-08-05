@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="플레이말로우 한입 말랑 큐브 마스코트"><defs><linearGradient id="mg_pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="#28190a" opacity=".1"/><path d="M42 19 H65 C62 23 63 28 68 30 C73 32 77 28 76 23 C82 27 85 34 85 43 V58 C85 73 77 82 62 82 H38 C23 82 15 73 15 58 V43 C15 28 25 19 42 19 Z" fill="url(#mg_pink)" stroke="#F09BB8" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="50" cy="70" rx="27" ry="11" fill="#966e3c" opacity=".09"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="#fff" opacity=".55"/><circle cx="30" cy="56" r="3.5" fill="#FF9DB8" opacity=".35"/><circle cx="70" cy="56" r="3.5" fill="#FF9DB8" opacity=".35"/><circle cx="38" cy="47" r="4.2" fill="#33405c"/><circle cx="62" cy="47" r="4.2" fill="#33405c"/><circle cx="36.8" cy="45.8" r="1.15" fill="#fff" opacity=".9"/><circle cx="60.8" cy="45.8" r="1.15" fill="#fff" opacity=".9"/><path d="M46 59 Q50 62.5 54 59" fill="none" stroke="#33405c" stroke-width="2.2" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Play Mallow slime mascot">
+  <defs>
+    <linearGradient id="slime" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9F4E4"/>
+      <stop offset="0.62" stop-color="#9CE6C8"/>
+      <stop offset="1" stop-color="#70CBA8"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="50" cy="88" rx="27" ry="5" fill="#285C5A" opacity=".14"/>
+  <path d="M17 61 C15 42 21 27 36 23 C42 21 47 23 51 18 C55 13 64 15 65 22 C79 23 86 35 84 57 C83 73 73 83 56 84 H43 C28 84 19 76 17 61 Z" fill="url(#slime)" stroke="#58B993" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="35" cy="35" rx="14" ry="8" fill="#F4FFFB" opacity=".72"/>
+  <circle cx="29" cy="59" r="3.5" fill="#F07E99" opacity=".5"/>
+  <circle cx="71" cy="59" r="3.5" fill="#F07E99" opacity=".5"/>
+  <circle cx="38" cy="49" r="4.3" fill="#2F5060"/>
+  <circle cx="62" cy="49" r="4.3" fill="#2F5060"/>
+  <circle cx="36.8" cy="47.7" r="1.2" fill="#FFFFFF"/>
+  <circle cx="60.8" cy="47.7" r="1.2" fill="#FFFFFF"/>
+  <path d="M45 62 Q50 66 55 62" fill="none" stroke="#DD6F82" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

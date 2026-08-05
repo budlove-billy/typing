@@ -12,7 +12,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - Project-local build tools are installed under `tools/jdk17`, `tools/android/cmdline-tools/latest`, and `tools/android/sdk`.
 - Android SDK packages: Platform-Tools, Build-Tools 35.0.1, Platform 35, CMake 3.10.2.4988404, NDK 28.1.13356709. Godot export templates are in `tools/godot/export_templates/4.7.1.stable` and mirrored into project-local Godot user data for export.
 - `mobile/godot/build-android.ps1` reproducibly produces `mobile/godot/build/playmallow-debug.apk` using preset `Android`. Current artifact: package `com.playmallow.mallow`, version `0.1.0`, version code `1`, target SDK 36, min SDK 24, arm64+x86_64, debug-signed.
-- APK verification passed with Android `apksigner` v2/v3 and SHA-256 `A589B80B24C49CA9DA8124A6547324DBF92D0C2425B2A835D8F216EE0A433AAC`. A release APK/AAB still needs a project-owned non-debug keystore; never publish the debug keystore.
+- APK verification passed with Android `apksigner` v2/v3 and SHA-256 `DBAC26572727F158D6F60A3FD295D62E578CF89C5834B09497C01B0992F1EF38`. A release APK/AAB still needs a project-owned non-debug keystore; never publish the debug keystore.
 
 ## Android PC emulator (2026-08-05)
 - Project-local Android Emulator and Android 35 `default;x86_64` system image are installed under `tools/android/sdk/`.
@@ -23,8 +23,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## Godot mobile UI system (2026-08-05)
 - `ThemeKit.gd` owns the mobile palette, padded surfaces, subtle borders/shadows, and button states. Main app screens and all three games use these shared tokens.
 - `Main.gd` uses selective label wrapping, explicit HBox expansion, compact 64px app/header navigation, 48px-or-larger touch targets, and immediate child removal during screen transitions. Never restore global autowrap: it collapsed horizontal labels into one-character vertical columns on Android.
-- `MallowAvatar.gd` is a code-drawn bite Mallow mascot that respects caller-requested sizing and backdrop color; `_ready()` must not override requested control dimensions.
-- Android 15 emulator visual QA passed for Home, Games, Records, Flash, Bubble, and Trace at 1080x2400. Final reference captures are under `generated_images/playmallow-*-final.png` and `playmallow-*-improved.png`.
+- `MallowAvatar.gd` is a code-drawn mint slime Mallow mascot with face, shine, slime bumps, and ground shadow. It has no head cutout and respects caller-requested sizing; `_ready()` must not override requested control dimensions.
+- `ReactGame.gd` is the fourth native game: five-round blue-signal reaction test with false-start penalty, reaction-time score, result/record integration, and Korean/English strings. Home keeps a three-game daily routine while Games/Records expose all four.
+- Android 15 emulator visual QA passed for Home, Games, Records, Flash, Bubble, Trace, and React at 1080x2400. Final reference captures are under `generated_images/playmallow-*.png`.
 
 ## Godot vertical slice (2026-08-05)
 - `mobile/godot` is the native client start point. It contains a 390×844 portrait shell with Home/Games/Records/Settings/Result, versioned `user://` saves, Korean-first localization with English strings, procedural feedback tones, haptic settings, and independent `flash`/`bubble`/`trace` game modules.

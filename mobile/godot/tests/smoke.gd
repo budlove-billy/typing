@@ -3,7 +3,8 @@ extends SceneTree
 const GAME_SCRIPTS := [
 	"res://games/FlashGame.gd",
 	"res://games/BubbleGame.gd",
-	"res://games/TraceGame.gd"
+	"res://games/TraceGame.gd",
+	"res://games/ReactGame.gd"
 ]
 
 func _init() -> void:
