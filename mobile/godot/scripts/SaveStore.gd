@@ -7,14 +7,16 @@ const GAME_AXIS := {
 	"flash": "memory",
 	"react": "focus",
 	"bubble": "calculation",
-	"trace": "coordination"
+	"trace": "coordination",
+	"switch": "focus"
 }
 
 const GAME_CAP := {
 	"flash": 1000.0,
 	"react": 1000.0,
 	"bubble": 650.0,
-	"trace": 1000.0
+	"trace": 1000.0,
+	"switch": 1000.0
 }
 
 var data: Dictionary = {}

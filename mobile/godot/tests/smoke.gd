@@ -5,6 +5,7 @@ const GAME_SCRIPTS := [
 	"res://games/BubbleGame.gd",
 	"res://games/TraceGame.gd",
 	"res://games/ReactGame.gd",
+	"res://games/SwitchGame.gd",
 	"res://scripts/AssessmentFlow.gd"
 ]
 

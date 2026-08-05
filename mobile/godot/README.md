@@ -17,6 +17,7 @@ This is the first native client slice for Play Mallow. The existing web app rema
 - `bubble`: target-sum touch game
 - `trace`: touch path coordination game
 - `react`: reaction-signal focus game
+- `switch`: rule-switching focus and flexibility game
 - Assessment: memory, focus, calculation, and coordination calibration flow
 
 ## Run locally
@@ -96,12 +97,12 @@ the project-local emulator.
 - `MallowAvatar.gd` draws the hole-free mint slime Mallow mascot at any requested control size.
 - Labels wrap only where copy is expected to span lines; compact rows preserve
   their natural width instead of collapsing into vertical text.
-- Home, Games, Records, Settings, Result, Assessment, Flash, Bubble, Trace, and
-  React share one spacing and interaction hierarchy.
+- Home, Games, Records, Settings, Result, Assessment, Flash, Bubble, Trace, React,
+  and Switch share one spacing and interaction hierarchy.
 - Ambient backdrop motion, slime idle breathing, target glows, and tap easing
   are used for feedback without overwhelming the task.
-- Android emulator visual QA covers the assessment flow and result recommendations
-  at 1080x2400 on Android 15.
+- Android emulator visual QA covers the assessment flow, result recommendations,
+  Games with all five cards, and the Switch round/rule transition at 1080x2400 on Android 15.
 
 ## Structure
 
