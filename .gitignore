@@ -11,3 +11,4 @@ shared/
 generated_images/
 .mcp.json
 tstory/
+tools/godot/

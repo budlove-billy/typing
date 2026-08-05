@@ -3,6 +3,11 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## Godot local installation (2026-08-05)
+- Godot 4.7.1 stable Windows x86_64 is installed at `tools/godot/Godot_v4.7.1-stable_win64.exe`.
+- Verified version: `4.7.1.stable.official.a13da4feb`.
+- `tools/godot/` is ignored because the executable and archive are large local tool artifacts. Android Studio/JDK/SDK/ADB still need separate installation.
+
 ## 모바일 네이티브 전환 (2026-08-05)
 - 플레이말로우는 30개 이상의 미니게임·미션·기록·추천·다국어를 가진 게임형 서비스다. `index.html`/`brain_app.html`에 DOM·CSS·게임 상태·저장·오디오가 강결합되어 있어 자동 포팅하지 않는다.
 - Android-first 네이티브 앱은 **Godot 4.7.1 stable + GDScript**로 병행 개발한다. 현재 웹/PWA는 라이브 웹 서비스로 유지한다. LÖVE는 순수 2D 게임에는 적합하지만 앱형 UI·Android 서비스 연동·오디오 파이프라인을 직접 관리할 비중이 커서 현재 범위에는 2순위다.
