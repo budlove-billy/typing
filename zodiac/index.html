@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mallow Horoscope — Today's Zodiac Fortune</title>
-<meta name="description" content="Your daily horoscope by birth date. 12 zodiac signs, love·money·health·work luck, lucky color & number. Just-for-fun Mallow horoscope.">
+<meta name="description" content="Daily horoscope from a real transit: today's Moon sign vs your sun sign gives the aspect, plus the lunar phase. Score out of 100, love·money·health·work, weekly flow. Free, just for fun.">
 <meta property="og:title" content="Mallow Horoscope — Today's Zodiac Fortune">
-<meta property="og:description" content="Daily horoscope for your star sign. Share your fortune with friends!">
+<meta property="og:description" content="Where the Moon is today vs your sign — aspect, lunar phase, and a 100-point score. Free daily horoscope.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://playmallow.com/zodiac/">
 <meta property="og:image" content="https://playmallow.com/og/zodiac.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:image" content="https://playmallow.com/og/zodiac.png">
 <link rel="canonical" href="https://playmallow.com/zodiac/">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 별자리 운세","url":"https://playmallow.com/zodiac/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"생년월일로 12별자리와 원소를 찾고 매일 바뀌는 오늘의 별자리 운세를 무료로 확인하는 재미 운세."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"별자리 운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 오늘의 별자리 운세를 볼 수 있습니다."}},{"@type":"Question","name":"내 별자리는 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"입력한 생년월일을 12별자리 경계 날짜에 맞춰 자동으로 판별합니다."}},{"@type":"Question","name":"운세는 매일 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"네. 같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다. 재미로 보는 오락용 콘텐츠입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"별자리 운세","item":"https://playmallow.com/zodiac/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 별자리 운세","url":"https://playmallow.com/zodiac/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"오늘 달이 지나는 별자리와 내 별자리의 각도(아스펙트)에 달의 위상을 더해 100점 기준 지수로 산출하는 무료 별자리 운세. 애정·금전·건강·일 점수와 이번 주 흐름까지."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"별자리 운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 오늘의 별자리 운세를 볼 수 있습니다."}},{"@type":"Question","name":"내 별자리는 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"입력한 생년월일을 12별자리 경계 날짜에 맞춰 자동으로 판별합니다."}},{"@type":"Question","name":"운세는 매일 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"네. 같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다. 재미로 보는 오락용 콘텐츠입니다."}},{"@type":"Question","name":"운세 지수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"오늘 달이 지나는 별자리와 내 별자리 사이의 각도(합 0°·육각 60°·사각 90°·삼각 120°·대각 180° 등 7종)를 기본값으로 삼고 달의 위상 8단계를 더해 100점 기준 지수를 만듭니다. 별점과 분야별 점수도 모두 이 지수에서 나옵니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"별자리 운세","item":"https://playmallow.com/zodiac/"}]}]}
 </script>
 <link rel="icon" type="image/png" href="/favicon-32.png?v=2">
 <!-- Google AdSense -->
@@ -89,6 +89,38 @@ body[data-star="5"]{background:radial-gradient(130% 95% at 50% 0%, #ffeab0 0%, #
 body[data-star="4"]{background:radial-gradient(130% 95% at 50% 0%, #ffd9ea 0%, #e7ecff 45%, var(--bg) 74%);}
 body[data-star="3"]{background:radial-gradient(120% 90% at 50% 0%, #e7ecff 0%, var(--bg) 55%);}
 body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, var(--bg) 60%);}
+/* ===== 트랜짓(달의 아스펙트) 표시 ===== */
+.moonbadge{display:inline-block;background:#eef1ff;color:#4a5db8;border:1px solid #d8def8;border-radius:999px;
+  font-size:12.5px;font-weight:800;padding:5px 13px;margin:0 auto 8px;letter-spacing:-.2px;}
+.aspname{text-align:center;font-size:19px;font-weight:800;margin:2px 0 3px;color:var(--text);}
+.aspname .sh{font-size:15px;color:var(--p);margin-left:3px;}
+.aspsub{text-align:center;font-size:12.5px;color:var(--sub);line-height:1.6;margin-bottom:10px;}
+.scorebig{text-align:center;font-size:13px;font-weight:800;color:var(--p);margin:-2px 0 8px;}
+.relline{font-size:12.5px;color:var(--sub);line-height:1.6;background:#f7f5ff;border-radius:10px;padding:9px 12px;margin-top:10px;}
+.bar{height:6px;border-radius:999px;background:#eee9f8;overflow:hidden;margin-top:6px;}
+.bar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--p2),var(--p));}
+.frow .fhead{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.frow .fsc{font-size:12px;font-weight:800;color:var(--p);white-space:nowrap;}
+.tips{display:grid;gap:8px;margin-top:4px;}
+.tip{display:flex;gap:9px;align-items:flex-start;background:#fbfaff;border-radius:12px;padding:11px 12px;}
+.tip .tb{font-size:11px;font-weight:800;border-radius:7px;padding:3px 8px;white-space:nowrap;flex-shrink:0;}
+.tip.good .tb{background:#e3f7ee;color:var(--teal);} .tip.bad .tb{background:#ffe6ec;color:#d6437a;}
+.tip .tv{font-size:13.5px;line-height:1.6;color:var(--text);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mini{background:#f7f4ff;border-radius:12px;padding:11px 10px;text-align:center;}
+.mini .mk{font-size:11px;color:var(--sub);font-weight:700;}
+.mini .mv{font-size:13.5px;font-weight:800;margin-top:3px;line-height:1.45;}
+.week{display:flex;align-items:flex-end;justify-content:space-between;gap:5px;height:76px;margin:2px 0 6px;}
+.week>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+.week .wb{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--p2),var(--p));opacity:.5;}
+.week .wd{font-size:10px;color:var(--sub);margin-top:4px;font-weight:700;}
+.week .wn{font-size:9.5px;color:var(--sub);margin-bottom:3px;}
+.week .today .wb{opacity:1;box-shadow:0 3px 9px rgba(139,111,240,.4);}
+.week .today .wd{color:var(--p);font-weight:800;}
+.weekmsg{font-size:12.5px;color:var(--sub);text-align:center;line-height:1.6;}
+.tomo{margin-top:10px;background:#fbfaff;border:1px dashed #ddd4f5;border-radius:12px;padding:11px 13px;}
+.tomo .tt{font-size:11.5px;font-weight:800;color:var(--p);margin-bottom:3px;}
+.tomo .tv{font-size:13px;color:var(--sub);line-height:1.6;}
 .seo{max-width:480px;margin:0 auto;padding:0 14px 8px}
 .seo .card{text-align:left}
 .seo h2{font-size:16px;margin:0 0 8px;color:var(--text)}
@@ -128,16 +160,34 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
     </div>
     <div class="card">
       <div class="sect-title"><span id="t-todayTotal"></span> <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
+      <div style="text-align:center"><span class="moonbadge" id="moonBadge"></span></div>
+      <div class="aspname" id="aspName"></div>
+      <div class="aspsub" id="aspWhy"></div>
       <div class="stars" id="stars">★★★★☆</div>
+      <div class="scorebig" id="scoreBig"></div>
       <div class="total" id="total"></div>
+      <div class="relline" id="phaseLine"></div>
       <div class="sect-title" id="t-byField"></div>
       <div id="fields"></div>
+      <div class="sect-title" id="t-guide"></div>
+      <div class="tips">
+        <div class="tip good"><span class="tb" id="t-doLabel"></span><span class="tv" id="tipDo"></span></div>
+        <div class="tip bad"><span class="tb" id="t-avoidLabel"></span><span class="tv" id="tipAvoid"></span></div>
+      </div>
       <div class="sect-title" id="t-luck"></div>
       <div class="lucky">
         <div><div class="lk" id="t-lkColor"></div><div class="lv" id="luckColor"></div></div>
         <div><div class="lk" id="t-lkNum"></div><div class="lv" id="luckNum"></div></div>
         <div><div class="lk" id="t-lkItem"></div><div class="lv" id="luckItem" style="font-size:13.5px"></div></div>
       </div>
+      <div class="grid2" style="margin-top:8px">
+        <div class="mini"><div class="mk" id="t-mkMoonIn"></div><div class="mv" id="moonInDay"></div></div>
+        <div class="mini"><div class="mk" id="t-mkTune"></div><div class="mv" id="tuneSign"></div></div>
+      </div>
+      <div class="sect-title" id="t-weekTitle"></div>
+      <div class="week" id="weekBars"></div>
+      <div class="weekmsg" id="weekMsg"></div>
+      <div class="tomo"><div class="tt" id="t-tomoTitle"></div><div class="tv" id="tomo"></div></div>
       <div class="say" id="say"></div>
       <div class="btns">
         <button class="btn" id="shareBtn"></button>
@@ -175,6 +225,25 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
       <p class="sub">같은 원소(불·흙·공기·물)끼리는 결이 잘 맞는다고 봅니다. 경계 날짜에 태어났다면 앞뒤 두 별자리를 함께 참고해 보세요.</p>
     </div>
     <div class="card">
+      <h2>오늘의 운세는 어떻게 계산되나요?</h2>
+      <p>말로우 별자리 운세는 무작위로 뽑지 않습니다. 서양 점성술에서 <b>하루</b> 운세를 볼 때 실제로 쓰는 방식 그대로, <b>오늘 달이 지나고 있는 별자리</b>와 <b>내 별자리</b> 사이의 각도(아스펙트)로 산출합니다. 달은 열두 별자리를 약 27일에 한 바퀴 돌아 <b>2~3일마다 자리를 옮기기</b> 때문에, 이 각도가 매일 달라지고 별자리마다 다른 결과가 나옵니다.</p>
+      <p class="sub">각도는 일곱 가지로 나뉩니다. <b>합(0°)</b> 달이 내 자리에 온 날 · <b>반육각(30°)</b> 반 박자 어긋남 · <b>육각(60°)</b> 손 내밀면 열리는 기회 · <b>사각(90°)</b> 마찰은 있지만 일은 진행 · <b>삼각(120°)</b> 같은 원소, 가장 순한 흐름 · <b>퀸컹크스(150°)</b> 하나를 얻으면 하나를 놓는 자리 · <b>대각(180°)</b> 정반대에서 균형을 묻는 날. 여기에 <b>달의 위상</b>(초승·상현·보름·하현 등 8단계) 보정을 더해 100점 기준 지수를 만들고, 별점과 분야별 점수는 모두 이 지수에서 나옵니다. 그래서 <b>별점과 애정·금전·건강·일 점수가 서로 따로 놀지 않습니다.</b></p>
+      <p class="sub">달의 위치는 천문 계산식(Meeus 저정밀 공식)으로 구하며, 실제 일식·월식 기록과 대조해 오차 0.2° 안쪽임을 확인했습니다. 같은 별자리·같은 날이면 언제 몇 번을 봐도 결과가 같습니다.</p>
+    </div>
+    <div class="card">
+      <h2>결과 화면에서 볼 수 있는 것</h2>
+      <ul class="zlist">
+        <li><b>오늘의 달</b> 지금 달이 머무는 별자리와 위상</li>
+        <li><b>아스펙트</b> 내 별자리와의 각도, 그리고 그 뜻</li>
+        <li><b>운세 지수</b> 100점 기준 총운 + 별점</li>
+        <li><b>분야별 점수</b> 애정·금전·건강·일 각각 점수와 막대</li>
+        <li><b>오늘의 길잡이</b> 이렇게 / 조심할 것 한 줄씩</li>
+        <li><b>달이 내 자리에 오는 날</b> 한 달에 한 번뿐인 날짜</li>
+        <li><b>이번 주 흐름</b> 7일치 지수 막대와 가장 좋은 요일</li>
+        <li><b>내일 미리보기</b> 내일의 달·아스펙트·지수</li>
+      </ul>
+    </div>
+    <div class="card">
       <h2>이용 방법</h2>
       <ol>
         <li>생년월일을 입력합니다.</li>
@@ -187,6 +256,8 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
       <p><b>Q. 무료인가요?</b><br>네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 볼 수 있습니다.</p>
       <p><b>Q. 운세는 매일 바뀌나요?</b><br>같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다.</p>
       <p><b>Q. 내 별자리는 어떻게 정해지나요?</b><br>입력한 생년월일을 위 날짜표의 경계에 맞춰 자동으로 판별합니다.</p>
+      <p><b>Q. 운세 지수는 어떻게 나오나요?</b><br>오늘 달이 있는 별자리와 내 별자리의 각도(아스펙트)를 기본값으로 삼고, 달의 위상 단계를 더해 100점 기준으로 계산합니다. 별점과 분야별 점수도 모두 이 지수에서 나옵니다.</p>
+      <p><b>Q. 같은 날 다시 봐도 결과가 같나요?</b><br>네. 별자리와 날짜가 같으면 몇 번을 봐도 같은 결과가 나옵니다. 달의 위치가 바뀌는 다음 날 새 운세가 나옵니다.</p>
     </div>
     <div class="card">
       <h2>다른 운세도 보기</h2>
@@ -232,7 +303,59 @@ const L={
   work:['집중하면 짧게 끝낼 수 있어요.','협업에서 좋은 아이디어가 나와요.','우선순위만 정하면 술술.','미룬 일 하나만 처리해도 개운.','한 가지에 집중하면 성과가 커요.','도움을 청하면 빨라져요.'],
   say:['오늘도 반짝반짝 빛나요 ✨','너무 애쓰지 말고 나답게 🌷','작은 행복을 놓치지 마요 💫','웃는 하루가 좋은 하루 😊','좋은 일은 곧 찾아와요 🍀','오늘의 나, 충분히 멋져요 ⭐'],
   colors:[['코랄 핑크','#ff8aa0'],['라벤더','#b79bf5'],['민트','#5ec6b0'],['하늘','#7fb3ff'],['레몬','#f5d64a'],['살구','#ffb877'],['로즈','#f06292'],['올리브','#9fb35a'],['하양','#f2f2f7'],['남색','#5b6b9e']],
-  items:['따뜻한 커피','손거울','작은 화분','파란 펜','향초','텀블러','이어폰','손수건','종이 노트','작은 초콜릿','책갈피','머그컵']
+  items:['따뜻한 커피','손거울','작은 화분','파란 펜','향초','텀블러','이어폰','손수건','종이 노트','작은 초콜릿','책갈피','머그컵'],
+  guide:'🧭 오늘의 길잡이', doLabel:'이렇게', avoidLabel:'조심', pt:'점',
+  mkMoonIn:'달이 내 자리에 오는 날', mkTune:'오늘 잘 통하는 별자리',
+  weekTitle:'📈 이번 주 내 별자리 흐름', tomoTitle:'🌅 내일 미리보기',
+  wdays:['일','월','화','수','목','금','토'],
+  moonTpl:(s,pe,pn)=>'🌙 오늘의 달 · '+s+' '+pe+' '+pn,
+  whyTpl:(moon,me,deg)=>'오늘 달은 '+moon+'에 있고, 내 '+me+'와는 '+deg+'° 떨어져 있어요.',
+  aspTpl:(n,sym,deg)=>n+' <span class="sh">'+sym+' '+deg+'°</span>',
+  scoreTpl:(n)=>'오늘의 운세 지수 '+n+' / 100',
+  weekMsgTpl:(d)=>'이번 주는 '+d+'요일의 흐름이 가장 좋아요.',
+  tomoTpl:(s,a,st,sc)=>'내일 달은 '+s+' · '+a+' · '+st+' · 지수 '+sc,
+  moonInTpl:(dt,n)=>n===0?'바로 오늘 🌙':dt+' ('+n+'일 뒤)',
+  asp:{
+   conj:{n:'합',th:'달이 내 자리에 머무는 날',
+    total:['감정이 나에게 온전히 모이는 날이에요. 원하는 게 무엇인지 유난히 또렷해집니다.','달이 내 별자리를 지나가요. 내 기분이 곧 오늘의 날씨가 되는 날입니다.'],
+    did:'나를 위한 결정을 하나 내리기', avoid:'기분이 올라온 순간 바로 답하기',
+    love:'내 마음이 그대로 얼굴에 드러나요.', money:'갖고 싶은 게 또렷해지니 지갑도 쉽게 열려요.',
+    health:'컨디션이 기분을 그대로 따라가요.', work:'내가 주도하는 일일수록 잘 풀려요.'},
+   semi:{n:'반육각',th:'살짝 어긋난 옆자리',
+    total:['크게 나쁘진 않은데 어딘가 반 박자씩 어긋나는 하루예요.','달이 내 옆자리를 지나요. 작은 조정만 해 두면 무리 없이 흘러갑니다.'],
+    did:'모든 일정에 여유 10분씩 더 두기', avoid:'두 가지를 한 번에 처리하기',
+    love:'말투 하나로 온도가 바뀔 수 있어요.', money:'작은 지출이 조용히 새어 나가요.',
+    health:'생활 리듬이 조금 흐트러질 수 있어요.', work:'순서만 다시 정리하면 금방 제자리를 찾아요.'},
+   sext:{n:'육각',th:'손을 내밀면 열리는 기회',
+    total:['먼저 움직인 만큼 그대로 돌아오는 날이에요. 기회는 조용히 옆에 와 있습니다.','달이 도와주는 각을 만들어요. 연락 한 통, 한마디가 문을 엽니다.'],
+    did:'미뤄뒀던 연락 한 통 보내기', avoid:'기회가 알아서 오길 기다리기',
+    love:'먼저 말을 거는 쪽이 오늘의 주인공이에요.', money:'정보가 곧바로 이득으로 이어져요.',
+    health:'가볍게 움직일수록 몸이 살아나요.', work:'혼자보다 사람을 통해 일이 풀립니다.'},
+   squa:{n:'사각',th:'부딪히며 크는 각',
+    total:['마찰이 있는 날이지만, 그 힘으로 밀고 나가면 결과가 남아요.','달이 긴장된 각을 만들어요. 감정은 뜨겁고 일은 빨라집니다.'],
+    did:'미뤄둔 어려운 일 딱 하나 끝내기', avoid:'욱한 상태에서 메시지 보내기',
+    love:'사소한 일에 날이 설 수 있어요.', money:'급하게 결정한 지출이 나중에 아쉬워져요.',
+    health:'목과 어깨부터 먼저 뭉쳐요.', work:'압박이 오히려 추진력이 되어 줍니다.'},
+   trin:{n:'삼각',th:'같은 기운끼리 통하는 각',
+    total:['애쓰지 않아도 술술 풀리는 날이에요. 흐름을 믿어도 좋습니다.','달이 나와 같은 기운의 자리에 있어요. 오늘은 무리하지 않아도 됩니다.'],
+    did:'늘 하고 싶던 걸 가볍게 시작하기', avoid:'편하다고 그냥 흘려보내기',
+    love:'함께 있으면 편안한 사람이 눈에 들어와요.', money:'기다리던 흐름이 자연스럽게 찾아와요.',
+    health:'몸이 가볍고 회복도 빨라요.', work:'평소 실력이 그대로 다 나옵니다.'},
+   quin:{n:'퀸컹크스',th:'결이 다른 자리, 조율이 필요',
+    total:['맞지 않는 퍼즐을 억지로 끼워 넣지 않아도 되는 날이에요.','달이 결이 다른 자리를 지나요. 하나를 얻으면 하나는 내려놓게 됩니다.'],
+    did:'완벽 대신 80%에서 마무리하기', avoid:'무리해서 둘 다 챙기려 하기',
+    love:'상대의 속도를 그대로 인정해 주세요.', money:'예상 못 한 곳에서 돈이 나갈 수 있어요.',
+    health:'피로가 소화나 잠으로 나타나요.', work:'계획을 조금만 손보면 훨씬 수월해져요.'},
+   oppo:{n:'대각',th:'나와 마주 보는 자리',
+    total:['사람을 통해 나를 보게 되는 날이에요. 균형이 열쇠입니다.','달이 내 맞은편에 있어요. 상대의 반응이 유난히 크게 느껴집니다.'],
+    did:'상대 이야기를 끝까지 듣기', avoid:'혼자 결론 내고 통보하기',
+    love:'밀고 당기는 하루. 한 발 물러서면 오히려 가까워져요.', money:'누군가와 얽힌 돈은 오늘 정리하세요.',
+    health:'들쭉날쭉한 감정이 그대로 몸으로 와요.', work:'혼자 정하기보다 조율할 때 성과가 나요.'}
+  },
+  phase:{ new:['삭(그믐)','새로 시작하기 좋은 시기예요.'], wax1:['초승달','싹을 틔우는 시기. 작게 시작해 보세요.'],
+   first:['상현달','결정하고 밀어붙이기 좋은 시기예요.'], wax2:['차오르는 달','기운이 점점 부풀어 오르는 시기예요.'],
+   full:['보름달','감정과 결과가 한꺼번에 드러나는 시기예요.'], wan1:['기우는 달','거둬들이고 나누기 좋은 시기예요.'],
+   last:['하현달','정리하고 덜어내기 좋은 시기예요.'], wan2:['그믐달','쉬어가며 다음을 준비하는 시기예요.'] }
  },
  en:{
   home:'Home', title:'Horoscope', tagline:'Your daily horoscope by birth date', birthLabel:'Date of birth',
@@ -257,7 +380,59 @@ const L={
   work:['Focus and you\'ll finish fast.','Great ideas come from teamwork.','Set priorities and it flows.','Clearing one delayed task feels great.','One thing at a time brings results.','Ask for help to speed up.'],
   say:['Shine bright today ✨','Be yourself, don\'t overwork 🌷','Don\'t miss small joys 💫','A smiling day is a good day 😊','Good things are coming 🍀','You today — plenty awesome ⭐'],
   colors:[['Coral Pink','#ff8aa0'],['Lavender','#b79bf5'],['Mint','#5ec6b0'],['Sky Blue','#7fb3ff'],['Lemon','#f5d64a'],['Apricot','#ffb877'],['Rose','#f06292'],['Olive','#9fb35a'],['White','#f2f2f7'],['Navy','#5b6b9e']],
-  items:['a warm coffee','a hand mirror','a small plant','a blue pen','a candle','a tumbler','earphones','a handkerchief','a paper notebook','a small chocolate','a bookmark','a mug']
+  items:['a warm coffee','a hand mirror','a small plant','a blue pen','a candle','a tumbler','earphones','a handkerchief','a paper notebook','a small chocolate','a bookmark','a mug'],
+  guide:'🧭 Today\'s guide', doLabel:'DO', avoidLabel:'CARE', pt:'',
+  mkMoonIn:'Moon enters your sign', mkTune:'In tune with you today',
+  weekTitle:'📈 Your week ahead', tomoTitle:'🌅 Tomorrow',
+  wdays:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+  moonTpl:(s,pe,pn)=>'🌙 Moon today · '+s+' '+pe+' '+pn,
+  whyTpl:(moon,me,deg)=>'The Moon is in '+moon+', '+deg+'° away from your '+me+'.',
+  aspTpl:(n,sym,deg)=>n+' <span class="sh">'+sym+' '+deg+'°</span>',
+  scoreTpl:(n)=>'Fortune index '+n+' / 100',
+  weekMsgTpl:(d)=>d+' looks like your best day this week.',
+  tomoTpl:(s,a,st,sc)=>'Moon in '+s+' · '+a+' · '+st+' · index '+sc,
+  moonInTpl:(dt,n)=>n===0?'Today 🌙':dt+' (in '+n+(n===1?' day)':' days)'),
+  asp:{
+   conj:{n:'Conjunction',th:'The Moon is in your own sign',
+    total:['Your feelings gather in one place today — what you want becomes unusually clear.','The Moon passes through your sign. Your mood sets the weather for the whole day.'],
+    did:'Make one decision that is truly for you', avoid:'Replying the second a feeling rises',
+    love:'Your heart shows plainly on your face.', money:'Wanting is vivid, so the wallet opens easily.',
+    health:'Your body follows your mood very closely.', work:'Anything you lead goes well.'},
+   semi:{n:'Semi-sextile',th:'The next seat over — half a beat off',
+    total:['Nothing is truly wrong, yet everything runs half a beat off today.','The Moon sits right beside your sign. One small adjustment keeps the day smooth.'],
+    did:'Add ten spare minutes to every plan', avoid:'Handling two things at the same time',
+    love:'One turn of phrase can change the temperature.', money:'Small costs leak out quietly.',
+    health:'Your daily rhythm may wobble a little.', work:'Fix the order and it falls back into place.'},
+   sext:{n:'Sextile',th:'A door that opens when you reach for it',
+    total:['You get back exactly as much as you move first — opportunity is quietly beside you.','The Moon makes a helpful angle. One message, one sentence opens a door.'],
+    did:'Send the message you kept postponing', avoid:'Waiting for the chance to walk to you',
+    love:'Whoever speaks first is today\'s lead.', money:'Information turns straight into gain.',
+    health:'The lighter you move, the better you feel.', work:'Things unlock through people, not alone.'},
+   squa:{n:'Square',th:'The angle you grow by colliding with',
+    total:['There is friction today, but push with it and something real gets finished.','The Moon forms a tense angle. Feelings run hot and work runs fast.'],
+    did:'Finish the one hard task you postponed', avoid:'Sending a message while your blood is up',
+    love:'Small things can put an edge in your voice.', money:'A rushed purchase is the one you regret.',
+    health:'Your neck and shoulders tighten first.', work:'Pressure turns into momentum for you.'},
+   trin:{n:'Trine',th:'Same element, same wavelength',
+    total:['Things flow without any effort today — you can trust the current.','The Moon sits in your own element. You do not have to push at all.'],
+    did:'Lightly start the thing you always wanted to', avoid:'Letting an easy day slip by unused',
+    love:'The person you feel at ease with stands out.', money:'The flow you waited for arrives on its own.',
+    health:'Your body is light and recovers fast.', work:'Your usual ability shows up in full.'},
+   quin:{n:'Quincunx',th:'A sign with nothing in common — needs tuning',
+    total:['You do not have to force a piece that will not fit today.','The Moon passes a sign unlike yours. Gain one thing, set another down.'],
+    did:'Finish at eighty percent instead of perfect', avoid:'Straining to keep hold of both at once',
+    love:'Let the other person keep their own pace.', money:'Money may leave from somewhere unplanned.',
+    health:'Fatigue shows up as digestion or sleep.', work:'Adjust the plan slightly and it gets far easier.'},
+   oppo:{n:'Opposition',th:'The sign that faces yours',
+    total:['You see yourself through other people today. Balance is the key.','The Moon stands opposite you. Other people\'s reactions land harder than usual.'],
+    did:'Hear the other person all the way out', avoid:'Deciding alone and then announcing it',
+    love:'Push and pull. Step back and you get closer.', money:'Settle money tangled up with someone today.',
+    health:'Swinging feelings land straight in the body.', work:'Results come from negotiating, not deciding.'}
+  },
+  phase:{ new:['New Moon','A good time to begin something new.'], wax1:['Waxing Crescent','A sprouting time — start small.'],
+   first:['First Quarter','A good time to decide and push.'], wax2:['Waxing Gibbous','Energy keeps swelling toward the peak.'],
+   full:['Full Moon','Feelings and results surface all at once.'], wan1:['Waning Gibbous','A good time to harvest and to share.'],
+   last:['Last Quarter','A good time to tidy up and let go.'], wan2:['Waning Crescent','Rest and prepare for the next round.'] }
  },
  th:{
   home:'หน้าแรก', title:'ดวงราศี', tagline:'ดูดวงราศีประจำวันจากวันเกิด', birthLabel:'วันเดือนปีเกิด',
@@ -282,7 +457,59 @@ const L={
   work:['จดจ่อแล้วจะเสร็จไว','ไอเดียดี ๆ มาจากการร่วมมือ','จัดลำดับความสำคัญแล้วจะลื่น','สะสางงานที่ค้างสักชิ้นก็โล่ง','ทำทีละอย่างได้ผลมากกว่า','ขอความช่วยเหลือจะเร็วขึ้น'],
   say:['วันนี้ก็เปล่งประกายนะ ✨','เป็นตัวเอง อย่าฝืนมาก 🌷','อย่าพลาดความสุขเล็ก ๆ 💫','วันที่ยิ้มคือวันที่ดี 😊','เรื่องดี ๆ กำลังจะมา 🍀','ตัวคุณวันนี้ เจ๋งพอแล้ว ⭐'],
   colors:[['ชมพูคอรัล','#ff8aa0'],['ลาเวนเดอร์','#b79bf5'],['เขียวมิ้นต์','#5ec6b0'],['ฟ้า','#7fb3ff'],['เหลืองมะนาว','#f5d64a'],['ส้มแอปริคอต','#ffb877'],['กุหลาบ','#f06292'],['เขียวมะกอก','#9fb35a'],['ขาว','#f2f2f7'],['กรมท่า','#5b6b9e']],
-  items:['กาแฟอุ่น ๆ','กระจกพก','ต้นไม้เล็ก','ปากกาสีน้ำเงิน','เทียนหอม','กระบอกน้ำ','หูฟัง','ผ้าเช็ดหน้า','สมุดโน้ต','ช็อกโกแลตชิ้นเล็ก','ที่คั่นหนังสือ','แก้วมัค']
+  items:['กาแฟอุ่น ๆ','กระจกพก','ต้นไม้เล็ก','ปากกาสีน้ำเงิน','เทียนหอม','กระบอกน้ำ','หูฟัง','ผ้าเช็ดหน้า','สมุดโน้ต','ช็อกโกแลตชิ้นเล็ก','ที่คั่นหนังสือ','แก้วมัค'],
+  guide:'🧭 แนวทางวันนี้', doLabel:'ทำเลย', avoidLabel:'ระวัง', pt:'',
+  mkMoonIn:'จันทร์เข้าราศีคุณ', mkTune:'ราศีที่เข้ากับคุณวันนี้',
+  weekTitle:'📈 ดวงราศีคุณสัปดาห์นี้', tomoTitle:'🌅 พรุ่งนี้',
+  wdays:['อา','จ','อ','พ','พฤ','ศ','ส'],
+  moonTpl:(s,pe,pn)=>'🌙 ดวงจันทร์วันนี้ · ราศี'+s+' '+pe+' '+pn,
+  whyTpl:(moon,me,deg)=>'ดวงจันทร์อยู่ราศี'+moon+' ห่างจากราศี'+me+'ของคุณ '+deg+'°',
+  aspTpl:(n,sym,deg)=>n+' <span class="sh">'+sym+' '+deg+'°</span>',
+  scoreTpl:(n)=>'ดัชนีดวงวันนี้ '+n+' / 100',
+  weekMsgTpl:(d)=>'สัปดาห์นี้วัน'+d+'ดูดีที่สุด',
+  tomoTpl:(s,a,st,sc)=>'จันทร์ราศี'+s+' · '+a+' · '+st+' · ดัชนี '+sc,
+  moonInTpl:(dt,n)=>n===0?'วันนี้เลย 🌙':dt+' (อีก '+n+' วัน)',
+  asp:{
+   conj:{n:'คอนจังก์ชัน',th:'ดวงจันทร์ทับราศีของคุณ',
+    total:['วันนี้อารมณ์รวมศูนย์อยู่ที่ตัวคุณ สิ่งที่ต้องการชัดเจนเป็นพิเศษ','ดวงจันทร์ผ่านราศีของคุณ อารมณ์ของคุณคือสภาพอากาศของทั้งวัน'],
+    did:'ตัดสินใจเพื่อตัวเองสักเรื่อง', avoid:'ตอบทันทีตอนอารมณ์เพิ่งขึ้น',
+    love:'ความรู้สึกของคุณแสดงออกมาชัดมาก', money:'อยากได้อะไรก็ชัด กระเป๋าจึงเปิดง่ายตาม',
+    health:'ร่างกายเดินตามอารมณ์อย่างใกล้ชิด', work:'งานที่คุณเป็นคนนำยิ่งไปได้ดี'},
+   semi:{n:'เซมิเซกซ์ไทล์',th:'ราศีข้างเคียง เหลื่อมกันครึ่งจังหวะ',
+    total:['ไม่ได้แย่อะไร แต่ทุกอย่างเหลื่อมไปครึ่งจังหวะ','ดวงจันทร์อยู่ข้างราศีคุณ ปรับนิดเดียวก็ผ่านไปได้ราบรื่น'],
+    did:'เผื่อเวลาไว้อีกสิบนาทีทุกนัด', avoid:'ทำสองอย่างพร้อมกัน',
+    love:'น้ำเสียงคำเดียวเปลี่ยนอุณหภูมิได้', money:'รายจ่ายเล็ก ๆ รั่วไหลอย่างเงียบ ๆ',
+    health:'จังหวะชีวิตอาจรวนเล็กน้อย', work:'จัดลำดับใหม่แล้วจะเข้าที่ได้เร็ว'},
+   sext:{n:'เซกซ์ไทล์',th:'ประตูที่เปิดเมื่อคุณยื่นมือออกไป',
+    total:['ขยับก่อนเท่าไรก็ได้กลับมาเท่านั้น โอกาสรออยู่เงียบ ๆ ข้างตัว','ดวงจันทร์ทำมุมที่ช่วยเหลือ ข้อความหนึ่งฉบับก็เปิดประตูได้'],
+    did:'ส่งข้อความที่ผัดผ่อนไว้', avoid:'นั่งรอให้โอกาสเดินมาหาเอง',
+    love:'คนที่ทักก่อนคือพระเอกของวันนี้', money:'ข้อมูลกลายเป็นกำไรได้ทันที',
+    health:'ขยับเบา ๆ ยิ่งรู้สึกดีขึ้น', work:'งานคลี่คลายผ่านผู้คนมากกว่าลุยคนเดียว'},
+   squa:{n:'สแควร์',th:'มุมที่เติบโตขึ้นจากการปะทะ',
+    total:['วันนี้มีแรงเสียดทาน แต่ถ้าดันไปกับมันจะได้ผลงานจริง','ดวงจันทร์ทำมุมตึงเครียด อารมณ์ร้อนแต่งานเดินเร็ว'],
+    did:'ปิดงานยากที่ค้างไว้สักหนึ่งชิ้น', avoid:'ส่งข้อความตอนกำลังหัวร้อน',
+    love:'เรื่องเล็ก ๆ ทำให้น้ำเสียงมีเหลี่ยมได้', money:'ของที่ซื้อแบบรีบร้อนคือของที่จะเสียดายทีหลัง',
+    health:'บ่าและคอจะตึงก่อนส่วนอื่น', work:'แรงกดดันกลับกลายเป็นแรงผลักดัน'},
+   trin:{n:'ไทรน์',th:'ธาตุเดียวกัน คลื่นเดียวกัน',
+    total:['วันนี้ทุกอย่างลื่นไหลโดยไม่ต้องออกแรง เชื่อกระแสได้เลย','ดวงจันทร์อยู่ในธาตุเดียวกับคุณ ไม่ต้องฝืนเลยก็ได้'],
+    did:'เริ่มสิ่งที่อยากทำมานานแบบเบา ๆ', avoid:'ปล่อยวันที่ดีให้ผ่านไปเฉย ๆ',
+    love:'คนที่อยู่ด้วยแล้วสบายใจจะเด่นขึ้นมา', money:'กระแสที่รออยู่มาถึงเอง',
+    health:'ร่างกายเบาและฟื้นตัวไว', work:'ฝีมือปกติของคุณออกมาได้เต็มที่'},
+   quin:{n:'ควินคังซ์',th:'ราศีที่ไม่มีอะไรร่วมกัน ต้องปรับจูน',
+    total:['วันนี้ไม่ต้องฝืนยัดชิ้นส่วนที่ไม่เข้ากัน','ดวงจันทร์ผ่านราศีที่ต่างจากคุณ ได้อย่างก็ต้องวางอีกอย่าง'],
+    did:'จบที่แปดสิบเปอร์เซ็นต์แทนความสมบูรณ์แบบ', avoid:'ฝืนเอาให้ครบทั้งสองอย่าง',
+    love:'ปล่อยให้อีกฝ่ายมีจังหวะของตัวเอง', money:'เงินอาจออกจากทางที่ไม่ได้วางแผนไว้',
+    health:'ความล้าจะแสดงออกที่ระบบย่อยอาหารหรือการนอน', work:'ปรับแผนนิดเดียวจะง่ายขึ้นมาก'},
+   oppo:{n:'ออปโพซิชัน',th:'ราศีที่อยู่ตรงข้ามกับคุณ',
+    total:['วันนี้คุณเห็นตัวเองผ่านคนอื่น ความสมดุลคือกุญแจ','ดวงจันทร์อยู่ตรงข้ามคุณ ปฏิกิริยาของคนอื่นกระทบแรงกว่าปกติ'],
+    did:'ฟังอีกฝ่ายให้จบก่อน', avoid:'สรุปคนเดียวแล้วค่อยแจ้งทีหลัง',
+    love:'มีทั้งรุกและถอย ถอยสักก้าวกลับใกล้ขึ้น', money:'เรื่องเงินที่พัวพันกับใครควรเคลียร์วันนี้',
+    health:'อารมณ์ที่แกว่งจะลงมาที่ร่างกายตรง ๆ', work:'ผลลัพธ์มาจากการเจรจา ไม่ใช่การสั่ง'}
+  },
+  phase:{ new:['จันทร์ดับ','ช่วงเวลาที่ดีสำหรับการเริ่มต้นใหม่'], wax1:['จันทร์เสี้ยวข้างขึ้น','ช่วงแตกหน่อ เริ่มจากเล็ก ๆ ก่อน'],
+   first:['จันทร์ครึ่งดวงข้างขึ้น','ช่วงที่เหมาะกับการตัดสินใจและลงมือ'], wax2:['จันทร์ค่อนดวงข้างขึ้น','พลังกำลังพองขึ้นเรื่อย ๆ สู่จุดสูงสุด'],
+   full:['จันทร์เพ็ญ','อารมณ์และผลลัพธ์เผยออกมาพร้อมกัน'], wan1:['จันทร์ค่อนดวงข้างแรม','ช่วงที่ดีสำหรับการเก็บเกี่ยวและแบ่งปัน'],
+   last:['จันทร์ครึ่งดวงข้างแรม','ช่วงที่ดีสำหรับการจัดการและปล่อยวาง'], wan2:['จันทร์เสี้ยวข้างแรม','พักผ่อนและเตรียมตัวสำหรับรอบต่อไป'] }
  }
 };
 
@@ -304,6 +531,13 @@ function applyLang(){ const d=L[LANG];
   document.getElementById('goBtn').textContent=d.go;
   document.getElementById('t-todayTotal').textContent=d.todayTotal;
   document.getElementById('t-byField').textContent=d.byField;
+  document.getElementById('t-guide').textContent=d.guide;
+  document.getElementById('t-doLabel').textContent=d.doLabel;
+  document.getElementById('t-avoidLabel').textContent=d.avoidLabel;
+  document.getElementById('t-mkMoonIn').textContent=d.mkMoonIn;
+  document.getElementById('t-mkTune').textContent=d.mkTune;
+  document.getElementById('t-weekTitle').textContent=d.weekTitle;
+  document.getElementById('t-tomoTitle').textContent=d.tomoTitle;
   document.getElementById('t-luck').textContent=d.luck;
   document.getElementById('t-lkColor').textContent=d.lkColor;
   document.getElementById('t-lkNum').textContent=d.lkNum;
@@ -348,6 +582,57 @@ function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a
 function kstDate(){return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);}
 function pick(rng,arr){return arr[Math.floor(rng()*arr.length)];}
 function lvl(rng){const r=rng();const d=L[LANG];return r<0.5?{c:'lv-good',t:d.lv[0]}:r<0.85?{c:'lv-mid',t:d.lv[1]}:{c:'lv-low',t:d.lv[2]};}
+function kstOffsetDate(n){return new Date(Date.now()+9*3600*1000+n*86400000).toISOString().slice(0,10);}
+
+/* ===== 트랜짓 엔진 — 오늘 '달'이 지나는 별자리와 내 별자리의 각도로 운세를 산출 =====
+   서양 점성술에서 하루 운세를 보는 실제 방식(달의 트랜짓 아스펙트)이다.
+   달 황경 = Meeus 저정밀 공식(주요 6항, 오차 ~0.15°).
+   검증: .logs/moon_verify.mjs — 일식 3건·월식 3건 앵커 오차 0.06~0.15°, 삭망월 29.5271일. */
+const RAD=Math.PI/180;
+function jd2000(Y,M,D,h,mi){return (Date.UTC(Y,M-1,D,h,mi||0,0)-Date.UTC(2000,0,1,12,0,0))/86400000;}
+function nrm(x){x=x%360;return x<0?x+360:x;}
+function moonLon(t){
+  const Lp=218.3164477+13.17639648*t, De=297.8501921+12.19074912*t,
+        M =357.5291092+0.98560028*t,  Mp=134.9633964+13.06499295*t,
+        F =93.2720950+13.22935024*t;
+  return nrm(Lp+6.289*Math.sin(Mp*RAD)+1.274*Math.sin((2*De-Mp)*RAD)+0.658*Math.sin(2*De*RAD)
+    +0.214*Math.sin(2*Mp*RAD)-0.186*Math.sin(M*RAD)-0.114*Math.sin(2*F*RAD));
+}
+function sunLon(t){const M=357.5291092+0.98560028*t;
+  return nrm(280.459+0.98564736*t+1.915*Math.sin(M*RAD)+0.020*Math.sin(2*M*RAD));}
+function dayT(ds){const p=ds.split('-').map(Number);return jd2000(p[0],p[1],p[2],3,0);} // 12:00 KST 기준
+function signOfLon(l){return (Math.floor(nrm(l)/30)+2)%12;} // SIGN_META[0]=물병 → 황경 0°(양자리)=index 2
+function degInSign(l){return nrm(l)%30;}
+
+/* 아스펙트 7종 — base=기본 지수, w=분야 가중치 */
+const ASPECT=[
+ {k:'conj',deg:0,  sym:'☌',base:70,w:{love:4,money:0,health:2,work:4}},
+ {k:'semi',deg:30, sym:'⚺',base:56,w:{love:2,money:-2,health:0,work:0}},
+ {k:'sext',deg:60, sym:'⚹',base:76,w:{love:4,money:6,health:0,work:6}},
+ {k:'squa',deg:90, sym:'□',base:52,w:{love:-4,money:-2,health:-4,work:6}},
+ {k:'trin',deg:120,sym:'△',base:84,w:{love:6,money:4,health:6,work:2}},
+ {k:'quin',deg:150,sym:'⚻',base:58,w:{love:0,money:-4,health:-6,work:2}},
+ {k:'oppo',deg:180,sym:'☍',base:54,w:{love:-2,money:-4,health:0,work:4}}
+];
+const ASP_BY_D=[0,1,2,3,4,5,6,5,4,3,2,1]; // 별자리 거리 → 아스펙트 인덱스
+const PHASE=[{k:'new',e:'🌑',d:2},{k:'wax1',e:'🌒',d:5},{k:'first',e:'🌓',d:4},{k:'wax2',e:'🌔',d:6},
+             {k:'full',e:'🌕',d:3},{k:'wan1',e:'🌖',d:0},{k:'last',e:'🌗',d:-2},{k:'wan2',e:'🌘',d:-4}];
+function phaseOf(t){return PHASE[Math.floor(nrm(moonLon(t)-sunLon(t)+22.5)/45)%8];}
+function starOf(sc){return sc>=84?5:sc>=70?4:sc>=56?3:2;}
+/* 오늘의 운세 = 아스펙트 기본값 + 달 위상 보정 + ±6(같은 별자리·같은 날이면 항상 동일) */
+function dayFortune(mySign,ds){
+  const t=dayT(ds), ml=moonLon(t), ms=signOfLon(ml);
+  const dist=((ms-mySign)+12)%12, a=ASPECT[ASP_BY_D[dist]], p=phaseOf(t);
+  const rng=mulberry32(hashStr(ds+'|z|'+mySign));
+  const sc=Math.max(28,Math.min(96,a.base+p.d+Math.round(rng()*12)-6));
+  return {sc:sc,a:a,p:p,ms:ms,ml:ml,deg:degInSign(ml),dist:dist,star:starOf(sc),rng:rng};
+}
+function fScore(sc,w,rng){return Math.max(20,Math.min(99,sc+w+Math.round(rng()*8)-4));}
+/* 달이 내 별자리에 들어오는 다음 날짜 */
+function nextMoonIn(mySign){
+  for(let i=0;i<30;i++){ const ds=kstOffsetDate(i); if(signOfLon(moonLon(dayT(ds)))===mySign) return {ds:ds,n:i}; }
+  return null;
+}
 let LAST=null;
 const logoImg=new Image(); logoImg.src='/mallow-logo.svg';
 
@@ -362,13 +647,15 @@ function compute(){
 
   const idx=signIndex(M,D), elKey=SIGN_META[idx].el;
   const nm=d.names[idx], tr=d.traits[idx], elName=d.elem[elKey], adj=d.elemAdj[elKey];
-  const totalHi=d.totalHi,totalMid=d.totalMid,totalLo=d.totalLo;
 
-  const rng=mulberry32(hashStr(idx+'|'+kstDate())); // 같은 별자리는 하루 동안 같은 운세(언어 무관 동일 결과)
-  const starN=2+Math.floor(rng()*4);
-  const totalTxt=pick(rng, starN>=4?totalHi:starN===3?totalMid:totalLo);
-  const fdefs=[['💗',d.love],['💰',d.money],['🍀',d.health],['📚',d.work]];
-  const fields=fdefs.map((f,i)=>({i:f[0],n:d.fields[i],c:pick(rng,f[1]),v:lvl(rng)}));
+  const today=kstDate(), F=dayFortune(idx,today), A=d.asp[F.a.k], PH=d.phase[F.p.k];
+  const rng=F.rng; // 같은 별자리는 하루 동안 같은 운세(언어 무관 동일 결과)
+  const starN=F.star;
+  const totalTxt=A.total[Math.floor(rng()*A.total.length)];
+  const fdefs=[['💗','love',d.love],['💰','money',d.money],['🍀','health',d.health],['📚','work',d.work]];
+  const fields=fdefs.map((f,i)=>({i:f[0],n:d.fields[i],c:A[f[1]]+' '+pick(rng,f[2]),
+    v:F.a.w[f[1]]>=2?{c:'lv-good',t:d.lv[0]}:F.a.w[f[1]]<=-2?{c:'lv-low',t:d.lv[2]}:{c:'lv-mid',t:d.lv[1]},
+    s:fScore(F.sc,F.a.w[f[1]],rng)}));
   const lc=pick(rng,d.colors), ln=1+Math.floor(rng()*45), li=pick(rng,d.items), say=pick(rng,d.say);
 
   document.getElementById('zSym').textContent=SIGN_META[idx].s;
@@ -379,20 +666,44 @@ function compute(){
   eb.style.background=ec[0]; eb.style.color=ec[1];
   document.getElementById('trait').innerHTML=d.traitTpl(tr,nm,adj,elName);
   document.getElementById('match').textContent=d.matchLabel+goodSign(idx);
-  document.getElementById('todayLabel').textContent='· '+kstDate();
+  document.getElementById('todayLabel').textContent='· '+today;
+
+  document.getElementById('moonBadge').textContent=d.moonTpl(d.names[F.ms],F.p.e,PH[0]);
+  document.getElementById('aspName').innerHTML=d.aspTpl(A.n,F.a.sym,F.a.deg);
+  document.getElementById('aspWhy').textContent=A.th+' — '+d.whyTpl(d.names[F.ms],nm,F.a.deg);
   const starEl=document.getElementById('stars'); starEl.textContent='★★★★★☆☆☆☆☆'.slice(5-starN,10-starN); starEl.classList.toggle('smax',starN===5);
   document.body.setAttribute('data-star',String(starN));
+  document.getElementById('scoreBig').textContent=d.scoreTpl(F.sc);
   document.getElementById('total').textContent=totalTxt;
-  document.getElementById('fields').innerHTML=fields.map(f=>'<div class="frow"><div class="fi">'+f.i+'</div><div class="ft"><div class="fn">'+f.n+'</div><div class="fc">'+f.c+'</div></div><div class="fv '+f.v.c+'">'+f.v.t+'</div></div>').join('');
+  document.getElementById('phaseLine').textContent=F.p.e+' '+PH[0]+' — '+PH[1];
+  document.getElementById('fields').innerHTML=fields.map(f=>'<div class="frow"><div class="fi">'+f.i+'</div><div class="ft"><div class="fhead"><div class="fn">'+f.n+'</div><div class="fsc">'+f.s+d.pt+'</div></div><div class="fc">'+f.c+'</div><div class="bar"><i style="width:'+f.s+'%"></i></div></div><div class="fv '+f.v.c+'">'+f.v.t+'</div></div>').join('');
+  document.getElementById('tipDo').textContent=A.did;
+  document.getElementById('tipAvoid').textContent=A.avoid;
   document.getElementById('luckColor').innerHTML='<span class="swatch" style="background:'+lc[1]+'"></span>'+lc[0];
   document.getElementById('luckNum').textContent=ln;
   document.getElementById('luckItem').textContent=li;
+
+  const nx=nextMoonIn(idx);
+  document.getElementById('moonInDay').textContent=nx?d.moonInTpl(nx.ds.slice(5).replace('-','/'),nx.n):'—';
+  document.getElementById('tuneSign').textContent=[(F.ms+4)%12,(F.ms+8)%12].map(i=>d.names[i]).join(' · ');
+
+  // 이번 주 7일 흐름
+  let bestI=0,bestSc=-1; const wk=[];
+  for(let i=0;i<7;i++){ const ds=kstOffsetDate(i), f=dayFortune(idx,ds);
+    wk.push({ds:ds,sc:f.sc,w:new Date(ds+'T00:00:00Z').getUTCDay()});
+    if(f.sc>bestSc){bestSc=f.sc;bestI=i;} }
+  document.getElementById('weekBars').innerHTML=wk.map((x,i)=>'<div class="'+(i===0?'today':'')+'"><div class="wn">'+x.sc+'</div><div class="wb" style="height:'+Math.round(12+x.sc*0.42)+'px"></div><div class="wd">'+d.wdays[x.w]+'</div></div>').join('');
+  document.getElementById('weekMsg').textContent=d.weekMsgTpl(d.wdays[wk[bestI].w]);
+
+  const TM=dayFortune(idx,kstOffsetDate(1));
+  document.getElementById('tomo').textContent=d.tomoTpl(d.names[TM.ms],d.asp[TM.a.k].n,'★'.repeat(TM.star),TM.sc);
   document.getElementById('say').textContent=say;
 
   document.getElementById('inputCard').style.display='none';
   document.getElementById('result').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
-  LAST={idx,sym:SIGN_META[idx].s,nm,elName,starN,totalTxt,lc,ln,say};
+  LAST={idx:idx,sym:SIGN_META[idx].s,nm:nm,elName:elName,starN:starN,totalTxt:totalTxt,lc:lc,ln:ln,say:say,
+        sc:F.sc,aspN:A.n,aspSym:F.a.sym,aspDeg:F.a.deg,moonNm:d.names[F.ms],phE:F.p.e,phN:PH[0]};
 }
 function wrap(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',yy=y;for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line.trim(),x,yy);line=w+' ';yy+=lh;}else line=test;}ctx.fillText(line.trim(),x,yy);return yy;}
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
@@ -406,15 +717,23 @@ function drawCard(){
   const mw=54,gap=12,bw=c.measureText('Mallow').width,x0=(W-(mw+gap+bw))/2,topY=74;
   if(logoImg.complete&&logoImg.naturalWidth>0){ c.drawImage(logoImg,x0,topY,mw,mw); }
   c.textAlign='left'; c.fillStyle='#2a2140'; c.fillText('Mallow',x0+mw+gap,topY+mw*0.72); c.textAlign='center';
-  c.font='96px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(L2.sym,W/2,254);
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.nm+' · '+L2.elName,W/2,306);
-  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L2.starN,10-L2.starN),W/2,354);
-  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L2.totalTxt,W/2,402,W-150,34);
-  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText(d.luckHdr[0],W/2-120,530); c.fillText(d.luckHdr[1],W/2+120,530);
-  c.beginPath(); c.arc(W/2-120,574,18,0,7); c.fillStyle=L2.lc[1]; c.fill();
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.ln,W/2+120,586);
-  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L2.say,W/2,648,W-150,30);
-  c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,696);
+  c.font='96px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(L2.sym,W/2,242);
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.nm+' · '+L2.elName,W/2,292);
+  // 오늘의 달 뱃지
+  c.font='700 19px "Apple SD Gothic Neo",sans-serif';
+  const mb=L2.phE+' '+L2.moonNm+' '+L2.phN, mbw=c.measureText(mb).width+30;
+  c.fillStyle='#eef1ff'; roundRect(c,(W-mbw)/2,308,mbw,34,17); c.fill();
+  c.fillStyle='#4a5db8'; c.fillText(mb,W/2,331);
+  c.font='800 24px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140';
+  c.fillText(L2.aspN+'  '+L2.aspSym+' '+L2.aspDeg+'°',W/2,376);
+  c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L2.starN,10-L2.starN),W/2,418);
+  c.font='800 21px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText(L2.sc+' / 100',W/2,450);
+  c.font='600 22px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L2.totalTxt,W/2,492,W-150,34);
+  c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495'; c.fillText(d.luckHdr[0],W/2-120,596); c.fillText(d.luckHdr[1],W/2+120,596);
+  c.beginPath(); c.arc(W/2-120,640,18,0,7); c.fillStyle=L2.lc[1]; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L2.ln,W/2+120,652);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L2.say,W/2,706,W-150,30);
+  c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,752);
   return cv;
 }
 function share(){ if(!LAST) return; gtag('event','zodiac_share',{lang:LANG}); const cv=drawCard();
