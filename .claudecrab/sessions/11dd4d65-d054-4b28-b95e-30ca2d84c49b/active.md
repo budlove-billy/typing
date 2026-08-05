@@ -1,35 +1,5 @@
 # Active Session State
 
-## Current task (2026-08-05)
-Build the first Godot Android vertical slice in `mobile/godot`: app shell, local records/settings/audio/haptics, and playable `flash`, `bubble`, and `trace` games without changing the web app.
-
-## Decisions
-- Use Godot 4.7.1 stable with GDScript and a portrait 390x844 viewport.
-- Build the first slice with code-driven Control scenes and reusable theme helpers so the UI can be iterated quickly.
-- Keep all save data versioned under Godot `user://`; use a Korean-first UI with English strings in the localization layer.
-
-## Files in progress
-- `mobile/godot/`: new native project and scripts.
-
-## Progress
-- Created `project.godot`, `Main.tscn`, and shared `SaveStore`, `I18n`, `AudioDirector`, `ThemeKit`, `GameCatalog`, and `MallowAvatar` scripts.
-- Created `Main.gd` with Home/Games/Records/Settings/Result navigation and the portrait mobile shell.
-- Created independent `FlashGame.gd`, `BubbleGame.gd`, and `TraceGame.gd` modules.
-- Next: run Godot headless parse/import checks and fix any engine-specific errors.
-
-## Verification
-- Godot editor import/headless parse passed after fixing one mixed-indentation error and one Variant inference warning.
-- Main scene headless run exited with code 0.
-- `tests/smoke.gd`: FlashGame, BubbleGame, and TraceGame all passed instantiation checks.
-- Added `mobile/godot/README.md` and Git ignore rules for generated Godot data.
-
-## Files changed
-- `mobile/godot/`: new native Godot project, app shell, shared services, three games, and smoke test.
-- `.gitignore`: ignore Godot generated data.
-- `AGENTS.md`, `MEMORY.md`: record the implemented vertical slice and verification.
-
-## Next
-- Validate final diff and commit the vertical slice. Android toolchain/device export remains a follow-up.
 
 
 
