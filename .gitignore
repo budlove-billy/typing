@@ -1,6 +1,8 @@
 node_modules/
 __pycache__/
 *.pyc
+*.import
+*.uid
 .venv/
 venv/
 .DS_Store
@@ -12,9 +14,13 @@ generated_images/
 .mcp.json
 tstory/
 tools/godot/
+tools/jdk17/
+tools/android/
+tools/*.zip
 .godot-user/
 .godot-cache/
 mobile/godot/.godot/
+mobile/godot/build/
 mobile/godot/export_templates/
 mobile/godot/feature_profiles/
 mobile/godot/script_templates/
