@@ -1,0 +1,114 @@
+extends Node
+
+signal language_changed
+
+var language := "ko"
+
+const STRINGS := {
+	"ko": {
+		"brand": "플레이말로우",
+		"tagline": "가볍게, 매일 두뇌 한 판",
+		"home_greeting": "오늘도 말랑하게 시작해요",
+		"home_sub": "3분이면 충분한 오늘의 두뇌 운동",
+		"today_games": "오늘의 3게임",
+		"browse_games": "게임 모아보기",
+		"records": "내 기록",
+		"settings": "설정",
+		"home": "홈",
+		"games": "게임",
+		"plays": "플레이",
+		"streak": "연속 방문",
+		"start": "시작하기",
+		"back": "뒤로",
+		"next": "다음 게임",
+		"go_home": "홈으로",
+		"best": "최고 기록",
+		"new_record": "새로운 최고 기록이에요!",
+		"score": "점",
+		"moves": "이동",
+		"sound": "효과음",
+		"music": "배경음",
+		"haptics": "햅틱 피드백",
+		"language": "언어",
+		"korean": "한국어",
+		"english": "English",
+		"flash_name": "순간기억",
+		"flash_desc": "같은 카드를 찾아보세요",
+		"bubble_name": "버블 톡톡",
+		"bubble_desc": "목표 숫자를 만들어보세요",
+		"trace_name": "말랑 트레이스",
+		"trace_desc": "길을 따라 손가락을 움직여요",
+		"flash_ready": "카드를 뒤집어 짝을 찾아보세요",
+		"bubble_ready": "버블을 골라 목표 숫자를 만들어요",
+		"trace_ready": "초록 점에서 파란 점까지 따라가요",
+		"tap_start": "탭해서 시작",
+		"mission": "오늘의 미션",
+		"mission_progress": "완료한 게임",
+		"no_records": "아직 기록이 없어요. 첫 게임을 시작해보세요!",
+		"settings_hint": "플레이 감각을 원하는 대로 맞춰보세요.",
+		"result_detail": "다시 플레이할수록 감각이 선명해져요.",
+		"correct": "좋아요!",
+		"try_again": "조금만 더",
+		"trace_good": "좋은 흐름이에요!",
+		"trace_short": "조금 더 길게 따라가 볼까요?"
+	},
+	"en": {
+		"brand": "Play Mallow",
+		"tagline": "A soft brain break, every day",
+		"home_greeting": "Ready for a soft start?",
+		"home_sub": "A three-minute brain workout for today",
+		"today_games": "Today’s 3 games",
+		"browse_games": "Browse games",
+		"records": "My records",
+		"settings": "Settings",
+		"home": "Home",
+		"games": "Games",
+		"plays": "Plays",
+		"streak": "Day streak",
+		"start": "Start",
+		"back": "Back",
+		"next": "Next game",
+		"go_home": "Back home",
+		"best": "Best",
+		"new_record": "New personal best!",
+		"score": "pts",
+		"moves": "moves",
+		"sound": "Sound effects",
+		"music": "Background music",
+		"haptics": "Haptic feedback",
+		"language": "Language",
+		"korean": "한국어",
+		"english": "English",
+		"flash_name": "Flash Memory",
+		"flash_desc": "Find every matching pair",
+		"bubble_name": "Bubble Pop",
+		"bubble_desc": "Build the target number",
+		"trace_name": "Mallow Trace",
+		"trace_desc": "Follow the path with your finger",
+		"flash_ready": "Flip cards and find the pairs",
+		"bubble_ready": "Pick bubbles to make the target",
+		"trace_ready": "Follow the green dot to the blue dot",
+		"tap_start": "Tap to start",
+		"mission": "Today’s mission",
+		"mission_progress": "Games completed",
+		"no_records": "No records yet. Play your first game!",
+		"settings_hint": "Tune the play feel to your liking.",
+		"result_detail": "Your sense gets sharper every round.",
+		"correct": "Nice!",
+		"try_again": "Almost there",
+		"trace_good": "Great flow!",
+		"trace_short": "Follow a little farther."
+	}
+}
+
+func _ready() -> void:
+	language = str(SaveStore.get_setting("language", "ko"))
+
+func t(key: String) -> String:
+	var current: Dictionary = STRINGS.get(language, STRINGS["ko"])
+	return str(current.get(key, STRINGS["ko"].get(key, key)))
+
+func set_language(next_language: String) -> void:
+	language = "en" if next_language == "en" else "ko"
+	SaveStore.set_setting("language", language)
+	language_changed.emit()

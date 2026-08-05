@@ -12,3 +12,10 @@ generated_images/
 .mcp.json
 tstory/
 tools/godot/
+.godot-user/
+.godot-cache/
+mobile/godot/.godot/
+mobile/godot/export_templates/
+mobile/godot/feature_profiles/
+mobile/godot/script_templates/
+mobile/godot/text_editor_themes/

@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-08-05 — **Godot vertical slice 구현**: `mobile/godot`에 390×844 세로형 앱 셸(Home/Games/Records/Settings/Result), 버전 저장(`user://`), ko/en 문자열, 프로시저럴 효과음·햅틱, `flash`·`bubble`·`trace` 게임을 추가. Godot 4.7.1 headless import/main run과 3개 게임 smoke test 통과. 웹 앱은 변경하지 않음.
+
 - 2026-08-05 — **Godot 4.7.1 설치**: 프로젝트 내부 `tools/godot/`에 Windows x86_64 포터블 버전을 설치하고 headless 버전 확인(`4.7.1.stable.official.a13da4feb`) 완료. 대용량 실행 파일·압축본은 Git에서 제외하고 `tools/README.md`에 경로를 기록.
 
 - 2026-07-25 — **게임별 최고 기록 PB 목록 개편**: 임의 `GAME_REF` 임계값으로 만든 다이아·메달·Lv·진행바를 UI와 결과 화면에서 제거. 플레이한 게임만 `HOME_GAMES` 고정 순서로 노출하고 인지 영역 필터, 게임 아이콘·이름·대표 난이도·실제 최고점 중심의 개인 기록 목록으로 단순화. `GAME_REF`는 능력치·추천 내부 계산에만 유지.
