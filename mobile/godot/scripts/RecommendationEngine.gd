@@ -1,7 +1,7 @@
 class_name RecommendationEngine
 extends RefCounted
 
-const AXIS_KEYS := ["memory", "focus", "calculation", "coordination"]
+const AXIS_KEYS := ["memory", "focus", "calculation", "coordination", "speed", "space", "logic", "language", "sound", "sight"]
 
 static func recommended(limit: int = 3) -> Array:
 	var skills := SaveStore.get_skill_scores()

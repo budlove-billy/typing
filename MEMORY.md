@@ -314,6 +314,14 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 신규 게임 CSS는 기존 토큰(--space류는 없음: 간격은 기존 게임 값 재사용)과 시맨틱 색 토큰만 사용 — one-off 색·크기 남발 금지.
 - 기각된 제안(재론 불필요): 픽셀 마스코트↔플랫 UI 통일론(의도된 개성), 간격/타이포 전면 토큰화(회귀 리스크), 홈 밀도(레이더·백업은 이미 내기록 탭).
 
+## Godot Android 네이티브 전체 게임 포팅 (2026-08-05)
+
+- 웹 `index.html`의 활성 두뇌게임 34종과 `braintype`, `moamoa`, `queens`, `tango`를 운세·타로 계열에서 분리해 Godot 네이티브 카탈로그 38종으로 완성했다. `mobile/godot/scripts/GameCatalog.gd`가 노출 순서와 ID를 소유하고, `script_path()`가 `IQGame.gd` 대소문자 예외를 처리한다.
+- 새 모듈은 `AnagramGame`, `WordsearchGame`, `BraintypeGame`, `MoamoaGame`, `QueensGame`, `TangoGame`이다. 모든 게임은 `finished(result)` 계약, ko/en 문구, 48dp 이상 터치 버튼, 공통 `GameTools`/`ThemeKit`/`AudioDirector` 피드백을 사용한다.
+- `SaveStore` schema 3은 memory/focus/calculation/coordination/speed/space/logic/language/sound/sight 10축을 저장한다. `nback`, `moamoa`, `braintype`, `queens`, `tango`는 관련 복수 축을 함께 65:35로 갱신한다. 기존 `user://mallow_save_v1.json`의 누락 축은 기본값 50으로 병합한다.
+- 검증: Godot headless `tests/smoke.gd`에서 `GameCatalog 38/38 script mappings`와 38개 게임+AssessmentFlow 인스턴스 생성 통과, `git diff --check`, editor import 통과. 알려진 출력은 Windows root certificate store 경고와 정상 종료 시 ObjectDB cleanup 경고뿐이다.
+- 최종 APK: `mobile/godot/build/playmallow-debug.apk`, arm64+x86_64, 57,467,033 bytes (약 54.7MB), SHA-256 `97A8096486456B311EFAAE028DE47750AB0D9FA872D7EBC1AD6FEBCA49153FD0`. `PlayMallow_API35` / `emulator-5554`에서 홈, 전체 38개 목록 스크롤, Braintype/Nback 진입과 logcat script/parse/fatal 오류 0을 확인했다. release AAB는 프로젝트 소유 non-debug keystore가 필요하다.
+
 ## 운영 메모
 - **⚠️ 시뮬 교훈(2026-07-12)**: 로직 시뮬은 **앱의 실제 헬퍼 의미**를 그대로 써야 함. sort 멈춤 버그(soGen이 `shuffleArr` 반환값 미사용 → 정렬된 완성판 생성)를
   초기 시뮬이 *제자리 변형* shuffleArr로 대체해 놓쳐 false pass. `shuffleArr(arr)`는 **원본 불변, 섞인 새 배열 반환** — 반드시 반환값 사용. 재현: `.logs/sort_fix_check.mjs`.

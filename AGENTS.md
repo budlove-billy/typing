@@ -396,6 +396,7 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 
 ## Build changelog
 
+- 2026-08-05 — Full native brain-game catalog completed: ported all 34 active non-fortune games plus `braintype`, `moamoa`, `queens`, and `tango` (38 total) into Godot modules. Added ko/en copy, 10-axis records with multi-axis updates, catalog-to-script QA, Android touch scrolling, and rebuilt a signed 54.7MB arm64+x86_64 debug APK. Verified on `PlayMallow_API35` with no script/parse/fatal log errors.
 - 2026-08-05 — Android build pipeline completed: project-local JDK 17, Android SDK/NDK/CMake, and Godot 4.7.1 export templates installed. Added `mobile/godot/export_presets.cfg`, Mallow launcher icon, reproducible `build-android.ps1`, and produced a signed arm64+x86_64 debug APK. Release AAB remains gated on a project-owned non-debug keystore.
 - 2026-08-05 — Android PC emulator run completed: installed the project-local Android Emulator and Android 35 x86_64 image, created `PlayMallow_API35`, widened the debug APK to arm64+x86_64, and added `mobile/godot/run-android-emulator.ps1` for repeatable boot/install/launch.
 - 2026-08-05 — Godot mobile UI refinement completed: rebuilt Home/Games/Records/Settings/Result and all three game surfaces around a padded mobile design system, replaced global label wrapping with selective wrapping, redrew the bite Mallow mascot, and passed Android 15 emulator visual QA across six screens.
@@ -405,4 +406,5 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 
 ## Changelog
 
+- 2026-08-05 — **사이트 두뇌게임 전체 네이티브 포팅 완료**: 운세·타로 계열을 제외한 웹 활성 게임 34종과 두뇌유형·모아모아·말로우 크라운·말로우 탱고를 Godot Android에 추가해 총 38종을 제공. 언어·논리·일일 퍼즐을 포함한 ko/en UI, 10축 능력치·복합 축 기록, 터치 스크롤, 카탈로그 38/38 매핑 smoke, Android 15 에뮬레이터 QA와 APK 빌드를 완료.
 - 2026-08-05 — **Android 네이티브 전환 검토**: 현재 웹/PWA는 유지하고 Android-first 네이티브 클라이언트는 Godot 4.7.1 stable로 병행 개발하기로 결정. 전체 포팅 대신 `flash`·`bubble`·`trace` vertical slice부터 시작하며, 모바일 UX·디자인 토큰·사운드/햅틱 이벤트·Godot 저장 데이터 계약·QA 게이트를 `모바일-네이티브-전환-검토.md`에 기록. 이번 턴에는 엔진 도구가 설치되어 있지 않아 APK 빌드는 진행하지 않음.

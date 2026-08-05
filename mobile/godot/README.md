@@ -1,6 +1,6 @@
-# Play Mallow — Godot Android vertical slice
+# Play Mallow — Godot Android native client
 
-This is the first native client slice for Play Mallow. The existing web app remains unchanged and continues to be the live web surface.
+The native client contains the full non-fortune brain-game catalog. The existing web app remains unchanged and continues to be the live web surface.
 
 ## Included
 
@@ -13,11 +13,17 @@ This is the first native client slice for Play Mallow. The existing web app rema
 - Local skill scores, rolling updates, and explainable daily recommendations
 - Unified mobile design system with padded surfaces, selective text wrapping,
   48px-or-larger touch targets, and a code-drawn mint slime Mallow mascot
-- `flash`: card-pair memory game
-- `bubble`: target-sum touch game
-- `trace`: touch path coordination game
-- `react`: reaction-signal focus game
-- `switch`: rule-switching focus and flexibility game
+- Memory: `flash`, `count`, `nback`, `cards`, `rev`
+- Focus and speed: `stroop`, `switch`, `trail`, `react`, `chop`, `run`, `flank`
+- Coordination: `whack`, `catch`, `trace`
+- Sight: `spot`, `odd`, `diff`
+- Space: `rotate`, `slide`, `fit`
+- Sound: `melody`, `rhythm`, `pitch`
+- Calculation: `math`, `bubble`, `merge`, `guess`
+- Logic: `iq`, `sudoku`, `sort`, `nono`
+- Language: `anagram`, `wordsearch`
+- Play-style test: `braintype`
+- Daily puzzles: `moamoa`, `queens`, `tango`
 - Assessment: memory, focus, calculation, and coordination calibration flow
 
 ## Run locally
@@ -97,12 +103,12 @@ the project-local emulator.
 - `MallowAvatar.gd` draws the hole-free mint slime Mallow mascot at any requested control size.
 - Labels wrap only where copy is expected to span lines; compact rows preserve
   their natural width instead of collapsing into vertical text.
-- Home, Games, Records, Settings, Result, Assessment, Flash, Bubble, Trace, React,
-  and Switch share one spacing and interaction hierarchy.
+- Home, Games, Records, Settings, Result, Assessment, and all 38 game modules share
+  one spacing and interaction hierarchy.
 - Ambient backdrop motion, slime idle breathing, target glows, and tap easing
   are used for feedback without overwhelming the task.
 - Android emulator visual QA covers the assessment flow, result recommendations,
-  Games with all five cards, and the Switch round/rule transition at 1080x2400 on Android 15.
+  the expanded Games list, and native touch/game launch at 1080x2400 on Android 15.
 
 ## Structure
 
@@ -119,5 +125,5 @@ games/*.gd                independent playable game modules
 tests/smoke.gd            headless module instantiation check
 ```
 
-The next slice should add Android back/resume handling, controlled re-assessment cadence,
-and device testing before porting additional games.
+The next release-hardening slice should add Android back/resume handling, controlled
+re-assessment cadence, analytics consent, and release keystore configuration.

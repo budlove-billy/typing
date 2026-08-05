@@ -18,6 +18,8 @@ var nav_buttons: Dictionary = {}
 var current_screen := "home"
 var current_game_id := ""
 var current_game: Control
+var drag_scrolling := false
+var drag_moved := false
 var assessment_flow: AssessmentFlow
 
 func _ready() -> void:
@@ -85,6 +87,7 @@ func _build_shell() -> void:
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	root.add_child(scroll)
+	scroll.gui_input.connect(_on_scroll_gui_input)
 
 	body = VBoxContainer.new()
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -152,6 +155,11 @@ func _clear_body() -> void:
 		body.remove_child(child)
 		child.queue_free()
 	scroll.scroll_vertical = 0
+
+func _on_scroll_gui_input(event: InputEvent) -> void:
+	if event is InputEventScreenDrag:
+		scroll.scroll_vertical = maxi(0, scroll.scroll_vertical - int(event.relative.y))
+		get_viewport().set_input_as_handled()
 
 func show_home() -> void:
 	_set_chrome("home", I18n.t("brand"))
@@ -241,7 +249,7 @@ func show_games() -> void:
 	_set_chrome("games", I18n.t("games"))
 	_clear_body()
 	body.add_child(_eyebrow("PLAY MALLOW"))
-	body.add_child(_label(I18n.t("today_games"), 24, INK))
+	body.add_child(_label(I18n.t("all_games"), 24, INK))
 	body.add_child(_label(I18n.t("home_sub"), 13, MUTED, HORIZONTAL_ALIGNMENT_LEFT, true))
 	var games := GameCatalog.all()
 	for i in range(games.size()):
@@ -365,6 +373,36 @@ func _assessment_skipped() -> void:
 	SaveStore.save_assessment({"memory": 50, "focus": 50, "calculation": 50, "coordination": 50}, "skipped")
 	show_home()
 
+func _input(event: InputEvent) -> void:
+	if current_screen != "home" and current_screen != "games" and current_screen != "records":
+		return
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			drag_scrolling = true
+			drag_moved = false
+		elif not event.pressed:
+			if drag_moved:
+				get_viewport().set_input_as_handled()
+			drag_scrolling = false
+	elif event is InputEventScreenDrag and drag_scrolling:
+		if abs(event.relative.y) > 1.0:
+			drag_moved = true
+			scroll.scroll_vertical = maxi(0, scroll.scroll_vertical - int(event.relative.y))
+			get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			drag_scrolling = true
+			drag_moved = false
+		elif not event.pressed:
+			if drag_moved:
+				get_viewport().set_input_as_handled()
+			drag_scrolling = false
+	elif event is InputEventMouseMotion and drag_scrolling:
+		if abs(event.relative.y) > 1.0:
+			drag_moved = true
+			scroll.scroll_vertical = maxi(0, scroll.scroll_vertical - int(event.relative.y))
+			get_viewport().set_input_as_handled()
+
 func show_assessment_result(scores: Dictionary) -> void:
 	_show_assessment_result(scores)
 
@@ -422,7 +460,7 @@ func _launch_game(game_id: String) -> void:
 	header_avatar.visible = false
 	nav_panel.visible = false
 	_clear_body()
-	var game_script = load("res://games/" + game_id.capitalize() + "Game.gd")
+	var game_script = load(GameCatalog.script_path(game_id))
 	current_game = game_script.new()
 	current_game.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	current_game.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -528,11 +566,11 @@ func _skills_panel(scores: Dictionary = {}) -> Control:
 	box.add_theme_constant_override("separation", 9)
 	panel.add_child(box)
 	box.add_child(_label(I18n.t("skill_now"), 14, INK))
-	for axis in ["memory", "focus", "calculation", "coordination"]:
+	for axis in ["memory", "focus", "calculation", "coordination", "speed", "space", "logic", "language", "sound", "sight"]:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 8)
 		var name := _label(I18n.t("skill_" + axis), 12, MUTED)
-		name.custom_minimum_size = Vector2(64, 0)
+		name.custom_minimum_size = Vector2(86, 0)
 		row.add_child(name)
 		var bar := ProgressBar.new()
 		bar.max_value = 100

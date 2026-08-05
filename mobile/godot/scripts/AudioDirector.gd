@@ -42,6 +42,10 @@ func _tone(frequency: float, duration: float, volume: float = 0.12, offset: floa
 func tap() -> void:
 	_tone(1380.0, 0.035, 0.045)
 
+func note(index: int) -> void:
+	var frequencies := [261.63, 329.63, 392.0, 523.25]
+	_tone(frequencies[clampi(index, 0, frequencies.size() - 1)], 0.14, 0.11)
+
 func good() -> void:
 	_tone(740.0, 0.08, 0.11)
 	_tone(988.0, 0.11, 0.10, 0.06)

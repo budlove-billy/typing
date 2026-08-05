@@ -1,14 +1,55 @@
 extends Node
 
 const SAVE_PATH := "user://mallow_save_v1.json"
-const SCHEMA_VERSION := 2
+const SCHEMA_VERSION := 3
 
 const GAME_AXIS := {
 	"flash": "memory",
 	"react": "focus",
 	"bubble": "calculation",
 	"trace": "coordination",
-	"switch": "focus"
+	"switch": "focus",
+	"count": "memory",
+	"nback": "memory",
+	"cards": "memory",
+	"stroop": "focus",
+	"trail": "focus",
+	"flank": "focus",
+	"rev": "memory",
+	"chop": "focus",
+	"whack": "coordination",
+	"spot": "sight",
+	"catch": "coordination",
+	"diff": "sight",
+	"odd": "sight",
+	"rotate": "space",
+	"slide": "space",
+	"melody": "sound",
+	"rhythm": "sound",
+	"pitch": "sound",
+	"math": "calculation",
+	"guess": "calculation",
+	"merge": "calculation",
+	"sort": "logic",
+	"nono": "logic",
+	"run": "speed",
+	"fit": "space",
+	"iq": "logic",
+	"sudoku": "logic",
+	"anagram": "language",
+	"wordsearch": "language",
+	"braintype": "logic",
+	"moamoa": "language",
+	"queens": "logic",
+	"tango": "logic"
+}
+
+const GAME_AXES := {
+	"nback": ["memory", "focus"],
+	"moamoa": ["language", "logic"],
+	"braintype": ["logic", "language"],
+	"queens": ["logic", "space"],
+	"tango": ["logic", "focus"]
 }
 
 const GAME_CAP := {
@@ -16,7 +57,40 @@ const GAME_CAP := {
 	"react": 1000.0,
 	"bubble": 650.0,
 	"trace": 1000.0,
-	"switch": 1000.0
+	"switch": 1000.0,
+	"count": 1000.0,
+	"nback": 1000.0,
+	"cards": 1000.0,
+	"stroop": 1000.0,
+	"trail": 1000.0,
+	"flank": 1000.0,
+	"rev": 1000.0,
+	"chop": 1000.0,
+	"whack": 1000.0,
+	"spot": 1000.0,
+	"catch": 1000.0,
+	"diff": 1000.0,
+	"odd": 1000.0,
+	"rotate": 1000.0,
+	"slide": 1000.0,
+	"melody": 1000.0,
+	"rhythm": 1000.0,
+	"pitch": 1000.0,
+	"math": 1000.0,
+	"guess": 1000.0,
+	"merge": 1000.0,
+	"sort": 1000.0,
+	"nono": 1000.0,
+	"run": 1000.0,
+	"fit": 1000.0,
+	"iq": 1000.0,
+	"sudoku": 1000.0,
+	"anagram": 1000.0,
+	"wordsearch": 1000.0,
+	"braintype": 1000.0,
+	"moamoa": 1000.0,
+	"queens": 1000.0,
+	"tango": 1000.0
 }
 
 var data: Dictionary = {}
@@ -51,7 +125,13 @@ func _default_skill_scores() -> Dictionary:
 		"memory": 50,
 		"focus": 50,
 		"calculation": 50,
-		"coordination": 50
+		"coordination": 50,
+		"speed": 50,
+		"space": 50,
+		"logic": 50,
+		"language": 50,
+		"sound": 50,
+		"sight": 50
 	}
 
 func _load() -> void:
@@ -165,12 +245,16 @@ func record_result(game_id: String, score: int) -> bool:
 	record["last"] = score
 	data["records"][game_id] = record
 	var axis: String = str(GAME_AXIS.get(game_id, ""))
-	if axis != "":
+	var axes: Array = GAME_AXES.get(game_id, [])
+	if axes.is_empty() and axis != "":
+		axes = [axis]
+	if not axes.is_empty():
 		var cap: float = float(GAME_CAP.get(game_id, 1000.0))
 		var live_score := clampf(float(score) / cap * 100.0, 0.0, 100.0)
 		var skill_scores := get_skill_scores()
-		var previous: float = float(skill_scores.get(axis, 50))
-		skill_scores[axis] = int(round(previous * 0.65 + live_score * 0.35))
+		for axis_name in axes:
+			var previous: float = float(skill_scores.get(axis_name, 50))
+			skill_scores[axis_name] = int(round(previous * 0.65 + live_score * 0.35))
 		data["profile"]["skillScores"] = skill_scores
 	_save()
 	return score > old_best
