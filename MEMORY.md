@@ -329,6 +329,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - Android 폰트/이모지 차이를 피하기 위해 `GameIcon.gd`가 웹 아이콘 의미를 선·도형 기반 네이티브 벡터로 그린다. `WEB_ICON_REFERENCE`는 playmallow.com 의미 대응의 기준이고 실제 UI에는 이모지를 직접 렌더링하지 않는다.
 - 하단 메뉴는 홈·게임·내 기록 각각 픽토그램+라벨을 사용하고, 선택 항목은 브랜드 블루 채움/흰 아이콘으로 즉시 구분한다. 최종 APK SHA-256은 `DAB211FBF649A180C9A8E987118569A1DA10C6EBB920F351CA5905604BF6D093`이며 Android 15 에뮬레이터에서 기억력/오늘의 퍼즐 전환과 런타임 오류 0을 확인했다.
 
+## Higgsfield 디자인 연결 (2026-08-07)
+
+- 프로젝트 로컬 `.mcp.json`에 Higgsfield remote HTTP MCP를 등록했다: `https://mcp.higgsfield.ai/mcp`. MCP 설정은 다음 Codex 도구 세션부터 로드되며, 계정 OAuth 또는 서비스 인증이 요구될 수 있다.
+- 활용 범위는 Godot 코드를 자동 대체하는 것이 아니라 캐릭터·배경·UI 콘셉트·게임 아이콘·애니메이션 키프레임·사운드 방향을 생성한 뒤 Godot 리소스로 선별·최적화·적용하는 것이다. 첫 대상은 hole-free mint slime Mallow와 Android 게임 화면 디자인이다.
+
 ## 운영 메모
 - **⚠️ 시뮬 교훈(2026-07-12)**: 로직 시뮬은 **앱의 실제 헬퍼 의미**를 그대로 써야 함. sort 멈춤 버그(soGen이 `shuffleArr` 반환값 미사용 → 정렬된 완성판 생성)를
   초기 시뮬이 *제자리 변형* shuffleArr로 대체해 놓쳐 false pass. `shuffleArr(arr)`는 **원본 불변, 섞인 새 배열 반환** — 반드시 반환값 사용. 재현: `.logs/sort_fix_check.mjs`.
