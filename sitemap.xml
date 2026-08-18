@@ -199,6 +199,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/sudoku/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/sudoku/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/sudoku/"/>
   </url>
   <url>
@@ -207,6 +208,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/sudoku/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/sudoku/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/sudoku/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/sudoku/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/sudoku/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/sudoku/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/sudoku/"/>
   </url>
   <url>
@@ -215,6 +226,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/iq-test/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/iq-test/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/iq-test/"/>
   </url>
   <url>
@@ -223,6 +235,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/iq-test/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/iq-test/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/iq-test/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/iq-test/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/iq-test/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/iq-test/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/iq-test/"/>
   </url>
   <url>
@@ -236,6 +258,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/2048/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/2048/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/2048/"/>
   </url>
   <url>
@@ -244,6 +267,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/2048/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/2048/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/2048/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/2048/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/2048/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/2048/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/2048/"/>
   </url>
   <url>
@@ -252,6 +285,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/reaction-time/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/reaction-time/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/reaction-time/"/>
   </url>
   <url>
@@ -260,6 +294,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/reaction-time/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/reaction-time/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/reaction-time/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/reaction-time/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/reaction-time/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/reaction-time/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/reaction-time/"/>
   </url>
   <url>
@@ -268,6 +312,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/memory-game/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/memory-game/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/memory-game/"/>
   </url>
   <url>
@@ -276,6 +321,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/memory-game/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/memory-game/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/memory-game/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/memory-game/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/memory-game/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/memory-game/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/memory-game/"/>
   </url>
   <url>
@@ -284,6 +339,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/nonogram/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/nonogram/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/nonogram/"/>
   </url>
   <url>
@@ -292,6 +348,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/nonogram/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/nonogram/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/nonogram/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/nonogram/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/nonogram/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/nonogram/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/nonogram/"/>
   </url>
   <url>
@@ -300,6 +366,7 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/water-sort/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/water-sort/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/water-sort/"/>
   </url>
   <url>
@@ -308,6 +375,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/water-sort/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/water-sort/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/water-sort/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/water-sort/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/water-sort/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/water-sort/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/water-sort/"/>
   </url>
   <url>
@@ -351,6 +428,7 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/stroop/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/stroop/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/stroop/"/>
   </url>
   <url>
@@ -359,6 +437,16 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/stroop/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/stroop/th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/stroop/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/stroop/th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/stroop/en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/stroop/th"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/stroop/"/>
   </url>
   <url>

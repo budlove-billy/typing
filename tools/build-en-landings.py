@@ -127,7 +127,7 @@ PAGES['nonogram'] = dict(gid='nono', emoji='🖼️',
   <section><h2>How to play a nonogram</h2>
     <p>The numbers beside each row and above each column tell you how many cells in that line are filled, in consecutive runs. Several numbers mean several runs, in that order, with at least one empty cell between them.</p>
     <p>If a line of five cells is labelled "5", the whole line is filled — that is where to start. Work from the lines that are most constrained, cross out what is impossible, and let each certainty narrow its neighbours. Nothing here needs luck.</p>
-    <p class="note">Nonograms also go by picross, griddlers, paint by numbers, or pixel puzzles.</p>
+    <p class="note">Nonograms also go by picross, griddlers, paint by numbers, or pixel puzzles. In the Mallow app this game is called <b>Pixel Logic</b>.</p>
   </section>
   <section><h2>Frequently asked questions</h2>
     <dl class="faq">
