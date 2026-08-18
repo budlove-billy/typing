@@ -11,6 +11,10 @@
 <meta property="og:url" content="https://playmallow.com/persona/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
 <link rel="canonical" href="https://playmallow.com/persona/">
+<link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/">
+<link rel="alternate" hreflang="en" href="https://playmallow.com/persona/?lang=en">
+<link rel="alternate" hreflang="th" href="https://playmallow.com/persona/?lang=th">
+<link rel="alternate" hreflang="x-default" href="https://playmallow.com/persona/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 페르소나","url":"https://playmallow.com/persona/","applicationCategory":"GameApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"24문항으로 보는 무료 성격 유형 심층 진단. 16가지 유형별 강점·연애·일 스타일과 궁합, 추천 게임을 공유카드로. 재미로 보는 오락용 콘텐츠."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"말로우 페르소나","item":"https://playmallow.com/persona/"}]}]}
 </script>
@@ -418,6 +422,29 @@ function syncLangUrl(){ try{ if(!history.replaceState) return;
   var q=u.searchParams.toString();
   history.replaceState(null,'','/persona/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
  }catch(e){} }
+/* ===== 언어별 SEO 동기화 =====
+   canonical이 언어와 상관없이 ko 주소로 고정돼 있으면 검색엔진이 en/th 주소를
+   ko 주소로 통합해 버려 영어·태국어 페이지가 색인에서 사라진다.
+   그래서 언어를 바꿀 때마다 canonical·og:url·title·description을 그 언어의 주소로 맞춘다. */
+const SEO_I18N={
+ ko:{t:'말로우 페르소나 — 성격 유형 심층 진단 (16유형) | Mallow',d:'24개 상황 질문으로 보는 나의 성격 16유형. 4가지 축을 %로 진단하고 강점·연애·일·궁합·추천 게임까지.',ot:'말로우 페르소나 — 성격 유형 심층 진단',od:'24문항으로 보는 나의 16유형! 축별 %와 상세 프로필, 결과를 친구와 공유해 보세요.'},
+ en:{t:'Mallow Persona — Personality Type Test (16 types) | Mallow',d:'24 situation questions reveal your personality type. 16 types, 4 axes in %.',ot:'Mallow Persona — Personality Type Test (16 types)',od:'Find your type from 24 questions: strengths, love, work style and best matches.'},
+ th:{t:'Mallow เพอร์โซนา — แบบทดสอบบุคลิกภาพ (16 แบบ) | Mallow',d:'24 คำถามเผยบุคลิกภาพของคุณ 16 แบบ 4 แกน พร้อมเปอร์เซ็นต์ จุดแข็ง ความรัก การงาน',ot:'Mallow เพอร์โซนา — แบบทดสอบบุคลิกภาพ (16 แบบ)',od:'รู้จักตัวเองจาก 24 คำถาม ทั้งจุดแข็ง ความรัก การงาน และคู่ที่เข้ากันได้'}};
+const SEO_BASE='https://playmallow.com/persona/';
+function syncSEO(){
+  const s=SEO_I18N[LANG]||SEO_I18N.ko;
+  const url=SEO_BASE+(LANG==='ko'?'':'?lang='+LANG);
+  const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
+  if(s.t) document.title=s.t;
+  set('link[rel="canonical"]','href',url);
+  set('meta[property="og:url"]','content',url);
+  set('meta[name="description"]','content',s.d);
+  set('meta[property="og:title"]','content',s.ot||s.t);
+  set('meta[property="og:description"]','content',s.od||s.d);
+}
+/* applyLang은 초기 렌더와 언어 전환 양쪽에서 불리므로 여기서 한 번만 감싼다
+   (함수 선언은 호이스팅되므로 정의보다 앞에 있어도 안전하다) */
+(function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); return r; }; })();
 function setLang(l){ LANG=['ko','en','th'].includes(l)?l:'ko'; try{localStorage.setItem('brain.lang',LANG);}catch(e){} document.documentElement.lang=LANG; applyLang(); syncLangUrl();
   if(resultEl.style.display==='block'&&LASTRES){ finish(); } else if(quizCard.style.display==='block'){ renderQ(); } }
 function applyLang(){ const d=TX[LANG];

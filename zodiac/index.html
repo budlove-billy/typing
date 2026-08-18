@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Mallow Horoscope — Today's Zodiac Fortune</title>
-<meta name="description" content="Today's Moon sign vs your sign gives the aspect. 100-point score, love, money.">
-<meta property="og:title" content="Mallow Horoscope — Today's Zodiac Fortune">
-<meta property="og:description" content="Free daily horoscope from a real Moon transit — aspect, phase, 100-point score.">
+<title>말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow</title>
+<meta name="description" content="오늘 달이 지나는 별자리와 내 별자리의 각도로 보는 무료 별자리 운세. 지수 100점과 애정·금전·건강·일운.">
+<meta property="og:title" content="말로우 별자리 운세 — 오늘의 별자리 운세">
+<meta property="og:description" content="오늘 달의 위치로 보는 내 별자리 운세. 지수 100점·분야별 점수·이번 주 흐름까지 무료로.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://playmallow.com/zodiac/">
 <meta property="og:image" content="https://playmallow.com/og/zodiac.png">
@@ -15,6 +15,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://playmallow.com/og/zodiac.png">
 <link rel="canonical" href="https://playmallow.com/zodiac/">
+<link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/">
+<link rel="alternate" hreflang="en" href="https://playmallow.com/zodiac/?lang=en">
+<link rel="alternate" hreflang="th" href="https://playmallow.com/zodiac/?lang=th">
+<link rel="alternate" hreflang="x-default" href="https://playmallow.com/zodiac/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 별자리 운세","url":"https://playmallow.com/zodiac/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"오늘 달이 지나는 별자리와 내 별자리의 각도(아스펙트)에 달의 위상을 더해 100점 기준 지수로 산출하는 무료 별자리 운세. 애정·금전·건강·일 점수와 이번 주 흐름까지."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"별자리 운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 오늘의 별자리 운세를 볼 수 있습니다."}},{"@type":"Question","name":"내 별자리는 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"입력한 생년월일을 12별자리 경계 날짜에 맞춰 자동으로 판별합니다."}},{"@type":"Question","name":"운세는 매일 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"네. 같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다. 재미로 보는 오락용 콘텐츠입니다."}},{"@type":"Question","name":"운세 지수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"오늘 달이 지나는 별자리와 내 별자리 사이의 각도(합 0°·육각 60°·사각 90°·삼각 120°·대각 180° 등 7종)를 기본값으로 삼고 달의 위상 8단계를 더해 100점 기준 지수를 만듭니다. 별점과 분야별 점수도 모두 이 지수에서 나옵니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"별자리 운세","item":"https://playmallow.com/zodiac/"}]}]}
 </script>
@@ -520,6 +524,29 @@ function syncLangUrl(){ try{ if(!history.replaceState) return;
   var q=u.searchParams.toString();
   history.replaceState(null,'','/zodiac/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
  }catch(e){} }
+/* ===== 언어별 SEO 동기화 =====
+   canonical이 언어와 상관없이 ko 주소로 고정돼 있으면 검색엔진이 en/th 주소를
+   ko 주소로 통합해 버려 영어·태국어 페이지가 색인에서 사라진다.
+   그래서 언어를 바꿀 때마다 canonical·og:url·title·description을 그 언어의 주소로 맞춘다. */
+const SEO_I18N={
+ ko:{t:'말로우 별자리 운세 — 오늘의 별자리 운세 | Mallow',d:'오늘 달이 지나는 별자리와 내 별자리의 각도로 보는 무료 별자리 운세. 지수 100점과 애정·금전·건강·일운.',ot:'말로우 별자리 운세 — 오늘의 별자리 운세',od:'오늘 달의 위치로 보는 내 별자리 운세. 지수 100점·분야별 점수·이번 주 흐름까지 무료로.'},
+ en:{t:'Mallow Horoscope — Today\'s Zodiac Fortune',d:'Free daily horoscope from a real Moon transit: aspect, phase, 100-point score.',ot:'Mallow Horoscope — Today\'s Zodiac Fortune',od:'Where the Moon is today vs your sign — aspect, lunar phase and a 100-point score.'},
+ th:{t:'ดวงราศี Mallow — ดูดวงราศีประจำวัน',d:'ดูดวงราศีประจำวันฟรี จากตำแหน่งดวงจันทร์วันนี้เทียบราศีคุณ พร้อมคะแนนเต็ม 100',ot:'ดวงราศี Mallow — ดูดวงราศีประจำวัน',od:'ดวงจันทร์วันนี้อยู่ราศีใด เทียบกับราศีคุณ พร้อมคะแนน ความรัก การเงิน สุขภาพ'}};
+const SEO_BASE='https://playmallow.com/zodiac/';
+function syncSEO(){
+  const s=SEO_I18N[LANG]||SEO_I18N.ko;
+  const url=SEO_BASE+(LANG==='ko'?'':'?lang='+LANG);
+  const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
+  if(s.t) document.title=s.t;
+  set('link[rel="canonical"]','href',url);
+  set('meta[property="og:url"]','content',url);
+  set('meta[name="description"]','content',s.d);
+  set('meta[property="og:title"]','content',s.ot||s.t);
+  set('meta[property="og:description"]','content',s.od||s.d);
+}
+/* applyLang은 초기 렌더와 언어 전환 양쪽에서 불리므로 여기서 한 번만 감싼다
+   (함수 선언은 호이스팅되므로 정의보다 앞에 있어도 안전하다) */
+(function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); return r; }; })();
 function setLang(l){ LANG=l; try{ localStorage.setItem('brain.lang',l); }catch(e){} document.documentElement.lang=l; applyLang(); syncLangUrl(); if(document.getElementById('result').style.display!=='none') compute(); }
 function applyLang(){ const d=L[LANG];
   document.documentElement.lang=LANG;

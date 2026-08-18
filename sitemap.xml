@@ -7,6 +7,25 @@
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/?lang=en</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/?lang=th</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/"/>
   </url>
   <url>
     <loc>https://playmallow.com/moamoa/</loc>
@@ -17,11 +36,55 @@
     <loc>https://playmallow.com/queens/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/queens/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/queens/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/queens/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/queens/?lang=en</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/queens/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/queens/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/queens/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/queens/?lang=th</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/queens/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/queens/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/queens/"/>
   </url>
   <url>
     <loc>https://playmallow.com/tango/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/tango/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/tango/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/tango/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/tango/?lang=en</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/tango/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/tango/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/tango/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/tango/?lang=th</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/tango/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/tango/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/tango/"/>
   </url>
   <url>
     <loc>https://playmallow.com/unse/</loc>
@@ -32,6 +95,28 @@
     <loc>https://playmallow.com/zodiac/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/zodiac/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/zodiac/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/zodiac/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/zodiac/?lang=en</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/zodiac/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/zodiac/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/zodiac/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/zodiac/?lang=th</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/zodiac/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/zodiac/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/zodiac/"/>
   </url>
   <url>
     <loc>https://playmallow.com/ttirank/</loc>
@@ -42,16 +127,71 @@
     <loc>https://playmallow.com/tarot/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tarot/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/tarot/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/tarot/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/tarot/?lang=th</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tarot/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/tarot/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/tarot/"/>
   </url>
   <url>
     <loc>https://playmallow.com/luckycolor/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/luckycolor/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/luckycolor/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/luckycolor/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/luckycolor/?lang=en</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/luckycolor/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/luckycolor/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/luckycolor/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/luckycolor/?lang=th</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/luckycolor/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/luckycolor/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/luckycolor/"/>
   </url>
   <url>
     <loc>https://playmallow.com/persona/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/persona/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/persona/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/persona/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/persona/?lang=en</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/persona/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/persona/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/persona/"/>
+  </url>
+  <url>
+    <loc>https://playmallow.com/persona/?lang=th</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://playmallow.com/persona/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://playmallow.com/persona/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://playmallow.com/persona/"/>
   </url>
   <url>
     <loc>https://playmallow.com/sudoku/</loc>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>태국 요일별 행운색 — 태어난 요일로 보는 행운의 색 | Mallow</title>
 <meta name="description" content="태국 전통 요일별 행운색(สีมงคล). 생년월일로 태어난 요일을 찾아 행운의 색·피할 색·수호 부처 확인.">
-<meta property="og:title" content="태국 요일별 행운색 — 내 색은 무슨 색?">
+<meta property="og:title" content="태국 요일별 행운색 — 태어난 요일로 보는 행운의 색">
 <meta property="og:description" content="태어난 요일로 보는 태국 전통 행운색. 행운의 색 7가지와 피할 색을 확인해 보세요.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://playmallow.com/luckycolor/">
@@ -459,6 +459,29 @@ function syncLangUrl(){ try{ if(!history.replaceState) return;
   var q=u.searchParams.toString();
   history.replaceState(null,'','/luckycolor/'+(LANG==='ko'?'':LANG)+(q?'?'+q:'')+u.hash);
  }catch(e){} }
+/* ===== 언어별 SEO 동기화 =====
+   canonical이 언어와 상관없이 ko 주소로 고정돼 있으면 검색엔진이 en/th 주소를
+   ko 주소로 통합해 버려 영어·태국어 페이지가 색인에서 사라진다.
+   그래서 언어를 바꿀 때마다 canonical·og:url·title·description을 그 언어의 주소로 맞춘다. */
+const SEO_I18N={
+ ko:{t:'태국 요일별 행운색 — 태어난 요일로 보는 행운의 색 | Mallow',d:'태국 전통 요일별 행운색(สีมงคล). 생년월일로 태어난 요일을 찾아 행운의 색·피할 색·수호 부처 확인.',ot:'태국 요일별 행운색 — 태어난 요일로 보는 행운의 색',od:'태어난 요일로 보는 태국 전통 행운색. 행운의 색 7가지와 피할 색을 확인해 보세요.'},
+ en:{t:'Thai Lucky Colour by Birth Day | Mallow',d:'Thai lucky colour by the day you were born: 7 lucky colours and ones to avoid.',ot:'Thai Lucky Colour by Birth Day',od:'Enter your birth date to find your day of week, lucky colours and guardian Buddha.'},
+ th:{t:'สีมงคลประจำวันเกิด — เช็กสีมงคลและสีกาลกิณี | Mallow',d:'สีมงคลประจำวันเกิดตามความเชื่อไทย ใส่วันเกิดดูสีมงคล สีกาลกิณี และพระประจำวัน',ot:'สีมงคลประจำวันเกิด — เช็กสีมงคลและสีกาลกิณี',od:'ใส่วันเกิดเพื่อดูวันในสัปดาห์ สีมงคล 7 สี สีต้องห้าม และพระประจำวันเกิด'}};
+const SEO_BASE='https://playmallow.com/luckycolor/';
+function syncSEO(){
+  const s=SEO_I18N[LANG]||SEO_I18N.ko;
+  const url=SEO_BASE+(LANG==='ko'?'':'?lang='+LANG);
+  const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
+  if(s.t) document.title=s.t;
+  set('link[rel="canonical"]','href',url);
+  set('meta[property="og:url"]','content',url);
+  set('meta[name="description"]','content',s.d);
+  set('meta[property="og:title"]','content',s.ot||s.t);
+  set('meta[property="og:description"]','content',s.od||s.d);
+}
+/* applyLang은 초기 렌더와 언어 전환 양쪽에서 불리므로 여기서 한 번만 감싼다
+   (함수 선언은 호이스팅되므로 정의보다 앞에 있어도 안전하다) */
+(function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); return r; }; })();
 function setLang(l){ LANG=['ko','en','th'].includes(l)?l:'ko'; try{ localStorage.setItem('brain.lang',LANG); }catch(e){} document.documentElement.lang=LANG; applyLang(); syncLangUrl(); if(document.getElementById('result').style.display!=='none') compute(); }
 
 function applyLang(){ const d=L[LANG];
