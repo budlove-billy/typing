@@ -3056,7 +3056,14 @@ const GAME_SCENES={
   react:  mallowSVG('focus',{size:80,variant:'mint'}) + `<div class="gs-bolt">⚡</div>`,
   cards:  mallowSVG('happy',{size:78,variant:'sky'}) + `<div class="gs-cardfan">🂠</div><div class="gs-cardfan two">🃏</div>`,
   sudoku: `<div class="gs-grid sudoku">${[5,3,'','',7,'','','',''].map(v=>`<div class="gs-cell${v===''?' empty':''}">${v}</div>`).join('')}</div>`,
-  stroop: `<div class="gs-stroop"><span style="color:#e05555">빨강</span><span style="color:#3a7bd5">파랑</span><span style="color:#2fa56b">초록</span></div>`,
+  /* 스트룹 장식은 '색 이름 단어'가 핵심이라 언어를 따라가야 한다.
+     GAME_SCENES는 한 번만 평가되는 객체이므로 getter로 두어 접근 시점의 언어를 읽는다. */
+  get stroop(){
+    const w = CURRENT_LANG==='ko' ? ['빨강','파랑','초록']
+            : CURRENT_LANG==='th' ? ['แดง','น้ำเงิน','เขียว']
+            : ['RED','BLUE','GREEN'];
+    return `<div class="gs-stroop"><span style="color:#e05555">${w[0]}</span><span style="color:#3a7bd5">${w[1]}</span><span style="color:#2fa56b">${w[2]}</span></div>`;
+  },
   /* --- 확장: 나머지 인앱 게임 --- */
   flash:  mallowSVG('focus',{size:80,variant:'lemon'}) + `<div class="gs-bignum">7</div>`,
   count:  mallowSVG('default',{size:76,variant:'cream'}) + `<div class="gs-emoji">🏠</div>`,
