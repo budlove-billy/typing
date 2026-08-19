@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://playmallow.com/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
@@ -11,6 +12,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
@@ -20,6 +22,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
@@ -29,11 +32,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/moamoa/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://playmallow.com/queens/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
@@ -43,6 +48,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/queens/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
@@ -52,6 +58,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/queens/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/queens/"/>
@@ -61,6 +68,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/tango/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
@@ -70,6 +78,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/tango/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
@@ -79,6 +88,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/tango/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/"/>
@@ -88,11 +98,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/unse/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://playmallow.com/zodiac/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
@@ -102,6 +114,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/zodiac/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
@@ -111,6 +124,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/zodiac/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/"/>
@@ -120,11 +134,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/ttirank/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://playmallow.com/tarot/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tarot/"/>
@@ -133,6 +149,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/tarot/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/tarot/"/>
@@ -141,6 +158,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/luckycolor/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
@@ -150,6 +168,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/luckycolor/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
@@ -159,6 +178,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/luckycolor/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/luckycolor/"/>
@@ -168,6 +188,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/persona/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
@@ -177,6 +198,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/persona/?lang=en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
@@ -186,6 +208,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/persona/?lang=th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/persona/"/>
@@ -195,6 +218,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/sudoku/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
@@ -204,6 +228,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/sudoku/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
@@ -213,6 +238,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/sudoku/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/sudoku/"/>
@@ -222,6 +248,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/iq-test/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
@@ -231,6 +258,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/iq-test/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
@@ -240,6 +268,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/iq-test/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/iq-test/"/>
@@ -249,11 +278,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/braintype/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://playmallow.com/2048/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
@@ -263,6 +294,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/2048/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
@@ -272,6 +304,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/2048/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/2048/"/>
@@ -281,6 +314,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/reaction-time/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
@@ -290,6 +324,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/reaction-time/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
@@ -299,6 +334,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/reaction-time/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/reaction-time/"/>
@@ -308,6 +344,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/memory-game/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
@@ -317,6 +354,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/memory-game/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
@@ -326,6 +364,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/memory-game/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/memory-game/"/>
@@ -335,6 +374,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/nonogram/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
@@ -344,6 +384,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/nonogram/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
@@ -353,6 +394,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/nonogram/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
@@ -362,6 +404,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/water-sort/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
@@ -371,6 +414,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/water-sort/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
@@ -380,6 +424,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/water-sort/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/water-sort/"/>
@@ -389,41 +434,49 @@
   </url>
   <url>
     <loc>https://playmallow.com/guide/brain-games/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/sudoku/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/2048/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/iq-test/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/color-sort/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/slide-puzzle/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/privacy/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://playmallow.com/stroop/</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
@@ -433,6 +486,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/stroop/en</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
@@ -442,6 +496,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/stroop/th</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
@@ -451,11 +506,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/suneung/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://playmallow.com/newyear/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
