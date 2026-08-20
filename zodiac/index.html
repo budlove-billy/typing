@@ -50,6 +50,14 @@ main{width:100%;max-width:480px;padding:8px 14px 40px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;box-shadow:0 8px 26px rgba(90,70,160,.07);margin-bottom:14px;}
 label{display:block;font-size:13px;font-weight:700;color:var(--sub);margin:2px 0 7px;}
 input[type=date]{width:100%;padding:13px 12px;font-size:16px;border:1.5px solid var(--line);border-radius:12px;background:#fbfaff;color:var(--text);font-family:inherit;}
+/* ===== date 입력의 빈 상태 표기를 페이지 언어에 맞춘다 =====
+   네이티브 자리표시는 브라우저 UI 언어를 따라가므로(영어판에 '연도-월-일'이 뜨던 원인)
+   비어 있을 때만 가리고 힌트를 겹쳐 준다. 포커스하면 원래 위젯이 그대로 보인다. */
+.dfield{position:relative;}
+.dfield .dhint{position:absolute;left:13.5px;top:50%;transform:translateY(-50%);
+  font-size:16px;color:#9a92b3;pointer-events:none;display:none;font-family:inherit;}
+.dfield.ph-on .dhint{display:block;}
+.dfield.ph-on input[type=date]::-webkit-datetime-edit{color:transparent;}
 .btn{display:block;width:100%;margin-top:16px;padding:14px 0;font-size:16px;font-weight:800;border:none;border-radius:14px;
   background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);}
 .btn:active{transform:translateY(1px);}
@@ -150,7 +158,7 @@ body[data-star="2"]{background:radial-gradient(120% 90% at 50% 0%, #dbe6ff 0%, v
 <main>
   <div class="card" id="inputCard">
     <label id="t-birthLabel" for="birth">생년월일</label>
-    <input type="date" id="birth" min="1900-01-01">
+    <div class="dfield"><input type="date" id="birth" min="1900-01-01"><span class="dhint" aria-hidden="true"></span></div>
     <button class="btn" id="goBtn"></button>
   </div>
   <div id="result" style="display:none">
@@ -674,8 +682,24 @@ function syncSEO(){
 }
 /* applyLang은 초기 렌더와 언어 전환 양쪽에서 불리므로 여기서 한 번만 감싼다
    (함수 선언은 호이스팅되므로 정의보다 앞에 있어도 안전하다) */
-(function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); return r; }; })();
+(function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); syncDatePlaceholder(); return r; }; })();
 function setLang(l){ LANG=l; try{ localStorage.setItem('brain.lang',l); }catch(e){} document.documentElement.lang=l; applyLang(); syncLangUrl(); if(document.getElementById('result').style.display!=='none') compute(); }
+/* date 입력 자리표시를 페이지 언어로 — 위 CSS 주석 참고 */
+const DATE_PH={ko:'연도-월-일',en:'YYYY-MM-DD',th:'ปปปป-ดด-วว'};
+function syncDatePlaceholder(){
+  const el=document.getElementById('birth'); if(!el) return;
+  const wrap=el.closest('.dfield'); if(!wrap) return;
+  const hint=wrap.querySelector('.dhint'); if(hint) hint.textContent=DATE_PH[LANG]||DATE_PH.ko;
+  /* 유사요소를 지원하지 않는 브라우저(파이어폭스 등)에서는 네이티브 표기를 가릴 수 없어
+     힌트가 겹쳐 보이므로 아예 켜지 않는다. */
+  const supported=(window.CSS&&CSS.supports&&CSS.supports('selector(::-webkit-datetime-edit)'));
+  const empty=!el.value && document.activeElement!==el;
+  wrap.classList.toggle('ph-on', !!supported && empty);
+}
+(function(){
+  const el=document.getElementById('birth'); if(!el) return;
+  ['input','change','focus','blur'].forEach(function(ev){ el.addEventListener(ev, syncDatePlaceholder); });
+})();
 function applyLang(){ const d=L[LANG];
   document.documentElement.lang=LANG;
   document.getElementById('langSel').value=LANG;
