@@ -375,7 +375,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .sk-stat span#sk-mistakes.warn{color:var(--red);font-weight:700}
 
 #sudoku-game-card{background:#f2f4f9}
-.sk-board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;max-width:480px;aspect-ratio:1/1;margin:0 auto 1rem;border:2.5px solid var(--text);border-radius:var(--radius);overflow:hidden;background:var(--text)}
+/* 넓은 화면에서만 커진다 — 크기가 난이도를 바꾸지 않는 퍼즐 계열만 */
+.sk-board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;max-width:min(100%,560px);aspect-ratio:1/1;margin:0 auto 1rem;border:2.5px solid var(--text);border-radius:var(--radius);overflow:hidden;background:var(--text)}
 .sk-cell{background:#e9eef5;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:600;color:var(--text);cursor:pointer;user-select:none;position:relative;border:1px solid #c6cfdf;transition:background .1s}
 .sk-cell.given{font-weight:700;color:var(--text)}
 .sk-cell.selected{background:#c9d9fb}
@@ -395,7 +396,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .sk-tool-btn.active{background:var(--purple3);border-color:var(--purple);color:var(--purple)}
 .sk-tool-label{font-size:.7rem}
 
-.sk-numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem;max-width:480px;margin:0 auto}
+.sk-numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem;max-width:min(100%,560px);margin:0 auto}
 .sk-num-btn{background:#eef1f7;border:1px solid var(--border2);border-radius:var(--radius);padding:.75rem 0;font-size:1.3rem;font-weight:600;color:var(--text);cursor:pointer;transition:.12s;font-family:inherit}
 .sk-num-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
 .sk-num-btn:disabled{opacity:.3;cursor:not-allowed}
@@ -596,7 +597,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ca-item.good{filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
 .ca-item.fork{filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 .ca-basket{position:absolute;bottom:2px;line-height:0;transform:translateX(-50%);transition:left .07s;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
-.ft-board{display:grid;gap:2px;justify-content:center;max-width:360px;margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
+.ft-board{display:grid;gap:2px;justify-content:center;max-width:min(100%,500px);margin:0 auto;background:var(--border);border-radius:8px;padding:2px;touch-action:manipulation}
 /* 블록 채우기 시간 게이지 */
 .ft-timebar{max-width:360px;margin:0 auto .7rem;height:9px;background:var(--bg3);border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
 .ft-timebar-fill{height:100%;width:100%;background:linear-gradient(90deg,#21a67a,#4f7cff);border-radius:99px;transition:width .1s linear,background .3s}
@@ -663,6 +664,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ws-word{padding:.25rem .6rem;border-radius:999px;background:var(--bg3);font-size:.85rem;font-weight:600;color:var(--text)}
 .ws-word.done{background:var(--teal);color:#fff;text-decoration:line-through}
 .df-grids{display:flex;flex-direction:column;gap:.45rem;align-items:center}
+/* 넓은 화면에서는 좌우로 — 클래스는 dfRender가 실제 폭을 재서 붙인다(기준을 한 곳에 둔다) */
+.df-grids.wide{flex-direction:row;justify-content:center;gap:1rem}
+.df-grids.wide .df-vs-wrap{flex:0 0 auto;max-width:120px;text-align:center}
+.df-grids.wide .df-vs{justify-content:center}
 .df-board{position:relative;padding:.95rem .65rem .7rem;border:2.5px solid var(--border2);border-radius:16px;background:#fbfcfe;box-shadow:0 3px 10px rgba(24,34,53,.07)}
 .df-board.b1{border-color:#a9c6f5;background:#f4f8ff}
 .df-board.b2{border-color:#f2c98f;background:#fff9ef}
@@ -679,22 +684,23 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .df-cell:active{transform:scale(.94)}
 .df-cell.found{box-shadow:0 0 0 3px var(--teal),0 2px 6px rgba(33,166,122,.25);background:#d8f3e6}
 .df-cell.miss{animation:bbShake .3s ease 1}
-.pt-pads{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;max-width:330px;margin:1.1rem auto}
-.pt-pad{width:74px;height:74px;border:none;border-radius:16px;background:#7e57f0;opacity:.58;cursor:pointer;font-size:1.5rem;color:#fff;transition:opacity .1s,transform .08s}
+.pt-pads{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;max-width:min(100%,520px);margin:1.4rem auto}
+/* 패드는 화면 폭을 따라 커진다 — 소리로 푸는 게임이라 크기가 난이도를 바꾸지 않는다 */
+.pt-pad{width:clamp(74px,20vw,116px);height:clamp(74px,20vw,116px);border:none;border-radius:20px;background:#7e57f0;opacity:.58;cursor:pointer;font-size:1.9rem;color:#fff;transition:opacity .1s,transform .08s}
 .pt-noaudio{background:var(--red3);border:1.5px solid var(--red);border-radius:var(--radius2);padding:1rem;margin-bottom:1rem;text-align:center}
 .pt-noaudio-t{font-weight:800;color:var(--red2);margin-bottom:.35rem}
 .pt-noaudio p{font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.8rem}
 .pt-pad.lit{opacity:1;box-shadow:0 0 18px rgba(126,87,240,.5)}
 .pt-pad:active{transform:scale(.95)}
-.tc-area{position:relative;width:100%;max-width:360px;margin:0 auto;background:var(--bg3);border-radius:var(--radius2);touch-action:none;user-select:none}
+.tc-area{position:relative;width:100%;max-width:560px;margin:0 auto;background:var(--bg3);border-radius:var(--radius2);touch-action:none;user-select:none}
 .tc-area svg{display:block;width:100%;height:auto}
 /* 슬라이딩 퍼즐 */
-.sl-board{position:relative;width:100%;max-width:380px;aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
+.sl-board{position:relative;width:100%;max-width:min(100%,500px);aspect-ratio:1/1;margin:0 auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2)}
 .sl-tile{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;user-select:none;transition:left .13s ease,top .13s ease;box-shadow:0 2px 6px rgba(24,34,53,.13);font-size:clamp(1.05rem,4.5vw,1.5rem)}
 .sl-tile:active{filter:brightness(.95)}
 .sl-tile.ok{box-shadow:inset 0 0 0 2.5px var(--teal),0 2px 6px rgba(24,34,53,.10)}
 /* 말랑 2048 */
-.mr-board-wrap{max-width:380px;margin:0 auto;touch-action:none}
+.mr-board-wrap{max-width:min(100%,500px);margin:0 auto;touch-action:none}
 /* 2048 플레이 화면 AI 배경 (가장자리 장식, 중앙은 읽기 쉽게 오버레이) */
 #merge-game-card{background:linear-gradient(160deg,rgba(255,250,244,.88) 0%,rgba(255,244,236,.8) 55%,rgba(255,255,255,.7) 100%),url('assets/merge-bg.jpg') center/cover no-repeat;border:1px solid rgba(255,170,120,.35)}
 /* 스도쿠·카드짝·반응속도 플레이 화면 AI 배경 */
@@ -759,7 +765,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .cp-side-btn{flex:1;max-width:150px;padding:1rem 0;font-size:1.4rem;font-weight:800;border:none;border-radius:var(--radius2);background:var(--purple3);color:var(--purple);cursor:pointer;font-family:inherit}
 .cp-side-btn:active{background:var(--purple);color:#fff;transform:scale(.97)}
 /* 컬러 소트 */
-.so-tubes{display:flex;flex-wrap:wrap;gap:.9rem 1rem;justify-content:center;max-width:420px;margin:0 auto}
+.so-tubes{display:flex;flex-wrap:wrap;gap:.9rem 1rem;justify-content:center;max-width:min(100%,560px);margin:0 auto}
 .so-tube{display:flex;flex-direction:column-reverse;width:52px;height:168px;background:#fff;border:2px solid var(--border2);border-top:none;border-radius:0 0 22px 22px;cursor:pointer;padding:3px;gap:3px;transition:transform .12s;position:relative}
 .so-tube::before{content:"";position:absolute;top:-2px;left:-6px;right:-6px;height:6px;background:var(--border2);border-radius:999px}
 .so-tube.sel{transform:translateY(-9px);border-color:var(--purple)}
@@ -2831,7 +2837,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     </div>
     <div style="text-align:center;margin-bottom:.7rem"><div class="mg-timer" id="df-timer">00:30</div></div>
     <div class="gm-status" id="df-status" data-i18n="diff.guide">다른 칸을 모두 찾으세요</div>
-    <div class="df-grids"><div class="df-board b1"><span class="df-tag t1" data-i18n="diff.board1">원본</span><div class="df-grid" id="df-grid1"></div></div><div class="df-vs-wrap"><div class="df-count" id="df-count"></div><div class="df-vs" data-i18n="diff.compare">↕ 위아래를 비교하세요</div></div><div class="df-board b2"><span class="df-tag t2" data-i18n="diff.board2">다른 곳 찾기</span><div class="df-grid" id="df-grid2"></div></div></div>
+    <div class="df-grids" id="df-grids"><div class="df-board b1"><span class="df-tag t1" data-i18n="diff.board1">원본</span><div class="df-grid" id="df-grid1"></div></div><div class="df-vs-wrap"><div class="df-count" id="df-count"></div><div class="df-vs" data-i18n="diff.compare">↕ 위아래를 비교하세요</div></div><div class="df-board b2"><span class="df-tag t2" data-i18n="diff.board2">다른 곳 찾기</span><div class="df-grid" id="df-grid2"></div></div></div>
     <div style="display:flex;justify-content:center;margin-top:1rem"><button class="btn btn-outline" onclick="leaveDiff()" data-i18n="diff.leave">나가기</button></div>
   </div>
   <div class="card" id="diff-result-card" style="display:none;text-align:center">
@@ -3352,6 +3358,7 @@ const I18N = {
   "diff.board1": {ko:"원본", en:"Original", th:"ต้นฉบับ"},
   "diff.board2": {ko:"다른 곳 찾기", en:"Find changes", th:"หาจุดต่าง"},
   "diff.compare": {ko:"↕ 위아래를 비교하세요", en:"↕ Compare top & bottom", th:"↕ เทียบบน-ล่าง"},
+  "diff.compareLR": {ko:"↔ 좌우를 비교하세요", en:"↔ Compare left and right", th:"↔ เทียบซ้ายกับขวา"},
   "diff.toFind": {ko:"남은 틀린 곳", en:"Left to find", th:"เหลืออีก"},
   "diff.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "diff.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "diff.difficulty": {ko:"난이도", en:"Difficulty", th:"ระดับ"}, "diff.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"}, "diff.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
@@ -9752,10 +9759,20 @@ function dfCount(){ const el=document.getElementById('df-count'); if(!el) return
 let _dfResizeT=null; window.addEventListener('resize',()=>{ if(!DF.running) return; clearTimeout(_dfResizeT); _dfResizeT=setTimeout(()=>{ if(DF.running) dfRender(); },150); });
 function dfRender(){
   // 두 판이 세로로 쌓이므로 '창 높이'에도 맞춰 셀 크기 자동 축소 → 한 화면에 들어오게
-    /* 위아래 고정 영역의 실측 합계. 338이면 세로 640px 기기에서 아래 판이 63px 잘렸다.
+    /* 배치를 먼저 정한다 — 판 영역이 620px 이상이면 좌우, 아니면 위아래.
+     좌우면 세로 공간을 통째로 쓰고, 위아래면 반씩 나눠 쓴다. */
+  const host=document.getElementById('df-grids');
+  const hostW=(host&&host.clientWidth)||328;
+  const wide=hostW>=620;
+  if(host) host.classList.toggle('wide', wide);
+  const vs=document.querySelector('#df-grids .df-vs');
+  if(vs) vs.textContent=t(wide?'diff.compareLR':'diff.compare');
+  /* 위아래 고정 영역의 실측 합계. 338이면 세로 640px 기기에서 아래 판이 63px 잘렸다.
      (헤더 128 + 점수칸 · 타이머 · 안내문 · 남은개수 알약 + 하단 탭 90) */
-  const availW=328, availH=Math.max(180,(window.innerHeight||760)-404);
-  const cs=Math.max(26, Math.min(Math.floor(availW/DF.n), Math.floor((availH/2)/DF.n), 54));
+  const availW = wide ? Math.max(120,(hostW-140)/2) : Math.min(328,hostW);
+  const availH = wide ? Math.max(200,(window.innerHeight||760)-330)
+                      : Math.max(180,(window.innerHeight||760)-404)/2;
+  const cs=Math.max(26, Math.min(Math.floor(availW/DF.n), Math.floor(availH/DF.n), wide?70:54));
   const fs=Math.round(cs*0.66);
   [['df-grid1',DF.g1],['df-grid2',DF.g2]].forEach(pair=>{ const g=document.getElementById(pair[0]); g.style.gridTemplateColumns='repeat('+DF.n+','+cs+'px)'; g.innerHTML='';
     for(let i=0;i<pair[1].length;i++){ const d=document.createElement('div'); d.className='df-cell'+(DF.foundSet.has(i)?' found':''); d.style.width=cs+'px'; d.style.height=cs+'px'; d.style.fontSize=fs+'px'; d.textContent=pair[1][i]; d.onclick=()=>dfTap(i,d); g.appendChild(d); } });
@@ -9824,36 +9841,81 @@ function leavePitch(){ resetPitch(); showScreen('games'); }
 function resetPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false; const g=document.getElementById('pitch-game-card');if(g)g.style.display='none'; const r=document.getElementById('pitch-result-card');if(r)r.style.display='none'; const i=document.getElementById('pitch-intro-card');if(i)i.style.display='block'; ptUpdateBestLine(); }
 
 // ========== 길 따라가기 (협응) ==========
-const TC_CFG={ easy:{steps:7,w:32}, normal:{steps:12,w:24}, hard:{steps:17,w:19} };
-const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, best:bt_loadBest('brain.trace.best') };
+/* w = 길 폭의 '상한'. 실제 폭은 칸 크기의 62%로 잡되 이 값을 넘지 않는다.
+   → 초반엔 칸이 커서 길이 넓고, 레벨이 오르면 칸이 촘촘해져 저절로 좁아진다. */
+const TC_CFG={ easy:{steps:5,w:54}, normal:{steps:9,w:46}, hard:{steps:13,w:38} };
+const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, MARGIN:33, cell:40, startR:28, endR:22, best:bt_loadBest('brain.trace.best') };
 function TC_DIFF_LABEL(d){ return d==='easy'?t('trace.easy'):d==='hard'?t('trace.hard'):t('trace.normal'); }
 function tcUpdateBestLine(){ const el=document.getElementById('tc-intro-best'); if(el) el.textContent=bt_bestLineText(TC.best,TC.diff); }
 function setTraceDiff(d){ TC.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('tc-diff-'+k).classList.toggle('active',k===d)); tcUpdateBestLine(); }
 function tcStats(){ document.getElementById('tc-score').textContent=TC.score; document.getElementById('tc-level').textContent=TC.level; document.getElementById('tc-life').textContent='♥'.repeat(TC.lives)+'♡'.repeat(3-TC.lives); }
 function tcStatus(key,cls){ const el=document.getElementById('tc-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
+/* 그리기 영역의 실제 크기를 재서 viewBox 좌표계로 삼는다.
+   예전엔 viewBox가 340×300 고정이라 영역 비율과 어긋나 letterbox가 생겼고,
+   tcPoint()의 환산이 그만큼 밀려 길 가장자리 판정이 그림과 달랐다. */
+function tcFitArea(){
+  const area=document.getElementById('tc-area'); if(!area) return;
+  const w=Math.max(240, Math.round(area.clientWidth||328));
+  const h=Math.max(260, Math.min(Math.round(w*0.92), (window.innerHeight||760)-420));
+  TC.W=w; TC.H=h; area.style.height=h+'px';
+}
+function tcBBox(pts){ let minr=pts[0][0],maxr=pts[0][0],minc=pts[0][1],maxc=pts[0][1];
+  pts.forEach(p=>{ if(p[0]<minr)minr=p[0]; if(p[0]>maxr)maxr=p[0];
+                   if(p[1]<minc)minc=p[1]; if(p[1]>maxc)maxc=p[1]; });
+  return {minr,minc,rows:maxr-minr,cols:maxc-minc}; }
 function tcWalk(steps){ const pts=[[0,0]], seen=new Set(['0,0']); let cur=[0,0], last=null; const dirs=[[0,1],[0,-1],[1,0],[-1,0]];
   for(let i=0;i<steps;i++){ const opts=dirs.filter(d=>{ if(last&&d[0]===-last[0]&&d[1]===-last[1])return false; const nx=cur[0]+d[0],ny=cur[1]+d[1]; return !seen.has(nx+','+ny); }); if(!opts.length)break;
     const d=opts[Math.floor(Math.random()*opts.length)]; cur=[cur[0]+d[0],cur[1]+d[1]]; seen.add(cur[0]+','+cur[1]); pts.push(cur); last=d; } return pts; }
-function tcGenPath(steps){ let pts,tr=0; do{ pts=tcWalk(steps); tr++; }while(pts.length-1<Math.max(4,Math.floor(steps*0.65))&&tr<25);
-  let minr=0,maxr=0,minc=0,maxc=0; pts.forEach(p=>{minr=Math.min(minr,p[0]);maxr=Math.max(maxr,p[0]);minc=Math.min(minc,p[1]);maxc=Math.max(maxc,p[1]);});
-  const rows=maxr-minr, cols=maxc-minc, m=32, W=TC.W, H=TC.H; const sx=cols>0?(W-2*m)/cols:1e9, sy=rows>0?(H-2*m)/rows:1e9; let s=Math.min(sx,sy); if(!isFinite(s)||s<=0) s=40;
-  const offx=(W-2*m-cols*s)/2, offy=(H-2*m-rows*s)/2;
-  return pts.map(p=>({ x:m+offx+(p[1]-minc)*s, y:m+offy+(p[0]-minr)*s })); }
+/* 후보를 여러 개 만들어 '그리기 영역의 가로세로 비'에 가장 가까운 워크를 고른다.
+   예전엔 첫 워크를 그대로 써서, 워크가 세로로 길면 가로가 통째로 비었다. */
+function tcGenPath(steps){
+  const m=TC.MARGIN, availW=Math.max(40,TC.W-2*m), availH=Math.max(40,TC.H-2*m);
+  const minLen=Math.max(4,Math.floor(steps*0.6));
+  let best=null, any=null;
+  for(let k=0;k<24;k++){
+    const pts=tcWalk(steps); const b=tcBBox(pts);
+    if(!any) any={pts,b};
+    if(pts.length-1<minLen || b.rows<1 || b.cols<1) continue;
+    const a=(b.cols/availW)/(b.rows/availH);       // 1이면 영역 비율과 정확히 일치
+    const sc=Math.min(a,1/a)*1000 + (pts.length-1);  // 비율 우선, 같으면 더 긴 경로
+    if(!best||sc>best.sc) best={sc,pts,b};
+  }
+  if(!best) best=any;
+  const b=best.b;
+  const cell=Math.min(availW/Math.max(1,b.cols), availH/Math.max(1,b.rows));
+  TC.cell=cell;
+  const offx=(availW-b.cols*cell)/2, offy=(availH-b.rows*cell)/2;
+  return best.pts.map(p=>({ x:m+offx+(p[1]-b.minc)*cell, y:m+offy+(p[0]-b.minr)*cell }));
+}
 function segDist(p,a,b){ const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy; let tt=l2?((p.x-a.x)*dx+(p.y-a.y)*dy)/l2:0; tt=Math.max(0,Math.min(1,tt)); return Math.hypot(p.x-(a.x+tt*dx),p.y-(a.y+tt*dy)); }
 function tcDist(p){ let md=1e9; for(let i=0;i<TC.path.length-1;i++) md=Math.min(md,segDist(p,TC.path[i],TC.path[i+1])); return md; }
 function tcPoint(e){ const r=document.getElementById('tc-area').getBoundingClientRect(); return { x:(e.clientX-r.left)/r.width*TC.W, y:(e.clientY-r.top)/r.height*TC.H }; }
-function tcRender(){ const cfg=TC_CFG[TC.diff]; const steps=cfg.steps+(TC.level-1)*2; const w=Math.max(12, cfg.w-(TC.level-1)*1.2);
-  /* 길 폭은 12px에서 멈춘다(더 좁으면 손가락에 가려 보이지 않는다). 대신 판정 여유를     계속 좁혀 난이도가 이어지게 한다 — 예전엔 레벨 11 이후 난이도가 그대로여서     손이 안정된 사람에게는 길이만 길어지는 인내 게임이었다. */
-  TC.tol=w/2+Math.max(3, 11-(TC.level-1)*0.4); TC.path=tcGenPath(steps); TC.trail=[];
-  const d='M'+TC.path.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' L'); const s=TC.path[0], e=TC.path[TC.path.length-1];
-  const tw=Math.max(5,Math.min(9,w*0.5)), cr=Math.max(7,Math.min(11,w*0.55));
-  const area=document.getElementById('tc-area'); area.style.height=TC.H+'px';
-  area.innerHTML='<svg viewBox="0 0 '+TC.W+' '+TC.H+'" preserveAspectRatio="xMidYMid meet">'
+function tcRender(){
+  const cfg=TC_CFG[TC.diff];
+  /* 길이는 계속 늘되 상한을 둔다 — 무한히 늘리면 칸이 점점 작아져 굽이가 서로 뭉개진다.
+     그 뒤의 난이도는 아래 '판정 여유'가 계속 좁아지는 것으로 이어진다. */
+  const steps=Math.min(cfg.steps+(TC.level-1)*2, 44);
+  TC.MARGIN=Math.round(cfg.w*0.5+10);
+  tcFitArea();
+  TC.path=tcGenPath(steps); TC.trail=[];
+  /* 길 폭은 칸 크기에서 나온다 — 초반엔 칸이 커서 넓고, 레벨이 오르면 촘촘해져 좁아진다.
+     폭이 칸보다 커질 수 없으므로 굽이가 서로 뭉개지지도 않는다. */
+  /* 폭은 '레벨'이 정한다(단조 감소). 칸 크기는 상한으로만 써서 굽이가 뭉개지는 것만 막는다.
+     칸 크기로만 정하면 랜덤 워크의 판 크기가 들쭉날쭉해 폭이 레벨과 무관하게 튄다. */
+  const w=Math.max(11, Math.min(cfg.w-(TC.level-1)*1.6, Math.round(TC.cell*0.68)));
+  TC.tol=w/2+Math.max(4, 12-(TC.level-1)*0.5);
+  const d='M'+TC.path.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' L');
+  const st=TC.path[0], en=TC.path[TC.path.length-1];
+  const tw=Math.max(5,Math.min(16,w*0.45)), cr=Math.max(7,Math.min(18,w*0.42));
+  const dot=Math.max(9,Math.min(20,w*0.42));
+  TC.startR=Math.max(24,dot*1.9); TC.endR=Math.max(20,dot*1.6);
+  const area=document.getElementById('tc-area');
+  area.innerHTML='<svg viewBox="0 0 '+TC.W+' '+TC.H+'" preserveAspectRatio="none">'
     +'<path d="'+d+'" fill="none" stroke="#7680a7" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"/>'
     +'<path d="'+d+'" fill="none" stroke="#ffffff" stroke-width="'+Math.max(2,w-7)+'" stroke-linecap="round" stroke-linejoin="round"/>'
     +'<polyline id="tc-trail" fill="none" stroke="#4f7cff" stroke-width="'+tw+'" stroke-linecap="round" stroke-linejoin="round" points=""/>'
-    +'<circle cx="'+s.x.toFixed(1)+'" cy="'+s.y.toFixed(1)+'" r="13" fill="#21a67a"/>'
-    +'<circle cx="'+e.x.toFixed(1)+'" cy="'+e.y.toFixed(1)+'" r="13" fill="#e0475a"/>'
+    +'<circle cx="'+st.x.toFixed(1)+'" cy="'+st.y.toFixed(1)+'" r="'+dot+'" fill="#21a67a"/>'
+    +'<circle cx="'+en.x.toFixed(1)+'" cy="'+en.y.toFixed(1)+'" r="'+dot+'" fill="#e0475a"/>'
     +'<circle id="tc-cursor" r="'+cr+'" fill="#4f7cff" opacity="0"/></svg>';
   TC.active=false; tcStatus('trace.guide'); }
 function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points',''); const cur=document.getElementById('tc-cursor'); if(cur) cur.setAttribute('opacity','0'); }
@@ -9861,12 +9923,16 @@ function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.h
   const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
 function tcStray(){ if(!TC.active) return; TC.active=false; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
 function tcClearLevel(){ TC.active=false; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
+/* 화면 크기가 바뀌면(회전 등) 좌표계도 바뀌어야 한다. 그리는 중에는 건드리지 않는다. */
+let _tcResizeT=null;
+window.addEventListener('resize',()=>{ if(!TC.running||TC.active) return;
+  clearTimeout(_tcResizeT); _tcResizeT=setTimeout(()=>{ if(TC.running&&!TC.active) tcRender(); },160); });
 function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.active=false;
   document.getElementById('trace-intro-card').style.display='none'; document.getElementById('trace-result-card').style.display='none'; document.getElementById('trace-game-card').style.display='block';
   tcStats(); tcRender();
   const area=document.getElementById('tc-area');
-  area.onpointerdown=e=>{ if(!TC.running)return; const p=tcPoint(e); const s=TC.path[0]; if(Math.hypot(p.x-s.x,p.y-s.y)<=28){ TC.active=true; try{area.setPointerCapture(e.pointerId);}catch(_){} TC.trail=[{x:s.x,y:s.y}]; tcAddTrail(p); tcStatus('trace.guide'); e.preventDefault(); } };
-  area.onpointermove=e=>{ if(!TC.running||!TC.active)return; const p=tcPoint(e); if(tcDist(p)>TC.tol){ tcStray(); return; } tcAddTrail(p); const en=TC.path[TC.path.length-1]; if(Math.hypot(p.x-en.x,p.y-en.y)<=22){ tcClearLevel(); } };
+  area.onpointerdown=e=>{ if(!TC.running)return; const p=tcPoint(e); const s=TC.path[0]; if(Math.hypot(p.x-s.x,p.y-s.y)<=(TC.startR||28)){ TC.active=true; try{area.setPointerCapture(e.pointerId);}catch(_){} TC.trail=[{x:s.x,y:s.y}]; tcAddTrail(p); tcStatus('trace.guide'); e.preventDefault(); } };
+  area.onpointermove=e=>{ if(!TC.running||!TC.active)return; const p=tcPoint(e); if(tcDist(p)>TC.tol){ tcStray(); return; } tcAddTrail(p); const en=TC.path[TC.path.length-1]; if(Math.hypot(p.x-en.x,p.y-en.y)<=(TC.endR||22)){ tcClearLevel(); } };
   area.onpointerup=()=>{ if(TC.active){ TC.active=false; tcResetTrail(); } };
 }
 function finishTrace(){ if(!TC.running) return; TC.running=false; TC.active=false;
