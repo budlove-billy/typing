@@ -9844,7 +9844,7 @@ function resetPitch(){ clearInterval(PT.timer); ptClear(); PT.running=false; con
 /* w = 길 폭의 '상한'. 실제 폭은 칸 크기의 62%로 잡되 이 값을 넘지 않는다.
    → 초반엔 칸이 커서 길이 넓고, 레벨이 오르면 칸이 촘촘해져 저절로 좁아진다. */
 const TC_CFG={ easy:{steps:5,w:54}, normal:{steps:9,w:46}, hard:{steps:13,w:38} };
-const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, MARGIN:33, cell:40, endR:22, cur:null, grip:null, best:bt_loadBest('brain.trace.best') };
+const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, MARGIN:33, cell:40, endR:22, cur:null, grip:null, prog:null, arc:[], best:bt_loadBest('brain.trace.best') };
 function TC_DIFF_LABEL(d){ return d==='easy'?t('trace.easy'):d==='hard'?t('trace.hard'):t('trace.normal'); }
 function tcUpdateBestLine(){ const el=document.getElementById('tc-intro-best'); if(el) el.textContent=bt_bestLineText(TC.best,TC.diff); }
 function setTraceDiff(d){ TC.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('tc-diff-'+k).classList.toggle('active',k===d)); tcUpdateBestLine(); }
@@ -9888,6 +9888,25 @@ function tcGenPath(steps){
   return best.pts.map(p=>({ x:m+offx+(p[1]-b.minc)*cell, y:m+offy+(p[0]-b.minr)*cell }));
 }
 function segDist(p,a,b){ const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy; let tt=l2?((p.x-a.x)*dx+(p.y-a.y)*dy)/l2:0; tt=Math.max(0,Math.min(1,tt)); return Math.hypot(p.x-(a.x+tt*dx),p.y-(a.y+tt*dy)); }
+/* 경로의 누적 길이 — '얼마나 왔는지(진행도)'를 재기 위해 미리 계산해 둔다. */
+function tcArcInit(){
+  TC.arc=[0];
+  for(let i=1;i<TC.path.length;i++)
+    TC.arc.push(TC.arc[i-1]+Math.hypot(TC.path[i].x-TC.path[i-1].x, TC.path[i].y-TC.path[i-1].y));
+}
+/* 점 p에서 가장 가까운 경로 지점을 '거리'와 '진행도'로 함께 돌려준다.
+   거리만 보면 나란한 다른 갈래로 건너뛴 것을 구별할 수 없어서 진행도가 필요하다. */
+function tcNearest(p){
+  let md=1e9, mt=0;
+  for(let i=0;i<TC.path.length-1;i++){
+    const a=TC.path[i], b=TC.path[i+1];
+    const dx=b.x-a.x, dy=b.y-a.y, l2=dx*dx+dy*dy;
+    let u=l2?((p.x-a.x)*dx+(p.y-a.y)*dy)/l2:0; u=Math.max(0,Math.min(1,u));
+    const d=Math.hypot(p.x-(a.x+u*dx), p.y-(a.y+u*dy));
+    if(d<md){ md=d; mt=(TC.arc[i]||0)+u*Math.sqrt(l2); }
+  }
+  return {d:md, t:mt};
+}
 function tcDist(p){ let md=1e9; for(let i=0;i<TC.path.length-1;i++) md=Math.min(md,segDist(p,TC.path[i],TC.path[i+1])); return md; }
 function tcPoint(e){ const r=document.getElementById('tc-area').getBoundingClientRect(); return { x:(e.clientX-r.left)/r.width*TC.W, y:(e.clientY-r.top)/r.height*TC.H }; }
 function tcRender(){
@@ -9897,13 +9916,15 @@ function tcRender(){
   const steps=Math.min(cfg.steps+(TC.level-1)*2, 44);
   TC.MARGIN=Math.round(cfg.w*0.5+10);
   tcFitArea();
-  TC.path=tcGenPath(steps); TC.trail=[];
+  TC.path=tcGenPath(steps); TC.trail=[]; tcArcInit();
   /* 길 폭은 칸 크기에서 나온다 — 초반엔 칸이 커서 넓고, 레벨이 오르면 촘촘해져 좁아진다.
      폭이 칸보다 커질 수 없으므로 굽이가 서로 뭉개지지도 않는다. */
   /* 폭은 '레벨'이 정한다(단조 감소). 칸 크기는 상한으로만 써서 굽이가 뭉개지는 것만 막는다.
      칸 크기로만 정하면 랜덤 워크의 판 크기가 들쭉날쭉해 폭이 레벨과 무관하게 튄다. */
   const w=Math.max(11, Math.min(cfg.w-(TC.level-1)*1.6, Math.round(TC.cell*0.68)));
-  TC.tol=w/2+Math.max(4, 12-(TC.level-1)*0.5);
+  /* 허용 오차가 갈래 간격(=칸 크기)의 절반을 넘으면, 나란한 두 갈래의 중간에서도
+     양쪽 다 '길 위'로 인정돼 지그재그를 가로질러 질러갈 수 있다. 45%로 막는다. */
+  TC.tol=Math.min(w/2+Math.max(4, 12-(TC.level-1)*0.5), TC.cell*0.45);
   const d='M'+TC.path.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' L');
   const st=TC.path[0], en=TC.path[TC.path.length-1];
   const tw=Math.max(5,Math.min(16,w*0.45)), cr=Math.max(7,Math.min(18,w*0.42));
@@ -9917,12 +9938,12 @@ function tcRender(){
     +'<circle cx="'+st.x.toFixed(1)+'" cy="'+st.y.toFixed(1)+'" r="'+dot+'" fill="#21a67a"/>'
     +'<circle cx="'+en.x.toFixed(1)+'" cy="'+en.y.toFixed(1)+'" r="'+dot+'" fill="#e0475a"/>'
     +'<circle id="tc-cursor" r="'+cr+'" fill="#4f7cff" stroke="#fff" stroke-width="3" opacity="0"/></svg>';
-  TC.active=false; TC.cur=null; TC.grip=null; tcStatus('trace.guide'); }
+  TC.active=false; TC.cur=null; TC.grip=null; TC.prog=null; tcStatus('trace.guide'); }
 function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points',''); const cur=document.getElementById('tc-cursor'); if(cur) cur.setAttribute('opacity','0'); }
 function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>=3){ TC.trail.push({x:p.x,y:p.y}); const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points', TC.trail.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ')); }
   const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
-function tcStray(){ if(!TC.active) return; TC.active=false; TC.cur=null; TC.grip=null; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
-function tcClearLevel(){ TC.active=false; TC.cur=null; TC.grip=null; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
+function tcStray(){ if(!TC.active) return; TC.active=false; TC.cur=null; TC.grip=null; TC.prog=null; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
+function tcClearLevel(){ TC.active=false; TC.cur=null; TC.grip=null; TC.prog=null; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
 /* 화면 크기가 바뀌면(회전 등) 좌표계도 바뀌어야 한다. 그리는 중에는 건드리지 않는다. */
 let _tcResizeT=null;
 window.addEventListener('resize',()=>{ if(!TC.running||TC.active) return;
@@ -9937,7 +9958,7 @@ function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.activ
     TC.grip=tcPoint(e);
     if(!TC.active){                                   // 새로 시작 — 표식은 초록 점에서
       TC.active=true; const st=TC.path[0];
-      TC.cur={x:st.x,y:st.y}; TC.trail=[{x:st.x,y:st.y}];
+      TC.cur={x:st.x,y:st.y}; TC.trail=[{x:st.x,y:st.y}]; TC.prog=0;
       tcAddTrail(TC.cur); tcStatus('trace.guide');
     }
     try{area.setPointerCapture(e.pointerId);}catch(_){}
@@ -9946,9 +9967,22 @@ function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.activ
     const p=tcPoint(e);
     const nx=Math.max(0,Math.min(TC.W, TC.cur.x+(p.x-TC.grip.x)));
     const ny=Math.max(0,Math.min(TC.H, TC.cur.y+(p.y-TC.grip.y)));
-    TC.grip=p; TC.cur={x:nx,y:ny};
-    if(tcDist(TC.cur)>TC.tol){ tcStray(); return; }
-    tcAddTrail(TC.cur);
+    TC.grip=p;
+    const from=TC.cur, step=Math.hypot(nx-from.x, ny-from.y);
+    /* 이벤트가 오는 지점만 검사하면, 손가락이 빠를 때 그 사이 구간이 통째로
+       검사되지 않아 길 밖을 가로질러도 통과한다. 6px 간격으로 잘라 전부 본다. */
+    const n=Math.max(1, Math.ceil(step/6)), per=step/n;
+    for(let k=1;k<=n;k++){
+      const q={ x:from.x+(nx-from.x)*k/n, y:from.y+(ny-from.y)*k/n };
+      const near=tcNearest(q);
+      if(near.d>TC.tol){ TC.cur=q; tcStray(); return; }
+      /* 움직인 거리에 비해 '경로상 진행도'가 훨씬 크게 튀면 = 길을 가로질러
+         다른 구간으로 건너뛴 것. 되짚어 오는 것(진행도 감소)은 정상이므로 절댓값으로 본다. */
+      if(TC.prog!=null && Math.abs(near.t-TC.prog) > per*1.6+20){ TC.cur=q; tcStray(); return; }
+      TC.prog=near.t;
+      TC.cur=q; tcAddTrail(q);
+    }
+    TC.cur={x:nx,y:ny};
     const en=TC.path[TC.path.length-1];
     if(Math.hypot(nx-en.x,ny-en.y)<=(TC.endR||22)) tcClearLevel(); };
   /* 손을 떼도 표식은 그대로 둔다 — 화면 끝에 닿으면 떼고 다시 잡아 이어갈 수 있어야 한다
