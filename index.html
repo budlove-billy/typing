@@ -49,8 +49,8 @@
   --wrap:860px; /* 콘텐츠(.screen) 중앙 컬럼 폭 — 상·하단 네비 정렬 기준 */
   --bg:#f5f7fb;--bg2:#ffffff;--bg3:#eef1f7;--bg4:#e2e7f0;
   --border:#e4e9f2;--border2:#cdd5e5;
-  --text:#182235;--text2:#5a6683;--text3:#6b7794;
-  --purple:#4f7cff;--purple2:#6e92ff;--purple3:#e9f0ff;
+  --text:#182235;--text2:#5a6683;--text3:#616c87;   /* 점수 라벨이 3.96:1이라 4.62:1로 */
+  --purple:#3367ff;--purple2:#6e92ff;--purple3:#e9f0ff;   /* 제목·안내문이 흰 배경에서 3.71:1이라 4.64:1로. 배경으로 쓰일 땐 흰 글자 대비가 더 좋아진다 */
   --teal:#21a67a;--teal2:#178a63;--teal3:#daf3ea;
   --amber:#c7891f;--amber2:#9c6912;--amber3:#fbf0d8;
   --red:#e0475a;--red2:#c0384a;--red3:#fce9ec;
@@ -140,7 +140,7 @@ nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-ite
 .nav-game{display:none;font-size:1.15rem;font-weight:800;color:var(--purple);margin-left:.4rem;letter-spacing:-.01em;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 body.ingame .nav-game{display:inline}
 /* 게임 중 좌측 상단 나가기 버튼 */
-.nav-exit{display:inline-flex;align-items:center;gap:.15rem;margin-left:.9rem;padding:.5rem .85rem;min-height:40px;font-family:inherit;font-size:.92rem;font-weight:800;color:#e0475a;background:#ffe9ee;border:1.5px solid #f4a9bb;border-radius:11px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(224,71,90,.18);transition:.12s}
+.nav-exit{display:inline-flex;align-items:center;gap:.15rem;margin-left:.9rem;padding:.5rem .85rem;min-height:40px;font-family:inherit;font-size:.92rem;font-weight:800;color:#cf2338;background:#ffe9ee;border:1.5px solid #f4a9bb;border-radius:11px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(224,71,90,.18);transition:.12s}
 .nav-exit:hover{background:#ffdbe3}
 .nav-exit:active{transform:translateY(1px)}
 .nav-exit-x{font-size:1.05rem;font-weight:900;line-height:1}
@@ -242,7 +242,7 @@ body.ingame .nav-logo{flex-shrink:1;min-width:0;overflow:hidden}
 .btn-outline{background:#fff;border:1px solid var(--border2);color:var(--text2);box-shadow:0 2px 6px rgba(24,34,53,.06)}
 .btn-outline:hover{border-color:var(--purple);color:var(--purple);background:var(--purple3)}
 /* 게임 하단 '나가기' 버튼 — 크게·고대비 (모든 게임 공통) */
-button[onclick^="leave"]{min-height:44px;padding:.6rem 1.4rem;font-size:.92rem;font-weight:700;color:#e0475a;background:#fff2f5;border:1.5px solid #f4a9bb;box-shadow:0 2px 6px rgba(224,71,90,.14)}
+button[onclick^="leave"]{min-height:44px;padding:.6rem 1.4rem;font-size:.92rem;font-weight:700;color:#c62035;background:#fff2f5;border:1.5px solid #f4a9bb;box-shadow:0 2px 6px rgba(224,71,90,.14)}
 button[onclick^="leave"]:hover{background:#ffe4ea;border-color:#e0475a;color:#c0384a}
 button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35rem}
 .btn.teal{background:var(--teal2)}
@@ -672,12 +672,12 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .df-board.b1{border-color:#a9c6f5;background:#f4f8ff}
 .df-board.b2{border-color:#f2c98f;background:#fff9ef}
 .df-tag{position:absolute;top:-11px;left:14px;font-size:.72rem;font-weight:700;padding:.16rem .62rem;border-radius:999px;color:#fff;box-shadow:0 2px 5px rgba(24,34,53,.18)}
-.df-tag.t1{background:#4f7cff}
-.df-tag.t2{background:#e08a3c}
+.df-tag.t1{background:#3367ff}   /* 흰 글자 3.71:1 → 4.64:1 */
+.df-tag.t2{background:#a85d15}   /* 흰 글자 2.67:1 → 4.7:1 */
 .df-vs{font-size:.78rem;color:var(--text3);font-weight:700;letter-spacing:.02em;display:flex;align-items:center;gap:.35rem}
 .df-vs-wrap{display:flex;flex-direction:column;align-items:center;gap:.25rem}
-.df-count{display:inline-flex;align-items:center;gap:.45rem;font-size:.92rem;font-weight:800;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:.32rem .85rem;box-shadow:var(--shadow-sm)}
-.df-count b{color:var(--purple);font-size:1.12rem;font-variant-numeric:tabular-nums}
+.df-count{display:inline-flex;align-items:center;gap:.45rem;font-size:.92rem;font-weight:800;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:.32rem .85rem;box-shadow:var(--shadow-sm)}
+.df-count b{color:#245cff;font-size:1.12rem;font-variant-numeric:tabular-nums}   /* 연회색 알약 위라 강조색 그대로면 4.10:1 */
 .df-pips{letter-spacing:2.5px;font-size:.82rem;line-height:1}
 .df-grid{display:inline-grid;gap:4px}
 .df-cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#eef1f7);border-radius:10px;font-size:1.4rem;cursor:pointer;box-shadow:0 2px 4px rgba(24,34,53,.07);transition:transform .1s}
@@ -780,8 +780,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .home-grp:first-child{margin-top:.25rem}
 /* ===== Rule switch (규칙 바꾸기) ===== */
 .sw-rule{display:inline-block;font-size:1.05rem;font-weight:700;padding:.45rem 1.2rem;border-radius:999px;margin-bottom:1rem;transition:.18s}
-.sw-rule.parity{background:var(--purple3);color:var(--purple)}
-.sw-rule.mag{background:var(--teal3);color:var(--teal2)}
+.sw-rule.parity{background:var(--purple3);color:#245cff}   /* 연파랑 배경 위라 강조색 그대로면 4.06:1 */
+.sw-rule.mag{background:var(--teal3);color:#0f6e4e}   /* #178a63 on #daf3ea 는 3.71:1 */
 .sw-num{font-size:clamp(3.5rem,18vw,6rem);font-weight:800;color:var(--text);line-height:1;margin-bottom:1.5rem;font-variant-numeric:tabular-nums}
 .sw-options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;max-width:420px;margin:0 auto}
 .sw-opt{padding:1.3rem .5rem;border:1.5px solid var(--border2);border-radius:var(--radius2);background:#fff;font-size:1.1rem;font-weight:700;color:var(--purple);cursor:pointer;transition:transform .08s,border-color .12s,background .12s;font-family:inherit}
@@ -865,7 +865,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .tabbar{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -1px 6px rgba(24,34,53,.05);padding:0 max(0px,calc((100% - var(--wrap))/2))}
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text3);transition:.12s;padding:0}
 .tab-btn.active{color:var(--purple)}
-.tab-ico{font-size:1.4rem;line-height:1;filter:grayscale(.4);opacity:.75}
+.tab-ico{font-size:1.4rem;line-height:1;filter:grayscale(.4);opacity:.88}
 .tab-btn.active .tab-ico{filter:none;opacity:1}
 .tab-label{font-size:.7rem;font-weight:700}
 /* 홈 */
@@ -6418,8 +6418,11 @@ function resetCount(){
 
 // ========== 색깔 맞추기 (Stroop) ==========
 const ST_COLORS=[
-  {key:'red',hex:'#e0344b'},{key:'blue',hex:'#2f6bff'},{key:'green',hex:'#17a34a'},
-  {key:'yellow',hex:'#e0a500'},{key:'purple',hex:'#7b4ff0'},{key:'orange',hex:'#f07a1f'}
+  /* 두 조건을 모두 만족하도록 고른 색 — ① 카드 배경(#eef1f7) 위의 큰 글자 3:1
+     ② 같은 색을 버튼 배경으로 쓸 때 글자와 4.5:1. 원래 값은 노랑·주황이 2.7:1이라
+     정답 단서인 글자가 흐릿했다. */
+  {key:'red',hex:'#df2d45'},{key:'blue',hex:'#2d6aff'},{key:'green',hex:'#169e48'},
+  {key:'yellow',hex:'#b08200'},{key:'purple',hex:'#7b4ff0'},{key:'orange',hex:'#dc680f'}
 ];
 const ST_CFG={ easy:{colors:4,incong:0.5}, normal:{colors:5,incong:0.7}, hard:{colors:6,incong:0.85} };
 const ST_TIME=60;
@@ -6429,6 +6432,20 @@ const ST = {
   best:bt_loadBest('brain.stroop.best')
 };
 function ST_DIFF_LABEL(d){ return d==='easy'?t('stroop.easy'):d==='normal'?t('stroop.normal'):t('stroop.hard'); }
+/* 배경색 위에 올릴 글자색을 고른다 — 흰 글자와 진한 글자 중 **대비가 실제로 큰 쪽**.
+   밝기 임계값으로 가르면 경계에 걸친 색(초록 0.269 · 노랑 0.292)에서 잘못 고른다. */
+function _relLum(hex){ const v=i=>{ let c=parseInt(hex.slice(i,i+2),16)/255;
+    return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); };
+  return 0.2126*v(1)+0.7152*v(3)+0.0722*v(5); }
+function pickInk(hex){
+  const L=_relLum(hex);
+  const onWhite=(1.05)/(L+0.05), onDark=(L+0.05)/(_relLum('#14102d')+0.05);
+  return onWhite>=onDark ? '#ffffff' : '#14102d';
+}
+/* 선택 버튼의 글자색 — 배경이 색이라 흰 글자로 고정하면 노랑·주황에서 안 읽힌다.
+   배경의 밝기를 재서 밝으면 진한 글자, 어두우면 흰 글자를 쓴다. */
+function stOptInk(hex){ const c=pickInk(hex);
+  return {c:c, sh:(c==='#ffffff')?'0 1px 2px rgba(0,0,0,.28)':'none'}; }
 function stUpdateBestLine(){ const el=document.getElementById('st-intro-best'); if(el) el.textContent=bt_bestLineText(ST.best, ST.diff); }
 function setStroopDiff(d){
   ST.diff=d;
@@ -6446,6 +6463,7 @@ function startStroop(){
   ST.palette.forEach(c=>{
     const b=document.createElement('button');
     b.className='st-opt'; b.style.background=c.hex; b.textContent=t('color.'+c.key);
+    const ink=stOptInk(c.hex); b.style.color=ink.c; b.style.textShadow=ink.sh;
     b.onclick=()=>stAnswer(c.key,b);
     opts.appendChild(b);
   });
@@ -6895,9 +6913,7 @@ const SO_COLORS=['#4d4ad5','#d6f0bc','#98bfe7','#db5861','#ddc743','#d5589a','#b
 /* 팔레트의 명도 폭이 넓어서 기호 색을 하나로 두면 진한 블록에서 묻힌다.
    블록의 상대휘도를 재서 밝으면 어두운 기호, 어두우면 흰 기호를 쓴다. */
 function soGlyphInk(hex){
-  const v=i=>{ let c=parseInt(hex.slice(i,i+2),16)/255; return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); };
-  const L=0.2126*v(1)+0.7152*v(3)+0.0722*v(5);
-  return L>0.42 ? 'rgba(20,16,45,.5)' : 'rgba(255,255,255,.82)';
+  return pickInk(hex);   /* 반투명이면 배경과 섞여 실제 대비가 달라진다 — 불투명으로 */
 }
 const SO_GLYPH=['\u25cf','\u25b2','\u25a0','\u25c6','\u2605','\u271a','\u25bc','\u2715'];
 const SO={ diff:'normal', tubes:[], sel:-1, moves:0, sec:0, score:0,
@@ -9754,7 +9770,7 @@ function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   DF.g1=base; DF.g2=g2; if(typeof dfTimer==='function') dfTimer(); dfRender(); dfCount();
 }
 function dfCount(){ const el=document.getElementById('df-count'); if(!el) return; const total=DF.diffs.length, found=DF.found, rem=Math.max(0,total-found);
-  let pips=''; for(let i=0;i<total;i++){ pips += i<found ? '<span style="color:#f0b429">●</span>' : '<span style="color:#c9d0e8">○</span>'; }
+  let pips=''; for(let i=0;i<total;i++){ pips += i<found ? '<span style="color:#b07d05">●</span>' : '<span style="color:#5f6c91">○</span>'; }   /* 아직 못 찾은 표시가 1.36:1이라 안 보였다 */
   el.innerHTML='🔍 '+t('diff.toFind')+' <b>'+rem+'</b> <span class="df-pips">'+pips+'</span>'; }
 let _dfResizeT=null; window.addEventListener('resize',()=>{ if(!DF.running) return; clearTimeout(_dfResizeT); _dfResizeT=setTimeout(()=>{ if(DF.running) dfRender(); },150); });
 function dfRender(){
