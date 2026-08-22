@@ -119,7 +119,7 @@ new_render = NL.join([
     "  const st=TC.path[0], en=TC.path[TC.path.length-1];",
     "  const tw=Math.max(5,Math.min(16,w*0.45)), cr=Math.max(7,Math.min(18,w*0.42));",
     "  const dot=Math.max(9,Math.min(20,w*0.42));",
-    "  TC.startR=Math.max(24,dot*1.9); TC.endR=Math.max(20,dot*1.6);",
+    "  TC.endR=Math.max(20,dot*1.6);   /* 시작 판정 반경은 필요 없어졌다 — 아무 곳이나 눌러 시작한다 */",
     "  const area=document.getElementById('tc-area');",
     "  area.innerHTML='<svg viewBox=\"0 0 '+TC.W+' '+TC.H+'\" preserveAspectRatio=\"none\">'",
     "    +'<path d=\"'+d+'\" fill=\"none\" stroke=\"#7680a7\" stroke-width=\"'+w+'\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>'",
@@ -133,16 +133,15 @@ new_render = NL.join([
 s = s[:i] + new_render + s[j:]
 
 # ── 6) 시작/끝 판정 반경도 칸 크기를 따라간다 ───────────────────────────────
-one("if(Math.hypot(p.x-s.x,p.y-s.y)<=28){",
-    "if(Math.hypot(p.x-s.x,p.y-s.y)<=(TC.startR||28)){",
-    '시작점 판정 반경')
+# 시작점 판정 반경 — 뒤이어 조작을 트랙패드 방식으로 바꾸면서(fix-trace-control.py)
+# '아무 곳이나 눌러 시작'이 되어 이 판정 자체가 사라졌다. 여기서는 건드리지 않는다.
 one("if(Math.hypot(p.x-en.x,p.y-en.y)<=22){",
     "if(Math.hypot(p.x-en.x,p.y-en.y)<=(TC.endR||22)){",
     '끝점 판정 반경')
 
 # ── 7) 상태에 새 필드 + 화면 회전/크기 변경 대응 ────────────────────────────
 one("const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300,",
-    "const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, MARGIN:33, cell:40, startR:28, endR:22,",
+    "const TC={ diff:'normal', score:0, lives:3, level:1, running:false, active:false, path:[], tol:20, W:340, H:300, MARGIN:33, cell:40, endR:22,",
     'TC 상태 필드')
 
 one("function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.active=false;",
