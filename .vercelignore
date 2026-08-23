@@ -1,0 +1,19 @@
+# 내부 문서·작업 스크립트·세션 기록은 배포하지 않는다.
+#
+# 2026-08-23에 확인: 이것들이 전부 공개로 서빙되고 있었다(200 응답).
+#   /USER.md · /MEMORY.md · /CLAUDE.md · /SOUL.md · /ROLE.md · /TODO.md
+#   /.claudecrab/session-log.md (세션 기록 전부)
+#   /docs/CHANGELOG.md · /tools/*.py
+# robots.txt가 Allow: / 이므로 크롤도 막혀 있지 않았다.
+#
+# 사이트 HTML이 이 경로들을 참조하지 않음을 확인하고 제외한다.
+# 되돌리려면 이 파일을 지우면 된다.
+
+*.md
+docs/
+tools/
+.claudecrab/
+.claude/
+.agents/
+.codex/
+mobile/
