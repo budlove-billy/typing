@@ -84,6 +84,23 @@ footer a{color:#4f7cff;text-decoration:none;margin:0 .4rem}
     <p>If a line of five cells is labelled "5", the whole line is filled — that is where to start. Work from the lines that are most constrained, cross out what is impossible, and let each certainty narrow its neighbours. Nothing here needs luck.</p>
     <p class="note">Nonograms also go by picross, griddlers, paint by numbers, or pixel puzzles. In the Mallow app this game is called <b>Pixel Logic</b>.</p>
   </section>
+  <section><h2>Overlap — the move that opens an empty row</h2>
+    <p>There is a way to produce certain cells in a row you know nothing about. It is called <b>overlap</b>, and it works whenever a clue is large relative to the row.</p>
+    <p>Take a row of 10 cells with a single clue of <b>8</b>. Push that block of eight as far left as it goes, then as far right as it goes. The <b>middle 6 cells are filled in both arrangements</b>, so they are certain right now. The arithmetic is simply <b>(clue × 2) − row length</b>; whenever that comes out above zero, the technique applies.</p>
+    <p class="note">Rows with several clues work the same way. Sketch the leftmost possible packing and the rightmost possible packing, then keep only the cells that are filled in both.</p>
+  </section>
+  <section><h2>Count the slack before you touch a row</h2>
+    <p>A row clued <b>3 2 4</b> needs 3+2+4 plus one gap between each block — <b>11 cells minimum</b>. If the row is 12 long, the slack is a single cell and almost everything is forced. If the slack is generous, that row has nothing to give you yet.</p>
+    <p>So work in order of slack: <b>tightest rows first</b>, which usually means the rows with the largest clue sum or the most clues. Each cell you settle there tightens the crossing columns, and the chain starts.</p>
+  </section>
+  <section><h2>X marks are the real tool</h2>
+    <ul>
+      <li><b>Cap a finished block immediately.</b> Once a block of 3 is complete, the cells on either side must be empty. Mark them, or you will re-derive the same thing next time you read the row.</li>
+      <li><b>Spent clue means the rest is empty.</b> If every filled cell a row calls for is placed, all remaining cells in it are blank — no reasoning needed.</li>
+      <li><b>An X splits a row.</b> One empty cell in the middle divides the row into two shorter segments. Re-measure each, and clues that no longer fit are eliminated — which often reveals an overlap that was invisible a moment ago.</li>
+    </ul>
+    <p class="note">Every board is verified to have exactly one solution, so being stuck never means it is time to guess. It means a row you have not re-read since your last mark still has something in it. Start with the rows crossing the cell you just filled.</p>
+  </section>
   <section><h2>Frequently asked questions</h2>
     <dl class="faq">
       <dt>Is it really free?</dt><dd>Yes. Every game is free and no account is needed.</dd>

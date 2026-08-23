@@ -84,6 +84,31 @@ footer a{color:#4f7cff;text-decoration:none;margin:0 .4rem}
     <p>2 becomes 4, 4 becomes 8, 8 becomes 16 — and the goal is to build a 2048 tile. The standard approach is to keep your largest tile pinned in a corner and never disturb the row it sits in; once the big number moves off the edge, the board tends to fall apart quickly.</p>
     <p class="note">Mallow's 2048 follows the rules of the original 2048 by Gabriele Cirulli (MIT open source).</p>
   </section>
+  <section><h2>Four habits that raise your score</h2>
+    <ol>
+      <li><b>Pin the largest tile to one corner.</b> Any corner will do, but once you choose it, never change your mind. The board collapses fast the moment your biggest tile leaves that corner.</li>
+      <li><b>Never swipe in the direction that lifts that row.</b> With the big numbers along the bottom-left, swiping up is what breaks them apart. Cycle through the other three and use the forbidden direction only when nothing else moves.</li>
+      <li><b>Keep the anchored row in descending order.</b> Lined up largest-to-smallest, one swipe merges neighbours all the way along it. The better sorted that row is, the more a single move pays.</li>
+      <li><b>Do not let small tiles settle in the middle.</b> A stray 2 or 4 wedged between big tiles keeps them from ever meeting. Clear the small numbers between merges rather than after.</li>
+    </ol>
+  </section>
+  <section><h2>What the board size changes</h2>
+    <p>Difficulty here is board size. The rules stay identical; the feel does not.</p>
+    <ul>
+      <li><b>Easy 5×5</b> — plenty of room to recover from a bad swipe. The right size for making the corner strategy a habit.</li>
+      <li><b>Normal 4×4</b> — the original 2048 board. You have to keep the row sorted while still clearing space.</li>
+      <li><b>Hard 3×3</b> — each new tile takes up a ninth of the board. One careless swipe breaks your order and there is nowhere to rebuild. Here, <b>keeping cells free</b> matters more than growing the big number.</li>
+    </ul>
+  </section>
+  <section><h2>Reading the collapse before it happens</h2>
+    <p>A game never ends suddenly — it was decided several moves earlier. When you see these, stop chasing points and repair the board.</p>
+    <ul>
+      <li>Your largest tile has slipped one cell off the corner. This is the urgent one; fix it before anything else.</li>
+      <li>No two equal numbers sit next to each other in your anchored row — nothing left to merge.</li>
+      <li>You are down to two free cells or fewer. One badly placed new tile now removes your options entirely.</li>
+    </ul>
+    <p class="note">Undo works better as a <b>one-move preview</b> than as an eraser: try the swipe you are unsure about, look at the result, and take it back if the board got worse.</p>
+  </section>
   <section><h2>Frequently asked questions</h2>
     <dl class="faq">
       <dt>Is it really free?</dt><dd>Yes. Every game is free and no account is needed.</dd>
