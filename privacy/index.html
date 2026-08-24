@@ -10,6 +10,9 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://playmallow.com/privacy/">
 <link rel="canonical" href="https://playmallow.com/privacy/">
+<link rel="alternate" hreflang="ko" href="https://playmallow.com/privacy/">
+<link rel="alternate" hreflang="en" href="https://playmallow.com/privacy/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://playmallow.com/privacy/">
 <link rel="icon" type="image/png" href="/favicon-32.png?v=2">
 <!-- Google AdSense -->
 <meta name="google-adsense-account" content="ca-pub-8615421634491307">
@@ -45,16 +48,16 @@ footer a{color:#4f7cff;text-decoration:none;margin:0 .4rem}
 .lang b{color:#182235}
 [data-lang]{display:none}
 [data-lang].on{display:block}
-h2 [data-lang]{display:none}h2 [data-lang].on{display:inline}</style>
+h1 [data-lang],h2 [data-lang],nav [data-lang],.lang [data-lang],footer [data-lang]{display:none}h1 [data-lang].on,h2 [data-lang].on,nav [data-lang].on,.lang [data-lang].on,footer [data-lang].on{display:inline}/* privacy-lang-fixed */</style>
 </head>
 <body>
-<nav><a href="/"><img src="/mallow-logo.svg" alt="Mallow">Mallow <small>가볍게 즐기는 두뇌게임</small></a></nav>
+<nav><a href="/"><img src="/mallow-logo.svg" alt="Mallow">Mallow <small><span data-lang="ko" class="on">가볍게 즐기는 두뇌게임</span><span data-lang="en">light brain games</span></small></a></nav>
 <main>
-  <div class="lang">언어: <a onclick="setL('ko')"><b id="l-ko">한국어</b></a> · <a onclick="setL('en')"><span id="l-en">English</span></a></div>
+  <div class="lang"><span data-lang="ko" class="on">언어</span><span data-lang="en">Language</span>: <a onclick="setL('ko')"><b id="l-ko">한국어</b></a> · <a onclick="setL('en')"><span id="l-en">English</span></a></div>
+  <h1><span data-lang="ko" class="on">개인정보처리방침</span><span data-lang="en">Privacy Policy</span></h1>
 
   <!-- ================= 한국어 ================= -->
   <div data-lang="ko" class="on">
-    <h1>개인정보처리방침</h1>
     <div class="updated">최종 업데이트: 2026년 7월 21일</div>
 
     <div class="lead">
@@ -120,7 +123,6 @@ h2 [data-lang]{display:none}h2 [data-lang].on{display:inline}</style>
 
   <!-- ================= English ================= -->
   <div data-lang="en">
-    <h1>Privacy Policy</h1>
     <div class="updated">Last updated: July 21, 2026</div>
 
     <div class="lead">
@@ -185,13 +187,29 @@ h2 [data-lang]{display:none}h2 [data-lang].on{display:inline}</style>
   </div>
 
   <footer>
-    <a href="/">홈</a> · <a href="/privacy/">개인정보처리방침</a><br>
+    <a href="/"><span data-lang="ko" class="on">홈</span><span data-lang="en">Home</span></a> · <a href="/privacy/"><span data-lang="ko" class="on">개인정보처리방침</span><span data-lang="en">Privacy Policy</span></a><br>
     © 2026 Mallow · playmallow.com
   </footer>
 </main>
 <script>
-function setL(l){document.querySelectorAll('[data-lang]').forEach(e=>e.classList.toggle('on',e.getAttribute('data-lang')===l));
-document.documentElement.lang=l;}
+/* 언어별 SEO 동기화 — canonical이 언어와 무관하게 ko 주소로 고정돼 있으면
+   검색엔진이 ?lang=en 주소를 ko로 통합해 영어 페이지가 색인에서 사라진다. */
+const SEO={
+ ko:{t:'개인정보처리방침 | Mallow(플레이말로우)',d:'플레이말로우(playmallow.com) 개인정보처리방침 — 쿠키, Google Analytics·AdSense, 브라우저 저장 안내.'},
+ en:{t:'Privacy Policy | Mallow',d:'Privacy policy for playmallow.com — cookies, Google Analytics, AdSense and browser storage.'}};
+function setL(l){
+  document.querySelectorAll('[data-lang]').forEach(e=>e.classList.toggle('on',e.getAttribute('data-lang')===l));
+  document.documentElement.lang=l;
+  const seo=SEO[l]||SEO.ko, url='https://playmallow.com/privacy/'+(l==='ko'?'':'?lang=en');
+  document.title=seo.t;
+  const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
+  set('link[rel="canonical"]','href',url);
+  set('meta[property="og:url"]','content',url);
+  set('meta[name="description"]','content',seo.d);
+  set('meta[property="og:title"]','content',seo.t);
+  set('meta[property="og:description"]','content',seo.d);
+  try{ if(history.replaceState) history.replaceState(null,'','/privacy/'+(l==='ko'?'':'?lang=en')); }catch(e){}
+}
 (function(){var p=new URLSearchParams(location.search).get('lang');if(p==='en')setL('en');})();
 </script>
 </body>
