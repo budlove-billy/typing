@@ -59,6 +59,8 @@ If the model is asking "where was I?" the answer is always: **read the active st
 
 ## Changelog
 
+- 2026-09-07 — **검색 유입 후 전환·재방문 개선**: 수능·신년 운세 랜딩이 `from` 맥락을 일반 운세 결과까지 전달하도록 맞춤 제목·안내·공유 문구를 추가. 태국 요일별 행운색은 입력 폼 위에 요일별 대표 색 요약표를 배치하고, 2048 공략은 첫 화면 즉시 플레이 CTA를 추가. 정적 SEO 페이지에 공통 `seo-events.js`를 연결해 랜딩·CTA·재방문·도구 완료·다음 게임 이벤트를 GA4로 측정. 로그인은 성장 후 재검토.
+
 - 2026-08-06 — **네이티브 게임 카테고리 허브 개편**: Android Games 화면을 긴 텍스트 목록에서 기억력·집중력·순발력·협응력 등 11개 인지 카테고리의 컬러 아이콘 헤더로 전환. 카테고리 1개를 펼치면 3열 게임 아이콘 카드(아이콘·이름·번호)가 노출되며, `GameCatalog` 그룹 메타데이터·다국어 라벨·재사용 `GameIcon` 컨트롤 추가. Android 에뮬레이터에서 카테고리 전환·그리드 정렬·스크롤 확인, 런타임 오류 0.
 
 - 2026-08-05 — **Godot vertical slice 구현**: `mobile/godot`에 390×844 세로형 앱 셸(Home/Games/Records/Settings/Result), 버전 저장(`user://`), ko/en 문자열, 프로시저럴 효과음·햅틱, `flash`·`bubble`·`trace` 게임을 추가. Godot 4.7.1 headless import/main run과 3개 게임 smoke test 통과. 웹 앱은 변경하지 않음.

@@ -8033,6 +8033,7 @@ function afterGame(id, r){
   // 기존 game_finish는 그대로 두고 새 이벤트를 따로 보낸다(예전 통계와의 연속성 유지).
   try{ track('game_result',{game:id, diff:(r&&r.diff)||'all', is_best:(r&&r.isNew)?1:0,
        ratio:(ratio==null?-1:Math.round(ratio*100)), bot:botRes, bot_lv:botLv, wk_pts:pts}); }catch(e){}
+  try{ track('seo_tool_complete',{game:id, diff:(r&&r.diff)||'all', is_best:(r&&r.isNew)?1:0}); }catch(e){}
   html+='<div class="pg-line pg-week">📅 '+t('wk.gain').replace('{n}',pts).replace('{total}',w.pts)+'</div>';
   let act='';
   if(PG_START[id]) act+='<button class="pg-btn pg-retry" onclick="pgRetry(\''+id+'\')">🔄 '+t('pg.retry')+'</button>';
@@ -8066,7 +8067,7 @@ function renderRecs(cur){
   const oldG = card.querySelector('.grade-line'); if(oldG) oldG.remove();
   const recs = recommendGames(cur, 3); if(!recs.length) return;
   let html = '<div class="rec-box"><div class="rec-title">'+t('rec.title')+'</div><div class="rec-grid">';
-  recs.forEach(g=>{ html += '<button class="rec-card" onclick="showScreen(\''+g.id+'\')"><span class="rec-emoji">'+g.emoji+'</span><span class="rec-name">'+t(g.key)+'</span></button>'; });
+  recs.forEach(g=>{ html += '<button class="rec-card" onclick="track(\'next_game_click\',{from:\''+cur+'\',to:\''+g.id+'\'});showScreen(\''+g.id+'\')"><span class="rec-emoji">'+g.emoji+'</span><span class="rec-name">'+t(g.key)+'</span></button>'; });
   html += '</div></div>';
   card.insertAdjacentHTML('beforeend', html);
 }
@@ -10030,12 +10031,25 @@ renderExamInfo();
 renderStoryList();
 loadNewStory();
 renderHome();
+// 검색·공유로 메인 앱에 직접 도착한 세션도 SEO 퍼널에 포함한다.
+(function(){
+  try{
+    const q=new URLSearchParams(location.search), lastKey='mallow.seo.lastSeen', prev=Number(localStorage.getItem(lastKey)||0);
+    const source=q.get('from')||'direct';
+    track('seo_landing_view',{entry_context:source,game:q.get('game')||'',lang:CURRENT_LANG||'ko'});
+    localStorage.setItem(lastKey,String(Date.now()));
+    if(prev && Date.now()-prev>86400000) track('seo_return_session',{days_since_last:Math.min(30,Math.floor((Date.now()-prev)/86400000))});
+  }catch(e){}
+})();
 // 랜딩 페이지 딥링크: ?game=<id> 로 진입 시 해당 게임 화면 직행 (도전장 ?c=가 우선)
 (function(){
   if(chReceive()) return;
   try{
     const g=new URLSearchParams(location.search).get('game');
-    if(g && /^[a-z]+$/.test(g) && document.getElementById('screen-'+g)) showScreen(g);
+    if(g && /^[a-z]+$/.test(g) && document.getElementById('screen-'+g)){
+      track('seo_tool_open',{game:g,entry_context:new URLSearchParams(location.search).get('from')||'direct'});
+      showScreen(g);
+    }
   }catch(e){}
 })();
 // PWA 서비스워커

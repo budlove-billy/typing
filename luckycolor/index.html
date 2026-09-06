@@ -69,6 +69,12 @@ input[type=date],select.fld{width:100%;padding:13px 12px;font-size:16px;border:1
 .today-card .tdot{width:44px;height:44px;border-radius:50%;flex:0 0 44px;border:2px solid rgba(0,0,0,.08);box-shadow:0 3px 9px rgba(0,0,0,.13);}
 .today-card .tk{font-size:11.5px;font-weight:800;color:var(--sub);}
 .today-card .tv{font-size:15.5px;font-weight:800;margin-top:2px;}
+/* 검색어가 요구한 답을 입력 폼보다 먼저 보여 주는 요약표 */
+.quick-answer{text-align:left;padding:14px 16px;}
+.quick-answer .sect-title{margin-top:0;color:var(--text);font-size:14px;}
+.quick-answer table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.quick-answer th,.quick-answer td{padding:6px 3px;border-bottom:1px solid var(--line);text-align:left;line-height:1.45;}
+.quick-answer th{color:var(--sub);font-size:11.5px;font-weight:800;}
 /* 결과 히어로 */
 .hero{text-align:center;padding:24px 18px 20px;}
 .hero .maindot{width:104px;height:104px;border-radius:50%;margin:0 auto;border:3px solid rgba(0,0,0,.07);box-shadow:0 10px 26px rgba(0,0,0,.17);}
@@ -133,6 +139,36 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
       <div class="tv" id="todayVal"></div>
     </div>
   </div>
+  <section class="card quick-answer" data-lang-only="ko">
+    <div class="sect-title">요일별 행운색을 먼저 확인하세요</div>
+    <table>
+      <tr><th>요일</th><th>대표 행운색</th><th>피할 색</th></tr>
+      <tr><td>일요일</td><td>선명한 빨강</td><td>하늘·남색</td></tr>
+      <tr><td>월요일</td><td>흰색·크림·노랑</td><td>선명한 빨강</td></tr>
+      <tr><td>화요일</td><td>분홍·진홍</td><td>흰색·크림·노랑</td></tr>
+      <tr><td>수요일 낮</td><td>초록</td><td>분홍·진홍</td></tr>
+      <tr><td>수요일 밤</td><td>보라·회색</td><td>황토·주황</td></tr>
+      <tr><td>목요일</td><td>황토·주황</td><td>검정</td></tr>
+      <tr><td>금요일</td><td>하늘·남색</td><td>보라·회색</td></tr>
+      <tr><td>토요일</td><td>검정</td><td>초록</td></tr>
+    </table>
+    <p class="sub" style="margin-top:8px">내 생일과 태어난 시간대를 입력하면 수요일 낮·밤 구분, 용도별 7가지 색, 피할 색까지 계산합니다.</p>
+  </section>
+  <section class="card quick-answer" data-lang-only="en" style="display:none">
+    <div class="sect-title">Thai lucky colours by weekday</div>
+    <table>
+      <tr><th>Born on</th><th>Main lucky colour</th><th>Avoid</th></tr>
+      <tr><td>Sunday</td><td>Bright red</td><td>Sky/navy</td></tr>
+      <tr><td>Monday</td><td>White, cream, yellow</td><td>Bright red</td></tr>
+      <tr><td>Tuesday</td><td>Pink, crimson</td><td>White, cream, yellow</td></tr>
+      <tr><td>Wednesday day</td><td>Green</td><td>Pink, crimson</td></tr>
+      <tr><td>Wednesday night</td><td>Purple, grey</td><td>Ochre, orange</td></tr>
+      <tr><td>Thursday</td><td>Ochre, orange</td><td>Black</td></tr>
+      <tr><td>Friday</td><td>Sky, navy</td><td>Purple, grey</td></tr>
+      <tr><td>Saturday</td><td>Black</td><td>Green</td></tr>
+    </table>
+    <p class="sub" style="margin-top:8px">Enter your birth date and time to calculate your exact weekday, seven purpose-based colours and the colour to avoid.</p>
+  </section>
   <div class="card" id="inputCard">
     <label id="t-birthLabel" for="birth">생년월일</label>
     <div class="dfield"><input type="date" id="birth" min="1900-01-01"><span class="dhint" aria-hidden="true"></span></div>
@@ -570,7 +606,7 @@ function compute(){
   const slot=document.getElementById('slot').value||'unknown';
   const [Y,M,D]=bv.split('-').map(Number);
   try{ localStorage.setItem('lc_birth',bv); localStorage.setItem('lc_slot',slot); }catch(e){}
-  gtag('event','luckycolor_view',{lang:LANG});
+  gtag('event','luckycolor_view',{lang:LANG,entry_context:new URLSearchParams(location.search||'').get('from')||'direct'});
 
   const r=resolveDay(Y,M,D,slot), day=DAYS[r.i], set=colorsOf(r.i);
   const main=set.lucky[0];
@@ -687,5 +723,6 @@ document.getElementById('againBtn').onclick=function(){
        const s=localStorage.getItem('lc_slot'); if(s) document.getElementById('slot').value=s; }catch(e){}
 })();
 </script>
+<script defer src="/seo-events.js"></script>
 </body>
 </html>

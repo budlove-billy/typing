@@ -3,6 +3,12 @@
 
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
+## 검색 유입·재방문 개선 결정 (2026-09-07)
+- 네이버 유입은 수능·신년 운세, 태국 요일별 행운색, 2048·스트룹 공략처럼 일회성 의도가 강한 키워드가 중심이다. 로그인으로 해결하려 하지 않고, 검색어별 결과 맥락·첫 화면 즉답·결과 후 다음 행동을 먼저 개선한다.
+- `/suneung/`, `/newyear/`는 `?from=`을 `/unse/`까지 전달해 맞춤 제목·안내·공유 문구를 표시한다. `/luckycolor/`는 폼보다 요일별 요약표를 먼저 보여주고, `/guide/2048/`는 첫 화면에서 즉시 플레이를 제공한다.
+- 정적 SEO 페이지는 `/seo-events.js`로 `seo_landing_view`, `seo_cta_click`, `seo_return_session`을 측정한다. 메인 앱은 `seo_tool_open`, `seo_tool_complete`, `next_game_click`과 기존 `game_finish`·`share_card`를 함께 사용한다.
+- GA4에서는 랜딩 페이지×유입 채널별 도구 시작·완료·다음 게임·1/7일 재방문을 비교한 뒤 로그인 도입 여부를 결정한다.
+
 ## Godot local installation (2026-08-05)
 - Godot 4.7.1 stable Windows x86_64 is installed at `tools/godot/Godot_v4.7.1-stable_win64.exe`.
 - Verified version: `4.7.1.stable.official.a13da4feb`.

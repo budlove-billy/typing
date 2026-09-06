@@ -147,13 +147,14 @@ footer a{color:var(--sub);}
 .seo ul.zlist b{color:var(--p,#b07fc7)}
 .seo .links a{color:var(--p,#b07fc7);text-decoration:none}
 .seo .disc{font-size:12px;color:var(--sub,#6b6b6b);text-align:center;margin-top:2px}
+.context-callout{display:none;background:linear-gradient(135deg,#fff8e7,#f4efff);border:1px solid #eadcf4;border-radius:14px;padding:12px 14px;margin:0 0 10px;color:#4b3c68;font-size:13px;line-height:1.6}
 </style>
 </head>
 <body>
 <header>
   <a id="backHome" href="/">← 홈</a>
-  <h1 class="h1row"><span class="mhead" id="mhead"></span>말로우 <span class="sp">운세</span></h1>
-  <div class="tagline">생년월일로 보는 오늘의 운세 · 간단 사주</div>
+  <h1 class="h1row"><span class="mhead" id="mhead"></span><span id="brandName">말로우</span> <span class="sp" id="contextTitle">운세</span></h1>
+  <div class="tagline" id="contextTagline">생년월일로 보는 오늘의 운세 · 간단 사주</div>
 </header>
 <main>
   <!-- 입력 -->
@@ -184,6 +185,7 @@ footer a{color:var(--sub);}
       <div class="trait" id="trait"></div>
       <div class="match" id="match"></div>
     </div>
+    <div class="context-callout" id="contextCallout"></div>
 
     <div class="card">
       <div class="sect-title">🌟 오늘의 총운 <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
@@ -311,6 +313,21 @@ footer a{color:var(--sub);}
 /* Mallow 마스코트(핑크·웃는) — 브랜드 통일 */
 const MHEAD_SVG='<svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="mh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2F5"/><stop offset=".62" stop-color="#FFC7DA"/><stop offset="1" stop-color="#F09BB8"/></linearGradient></defs><ellipse cx="50" cy="90" rx="24" ry="4.4" fill="rgba(40,25,10,.10)"/><rect x="15" y="19" width="70" height="63" rx="29" fill="url(#mh)" stroke="#F09BB8" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="14" ry="8" fill="rgba(255,255,255,.55)"/><rect x="21.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="66.5" y="54" width="12" height="8.5" rx="4" fill="#FFB0C4" opacity=".82"/><rect x="31" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="58" y="38.5" width="11" height="15" rx="5.5" fill="#33405c"/><rect x="33.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><rect x="60.4" y="41" width="3.7" height="5" rx="1.85" fill="#fff"/><path d="M24 17 L26 22 L31 24 L26 26 L24 31 L22 26 L17 24 L22 22 Z" fill="#FFC94D"/><path d="M77 19 L79 24 L84 26 L79 28 L77 33 L75 28 L70 26 L75 24 Z" fill="#FFC94D"/><path d="M40.5 58 Q50 72 59.5 58 Z" fill="#E8657F"/><path d="M44 62 Q50 66 56 62" fill="#F49BB1"/></svg>';
 (function(){ var el=document.getElementById('mhead'); if(el) el.innerHTML=MHEAD_SVG; })();
+const ENTRY_CONTEXT=(new URLSearchParams(location.search||'').get('from')||'').toLowerCase();
+const ENTRY_COPY={
+  suneung:{title:'수능 운세',tagline:'수능 컨디션과 학업운을 가볍게 확인해 보세요',button:'수능 맞춤 운세 보기',callout:'🍀 수능 집중 모드 · 오늘의 학업·일운과 컨디션을 중심으로 확인해 보세요.',share:'수능 오늘의 운세'},
+  newyear:{title:'2027 신년 운세',tagline:'새해 흐름과 올해 계획을 가볍게 시작해 보세요',button:'2027 신년 운세 보기',callout:'🎊 2027 신년 모드 · 올해의 흐름을 보고 첫 목표를 정해 보세요.',share:'2027 신년 운세'}
+};
+const ACTIVE_ENTRY=ENTRY_COPY[ENTRY_CONTEXT]||null;
+function applyEntryContext(){
+  if(!ACTIVE_ENTRY) return;
+  const title=document.getElementById('contextTitle'), tagline=document.getElementById('contextTagline'), btn=document.getElementById('goBtn');
+  if(title) title.textContent=ACTIVE_ENTRY.title;
+  if(tagline) tagline.textContent=ACTIVE_ENTRY.tagline;
+  if(btn) btn.textContent=ACTIVE_ENTRY.button;
+  document.title=ACTIVE_ENTRY.title+' · 오늘의 운세 | Mallow';
+}
+applyEntryContext();
 /* ---------- 데이터 ---------- */
 const ZODIAC=[
  {n:'쥐',e:'🐭',t:'재치 있고 눈치 빠른'},
@@ -478,7 +495,7 @@ function compute(){
   const now=new Date(); if(new Date(bv)>now){ alert('미래 날짜는 볼 수 없어요 😅'); return; }
   const time=document.getElementById('btime').value;
   try{localStorage.setItem('unse_birth',bv);localStorage.setItem('unse_time',time);localStorage.setItem('unse_seen',kstDate());}catch(e){}
-  gtag('event','unse_view',{});
+  gtag('event','unse_view',{entry_context:ENTRY_CONTEXT||'direct'});
 
   const zi=((Y-4)%12+12)%12, z=ZODIAC[zi];
   const elemKey=STEM_ELEM[((Y-4)%10+10)%10], el=ELEM[elemKey];
@@ -525,6 +542,8 @@ function compute(){
   document.getElementById('ilju').textContent='일주 '+iljuName+'('+iljuHanja+')';
   document.getElementById('trait').innerHTML=traitTxt;
   document.getElementById('match').textContent='🤝 잘 맞는 띠: '+goodZodiac(zi);
+  const contextCallout=document.getElementById('contextCallout');
+  if(contextCallout&&ACTIVE_ENTRY){ contextCallout.textContent=ACTIVE_ENTRY.callout; contextCallout.style.display='block'; }
   document.getElementById('todayLabel').textContent='· '+today;
   document.getElementById('ilbadge').textContent='오늘의 일진 '+tS.k+tB.k+'('+tS.h+tB.h+')';
   document.getElementById('sipName').innerHTML=S.h?F.k+' <span class="sh">'+S.h+'</span>의 날':F.k;
@@ -555,12 +574,12 @@ function compute(){
   document.getElementById('say').textContent=say;
   renderWeek(ij, seedKey, today);
   renderTomorrow(ij, seedKey);
-  try{ gtag('event','unse_result',{sipsung:F.k, score:F.sc, star:starN}); }catch(e){}
+  try{ gtag('event','unse_result',{sipsung:F.k, score:F.sc, star:starN, entry_context:ENTRY_CONTEXT||'direct'}); }catch(e){}
 
   document.getElementById('inputCard').style.display='none';
   document.getElementById('result').style.display='block';
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
-  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,cardTxt:sipLine,lc,ln,li,say,Y,ij:iljuName,ijh:iljuHanja,sip:F.k,sipH:S.h,score:F.sc};
+  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,cardTxt:sipLine,lc,ln,li,say,Y,ij:iljuName,ijh:iljuHanja,sip:F.k,sipH:S.h,score:F.sc,entry:ACTIVE_ENTRY};
 }
 
 /* 이번 주 흐름 — 오늘부터 7일치 지수 막대 */
@@ -635,7 +654,7 @@ function share(){
   cv.toBlob(function(blob){
     const file=new File([blob],'mallow-unse.png',{type:'image/png'});
     if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text:'오늘의 내 운세 🔮 playmallow.com/unse'}).catch(()=>{});
+      navigator.share({files:[file],text:(L.entry?L.entry.share:'오늘의 내 운세')+' 🔮 playmallow.com/unse'}).catch(()=>{});
     } else {
       const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-unse.png'; a.click();
     }
@@ -661,5 +680,6 @@ document.getElementById('shareBtn').onclick=share;
 document.getElementById('againBtn').onclick=function(){document.getElementById('result').style.display='none';document.getElementById('inputCard').style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
 (function(){try{const b=localStorage.getItem('unse_birth');if(b)document.getElementById('birth').value=b;const t=localStorage.getItem('unse_time');if(t)document.getElementById('btime').value=t;}catch(e){}})();
 </script>
+<script defer src="/seo-events.js"></script>
 </body>
 </html>
