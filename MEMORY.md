@@ -353,6 +353,12 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 출처: Wikimedia Commons Special:FilePath. 메이저=`RWS_Tarot_NN_Name.jpg`, 마이너=`Wands/Cups/Swords/Pents + 01~14`(11페이지·12나이트·13퀸·14킹). rate limit(429) 심해 간격 크게.
 - DECK 인덱스=이미지 파일번호: 0~21 메이저, 22~35 완드, 36~49 컵, 50~63 소드, 64~77 펜타클. `draw()`가 `idx` 반환 → `cards/<idx>.jpg`.
 - 웹 최적화 400px q0.82(~82KB/장, 총 6.4MB). 역방향=CSS/canvas 180도 회전. 재최적화 스크립트 `.logs/optimize78.mjs`.
+
+## 타로 3카드 해석 UX (2026-09-07)
+
+- `tarot/index.html`의 3카드 결과는 카드의 기본 의미를 주제별로 억지로 감싸지 않는다. 각 자리의 자연스러운 도입문(예: “지금의 재정 흐름을 살펴보면”) 뒤에 카드 핵심을 보여주고, 연애·일/학업·재물과 슈트에 맞춘 `실천 힌트`를 별도 스타일로 붙인다.
+- `lensMeaning(pick, cat, cf, posIdx)`가 ko/th 문장을 각각 생성하며, 오늘의 카드(단일 카드)는 기존 의미를 유지한다. 자리 라벨은 재물에서 `지나온 재물 흐름`·`지금의 재정 흐름`으로 구체화했다.
+- 검증 기준: 78장 × 3주제 × 정/역 = 1,404개 조합 모두 반복 “운으로 본다면” 없음, 각 결과에 힌트 포함, ko/th 390px 3카드 smoke 및 pageerror 0.
 - 마이너 56장 텍스트는 SUITS×RANKS 생성형(다른 세션 추가). 이미지는 원본이라 정확.
 
 ## 애드센스 저품질 대응에서 배운 것 (2026-08-23)

@@ -86,6 +86,7 @@ main{width:100%;max-width:480px;padding:18px 14px 56px;}
 .reading .rh .rv{font-size:11px;color:var(--pink);font-weight:800;margin-left:5px;}
 .reading .rp{font-size:11.5px;color:var(--sub);margin-top:1px;}
 .reading .rt{font-size:13.5px;line-height:1.65;margin-top:6px;color:var(--text);}
+.reading .rguide{display:block;margin-top:8px;padding-top:7px;border-top:1px solid #e8e1f7;color:var(--p);font-size:12.5px;line-height:1.55;font-weight:700;}
 .summary{margin-top:10px;text-align:center;font-size:14px;font-weight:700;line-height:1.7;color:var(--p);background:#f2ecff;border-radius:12px;padding:13px;}
 .sum-label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--pink);margin-bottom:4px;}
 .btns{display:flex;gap:10px;margin-top:14px;} .btns .btn{margin-top:0;}
@@ -304,7 +305,7 @@ const TX={
   disc:'본 타로는 <b>재미로 즐기는 콘텐츠</b>예요. 어떤 결정의 근거가 될 수 없어요. 마음의 힌트로만 가볍게 즐겨요 🌙<br><span style="opacity:.75">카드 이미지: Rider–Waite–Smith Tarot (1909) · 퍼블릭 도메인</span>',
   footer:'가볍게 즐기는 두뇌게임', cardTitleToday:'🃏 오늘의 타로', cardTitleThree:'🃏 3카드 타로', shareText:'오늘의 타로 🃏 playmallow.com/tarot',
   catName:{love:'💗 연애',work:'📚 일·학업',money:'💰 재물'},
-  pos:{love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['과거의 재물운','현재의 흐름','다가올 기회']},
+  pos:{love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['지나온 재물 흐름','지금의 재정 흐름','다가올 기회']},
   sumUp:['카드들이 밝은 기운을 전해요. 오늘의 나를 믿어봐요! ✨','좋은 흐름이 보여요. 한 걸음씩 나아가면 돼요 🌈','마음이 향하는 대로, 지금이 좋은 타이밍이에요 💫'],
   sumMid:['잔잔한 흐름 속에 기회가 숨어 있어요. 차분하게 🌙','서두르지 않으면 원하는 답에 가까워져요 🍀','오늘은 나를 돌보는 것부터 시작해요 🤗'] },
  th:{ home:'หน้าแรก', title:'ทาโรต์', tagline:'ไพ่วันนี้ · ไพ่ 3 ใบ · ครบ 78 ใบ',
@@ -553,31 +554,55 @@ const RANK_NAMES=['에이스','2','3','4','5','6','7','8','9','10','페이지','
       tip:mean[0], rtip:mean[1] });
   });
 });
-/* 주제(연애/일·학업/재물)별 해석 프레임 — 슈트 기운을 주제 맥락으로 연결.
-   카드 자체 의미는 그대로 두고, 주제에 맞게 읽히도록 앞뒤를 붙임. */
-const SUIT_LENS={
- 완드:{love:'열정',work:'추진력',money:'기회'},
- 컵:{love:'마음',work:'인간관계',money:'풍요로운 감정'},
- 소드:{love:'솔직한 대화',work:'판단력',money:'계획'},
- 펜타클:{love:'현실적 안정',work:'실력·성과',money:'재물'}
-};
-const CAT_FRAME={
- love:{open:'연애운으로 본다면, ',suit:'이 기운은 관계 속 ',tail:'와(과) 맞닿아 있어요.'},
- work:{open:'일·학업운으로 본다면, ',suit:'이 기운은 지금의 ',tail:'(으)로 작용해요.'},
- money:{open:'재물운으로 본다면, ',suit:'이 기운은 ',tail:'에 영향을 줘요.'}
-};
-/* 카드 의미를 주제 맥락으로 감싸 반환 (메이저/마이너 공통) */
-function lensMeaning(pick, cat, cf){
-  const suit=pick.card.suit; const bare=pick.rev?(cf.revBare||cf.rev):(cf.upBare||cf.up);
-  const f=CAT_FRAME[cat]; if(!f) return bare;
-  if(!suit||!SUIT_LENS[suit]){ // 메이저(슈트 없음): 주제 프레임만 앞에
-    const MAJOR_OPEN={love:'연애운으로 본다면, ',work:'일·학업운으로 본다면, ',money:'재물운으로 본다면, '};
-    return (MAJOR_OPEN[cat]||'')+bare;
+/* 주제별 3카드 해석 — 반복적인 “~운으로 본다면” 대신
+   자리의 질문을 먼저 짚고, 카드 핵심 뒤에 바로 해볼 행동을 덧붙인다. */
+const KO_CONTEXT={
+ love:{
+  lead:['지난 인연을 돌아보면, ','지금의 마음을 살펴보면, ','다가올 사랑을 내다보면, '],
+  major:'상대의 마음을 단정하기보다, 내가 원하는 관계와 지켜야 할 경계를 솔직히 확인해 보세요.',
+  suit:{
+   완드:'마음이 움직이는 만큼 솔직하게 표현하고, 작은 약속 하나부터 지켜 관계를 앞으로 밀어 보세요.',
+   컵:'내 마음과 상대의 마음을 함께 살피며, 따뜻한 대화를 먼저 건네 보세요.',
+   소드:'추측보다 솔직한 대화를 선택하면 오해를 줄이고 관계를 또렷하게 볼 수 있어요.',
+   펜타클:'말보다 꾸준한 행동과 신뢰를 쌓는 시간이 관계에 안정감을 더해요.'
   }
-  const lens=SUIT_LENS[suit][cat];
-  return f.open+bare+' '+f.suit+'「'+lens+'」'+f.tail;
+ },
+ work:{
+  lead:['지나온 노력을 돌아보면, ','현재 상황을 살펴보면, ','앞으로의 흐름을 내다보면, '],
+  major:'큰 결론을 서두르기보다, 지금 할 수 있는 한 가지를 구체적으로 정하면 다음 단계가 보여요.',
+  suit:{
+   완드:'생각만 하기보다 오늘 할 일을 작은 목표로 쪼개 바로 움직여 보세요.',
+   컵:'혼자 해결하려 하기보다 동료나 선생님과 상황을 나누면 새로운 실마리가 보여요.',
+   소드:'자료와 우선순위를 정리하고 한 번 더 확인하면 판단이 훨씬 선명해져요.',
+   펜타클:'작은 루틴을 지키는 꾸준함이 결국 실력과 결과로 이어져요.'
+  }
+ },
+ money:{
+  lead:['지나온 재물 흐름을 돌아보면, ','지금의 재정 흐름을 살펴보면, ','다가올 기회를 내다보면, '],
+  major:'기대만 키우기보다 금액과 조건을 확인하고, 무리 없는 작은 행동부터 시작해 보세요.',
+  suit:{
+   완드:'기회가 보여도 한 번에 크게 움직이기보다, 범위와 위험을 먼저 정해 보세요.',
+   컵:'돈을 쓰는 이유와 감정을 살피면 충동보다 오래가는 만족을 남길 수 있어요.',
+   소드:'금액·조건·일정을 직접 확인하고 계획으로 옮기면 막연한 불안이 줄어들어요.',
+   펜타클:'작은 금액이라도 기록하고 꾸준히 관리하면 안정적인 기반이 만들어져요.'
+  }
+ }
+};
+const TH_CONTEXT={
+ love:{lead:['เมื่อมองความสัมพันธ์ที่ผ่านมา ','สำหรับความรู้สึกตอนนี้ ','สำหรับความรักที่กำลังมา '],major:'ลองเช็กความต้องการและขอบเขตของตัวเองอย่างจริงใจ แทนการเดาใจอีกฝ่าย',suit:{완드:'แสดงความรู้สึกอย่างจริงใจ และเริ่มจากการรักษาสัญญาเล็ก ๆ เพื่อให้ความสัมพันธ์เดินหน้า',컵:'ใส่ใจทั้งความรู้สึกของตัวเองและอีกฝ่าย แล้วชวนคุยกันอย่างอบอุ่น',소드:'เลือกการพูดคุยอย่างตรงไปตรงมาแทนการเดาใจ จะช่วยลดความเข้าใจผิด',펜타클:'การกระทำที่สม่ำเสมอและความไว้ใจจะช่วยให้ความสัมพันธ์มั่นคง'}},
+ work:{lead:['เมื่อมองความพยายามที่ผ่านมา ','สำหรับสถานการณ์ตอนนี้ ','สำหรับแนวโน้มข้างหน้า '],major:'อย่ารีบสรุปภาพใหญ่ ลองกำหนดสิ่งหนึ่งที่ทำได้ตอนนี้ให้ชัด แล้วก้าวต่อทีละขั้น',suit:{완드:'แบ่งงานวันนี้เป็นเป้าหมายเล็ก ๆ แล้วลงมือทันทีแทนการคิดวน',컵:'ลองขอความช่วยเหลือหรือพูดคุยกับเพื่อนร่วมงานและครู แล้วจะเห็นทางออกใหม่',소드:'จัดลำดับความสำคัญและตรวจข้อมูลอีกครั้ง การตัดสินใจจะชัดขึ้น',펜타클:'รักษารูทีนเล็ก ๆ อย่างสม่ำเสมอ แล้วจะกลายเป็นทักษะและผลงาน'}},
+ money:{lead:['เมื่อมองกระแสการเงินที่ผ่านมา ','สำหรับกระแสการเงินตอนนี้ ','สำหรับโอกาสที่กำลังมา '],major:'ตรวจสอบจำนวนเงินและเงื่อนไขให้ชัด แล้วเริ่มจากการลงมือเล็ก ๆ ที่ไม่เกินกำลัง',suit:{완드:'แม้เห็นโอกาส อย่ารีบเสี่ยงครั้งใหญ่ กำหนดขอบเขตและความเสี่ยงก่อน',컵:'ลองดูเหตุผลและความรู้สึกเบื้องหลังการใช้เงิน จะช่วยลดการใช้จ่ายตามอารมณ์',소드:'ตรวจจำนวนเงิน เงื่อนไข และกำหนดเวลาให้ชัด ความกังวลจะลดลง',펜타클:'บันทึกแม้เป็นเงินก้อนเล็กและดูแลอย่างสม่ำเสมอ จะสร้างพื้นฐานที่มั่นคง'}}
+};
+function lensMeaning(pick, cat, cf, posIdx){
+  const bare=pick.rev?(cf.revBare||cf.rev):(cf.upBare||cf.up);
+  const context=(LANG==='th'?TH_CONTEXT:KO_CONTEXT)[cat];
+  if(!context) return bare;
+  const lead=context.lead[Math.max(0,Math.min(2,posIdx||0))]||context.lead[0];
+  const guide=(pick.card.suit&&context.suit[pick.card.suit])||context.major;
+  if(LANG==='th') return lead+bare+'<br><span class="rguide">คำแนะนำ · '+guide+'</span>';
+  return lead+bare+'<br><span class="rguide">실천 힌트 · '+guide+'</span>';
 }
-const POS3={ love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['과거의 재물운','현재의 흐름','다가올 기회'] };
+const POS3={ love:['지난 인연','지금의 마음','다가올 사랑'], work:['지나온 노력','현재 상황','앞으로의 흐름'], money:['지나온 재물 흐름','지금의 재정 흐름','다가올 기회'] };
 const CATNAME={love:'💗 연애',work:'📚 일·학업',money:'💰 재물'};
 const SUM_UP=['카드들이 밝은 기운을 전해요. 오늘의 나를 믿어봐요! ✨','좋은 흐름이 보여요. 한 걸음씩 나아가면 돼요 🌈','마음이 향하는 대로, 지금이 좋은 타이밍이에요 💫'];
 const SUM_MID=['잔잔한 흐름 속에 기회가 숨어 있어요. 차분하게 🌙','서두르지 않으면 원하는 답에 가까워져요 🍀','오늘은 나를 돌보는 것부터 시작해요 🤗'];
@@ -635,7 +660,7 @@ function drawThree(){
   }, 250+i*260); });
   LAST={mode:'three',cards:picks,cat:CAT};
   setTimeout(()=>{
-    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const cf=CF(p); const m=lensMeaning(p,CAT,cf);
+    document.getElementById('readings').innerHTML=picks.map((p,i)=>{ const cf=CF(p); const m=lensMeaning(p,CAT,cf,i);
       return '<div class="reading"><div class="rh">'+p.card.e+' '+cf.n+(p.rev?'<span class="rv">'+TX[LANG].revShort+'</span>':'')+'</div><div class="rp">'+pos[i]+'</div><div class="rt">'+m+'</div></div>'; }).join('');
     const good=picks.filter(p=>!p.rev).length; const sr=mulberry32(hashStr(seed+'|s'));
     document.getElementById('summary').textContent=(good>=2?TX[LANG].sumUp:TX[LANG].sumMid)[Math.floor(sr()*3)];
