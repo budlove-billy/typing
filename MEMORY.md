@@ -9,6 +9,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 정적 SEO 페이지는 `/seo-events.js`로 `seo_landing_view`, `seo_cta_click`, `seo_return_session`을 측정한다. 메인 앱은 `seo_tool_open`, `seo_tool_complete`, `next_game_click`과 기존 `game_finish`·`share_card`를 함께 사용한다.
 - GA4에서는 랜딩 페이지×유입 채널별 도구 시작·완료·다음 게임·1/7일 재방문을 비교한 뒤 로그인 도입 여부를 결정한다.
 
+## 말로우 운세 공유 카드 (2026-09-07)
+- `unse/index.html`의 `share()`는 공유 콜백 안에서 `drawCard()`의 지역변수 `L`을 참조하면 안 된다. 공유 문구는 전역 결과 상태 `LAST.entry`에서 읽는다.
+- Web Share 파일 공유가 가능한 경우 공유 시트를 열고, 미지원·동기 예외·비동기 실패 시 `downloadShareCard(blob)`로 `mallow-unse.png`를 내려받는다. 사용자가 공유 시트를 취소한 `AbortError`에는 중복 다운로드하지 않는다.
+- 회귀 기준: 결과 계산 후 share API mock 호출 1회(파일 1개), API 미지원 경로에서 `download="mallow-unse.png"` 링크 클릭, 320/390px pageerror 0.
+
 ## Godot local installation (2026-08-05)
 - Godot 4.7.1 stable Windows x86_64 is installed at `tools/godot/Godot_v4.7.1-stable_win64.exe`.
 - Verified version: `4.7.1.stable.official.a13da4feb`.

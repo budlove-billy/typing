@@ -648,15 +648,32 @@ function drawCard(){
   return cv;
 }
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function downloadShareCard(blob){
+  if(!blob) return;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-unse.png';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+}
 function share(){
   if(!LAST) return; gtag('event','unse_share',{});
   const cv=drawCard();
   cv.toBlob(function(blob){
+    if(!blob) return;
     const file=new File([blob],'mallow-unse.png',{type:'image/png'});
-    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text:(L.entry?L.entry.share:'오늘의 내 운세')+' 🔮 playmallow.com/unse'}).catch(()=>{});
-    } else {
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mallow-unse.png'; a.click();
+    let canNativeShare=false;
+    try{ canNativeShare=Boolean(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})); }catch(e){}
+    const shareText=(LAST.entry&&LAST.entry.share?LAST.entry.share:'오늘의 내 운세')+' 🔮 playmallow.com/unse';
+    const shareFailed=err=>{
+        // 사용자가 공유 시트를 닫은 경우에는 중복 다운로드하지 않는다.
+        if(!err || err.name!=='AbortError') downloadShareCard(blob);
+    };
+    if(canNativeShare){
+      try{
+        const result=navigator.share({files:[file],text:shareText});
+        if(result && typeof result.catch==='function') result.catch(shareFailed);
+      }catch(err){ shareFailed(err); }
+    }else{
+      downloadShareCard(blob);
     }
   },'image/png');
 }
