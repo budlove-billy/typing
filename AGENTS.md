@@ -411,6 +411,7 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 - 2026-08-05 — Native game continuation completed: replaced the bite mascot and launcher icon with a hole-free mint slime Mallow, added the four-language-ready `react` reaction-signal game with records/results integration, and verified the first round on the Android 15 emulator.
 - 2026-08-05 — Personalized native onboarding completed: researched Lumosity, Elevate, and CogniFit patterns; added a four-skill baseline assessment, local rolling skill scores, explainable weakness-first recommendations, re-assessment settings flow, animated ambient/slime/game feedback, and Android 15 visual QA through the assessment result screen.
 - 2026-08-05 — Native game continuation completed: added the six-round `switch` rule-change game with alternating shape/color rules, accuracy-plus-speed scoring, procedural glossy tile animation, focus-axis record/recommendation integration, headless smoke coverage, and Android 15 emulator visual QA through the rule transition.
+- 2026-09-08 — **홈 하단 소개 가독성·SEO 구조 개선**: 긴 소개 문장을 짧은 리드와 `h2` 제목, 10개 능력 영역 시맨틱 목록으로 재배치하고 미션·기록·기기 저장·FAQ를 자동 높이 카드로 정리. ko/en/th 다국어 키를 보강했으며 320/390px 모바일·1440px 데스크톱에서 가로 넘침 0, pageerror 0을 확인.
 
 ## Changelog
 

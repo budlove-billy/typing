@@ -16,8 +16,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 
 ## 홈 하단 소개 본문 UX (2026-09-08)
 
-- `index.html`의 `.home-about`은 검색 노출용 소개·FAQ 콘텐츠를 유지하되, `.about-lead`(긴 소개), `.about-notes`(미션·기록·기기 저장 3개), `.about-faq-list`(3개 FAQ), `.about-disclaimer`로 구분한다.
-- CSS는 넉넉한 행간과 약한 음수 자간, 정보 카드의 아이콘·테두리·여백을 사용한다. 화면이 720px 이하이면 안내·FAQ가 1열로 쌓여 긴 다국어 문구도 가로 넘침 없이 읽힌다.
+- `index.html`의 `.home-about`은 검색 노출용 텍스트를 숨기지 않고 `h2` 소개 제목 → 짧은 리드 → 10개 능력 영역 `<ul>` → 미션·기록·기기 저장 카드 → FAQ·면책 순서로 의미를 분리한다. 긴 카테고리 나열을 한 문단에 넣지 않아 훑어보기 쉽고 GSC가 주제를 해석할 시맨틱 단서도 유지한다.
+- 능력 영역 목록은 ko/en/th 키를 모두 제공하며, 게임 예시는 검색어가 될 수 있는 실제 게임명만 사용한다. 본문은 메타 설명의 37종 전체 표기와 충돌하지 않도록 36개 미니게임과 두뇌 유형·운세 콘텐츠를 구분해 설명한다.
+- CSS는 넉넉한 행간과 약한 음수 자간, 정보 카드의 아이콘·테두리·여백을 사용한다. 화면이 720px 이하이면 영역·안내·FAQ가 1열로 쌓이고, `.about-category span`은 아이콘 옆 두 번째 열을 명시해 한 글자 세로 줄바꿈을 방지한다.
 
 ## Godot local installation (2026-08-05)
 - Godot 4.7.1 stable Windows x86_64 is installed at `tools/godot/Godot_v4.7.1-stable_win64.exe`.
