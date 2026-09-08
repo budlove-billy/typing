@@ -503,7 +503,7 @@ function initOrder(){
 /* ══════════════ 렌더 ══════════════ */
 const $ = id=>document.getElementById(id);
 function render(){
-  $('puzzleNo').textContent = `#${PIDX+1} · ${todayKey}`;
+  $('puzzleNo').textContent = `#${PIDX+1} · ${todayKey} · ${PUZZLES.length}개 퍼즐 순환`;
   // 완성 그룹
   $('solvedRows').innerHTML = state.solved.map(gi=>{
     const g = PUZZLE.groups[gi];

@@ -402,6 +402,8 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 
 ## Build changelog
 
+- 2026-09-08 — 정밀 검토 후 기록 저장을 최신 저장값과 병합하고 신기록 판정 전에도 재동기화. 언어별 미션 필터, PWA v5 정상 응답 캐시·자산 재검증·페이지별 오프라인 안내, 검색 설명 34종·두뇌유형 12문항 정합성, 모아모아 순환 안내·검사 경로를 보완. 기록/미션 회귀 및 대표 게임 결과·재도전, 실제 서비스워커 오프라인 검사를 추가.
+
 - 2026-08-07 — Higgsfield MCP connection prepared: registered the remote HTTP server `https://mcp.higgsfield.ai/mcp` in project `.mcp.json` and validated the JSON. After the next tool session loads the connector, continue with Play Mallow character, UI, and game-art design generation.
 - 2026-08-06 — Native game discovery redesign completed: replaced the accordion list with a 12-category icon board and selected-category game grid, aligned all 38 games with playmallow.com grouping and icon semantics, introduced deterministic native vector pictograms, and rebuilt the bottom navigation as strong icon-label pills. Added unique category coverage smoke checks, rebuilt the Android APK, and verified memory/daily category switching with no runtime errors on `PlayMallow_API35`.
 - 2026-08-05 — Full native brain-game catalog completed: ported all 34 active non-fortune games plus `braintype`, `moamoa`, `queens`, and `tango` (38 total) into Godot modules. Added ko/en copy, 10-axis records with multi-axis updates, catalog-to-script QA, Android touch scrolling, and rebuilt a signed 54.7MB arm64+x86_64 debug APK. Verified on `PlayMallow_API35` with no script/parse/fatal log errors.

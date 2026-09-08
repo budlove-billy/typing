@@ -65,6 +65,20 @@ try {
         }, fn);
         if (started !== true) failures.push(`${lang}/${game.id}: ${started}`);
         await page.waitForTimeout(120);
+        if(game.id==='flash'){
+          const result=await page.evaluate(()=>{
+            FM.score=200;
+            const imported=JSON.parse(JSON.stringify(FM.best)); imported[FM.diff].all=1000;
+            localStorage.setItem('brain.flash.best',JSON.stringify(imported));
+            finishFlash();
+            const saved=JSON.parse(localStorage.getItem('brain.flash.best'))[FM.diff].all;
+            const visible=document.getElementById('flash-result-card').style.display==='block';
+            const retry=!!document.querySelector('#flash-result-card .pg-box');
+            pgRetry('flash');
+            return saved===1000&&visible&&retry&&document.getElementById('flash-game-card').style.display==='block';
+          });
+          if(!result) failures.push(`${lang}/flash: record/result/retry failed`);
+        }
         if (errors.length) failures.push(`${lang}/${game.id}: ${errors[0]}`);
         runs++;
       } catch (error) {
@@ -90,6 +104,17 @@ try {
       await context.close();
     }
   }
+  const offlineContext=await browser.newContext();
+  const offlinePage=await offlineContext.newPage();
+  await offlinePage.goto(`http://127.0.0.1:${port}/`,{waitUntil:'load'});
+  await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
+  await offlinePage.reload({waitUntil:'load'});
+  await offlineContext.setOffline(true);
+  await offlinePage.goto(`http://127.0.0.1:${port}/`,{waitUntil:'domcontentloaded'});
+  if(!await offlinePage.locator('#screen-home').count()) failures.push('offline home unavailable');
+  await offlinePage.goto(`http://127.0.0.1:${port}/unvisited-content/`,{waitUntil:'domcontentloaded'});
+  if(!await offlinePage.locator('h1').textContent().then(t=>t.includes('offline'))) failures.push('offline content fallback incorrect');
+  await offlineContext.close();
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

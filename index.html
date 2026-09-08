@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="page-title">플레이말로우(Mallow) | 무료 두뇌게임·웹게임</title>
-<meta name="description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 37종과 오늘의 미션, 두뇌 유형 테스트.">
+<meta name="description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 34종과 오늘의 미션, 두뇌 유형 테스트.">
 <meta name="naver-site-verification" content="9837235c67647e2d6c47293ba00aa17e80abf903" />
 <link rel="canonical" href="https://playmallow.com/">
 <link rel="alternate" hreflang="ko" href="https://playmallow.com/">
@@ -15,14 +15,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="플레이말로우(Mallow)">
 <meta property="og:title" content="플레이말로우 | 무료 두뇌게임·웹게임">
-<meta property="og:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 37종과 오늘의 미션, 두뇌 유형 테스트.">
+<meta property="og:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 34종과 오늘의 미션, 두뇌 유형 테스트.">
 <meta property="og:url" content="https://playmallow.com/">
 <meta property="og:image" content="https://playmallow.com/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="플레이말로우 | 무료 두뇌게임·웹게임">
-<meta name="twitter:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 37종과 오늘의 미션, 두뇌 유형 테스트.">
+<meta name="twitter:description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 34종과 오늘의 미션, 두뇌 유형 테스트.">
 <meta name="twitter:image" content="https://playmallow.com/og/home.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
@@ -4248,7 +4248,7 @@ function tArr(key){
 }
 
 const SEO_LANG={
-  ko:{title:'플레이말로우(Mallow) | 무료 두뇌게임·웹게임',desc:'가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 37종과 오늘의 미션, 두뇌 유형 테스트.'},
+  ko:{title:'플레이말로우(Mallow) | 무료 두뇌게임·웹게임',desc:'가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 34종과 오늘의 미션, 두뇌 유형 테스트.'},
   en:{title:'Mallow | Free Brain Games Online',desc:'Play 37 free brain games online, no sign-up. Train memory, focus and reaction.'},
   th:{title:'Mallow | เกมฝึกสมองออนไลน์ฟรี',desc:'เกมฝึกสมองออนไลน์ฟรี 37 เกม ไม่ต้องสมัคร ฝึกความจำ สมาธิ ตรรกะ และความไว'}
 };
@@ -6167,15 +6167,25 @@ function dmScore(d,pts,game){ return Math.round(pts*dm(d,game)); }
 function bt_today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function bt_loadBest(key){
   const empty={easy:{all:0,day:0,date:''},normal:{all:0,day:0,date:''},hard:{all:0,day:0,date:''}};
+  Object.defineProperty(empty,'storageKey',{value:key});
   try{
     const raw=localStorage.getItem(key);
     if(!raw) return empty;
     const o=JSON.parse(raw);
+    Object.defineProperty(o,'storageKey',{value:key});
     ['easy','normal','hard'].forEach(d=>{ if(!o[d]) o[d]={all:0,day:0,date:''}; });
     return o;
   }catch(e){ return empty; }
 }
 function bt_saveBest(key,obj){
+  // 가져오기·다른 탭에서 갱신된 기록을 오래된 게임 상태로 덮어쓰지 않는다.
+  const stored=bt_loadBest(key);
+  ['easy','normal','hard'].forEach(d=>{
+    const a=obj[d], b=stored[d]; if(!a||!b) return;
+    a.all=Math.max(Number(a.all)||0,Number(b.all)||0);
+    if(b.date>a.date){ a.date=b.date; a.day=b.day; }
+    else if(b.date===a.date) a.day=Math.max(Number(a.day)||0,Number(b.day)||0);
+  });
   /* 신기록 배지는 '난이도별' 자기 기록 갱신으로 판정한다.
      기존엔 세 난이도의 최댓값만 비교해서, 어려움에서 개인 최고를 세워도
      쉬움 기록보다 낮으면 아무 기록도 안 남는 것처럼 보였다. */
@@ -6231,6 +6241,14 @@ const COMBO_MIGR={"stroop":0.53,"flank":0.53,"switch":0.61,"guess":0.79,"spot":0
 })();
 let _LR=null;
 function bt_recordScore(best,diff,score){ // diff별 최고점 갱신 → 신기록(전체)이면 true
+  if(best.storageKey){
+    const latest=bt_loadBest(best.storageKey);
+    ['easy','normal','hard'].forEach(d=>{
+      best[d].all=Math.max(Number(best[d].all)||0,Number(latest[d].all)||0);
+      if(latest[d].date>best[d].date) Object.assign(best[d],{date:latest[d].date,day:latest[d].day});
+      else if(latest[d].date===best[d].date) best[d].day=Math.max(Number(best[d].day)||0,Number(latest[d].day)||0);
+    });
+  }
   const today=bt_today(), b=best[diff];
   if(b.date!==today){ b.date=today; b.day=0; }
   _LR={diff:diff, score:score, prev:Number(b.all)||0, isNew:false};
@@ -7860,7 +7878,7 @@ function bkMergeBest(oldV,newV){
     ['easy','normal','hard'].forEach(d=>{
       const x=a&&a[d]||{all:0,day:0,date:''}, y=b&&b[d]||{all:0,day:0,date:''};
       out[d]={ all:Math.max(x.all||0,y.all||0),
-               day:(y.date||'')>(x.date||'')?(y.day||0):(x.day||0),
+               day:y.date===x.date?Math.max(x.day||0,y.day||0):(y.date||'')>(x.date||'')?(y.day||0):(x.day||0),
                date:(y.date||'')>(x.date||'')?(y.date||''):(x.date||'') };
     });
     return JSON.stringify(out);
@@ -8003,7 +8021,10 @@ const MISSION_B=['stroop','trail','react','whack','spot','odd','chop','flank','c
 const MISSION_C=['switch','rotate','slide','fit','trace','bubble','guess']; // 유연성·공간·계산
 function missionToday(){
   const d=new Date(); const s=d.getFullYear()*372 + d.getMonth()*31 + d.getDate();
-  return [ MISSION_A[s%MISSION_A.length], MISSION_B[Math.floor(s/7)%MISSION_B.length], MISSION_C[Math.floor(s/13)%MISSION_C.length] ];
+  return [MISSION_A, MISSION_B, MISSION_C].map((pool,i)=>{
+    const available=pool.filter(id=>{ const g=HOME_GAMES.find(x=>x.id===id); return g&&(!g.koOnly||CURRENT_LANG==='ko')&&(!g.langs||g.langs.includes(CURRENT_LANG)); });
+    return available[Math.floor(s/[1,7,13][i])%available.length];
+  });
 }
 function missionLoad(){
   try{ const o=JSON.parse(localStorage.getItem('brain.mission')||'null'); if(o && o.date===bt_today() && Array.isArray(o.done)) return o; }catch(e){}
