@@ -1,6 +1,12 @@
 # MEMORY.md — Long-Term Memory
 > Project: brain
 
+## 웹 품질 기준선 (2026-09-08)
+- 배포 전 `powershell -ExecutionPolicy Bypass -File tools/quality/run-quality.ps1`을 실행한다. 검사기는 허용 포트 8065에서 임시 서버를 직접 열고 종료하므로 별도 서버를 남기지 않는다.
+- 정적 검사는 Git 추적 HTML 전체의 인라인 JS 문법, 현재 노출 스킬 게임의 화면·시작·결과·바로 다시·기록 기준·능력치·이름 번역 연결, 사용 중인 i18n 키, PWA 필수 파일·매니페스트·오프라인 폴백을 확인한다.
+- 브라우저 검사는 ko/en/th 지원 범위별 게임 시작 100조합과 320/390px 홈 6조합의 pageerror·가로 넘침을 확인한다. 언어별 컨텍스트는 분리하고 서비스워커는 차단해 캐시 교란을 막는다.
+- `HOME_GAMES`를 셀 때는 먼저 JS 주석을 제거해야 한다. 주석 처리된 `vocab`·`typing`은 화면 코드가 남아 있어도 현재 메뉴에서 제공하지 않는다. 현재 노출 스킬 게임은 **34개**, 데일리 3개와 재미 콘텐츠는 별도다. 홈·가이드 숫자는 검사기가 34개와 일치하는지 자동 확인한다.
+
 _Write important context, decisions, and lessons here so future sessions can pick up where you left off._
 
 ## 검색 유입·재방문 개선 결정 (2026-09-07)
