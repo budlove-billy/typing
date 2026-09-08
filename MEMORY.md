@@ -14,6 +14,11 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - Web Share 파일 공유가 가능한 경우 공유 시트를 열고, 미지원·동기 예외·비동기 실패 시 `downloadShareCard(blob)`로 `mallow-unse.png`를 내려받는다. 사용자가 공유 시트를 취소한 `AbortError`에는 중복 다운로드하지 않는다.
 - 회귀 기준: 결과 계산 후 share API mock 호출 1회(파일 1개), API 미지원 경로에서 `download="mallow-unse.png"` 링크 클릭, 320/390px pageerror 0.
 
+## 홈 하단 소개 본문 UX (2026-09-08)
+
+- `index.html`의 `.home-about`은 검색 노출용 소개·FAQ 콘텐츠를 유지하되, `.about-lead`(긴 소개), `.about-notes`(미션·기록·기기 저장 3개), `.about-faq-list`(3개 FAQ), `.about-disclaimer`로 구분한다.
+- CSS는 넉넉한 행간과 약한 음수 자간, 정보 카드의 아이콘·테두리·여백을 사용한다. 화면이 720px 이하이면 안내·FAQ가 1열로 쌓여 긴 다국어 문구도 가로 넘침 없이 읽힌다.
+
 ## Godot local installation (2026-08-05)
 - Godot 4.7.1 stable Windows x86_64 is installed at `tools/godot/Godot_v4.7.1-stable_win64.exe`.
 - Verified version: `4.7.1.stable.official.a13da4feb`.

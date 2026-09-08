@@ -921,9 +921,22 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ab-line{display:flex;align-items:center;gap:.5rem;cursor:pointer}
 .ab-detail{font-size:.68rem;color:var(--text3);margin:.25rem 0 .5rem 66px;line-height:1.6}
 .ability-hint{font-size:.68rem;color:var(--text3);text-align:center;margin-top:.7rem}
-.home-about{margin-top:1.5rem;padding:1rem 1.1rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius2)}
-.home-about p{font-size:.94rem;color:var(--text2);line-height:1.8;margin-bottom:.6rem}
-.home-about p:last-child{margin-bottom:0}
+.home-about{position:relative;isolation:isolate;overflow:hidden;margin-top:2rem;padding:clamp(1.25rem,3vw,2rem);background:linear-gradient(145deg,#fff 0%,#fbfcff 58%,#f3f6ff 100%);border:1px solid rgba(205,213,229,.88);border-radius:calc(var(--radius2) + 4px);box-shadow:0 12px 30px rgba(52,73,120,.055)}
+.home-about::before{content:'';position:absolute;z-index:-1;width:250px;height:250px;right:-115px;top:-145px;border-radius:50%;background:radial-gradient(circle,rgba(79,124,255,.12),rgba(79,124,255,0) 68%)}
+.home-about p{position:relative;margin:0;color:var(--text2);font-size:.94rem;line-height:1.9;letter-spacing:-.018em;word-break:keep-all;overflow-wrap:anywhere}
+.home-about .about-lead{padding:0 0 1.15rem;color:var(--text)!important;font-size:clamp(1rem,1.8vw,1.08rem);font-weight:600;line-height:1.92;border-bottom:1px solid rgba(205,213,229,.78)}
+.about-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1rem 0 1.25rem}
+.home-about .about-note{min-height:100%;padding:.85rem .85rem .85rem 2.8rem;background:rgba(255,255,255,.82);border:1px solid rgba(210,219,235,.8);border-radius:14px;font-size:.86rem;line-height:1.78;box-shadow:0 3px 10px rgba(46,67,112,.035)}
+.home-about .about-note::before{position:absolute;left:.82rem;top:.85rem;display:grid;place-items:center;width:1.38rem;height:1.38rem;border-radius:8px;background:var(--purple3);color:var(--purple);font-size:.82rem;font-weight:800;content:'✦'}
+.home-about .about-progress::before{content:'↗';background:#e9fbf4;color:var(--teal2)}
+.home-about .about-device::before{content:'⌁';background:#fff5e7;color:#d78722}
+.home-about strong{font-weight:800;color:var(--text)}
+.about-faq-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;padding-top:1.05rem;border-top:1px solid rgba(205,213,229,.78)}
+.home-about .about-faq{min-height:100%;padding:.95rem;background:#fff;border:1px solid rgba(210,219,235,.82);border-radius:14px;font-size:.84rem;line-height:1.78;box-shadow:0 4px 12px rgba(46,67,112,.04)}
+.home-about .about-faq strong{display:block;margin-bottom:.4rem;font-size:.93rem;letter-spacing:-.025em}
+.home-about .about-faq strong::before{display:inline-grid;place-items:center;content:'Q';width:1.2rem;height:1.2rem;margin-right:.34rem;border-radius:50%;background:var(--purple3);color:var(--purple);font-size:.67rem;vertical-align:.08em}
+.home-about .about-disclaimer{margin-top:1rem;padding:.68rem .8rem;background:rgba(244,247,252,.92);border-radius:10px;color:var(--text3);font-size:.76rem;line-height:1.7;letter-spacing:-.01em}
+@media(max-width:720px){.about-notes,.about-faq-list{grid-template-columns:1fr}.home-about{margin-top:1.5rem}.home-about .about-note{padding:.8rem .82rem .8rem 2.65rem}.home-about .about-faq{padding:.85rem .9rem}}
 .ab-name{width:66px;font-size:.78rem;font-weight:600;color:var(--text2);flex-shrink:0}
 .ab-bar{flex:1;height:10px;background:var(--bg3);border-radius:6px;overflow:hidden}
 .ab-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:6px;transition:width .5s}
@@ -1053,14 +1066,18 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     <div class="home-grid" id="home-fun"></div>
   </div>
   <div class="home-about">
-    <p data-i18n="about.p1">플레이말로우(Play Mallow)는 가입 없이 바로 즐기는 무료 두뇌게임·웹게임 모음입니다. 기억력(순간기억·카드 짝·엔백·거꾸로 기억), 집중력(스트룹·규칙 바꾸기·화살표 집중), 순발력(반응 속도·말로우 타워), 관찰력(다른 색·다른 모양·틀린 그림 찾기), 공간감각(도형 회전·슬라이딩 퍼즐·블록 채우기), 계산(암산·버블 톡톡·말랑 2048·어림 계산), 논리(스도쿠·컬러 소트·IQ·픽셀 로직), 언어(글자 맞추기·숨은 단어), 청각(멜로디·리듬·높은음), 협응(팡팡·받기·길 따라가기)까지 36가지 미니게임을 제공합니다. 여기에 두뇌 유형 테스트, 낱말 퍼즐 '모아모아', 오늘의 운세·별자리·띠별 운세·타로까지 재미 콘텐츠도 가득해요.</p>
-    <p data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
-    <p data-i18n="about.p3">게임마다 결과가 기억력·집중력·순발력·관찰력·공간감각·계산·논리·언어·청각·협응 열 가지 능력 축에 쌓입니다. 한 판만 해도 그 축의 점수가 움직이고, 여러 축을 고루 채울수록 종합 등급이 올라갑니다. 어떤 축이 비어 있는지는 '내 기록' 화면의 그래프에서 한눈에 보이니, 오늘 무엇을 할지 고르기 어려울 때 참고하시면 됩니다.</p>
-    <p data-i18n="about.p4">기록은 서버가 아니라 <strong>지금 쓰는 기기 안에만</strong> 저장됩니다. 그래서 계정을 만들 필요가 없고, 대신 브라우저 데이터를 지우거나 다른 기기에서 열면 기록이 따라오지 않습니다. 옮기고 싶다면 '내 기록' 화면의 백업 기능으로 내보냈다가 새 기기에서 불러오면 됩니다.</p>
-    <p data-i18n="about.faq1"><strong>설치하지 않아도 되나요?</strong><br>네. 주소만 열면 바로 플레이됩니다. 자주 하신다면 홈 화면에 추가해 앱처럼 쓸 수 있고, 한 번 열어 둔 뒤에는 인터넷이 끊겨도 대부분 그대로 실행됩니다.</p>
-    <p data-i18n="about.faq2"><strong>몇 살부터 할 수 있나요?</strong><br>글을 읽을 수 있으면 대부분의 게임을 할 수 있습니다. 카드 짝 맞추기나 다른 색 찾기처럼 규칙이 한 줄인 게임은 더 어릴 때도 괜찮고, 스도쿠·픽셀 로직처럼 논리가 필요한 게임은 초등 고학년 이후가 편합니다.</p>
-    <p data-i18n="about.faq3"><strong>매일 해야 하나요?</strong><br>그럴 필요는 없습니다. 다만 하루 3판 정도를 같은 시간대에 하면 기록끼리 비교가 되기 때문에 변화가 눈에 보입니다. 컨디션에 따라 점수가 오르내리는 것도 정상입니다.</p>
-    <p data-i18n="about.disc">플레이말로우의 두뇌게임은 가볍게 즐기는 오락이며, 의학적 진단이나 치료를 대신하지 않습니다. 운세 콘텐츠 역시 재미로 보는 내용입니다.</p>
+    <p class="about-lead" data-i18n="about.p1">플레이말로우(Play Mallow)는 가입 없이 바로 즐기는 무료 두뇌게임·웹게임 모음입니다. 기억력(순간기억·카드 짝·엔백·거꾸로 기억), 집중력(스트룹·규칙 바꾸기·화살표 집중), 순발력(반응 속도·말로우 타워), 관찰력(다른 색·다른 모양·틀린 그림 찾기), 공간감각(도형 회전·슬라이딩 퍼즐·블록 채우기), 계산(암산·버블 톡톡·말랑 2048·어림 계산), 논리(스도쿠·컬러 소트·IQ·픽셀 로직), 언어(글자 맞추기·숨은 단어), 청각(멜로디·리듬·높은음), 협응(팡팡·받기·길 따라가기)까지 36가지 미니게임을 제공합니다. 여기에 두뇌 유형 테스트, 낱말 퍼즐 '모아모아', 오늘의 운세·별자리·띠별 운세·타로까지 재미 콘텐츠도 가득해요.</p>
+    <div class="about-notes">
+      <p class="about-note" data-i18n="about.p2">매일 바뀌는 오늘의 미션 3판으로 가볍게 머리를 식히고, 최고 기록과 두뇌 능력치 그래프로 나의 성장을 확인해보세요. 설치도 로그인도 필요 없습니다.</p>
+      <p class="about-note about-progress" data-i18n="about.p3">게임마다 결과가 기억력·집중력·순발력·관찰력·공간감각·계산·논리·언어·청각·협응 열 가지 능력 축에 쌓입니다. 한 판만 해도 그 축의 점수가 움직이고, 여러 축을 고루 채울수록 종합 등급이 올라갑니다. 어떤 축이 비어 있는지는 '내 기록' 화면의 그래프에서 한눈에 보이니, 오늘 무엇을 할지 고르기 어려울 때 참고하시면 됩니다.</p>
+      <p class="about-note about-device" data-i18n="about.p4">기록은 서버가 아니라 <strong>지금 쓰는 기기 안에만</strong> 저장됩니다. 그래서 계정을 만들 필요가 없고, 대신 브라우저 데이터를 지우거나 다른 기기에서 열면 기록이 따라오지 않습니다. 옮기고 싶다면 '내 기록' 화면의 백업 기능으로 내보냈다가 새 기기에서 불러오면 됩니다.</p>
+    </div>
+    <div class="about-faq-list">
+      <p class="about-faq" data-i18n="about.faq1"><strong>설치하지 않아도 되나요?</strong><br>네. 주소만 열면 바로 플레이됩니다. 자주 하신다면 홈 화면에 추가해 앱처럼 쓸 수 있고, 한 번 열어 둔 뒤에는 인터넷이 끊겨도 대부분 그대로 실행됩니다.</p>
+      <p class="about-faq" data-i18n="about.faq2"><strong>몇 살부터 할 수 있나요?</strong><br>글을 읽을 수 있으면 대부분의 게임을 할 수 있습니다. 카드 짝 맞추기나 다른 색 찾기처럼 규칙이 한 줄인 게임은 더 어릴 때도 괜찮고, 스도쿠·픽셀 로직처럼 논리가 필요한 게임은 초등 고학년 이후가 편합니다.</p>
+      <p class="about-faq" data-i18n="about.faq3"><strong>매일 해야 하나요?</strong><br>그럴 필요는 없습니다. 다만 하루 3판 정도를 같은 시간대에 하면 기록끼리 비교가 되기 때문에 변화가 눈에 보입니다. 컨디션에 따라 점수가 오르내리는 것도 정상입니다.</p>
+    </div>
+    <p class="about-disclaimer" data-i18n="about.disc">플레이말로우의 두뇌게임은 가볍게 즐기는 오락이며, 의학적 진단이나 치료를 대신하지 않습니다. 운세 콘텐츠 역시 재미로 보는 내용입니다.</p>
   </div>
   <div class="site-footer" id="site-footer">
     <a href="sudoku/">스도쿠 무료</a>·<a href="2048/">2048</a>·<a href="water-sort/">물 정렬 퍼즐</a>·<a href="nonogram/">네모로직</a>·<a href="memory-game/">기억력 게임</a>·<a href="reaction-time/">반응속도 테스트</a>·<a href="iq-test/">IQ 테스트</a>·<a href="braintype/">두뇌 유형 테스트</a>·<a href="moamoa/">모아모아</a>·<a href="guide/brain-games/">게임 공략</a>·<a href="stroop/">스트룹 테스트</a><br><a href="unse/">오늘의 운세</a>·<a href="zodiac/">별자리 운세</a>·<a href="ttirank/">띠별 운세</a>·<a href="tarot/">타로</a>·<a href="persona/">성격유형 테스트</a>·<a href="luckycolor/">태국 행운색</a>·<a href="queens/">말로우 크라운</a>·<a href="tango/">말로우 탱고</a>·<a href="suneung/">수능 운세</a>·<a href="newyear/">신년운세</a><br><a href="privacy/">개인정보처리방침</a>·<a href="privacy/?lang=en">Privacy</a>
