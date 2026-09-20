@@ -400,6 +400,6 @@ _Write important context, decisions, and lessons here so future sessions can pic
   JS로 언어 섹션을 숨기는 페이지는 소스가 68KB여도 화면엔 221자일 수 있다.
 
 ## Mallow 메달 컬렉션 1차 (2026-09-20)
-- `index.html`의 `MEDAL_STEPS`와 `medalState()`가 Bronze·Silver·Gold·Diamond를 계산한다. 목표점은 별도 임계값 표가 아니라 보정된 `GAME_REF`의 25%·55%·80%·105%라 점수 체계가 다른 게임에도 같은 의미를 유지한다.
+- `index.html`의 `MEDAL_STEPS`와 `medalState()`가 Bronze·Silver·Gold·Diamond를 계산한다. 메달은 능력치 계산보다 긴 `.6/1.8/4/8` 수집 곡선을 쓰며, 실제 플레이로 점수 단위를 확인한 게임은 `MEDAL_GOALS` 고정 목표를 우선한다. 첫 보정 대상인 말로우 런은 `600/1800/4000/8000`점으로, 2,048점은 Silver다.
 - 현재 최고점에서 즉시 계산하므로 저장 마이그레이션이 없다. `afterGame()` 공통 결과 블록은 다음 메달 점수·진행바·Mallow 표정을, 홈 `#home-collection`과 내 기록 목록은 컬렉션 상태를 쓴다.
-- `tools/quality/quality-browser.mjs`의 flash 회귀는 메달·컬렉션 존재까지 확인한다. 정적 계약·기록/미션 회귀·390px browser smoke를 통과했다.
+- `tools/quality/quality-browser.mjs`의 flash 회귀는 메달·컬렉션 존재와 런 2,048점의 Silver→Gold 판정까지 확인한다. 정적 계약·결과 화면 smoke를 통과했다.

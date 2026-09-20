@@ -8373,12 +8373,16 @@ function gameBestVal(id){
   try{ return parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){ return 0; }
 }
 function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(100,Math.round(gameBestVal(id)/ref*100))); }
-/* Mallow 메달은 게임별 밸런스 기준(GAME_REF)을 공통 눈금으로 쓴다.
-   임의 점수표가 아니라 이미 난이도와 점수 분포를 보정한 목표점에서 4단계로 나눈다. */
+/* Mallow 메달은 장기 수집 목표용으로 능력치 기준보다 훨씬 긴 난도 곡선을 쓴다.
+   GAME_REF는 기본 게임의 점수 단위를 맞추는 출발점만 제공하고, 실제 플레이로 확인한 게임은
+   아래 고정 목표를 우선한다. */
 const MEDAL_STEPS=[
-  {key:'bronze', icon:'🥉', ratio:.25}, {key:'silver', icon:'🥈', ratio:.55},
-  {key:'gold', icon:'🥇', ratio:.8}, {key:'diamond', icon:'💎', ratio:1.05}
+  {key:'bronze', icon:'🥉', ratio:.6}, {key:'silver', icon:'🥈', ratio:1.8},
+  {key:'gold', icon:'🥇', ratio:4}, {key:'diamond', icon:'💎', ratio:8}
 ];
+/* 플레이 속도·점수 단위가 특히 큰 게임은 실제 플레이 확인값을 우선한다.
+   말로우 런: 2,048점은 Silver, Diamond는 8,000점의 장기 목표. */
+const MEDAL_GOALS={run:[600,1800,4000,8000]};
 function medalCopy(key){
   const C={
     ko:{collection:'Mallow 메달 컬렉션',empty:'첫 메달을 향해 한 판 시작해 보세요.',earned:'획득',next:'다음 목표',complete:'이 게임의 모든 메달을 모았어요!',medal:'메달'},
@@ -8386,7 +8390,7 @@ function medalCopy(key){
     th:{collection:'คอลเลกชันเหรียญ Mallow',empty:'เล่นหนึ่งรอบเพื่อรับเหรียญแรกของคุณ',earned:'ได้รับแล้ว',next:'เป้าหมายต่อไป',complete:'คุณเก็บเหรียญเกมนี้ครบแล้ว!',medal:'เหรียญ'}
   }; return (C[CURRENT_LANG]||C.ko)[key];
 }
-function medalTargets(id){ const ref=GAME_REF[id]||100; return MEDAL_STEPS.map(s=>Object.assign({},s,{score:Math.max(1,Math.round(ref*s.ratio))})); }
+function medalTargets(id){ const fixed=MEDAL_GOALS[id], ref=GAME_REF[id]||100; return MEDAL_STEPS.map((s,i)=>Object.assign({},s,{score:fixed?fixed[i]:Math.max(1,Math.round(ref*s.ratio))})); }
 function medalState(id, score){
   const targets=medalTargets(id), val=Math.max(0,Number(score)||0);
   let index=-1; targets.forEach((s,i)=>{ if(val>=s.score) index=i; });

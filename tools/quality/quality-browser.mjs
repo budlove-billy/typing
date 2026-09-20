@@ -76,8 +76,9 @@ try {
             const retry=!!document.querySelector('#flash-result-card .pg-box');
             const medal=!!document.querySelector('#flash-result-card .medal-moment');
             const collection=document.querySelector('#home-collection')?.textContent.includes('Mallow');
+            const runMedal=medalState('run',2048);
             pgRetry('flash');
-            return saved===1000&&visible&&retry&&medal&&collection&&document.getElementById('flash-game-card').style.display==='block';
+            return saved===1000&&visible&&retry&&medal&&collection&&runMedal.current?.key==='silver'&&runMedal.next?.key==='gold'&&document.getElementById('flash-game-card').style.display==='block';
           });
           if(!result) failures.push(`${lang}/flash: record/result/retry failed`);
         }
