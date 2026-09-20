@@ -410,4 +410,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 
 ## 탱고 플레이 도움말 (2026-09-20)
 - `tango/index.html`의 게임판 아래 규칙은 `#gameHelp` 네이티브 `<details>`로 제공한다. 기본은 접힌 `도움말 보기 ▼`이고, 펼치면 기존 `#t-hint`의 목표·규칙·탭 순서가 나온다. `syncHelpLabel()`이 열림 상태에 맞춘 ko/en/th 문구를 유지한다.
-- 게임 플레이 밀도를 위해 접되, `.seo`의 소개·규칙·FAQ는 SEO와 처음 방문한 사용자의 상세 이해를 위해 접지 않는다. 변경 시 `.logs/tango-help-smoke.mjs`로 390px 기본/열림·en/th·가로 넘침·pageerror를 검증한다.
+- 게임판 바로 아래의 짧은 `#gameHelp`와 장문 `.seo` 소개는 역할을 구분한다. `#gameHelp`는 규칙 즉시 확인용 접이식 도움말이고, 장문 `.seo`는 공통 `assets/seo-fold.js`로 기본 접힌 상세 설명이다. 변경 시 `.logs/tango-help-smoke.mjs`와 `.logs/seo-fold-smoke.mjs`로 검증한다.
+
+## 게임 장문 설명 접기 (2026-09-20)
+- 게임판 아래의 장문 소개·규칙·FAQ는 `assets/seo-fold.js`가 기본 접힘으로 만든다. 대상은 `.seo` 블록이 있는 10개 게임과 일반 `main > section` 구조의 2048이다. 게임 시작 UI와 탱고의 짧은 플레이 도움말은 접지 않는다.
+- 기본 라벨은 ko `게임 설명 보기`, en `About this game`, th `ดูรายละเอียดเกม`이며 `<html lang>` 변경을 관찰해 열린 상태의 라벨도 갱신한다. 본문·FAQ·내부 링크를 DOM 안에서만 이동하므로 삭제하지 않는다. 회귀 검증은 `.logs/seo-fold-smoke.mjs`의 11페이지 390px 기본/열림/언어 검사로 한다.
