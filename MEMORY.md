@@ -403,3 +403,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - `index.html`의 `MEDAL_STEPS`와 `medalState()`가 Bronze·Silver·Gold·Diamond를 계산한다. 메달은 능력치 계산보다 긴 `.6/1.8/4/8` 수집 곡선을 쓰며, 실제 플레이로 점수 단위를 확인한 게임은 `MEDAL_GOALS` 고정 목표를 우선한다. 첫 보정 대상인 말로우 런은 `600/1800/4000/8000`점으로, 2,048점은 Silver다.
 - 현재 최고점에서 즉시 계산하므로 저장 마이그레이션이 없다. `afterGame()` 공통 결과 블록은 다음 메달 점수·진행바·Mallow 표정을, 홈 `#home-collection`과 내 기록 목록은 컬렉션 상태를 쓴다.
 - `tools/quality/quality-browser.mjs`의 flash 회귀는 메달·컬렉션 존재와 런 2,048점의 Silver→Gold 판정까지 확인한다. 정적 계약·결과 화면 smoke를 통과했다.
+
+## 새싹 모찌 마스코트 (2026-09-20)
+- `mallowSVG()`는 외부 이미지 없이 모든 웹 게임·홈·공유 카드에 쓰이는 단일 마스코트 원본이다. A 시안으로 확정된 새싹 모찌는 두 장의 초록 잎, 둥근 모찌 몸통, 민트 기본 네비게이션, 큰 광택 하이라이트를 쓴다. 기존 한입 큐브처럼 우측이 파인 윤곽을 다시 도입하지 않는다.
+- 결과 공통 `pg-box`는 아이보리 보상 패널, `medal-moment`는 골드 진행 트랙, `pg-retry`는 입체 파란 주 버튼으로 유지한다. 390px 결과 화면에서 새싹 SVG·메달·재도전·가로 넘침 0을 확인하는 `.logs/medal-smoke.mjs`를 사용할 수 있다.
