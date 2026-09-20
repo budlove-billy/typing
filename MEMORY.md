@@ -398,3 +398,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
   **언어 관련 계측은 URL마다 `newContext()`로 격리할 것.**
 - 본문량은 정적 파일 크기가 아니라 **실제 렌더 후 보이는 텍스트**로 재야 한다(`.logs/thin_audit.mjs`).
   JS로 언어 섹션을 숨기는 페이지는 소스가 68KB여도 화면엔 221자일 수 있다.
+
+## Mallow 메달 컬렉션 1차 (2026-09-20)
+- `index.html`의 `MEDAL_STEPS`와 `medalState()`가 Bronze·Silver·Gold·Diamond를 계산한다. 목표점은 별도 임계값 표가 아니라 보정된 `GAME_REF`의 25%·55%·80%·105%라 점수 체계가 다른 게임에도 같은 의미를 유지한다.
+- 현재 최고점에서 즉시 계산하므로 저장 마이그레이션이 없다. `afterGame()` 공통 결과 블록은 다음 메달 점수·진행바·Mallow 표정을, 홈 `#home-collection`과 내 기록 목록은 컬렉션 상태를 쓴다.
+- `tools/quality/quality-browser.mjs`의 flash 회귀는 메달·컬렉션 존재까지 확인한다. 정적 계약·기록/미션 회귀·390px browser smoke를 통과했다.

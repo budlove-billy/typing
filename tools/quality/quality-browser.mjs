@@ -74,8 +74,10 @@ try {
             const saved=JSON.parse(localStorage.getItem('brain.flash.best'))[FM.diff].all;
             const visible=document.getElementById('flash-result-card').style.display==='block';
             const retry=!!document.querySelector('#flash-result-card .pg-box');
+            const medal=!!document.querySelector('#flash-result-card .medal-moment');
+            const collection=document.querySelector('#home-collection')?.textContent.includes('Mallow');
             pgRetry('flash');
-            return saved===1000&&visible&&retry&&document.getElementById('flash-game-card').style.display==='block';
+            return saved===1000&&visible&&retry&&medal&&collection&&document.getElementById('flash-game-card').style.display==='block';
           });
           if(!result) failures.push(`${lang}/flash: record/result/retry failed`);
         }

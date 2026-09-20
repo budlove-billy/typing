@@ -1020,6 +1020,32 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .pg-retry{background:linear-gradient(180deg,#ff9db8,#f4789c);color:#fff;box-shadow:0 3px 0 #d9648a}
 .pg-retry:active{transform:translateY(2px);box-shadow:0 1px 0 #d9648a}
 .pg-chal{background:#fff;color:var(--text);border:1px solid var(--border)}
+/* ── Mallow 컬렉션: 결과가 다음 한 판의 목표가 되도록 ── */
+.medal-moment{position:relative;display:grid;grid-template-columns:72px 1fr;align-items:center;gap:.65rem;margin:-.1rem 0 .85rem;padding:.72rem .78rem;background:linear-gradient(135deg,#fbf7ff,#f2f8ff);border:1px solid #d9e2fb;border-radius:15px;text-align:left;overflow:hidden}
+.medal-moment::after{content:'';position:absolute;width:120px;height:120px;right:-55px;top:-72px;border-radius:50%;background:rgba(255,202,87,.18)}
+.medal-mascot{position:relative;z-index:1;display:grid;place-items:center;min-height:68px;animation:medalMallow .55s cubic-bezier(.2,.8,.3,1)}
+@keyframes medalMallow{from{transform:translateY(12px) scale(.72);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.medal-kicker{font-size:.68rem;font-weight:850;letter-spacing:.06em;color:var(--text3)}
+.medal-title{margin:.12rem 0;font-size:1.02rem;font-weight:900;color:var(--text)}
+.medal-copy{font-size:.76rem;line-height:1.45;color:var(--text2)}
+.medal-track{height:7px;margin-top:.42rem;background:#dde4f1;border-radius:99px;overflow:hidden}
+.medal-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#b58a4f,#efbc61);transition:width .45s ease}
+.medal-diamond .medal-track i{background:linear-gradient(90deg,#6d77d8,#49b9d6)}
+.medal-steps{display:flex;gap:.26rem;margin-top:.45rem;font-size:.7rem;line-height:1}
+.medal-steps span{opacity:.25;filter:grayscale(1)}
+.medal-steps span.on{opacity:1;filter:none}
+.home-collection{display:grid;grid-template-columns:76px 1fr;align-items:center;gap:.75rem;padding:.9rem 1rem;background:linear-gradient(135deg,#fffdf6,#f4f8ff);border-color:#e8ddbf;cursor:pointer;text-align:left}
+.home-collection:hover{border-color:#d6b36d;transform:translateY(-2px)}
+.collection-mallow{display:grid;place-items:center;min-height:70px}
+.collection-title{font-size:.9rem;font-weight:900;color:var(--text)}
+.collection-sub{margin-top:.2rem;font-size:.76rem;color:var(--text2);line-height:1.45}
+.collection-medals{display:flex;gap:.38rem;margin-top:.48rem;font-size:.84rem;font-weight:800;color:var(--text2)}
+.collection-medals b{color:var(--text)}
+/* 대표 6종은 동일한 깊이·집중 영역·손맛을 공유한다. */
+#flash-game-card,#spot-game-card,#react-game-card,#bubble-game-card,#merge-game-card,#sort-game-card{position:relative;isolation:isolate;box-shadow:0 14px 34px rgba(49,68,124,.12),inset 0 1px 0 rgba(255,255,255,.9)}
+#flash-game-card::after,#spot-game-card::after,#react-game-card::after,#bubble-game-card::after,#merge-game-card::after,#sort-game-card::after{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.68);border-radius:calc(var(--radius3) - 6px);pointer-events:none;z-index:-1}
+#flash-game-card .mg-top-stats,#spot-game-card .mg-top-stats,#react-game-card .mg-top-stats,#bubble-game-card .mg-top-stats,#merge-game-card .mg-top-stats,#sort-game-card .mg-top-stats{padding:.3rem .15rem .75rem;border-bottom:1px solid rgba(113,132,183,.16);margin-bottom:1rem}
+@media(max-width:420px){.medal-moment{grid-template-columns:58px 1fr;padding:.66rem}.medal-mascot svg{width:58px;height:58px}.home-collection{grid-template-columns:64px 1fr}}
 /* ── 홈: 주간 챌린지 ── */
 .wk-card{padding:.9rem 1rem}
 .wk-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
@@ -1064,6 +1090,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="hg-item"><b id="hg-records">0</b><span data-i18n="goals.records">보유 기록</span></div>
     </div>
   </div>
+  <button class="card home-collection" id="home-collection" onclick="showScreen('records')" aria-label="Mallow medal collection"></button>
   <button class="card home-install" id="pwa-install" style="display:none" onclick="pwaInstall()">📲 <span data-i18n="install.button">홈 화면에 앱으로 설치</span></button>
   <div class="card home-ios-hint" id="ios-hint" style="display:none"><span data-i18n="install.ios">iPhone은 Safari 공유 버튼 → '홈 화면에 추가'로 앱처럼 설치할 수 있어요</span><button class="ios-hint-x" onclick="dismissIosHint()">✕</button></div>
   <div class="home-section-title" data-i18n="home.daily">오늘의 데일리</div>
@@ -8099,6 +8126,7 @@ function afterGame(id, r){
   const card=document.getElementById(id+'-result-card'); if(!card) return;
   const old=card.querySelector('.pg-box'); if(old) old.remove();
   let pts=WK_PTS.play, html='', botRes='none', botLv=0;
+  if(r && typeof r.score==='number') html+=renderMedalMoment(id,Math.max(gameBestVal(id),r.score));
   if(r){
     if(r.isNew && r.prev<=0){
       pts+=WK_PTS.pb;
@@ -8138,6 +8166,7 @@ function afterGame(id, r){
   if(hasCh) act+='<button class="pg-btn pg-chal" onclick="sendChallenge(\''+id+'\')">🎯 '+t('pg.chal')+'</button>';
   if(act) html+='<div class="pg-actions">'+act+'</div>';
   card.insertAdjacentHTML('beforeend','<div class="pg-box">'+html+'</div>');
+  renderCollection();
 }
 function gameMeta(id){ return HOME_GAMES.find(g=>g.id===id) || {emoji:'🎮', key:'nav.'+id}; }
 // external(운세 정적페이지)로 이동 시 현재 앱 언어를 ?lang= 로 전달(별자리/타로 다국어 자동 적용)
@@ -8202,7 +8231,7 @@ function renderHome(){
   let rec=0;
   HOME_GAMES.forEach(g=>{ if(g.id!=='braintype' && !g.external && gameBestVal(g.id)>0) rec++; });
   setTxt('hg-plays', plays+'/'+set.length); setTxt('hg-streak', v.streak); setTxt('hg-records', rec);
-  try{ renderWeek(); }catch(e){}
+  try{ renderWeek(); renderCollection(); }catch(e){}
   // 큰 추천 카드
   const next=set.find(id=>!m.done.includes(id));
   const fEl=document.getElementById('home-feature');
@@ -8344,6 +8373,45 @@ function gameBestVal(id){
   try{ return parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){ return 0; }
 }
 function gameLevel(id){ const ref=GAME_REF[id]||100; return Math.max(0,Math.min(100,Math.round(gameBestVal(id)/ref*100))); }
+/* Mallow 메달은 게임별 밸런스 기준(GAME_REF)을 공통 눈금으로 쓴다.
+   임의 점수표가 아니라 이미 난이도와 점수 분포를 보정한 목표점에서 4단계로 나눈다. */
+const MEDAL_STEPS=[
+  {key:'bronze', icon:'🥉', ratio:.25}, {key:'silver', icon:'🥈', ratio:.55},
+  {key:'gold', icon:'🥇', ratio:.8}, {key:'diamond', icon:'💎', ratio:1.05}
+];
+function medalCopy(key){
+  const C={
+    ko:{collection:'Mallow 메달 컬렉션',empty:'첫 메달을 향해 한 판 시작해 보세요.',earned:'획득',next:'다음 목표',complete:'이 게임의 모든 메달을 모았어요!',medal:'메달'},
+    en:{collection:'Mallow medal collection',empty:'Play one round to earn your first medal.',earned:'earned',next:'Next goal',complete:'Every medal in this game is yours!',medal:'medal'},
+    th:{collection:'คอลเลกชันเหรียญ Mallow',empty:'เล่นหนึ่งรอบเพื่อรับเหรียญแรกของคุณ',earned:'ได้รับแล้ว',next:'เป้าหมายต่อไป',complete:'คุณเก็บเหรียญเกมนี้ครบแล้ว!',medal:'เหรียญ'}
+  }; return (C[CURRENT_LANG]||C.ko)[key];
+}
+function medalTargets(id){ const ref=GAME_REF[id]||100; return MEDAL_STEPS.map(s=>Object.assign({},s,{score:Math.max(1,Math.round(ref*s.ratio))})); }
+function medalState(id, score){
+  const targets=medalTargets(id), val=Math.max(0,Number(score)||0);
+  let index=-1; targets.forEach((s,i)=>{ if(val>=s.score) index=i; });
+  return {targets:targets,score:val,index:index,current:index>=0?targets[index]:null,next:targets[index+1]||null};
+}
+function renderMedalMoment(id, score){
+  const state=medalState(id,score), current=state.current, next=state.next;
+  const pct=next ? Math.min(100,Math.round(state.score/next.score*100)) : 100;
+  const mood=state.index>=2?'success':state.index>=0?'happy':'focus';
+  const title=current ? current.icon+' '+current.key.toUpperCase()+' '+medalCopy('medal') : medalCopy('next')+' · '+state.targets[0].icon;
+  const copy=next ? medalCopy('next')+' '+next.icon+' '+Math.max(1,next.score-state.score)+' · '+next.score : medalCopy('complete');
+  const steps=state.targets.map((s,i)=>'<span class="'+(i<=state.index?'on':'')+'" title="'+s.key+' '+s.score+'">'+s.icon+'</span>').join('');
+  return '<div class="medal-moment '+(current&&current.key==='diamond'?'medal-diamond':'')+'">'+
+    '<div class="medal-mascot">'+mallowSVG(mood,{size:70,variant:current&&current.key==='diamond'?'sky':'cream'})+'</div>'+
+    '<div><div class="medal-kicker">MALLOW COLLECTION</div><div class="medal-title">'+title+'</div><div class="medal-copy">'+copy+'</div>'+
+    '<div class="medal-track"><i style="width:'+pct+'%"></i></div><div class="medal-steps">'+steps+'</div></div></div>';
+}
+function renderCollection(){
+  const el=document.getElementById('home-collection'); if(!el) return;
+  const ids=trainingIds(); let total=0, diamond=0, best=null;
+  ids.forEach(id=>{ const s=medalState(id,gameBestVal(id)); total+=Math.max(0,s.index+1); if(s.index===3) diamond++; if(!best&&s.next) best={id:id,s:s}; });
+  const sub=total ? medalCopy('earned')+' '+total+' / '+(ids.length*4)+' · 💎 '+diamond : medalCopy('empty');
+  const goal=best ? medalCopy('next')+': '+gameMeta(best.id).emoji+' '+t(gameMeta(best.id).key)+' '+Math.max(1,best.s.next.score-best.s.score) : medalCopy('complete');
+  el.innerHTML='<span class="collection-mallow">'+mallowSVG(total?'happy':'default',{size:70,variant:total?'mint':'cream'})+'</span><span><span class="collection-title">🏅 '+medalCopy('collection')+'</span><span class="collection-sub">'+sub+'<br>'+goal+'</span><span class="collection-medals"><b>🥉 🥈 🥇 💎</b></span></span>';
+}
 function abilityScores(){
   const num={},den={}; ABILITIES.forEach(a=>{num[a]=0;den[a]=0;});
   trainingIds().forEach(id=>{
@@ -8527,11 +8595,12 @@ function renderGameRecords(){
   if(!vis.length){ body.innerHTML='<div class="rec-empty">'+t('rec.noPlayed')+'</div>'; return; }
   vis.forEach(g=>{
     const rec=gameBestRecord(g), isNew=newSet.has(g.id);
+    const medal=medalState(g.id,rec.score);
     const item=document.createElement('button');
     item.type='button'; item.className='rec-item'+(isNew?' isnew':'');
     item.onclick=()=>showScreen(g.id);
     item.setAttribute('aria-label',t(g.key)+' '+t('rec.bestLabel')+' '+rec.score);
-    const meta=[t(g.grp),rec.diff?recordDifficultyName(rec.diff):''].filter(Boolean).join(' · ');
+    const meta=[t(g.grp),rec.diff?recordDifficultyName(rec.diff):'',medal.current?medal.current.icon+' '+medal.current.key.toUpperCase():''].filter(Boolean).join(' · ');
     item.innerHTML=
       '<span class="rec-icon">'+g.emoji+'</span>'+
       '<span class="rec-info"><span class="rec-game-name">'+t(g.key)+(isNew?'<span class="rec-new-badge">NEW</span>':'')+'</span>'+
