@@ -407,3 +407,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 새싹 모찌 마스코트 (2026-09-20)
 - `mallowSVG()`는 외부 이미지 없이 모든 웹 게임·홈·공유 카드에 쓰이는 단일 마스코트 원본이다. A 시안으로 확정된 새싹 모찌는 두 장의 초록 잎, 둥근 모찌 몸통, 민트 기본 네비게이션, 큰 광택 하이라이트를 쓴다. 기존 한입 큐브처럼 우측이 파인 윤곽을 다시 도입하지 않는다.
 - 결과 공통 `pg-box`는 아이보리 보상 패널, `medal-moment`는 골드 진행 트랙, `pg-retry`는 입체 파란 주 버튼으로 유지한다. 390px 결과 화면에서 새싹 SVG·메달·재도전·가로 넘침 0을 확인하는 `.logs/medal-smoke.mjs`를 사용할 수 있다.
+
+## 탱고 플레이 도움말 (2026-09-20)
+- `tango/index.html`의 게임판 아래 규칙은 `#gameHelp` 네이티브 `<details>`로 제공한다. 기본은 접힌 `도움말 보기 ▼`이고, 펼치면 기존 `#t-hint`의 목표·규칙·탭 순서가 나온다. `syncHelpLabel()`이 열림 상태에 맞춘 ko/en/th 문구를 유지한다.
+- 게임 플레이 밀도를 위해 접되, `.seo`의 소개·규칙·FAQ는 SEO와 처음 방문한 사용자의 상세 이해를 위해 접지 않는다. 변경 시 `.logs/tango-help-smoke.mjs`로 390px 기본/열림·en/th·가로 넘침·pageerror를 검증한다.
