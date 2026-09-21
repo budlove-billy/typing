@@ -402,10 +402,6 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 
 ## Build changelog
 
-- 2026-09-20 — **게임 장문 설명 전체 접기**: 2048·스도쿠·물 정렬·네모로직·기억력·반응속도·IQ·스트룹·모아모아·말로우 크라운·말로우 탱고 11개 페이지의 게임판 아래 소개·규칙·FAQ·내부 링크를 공통 `assets/seo-fold.js`로 기본 접힘 처리했다. `.seo`와 일반 `<section>` 두 구조를 모두 지원하며, 본문은 DOM과 원본 HTML에 보존한다. 기본 `게임 설명 보기 ▼`, 펼침·영어/태국어 라벨·390px 가로 넘침 0을 전체 브라우저 smoke로 확인했다.
-
-- 2026-09-20 — **탱고 플레이 도움말 접기**: 게임판 아래의 상시 규칙 네 줄을 기본 접힘 상태의 네이티브 `<details>` 도움말로 변경했다. 기본 행은 `도움말 보기 ▼`, 펼치면 목표·3연속 금지·줄 균형·탭 순서를 보여주며 ko/en/th의 접기·펼치기 문구를 동기화한다. SEO용 소개·규칙·FAQ 본문은 검색 품질을 위해 그대로 유지했다. 390px 접기/펼치기·3개 언어·가로 넘침 0·퍼즐 결정성 검사 통과.
-
 - 2026-09-20 — **새싹 모찌 마스코트·결과 보상 UI**: 우측이 파인 한입 큐브를 두 장의 새싹과 둥근 민트 모찌 몸통, 광택 하이라이트를 가진 인라인 SVG로 전면 교체했다. 작은 아이콘·게임 오브젝트·공유 카드까지 같은 `mallowSVG()`를 사용한다. 결과의 메달 패널과 재도전 버튼은 둥근 보상 카드·파란 주 행동·입체 그림자로 강화했으며 390px 스모크에서 새싹 실루엣, 가로 넘침 0, pageerror 0을 확인했다.
 
 - 2026-09-20 — **말로우 런 메달 밸런스 보정**: 한두 판 만에 Diamond가 나올 수 있던 공통 목표를 장기 수집 곡선으로 조정하고, 점수 단위가 큰 말로우 런은 Bronze·Silver·Gold·Diamond를 `600·1,800·4,000·8,000`점으로 고정했다. 2,048점은 Silver로 재계산되며 저장 형식 변경은 없다. 브라우저 회귀 검사에 이 판정을 추가했고 정적 검사와 결과 화면 smoke를 통과했다.
@@ -418,6 +414,10 @@ Your role for this project is defined in [`ROLE.md`](./ROLE.md). **Read it first
 - 2026-08-06 — Native game discovery redesign completed: replaced the accordion list with a 12-category icon board and selected-category game grid, aligned all 38 games with playmallow.com grouping and icon semantics, introduced deterministic native vector pictograms, and rebuilt the bottom navigation as strong icon-label pills. Added unique category coverage smoke checks, rebuilt the Android APK, and verified memory/daily category switching with no runtime errors on `PlayMallow_API35`.
 - 2026-08-05 — Full native brain-game catalog completed: ported all 34 active non-fortune games plus `braintype`, `moamoa`, `queens`, and `tango` (38 total) into Godot modules. Added ko/en copy, 10-axis records with multi-axis updates, catalog-to-script QA, Android touch scrolling, and rebuilt a signed 54.7MB arm64+x86_64 debug APK. Verified on `PlayMallow_API35` with no script/parse/fatal log errors.
 - 2026-08-05 — Android build pipeline completed: project-local JDK 17, Android SDK/NDK/CMake, and Godot 4.7.1 export templates installed. Added `mobile/godot/export_presets.cfg`, Mallow launcher icon, reproducible `build-android.ps1`, and produced a signed arm64+x86_64 debug APK. Release AAB remains gated on a project-owned non-debug keystore.
+
+- 2026-09-21 — **게임 도움말 접기 원복**: 말로우 탱고의 규칙 도움말을 접기 전처럼 게임판 아래 상시 표시로 복구하고, 11개 게임의 장문 설명 접기 스크립트와 연결을 제거했다. 설명·규칙·FAQ는 기존 페이지 흐름에 그대로 남긴다.
+
+- 2026-09-21 — **다국어 색인 신호 정리**: 한국어 서버 HTML에 쿼리 언어 URL을 대체 페이지로 선언하던 13개 sitemap 항목과 hreflang을 제거하고, 언어 선택 후에도 canonical이 각 한국어 정본 URL을 유지하도록 했다. 화면 언어 전환은 보존했으며, 실제 번역·canonical을 가진 게임별 정적 언어 URL은 유지했다.
 - 2026-08-05 — Android PC emulator run completed: installed the project-local Android Emulator and Android 35 x86_64 image, created `PlayMallow_API35`, widened the debug APK to arm64+x86_64, and added `mobile/godot/run-android-emulator.ps1` for repeatable boot/install/launch.
 - 2026-08-05 — Godot mobile UI refinement completed: rebuilt Home/Games/Records/Settings/Result and all three game surfaces around a padded mobile design system, replaced global label wrapping with selective wrapping, redrew the bite Mallow mascot, and passed Android 15 emulator visual QA across six screens.
 - 2026-08-05 — Native game continuation completed: replaced the bite mascot and launcher icon with a hole-free mint slime Mallow, added the four-language-ready `react` reaction-signal game with records/results integration, and verified the first round on the Android 15 emulator.

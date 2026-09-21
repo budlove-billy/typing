@@ -15,10 +15,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://playmallow.com/og/zodiac.png">
 <link rel="canonical" href="https://playmallow.com/zodiac/">
-<link rel="alternate" hreflang="ko" href="https://playmallow.com/zodiac/">
-<link rel="alternate" hreflang="en" href="https://playmallow.com/zodiac/?lang=en">
-<link rel="alternate" hreflang="th" href="https://playmallow.com/zodiac/?lang=th">
-<link rel="alternate" hreflang="x-default" href="https://playmallow.com/zodiac/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 별자리 운세","url":"https://playmallow.com/zodiac/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"오늘 달이 지나는 별자리와 내 별자리의 각도(아스펙트)에 달의 위상을 더해 100점 기준 지수로 산출하는 무료 별자리 운세. 애정·금전·건강·일 점수와 이번 주 흐름까지."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"별자리 운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네. 가입·설치 없이 생년월일만 입력하면 무료로 바로 오늘의 별자리 운세를 볼 수 있습니다."}},{"@type":"Question","name":"내 별자리는 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"입력한 생년월일을 12별자리 경계 날짜에 맞춰 자동으로 판별합니다."}},{"@type":"Question","name":"운세는 매일 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"네. 같은 별자리는 하루 동안 같은 운세가 나오고, 날짜가 바뀌면 새 운세가 나옵니다. 재미로 보는 오락용 콘텐츠입니다."}},{"@type":"Question","name":"운세 지수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"오늘 달이 지나는 별자리와 내 별자리 사이의 각도(합 0°·육각 60°·사각 90°·삼각 120°·대각 180° 등 7종)를 기본값으로 삼고 달의 위상 8단계를 더해 100점 기준 지수를 만듭니다. 별점과 분야별 점수도 모두 이 지수에서 나옵니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"별자리 운세","item":"https://playmallow.com/zodiac/"}]}]}
 </script>
@@ -671,7 +667,7 @@ const SEO_I18N={
 const SEO_BASE='https://playmallow.com/zodiac/';
 function syncSEO(){
   const s=SEO_I18N[LANG]||SEO_I18N.ko;
-  const url=SEO_BASE+(LANG==='ko'?'':'?lang='+LANG);
+  const url=SEO_BASE;
   const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
   if(s.t) document.title=s.t;
   set('link[rel="canonical"]','href',url);

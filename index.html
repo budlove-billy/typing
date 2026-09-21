@@ -7,10 +7,6 @@
 <meta name="description" content="가입·설치 없이 바로 즐기는 무료 두뇌게임·웹게임 사이트. 기억력·집중력·순발력 게임 34종과 오늘의 미션, 두뇌 유형 테스트.">
 <meta name="naver-site-verification" content="9837235c67647e2d6c47293ba00aa17e80abf903" />
 <link rel="canonical" href="https://playmallow.com/">
-<link rel="alternate" hreflang="ko" href="https://playmallow.com/">
-<link rel="alternate" hreflang="en" href="https://playmallow.com/?lang=en">
-<link rel="alternate" hreflang="th" href="https://playmallow.com/?lang=th">
-<link rel="alternate" hreflang="x-default" href="https://playmallow.com/">
 <meta name="theme-color" content="#4f7cff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="플레이말로우(Mallow)">
@@ -4285,7 +4281,7 @@ const SEO_LANG={
 };
 function syncLanguageSEO(lang,syncUrl){
   const seo=SEO_LANG[lang]||SEO_LANG.ko;
-  const canonical='https://playmallow.com/'+(lang==='ko'?'':'?lang='+lang);
+  const canonical='https://playmallow.com/';
   const set=(sel,attr,val)=>{const el=document.querySelector(sel);if(el)el.setAttribute(attr,val);};
   document.title=seo.title;
   set('meta[name="description"]','content',seo.desc);

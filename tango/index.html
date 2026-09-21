@@ -11,10 +11,6 @@
 <meta property="og:url" content="https://playmallow.com/tango/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
 <link rel="canonical" href="https://playmallow.com/tango/">
-<link rel="alternate" hreflang="ko" href="https://playmallow.com/tango/">
-<link rel="alternate" hreflang="en" href="https://playmallow.com/tango/?lang=en">
-<link rel="alternate" hreflang="th" href="https://playmallow.com/tango/?lang=th">
-<link rel="alternate" hreflang="x-default" href="https://playmallow.com/tango/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"말로우 탱고 (Tango)","url":"https://playmallow.com/tango/","applicationCategory":"GameApplication","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"매일 새로 나오는 무료 데일리 해·달 퍼즐. 3연속 금지와 개수 균형 규칙으로 격자를 채우는 이진 로직 퍼즐."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"말로우 탱고","item":"https://playmallow.com/tango/"}]}]}
 </script>
@@ -54,13 +50,7 @@ main{width:100%;max-width:480px;padding:8px 14px 44px;}
 .cell:active{transform:scale(.92);}
 .cell.given{background:#efe9ff;cursor:default;}
 .cell.bad{background:#ffe0e6;box-shadow:inset 0 0 0 2px #e0475a;}
-.game-help{margin-top:12px;border:1px solid #dfd5fb;border-radius:14px;background:#faf8ff;overflow:hidden;text-align:left;}
-.game-help summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;padding:11px 13px;color:var(--p);font-size:13px;font-weight:800;cursor:pointer;user-select:none;}
-.game-help summary::-webkit-details-marker{display:none;}
-.game-help summary::after{content:'▼';font-size:11px;transition:transform .18s ease;}
-.game-help[open] summary{border-bottom:1px solid #e8e0fb;}
-.game-help[open] summary::after{transform:rotate(180deg);}
-.game-help .hint{padding:10px 13px 12px;font-size:12px;color:var(--sub);line-height:1.7;text-align:center;}
+.hint{font-size:12px;color:var(--sub);text-align:center;line-height:1.6;margin-top:12px;}
 .btns{display:flex;gap:10px;margin-top:12px;}
 .btn{flex:1;padding:13px 0;font-size:15px;font-weight:800;border:none;border-radius:13px;background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(139,111,240,.28);font-family:inherit;}
 .btn.sub{background:#fff;color:var(--p);border:1.5px solid var(--p2);box-shadow:none;}
@@ -108,10 +98,7 @@ footer{font-size:11px;color:var(--sub);text-align:center;padding:6px 0 24px;} fo
     <div id="board"></div>
     <div id="wonBox"></div>
     <div class="btns" id="btns"></div>
-    <details class="game-help" id="gameHelp">
-      <summary id="t-help-summary">도움말 보기</summary>
-      <div class="hint" id="t-hint"></div>
-    </details>
+    <div class="hint" id="t-hint"></div>
     <div class="disc" id="t-disc"></div>
   </div>
   <section class="seo" data-lang-only="ko">
@@ -256,19 +243,19 @@ function toggleMute(){ MUTED=!MUTED; try{localStorage.setItem('mallow_mute',MUTE
 
 /* ===== i18n ===== */
 const TX={
- ko:{home:'홈',title:'탱고',tagline:'해와 달을 채우는 논리 퍼즐',clear:'지우기',help:'도움말 보기',helpOpen:'도움말 접기',
+ ko:{home:'홈',title:'탱고',tagline:'해와 달을 채우는 논리 퍼즐',clear:'지우기',
    date:d=>'📅 '+d+' 오늘의 퍼즐',hint:'🌗 <b>목표</b> — 모든 칸을 ☀️ 해 또는 🌙 달로 채워요.<br>① 같은 것이 <b>3개 연속</b>이면 안 돼요(가로·세로 모두).<br>② 각 가로줄·세로줄에 해와 달 <b>개수가 똑같게</b>.<br>👆 칸을 탭하면 ☀️ → 🌙 → 빈칸 순서로 바뀌어요.',
    disc:'매일 자정(KST) 새 퍼즐이 나와요. 오직 <b>논리</b>로 유일한 정답을 풀 수 있게 만들어집니다 🌗',footer:'가볍게 즐기는 두뇌게임',
    newGame:'새 퍼즐',share:'📷 결과 공유',again:'다시 풀기',won:'클리어! 🌗',wonTime:t=>'걸린 시간 '+t,
    share1:'말로우 탱고',share2:d=>d+' 데일리',shareText:t=>'말로우 탱고 클리어! 🌗 '+t+' playmallow.com/tango',docTitle:'말로우 탱고 — 오늘의 해·달 퍼즐 (Tango) | Mallow',
    toastBad:'규칙 위반! 빨간 칸을 확인하세요.'},
- en:{home:'Home',title:'Tango',tagline:'Fill the grid with suns & moons',clear:'Clear',help:'Show help',helpOpen:'Hide help',
+ en:{home:'Home',title:'Tango',tagline:'Fill the grid with suns & moons',clear:'Clear',
    date:d=>'📅 '+d+' Daily Puzzle',hint:'🌗 <b>Goal</b> — fill every cell with a ☀️ sun or 🌙 moon.<br>① Never <b>3 of the same in a row</b> (across or down).<br>② Each row and column needs an <b>equal number</b> of suns and moons.<br>👆 Tap a cell to cycle ☀️ → 🌙 → empty.',
    disc:'A new puzzle every midnight (KST). Each one has a single answer solvable by <b>pure logic</b> 🌗',footer:'brain games, made light',
    newGame:'New puzzle',share:'📷 Share result',again:'Play again',won:'Solved! 🌗',wonTime:t=>'Time '+t,
    share1:'Mallow Tango',share2:d=>d+' Daily',shareText:t=>'Solved Mallow Tango! 🌗 '+t+' playmallow.com/tango/en',docTitle:'Mallow Tango — Daily Sun & Moon Puzzle | Mallow',
    toastBad:'Rule broken! Check the red cells.'},
- th:{home:'หน้าแรก',title:'แทงโก้',tagline:'เติมดวงอาทิตย์และดวงจันทร์',clear:'ล้าง',help:'ดูวิธีเล่น',helpOpen:'ซ่อนวิธีเล่น',
+ th:{home:'หน้าแรก',title:'แทงโก้',tagline:'เติมดวงอาทิตย์และดวงจันทร์',clear:'ล้าง',
    date:d=>'📅 '+d+' ปริศนาวันนี้',hint:'🌗 <b>เป้าหมาย</b> — เติมทุกช่องด้วย ☀️ อาทิตย์ หรือ 🌙 จันทร์<br>① ห้ามเหมือนกัน <b>3 ช่องติด</b> (ทั้งแนวนอนและแนวตั้ง)<br>② แต่ละแถวและคอลัมน์ต้องมีอาทิตย์กับจันทร์ <b>จำนวนเท่ากัน</b><br>👆 แตะช่องเพื่อสลับ ☀️ → 🌙 → ว่าง',
    disc:'ปริศนาใหม่ทุกเที่ยงคืน (KST) ทุกด่านมีคำตอบเดียว แก้ได้ด้วย<b>ตรรกะ</b>ล้วน 🌗',footer:'เกมสมองเบา ๆ',
    newGame:'ปริศนาใหม่',share:'📷 แชร์ผล',again:'เล่นอีกครั้ง',won:'สำเร็จ! 🌗',wonTime:t=>'เวลา '+t,
@@ -396,7 +383,6 @@ function share(t){ gtag('event','tango_share',{}); const cv=drawCard(t);
     else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mallow-tango.png';a.click();}},'image/png'); }
 
 /* ===== UI ===== */
-function syncHelpLabel(){const d=TX[LANG], help=document.getElementById('gameHelp'), summary=document.getElementById('t-help-summary'); if(help&&summary) summary.textContent=help.open?d.helpOpen:d.help;}
 function applyLang(){const d=TX[LANG];
   document.getElementById('langSel').value=LANG;
   // 한국어 전용 고정 콘텐츠(소개·규칙·FAQ)는 다른 언어에서 숨긴다
@@ -406,7 +392,6 @@ function applyLang(){const d=TX[LANG];
   document.getElementById('t-tagline').textContent=d.tagline;
   document.getElementById('t-clear').textContent=d.clear;
   document.getElementById('t-hint').innerHTML=d.hint;
-  syncHelpLabel();
   document.getElementById('t-disc').innerHTML=d.disc;
   document.getElementById('t-footer').textContent=d.footer;
   document.getElementById('dateBar').textContent=d.date(kstDate());
@@ -431,7 +416,7 @@ const SEO_I18N={
 const SEO_BASE='https://playmallow.com/tango/';
 function syncSEO(){
   const s=SEO_I18N[LANG]||SEO_I18N.ko;
-  const url=SEO_BASE+(LANG==='ko'?'':'?lang='+LANG);
+  const url=SEO_BASE;
   const set=(sel,attr,v)=>{const e=document.querySelector(sel); if(e&&v) e.setAttribute(attr,v);};
   if(s.t) document.title=s.t;
   set('link[rel="canonical"]','href',url);
@@ -444,7 +429,6 @@ function syncSEO(){
    (함수 선언은 호이스팅되므로 정의보다 앞에 있어도 안전하다) */
 (function(){ const _a=applyLang; applyLang=function(){ const r=_a.apply(this,arguments); syncSEO(); return r; }; })();
 function setLang(l){LANG=['ko','en','th'].includes(l)?l:'ko';try{localStorage.setItem('brain.lang',LANG);}catch(e){}document.documentElement.lang=LANG;applyLang();syncLangUrl();}
-document.getElementById('gameHelp').addEventListener('toggle',syncHelpLabel);
 document.getElementById('clearBtn').onclick=()=>{ if(WON)return; ST=GIVEN.map(row=>row.slice()); paint(); };
 
 LANG=detectLang(); document.documentElement.lang=LANG;
@@ -452,6 +436,5 @@ document.getElementById('muteBtn').textContent=MUTED?'🔇':'🔊';
 renderSizes(); applyLang(); newPuzzle(true);
 </script>
 <script defer src="/seo-events.js"></script>
-<script src="/assets/seo-fold.js" defer></script>
 </body>
 </html>
