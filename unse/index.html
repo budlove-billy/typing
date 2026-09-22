@@ -148,6 +148,19 @@ footer a{color:var(--sub);}
 .seo .links a{color:var(--p,#b07fc7);text-decoration:none}
 .seo .disc{font-size:12px;color:var(--sub,#6b6b6b);text-align:center;margin-top:2px}
 .context-callout{display:none;background:linear-gradient(135deg,#fff8e7,#f4efff);border:1px solid #eadcf4;border-radius:14px;padding:12px 14px;margin:0 0 10px;color:#4b3c68;font-size:13px;line-height:1.6}
+.exam-insight{display:none;margin:0 0 10px;background:linear-gradient(145deg,#fff9f0,#f5f0ff);border:1px solid #eadcf4;border-radius:14px;padding:14px 14px 13px;}
+.exam-insight.visible{display:block;}
+.exam-insight .insight-title{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#4b3c68;font-size:14px;font-weight:800;}
+.exam-insight .insight-badge{padding:3px 8px;border-radius:999px;background:#fff;color:#9a7a41;font-size:10px;font-weight:700;white-space:nowrap;}
+.exam-insight .insight-lead{margin:6px 0 10px;color:#756b86;font-size:12px;line-height:1.55;}
+.exam-insight .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.exam-insight .insight-item{background:rgba(255,255,255,.78);border:1px solid rgba(234,220,244,.9);border-radius:11px;padding:10px 9px;}
+.exam-insight .insight-score{color:#7b5ce5;font-size:23px;font-weight:900;line-height:1;}
+.exam-insight .insight-name{margin-top:5px;color:#4b3c68;font-size:12px;font-weight:800;}
+.exam-insight .insight-copy{margin-top:3px;color:#756b86;font-size:11.5px;line-height:1.45;}
+.exam-insight .exam-routine{display:flex;gap:7px;margin-top:9px;padding:9px 10px;border-radius:10px;background:#fff;color:#4b3c68;font-size:12px;line-height:1.55;}
+.exam-insight .exam-routine b{flex:0 0 auto;color:#e0568a;}
+.exam-insight .exam-note{margin-top:8px;color:#9a91a7;font-size:10.5px;line-height:1.45;}
 </style>
 </head>
 <body>
@@ -186,6 +199,16 @@ footer a{color:var(--sub);}
       <div class="match" id="match"></div>
     </div>
     <div class="context-callout" id="contextCallout"></div>
+    <div class="exam-insight" id="examInsight">
+      <div class="insight-title"><span>📝 수능 컨디션 리포트</span><span class="insight-badge">재미용 요약</span></div>
+      <p class="insight-lead">오늘의 운세와 학업·일운, 건강운을 바탕으로 수능 준비 흐름을 가볍게 정리했어요.</p>
+      <div class="insight-grid">
+        <div class="insight-item"><div class="insight-score" id="examFocusScore">–</div><div class="insight-name">집중 흐름</div><div class="insight-copy" id="examFocusCopy"></div></div>
+        <div class="insight-item"><div class="insight-score" id="examConditionScore">–</div><div class="insight-name">컨디션 흐름</div><div class="insight-copy" id="examConditionCopy"></div></div>
+      </div>
+      <div class="exam-routine"><b>오늘의 루틴</b><span id="examRoutine"></span></div>
+      <div class="exam-note">시험 점수·등급을 예측하는 기능이 아니며, 오늘의 기분 전환용 콘텐츠예요.</div>
+    </div>
 
     <div class="card">
       <div class="sect-title">🌟 오늘의 총운 <span id="todayLabel" style="font-weight:600;color:var(--sub)"></span></div>
@@ -478,6 +501,27 @@ function dayFortune(myStemIdx,myBranchIdx,dstr,seedKey){
 }
 function fScore(base,w,rng){return Math.max(18,Math.min(97,Math.round(base+w+(rng()*10-5))));}
 function fLevel(s){return s>=75?{c:'lv-good',t:'좋음'}:s>=55?{c:'lv-mid',t:'보통'}:{c:'lv-low',t:'주의'};}
+function examFlowCopy(score,type){
+  if(type==='focus') return score>=80?'짧은 실전 문제를 끝까지 밀어보기 좋아요.':score>=60?'25분 단위로 끊어 한 과목에 집중해 보세요.':'새 문제보다 오답 하나를 천천히 정리해 보세요.';
+  return score>=80?'수면·식사 리듬을 유지하면 흐름이 더 편안해요.':score>=60?'중간중간 눈과 어깨를 풀어 주며 페이스를 지켜요.':'공부량보다 회복을 먼저 챙기는 편이 좋아요.';
+}
+function renderExamInsight(fields,overall,goodHour){
+  const box=document.getElementById('examInsight');
+  if(!box) return null;
+  const active=ENTRY_CONTEXT==='suneung';
+  box.classList.toggle('visible',active);
+  if(!active) return null;
+  const focus=Math.max(18,Math.min(97,Math.round(overall*.35+fields[3].s*.65)));
+  const condition=Math.max(18,Math.min(97,Math.round(overall*.35+fields[2].s*.65)));
+  const focusCopy=examFlowCopy(focus,'focus'), conditionCopy=examFlowCopy(condition,'condition');
+  const routine=focus>=80?'시간을 재고 짧은 실전 세트를 하나 풀어 보세요.':condition<60?'오답 정리 뒤에는 일찍 쉬며 내일 리듬을 준비해 보세요.':'학업·일운이 가장 좋은 시간대('+goodHour+')에 핵심 과목 하나만 정리해 보세요.';
+  document.getElementById('examFocusScore').textContent=focus+'점';
+  document.getElementById('examConditionScore').textContent=condition+'점';
+  document.getElementById('examFocusCopy').textContent=focusCopy;
+  document.getElementById('examConditionCopy').textContent=conditionCopy;
+  document.getElementById('examRoutine').textContent=routine;
+  return {focus,condition,routine};
+}
 
 /* ---------- 유틸 ---------- */
 function hashStr(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
@@ -572,6 +616,7 @@ function compute(){
   document.getElementById('luckNum').textContent=ln;
   document.getElementById('luckItem').textContent=li;
   document.getElementById('say').textContent=say;
+  const exam=renderExamInsight(fields,F.sc,goodHour);
   renderWeek(ij, seedKey, today);
   renderTomorrow(ij, seedKey);
   try{ gtag('event','unse_result',{sipsung:F.k, score:F.sc, star:starN, entry_context:ENTRY_CONTEXT||'direct'}); }catch(e){}
@@ -579,7 +624,7 @@ function compute(){
   document.getElementById('inputCard').style.display='none';
   document.getElementById('result').style.display='block';
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
-  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,cardTxt:sipLine,lc,ln,li,say,Y,ij:iljuName,ijh:iljuHanja,sip:F.k,sipH:S.h,score:F.sc,entry:ACTIVE_ENTRY};
+  LAST={z,el:elemKey,elc:el.color,starN,totalTxt,cardTxt:sipLine,lc,ln,li,say,Y,ij:iljuName,ijh:iljuHanja,sip:F.k,sipH:S.h,score:F.sc,entry:ACTIVE_ENTRY,exam};
 }
 
 /* 이번 주 흐름 — 오늘부터 7일치 지수 막대 */
@@ -636,15 +681,21 @@ function drawCard(){
   c.fillStyle='#6b4fd8'; c.fillText(sipTxt,W/2,340);
   c.font='30px sans-serif'; c.fillStyle='#f0b429'; c.fillText('★★★★★☆☆☆☆☆'.slice(5-L.starN,10-L.starN),W/2,388);
   c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('운세 지수 '+L.score+' / 100',W/2,417);
-  c.font='600 21px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.cardTxt,W/2,452,W-150,31);
+  let cardTextY=452;
+  if(L.exam){
+    c.font='800 17px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#e0568a'; c.fillText('집중 '+L.exam.focus+' · 컨디션 '+L.exam.condition,W/2,452);
+    cardTextY=483;
+  }
+  c.font='600 21px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#3a3255'; wrap(c,L.cardTxt,W/2,cardTextY,W-150,31);
   // 행운
   c.font='700 19px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#7d7495';
-  c.fillText('행운의 색',W/2-120,540); c.fillText('행운의 숫자',W/2+120,540);
-  c.beginPath(); c.arc(W/2-120,582,18,0,7); c.fillStyle=L.lc.x; c.fill();
-  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,594);
-  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,650,W-150,29);
+  const luckyY=L.exam?570:540, luckyValueY=L.exam?624:594, sayY=L.exam?680:650, urlY=L.exam?732:704;
+  c.fillText('행운의 색',W/2-120,luckyY); c.fillText('행운의 숫자',W/2+120,luckyY);
+  c.beginPath(); c.arc(W/2-120,luckyValueY-12,18,0,7); c.fillStyle=L.lc.x; c.fill();
+  c.font='800 34px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#2a2140'; c.fillText(L.ln,W/2+120,luckyValueY);
+  c.font='700 20px "Apple SD Gothic Neo",sans-serif'; c.fillStyle='#8b6ff0'; wrap(c,L.say,W/2,sayY,W-150,29);
   // 하단 URL — 흰 카드 안 진한 글자로 또렷하게
-  c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,704);
+  c.font='800 23px "Apple SD Gothic Neo",Arial,sans-serif'; c.fillStyle='#8b6ff0'; c.fillText('www.playmallow.com',W/2,urlY);
   return cv;
 }
 function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
