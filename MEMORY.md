@@ -432,6 +432,12 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 스킨은 각 파일 <style> 끝 '게임 월드 스킨' 블록, 배경 `assets/stage/{moamoa,queens,tango}.jpg`. 적용 스크립트 `tools/daily-redesign/`(1회용). 확인 `.logs/daily/play.mjs`(플레이 캡처·소리 순서)·`sound_levels.mjs`(오프라인 음량)·`edge.mjs`.
 - 판 칸은 바뀐 칸만 다시 그린다(`d._s`/`d._v`) — 전체 innerHTML을 다시 쓰면 등장 애니메이션이 매 탭마다 모든 칸에서 반복된다.
 
+## 홈 로비 (2026-09-28)
+- 홈·전체 게임·운세 탭은 `body.lobby`(어두운 톤). 적용 스크립트 `tools/home-lobby/apply.py`(1회용), 표지 `tools/home-lobby/covers.py`(재실행 가능 — 새 게임은 assets/stage/<id>.jpg를 만든 뒤 실행). CSS는 index.html `HOME-LOBBY` 블록.
+- 홈 칸은 모두 CSS로 크기를 미리 잡는다(늦게 채워도 밀리지 않게 — 예전 CLS 0.80). 새 칸을 넣을 때도 min-height/aspect-ratio 필수. 측정 `.logs/seo/cls.mjs <url>`(느린 4G·CPU 4배).
+- 오늘의 두뇌 3판 = `missionToday()`, 3판 다 하면 행운 카드(`lbLuckyToday`, 날짜 시드, `brain.lucky.seen`으로 하루 한 번 뒤집힘). 하단 탭 목록은 `NAV_SCREENS`.
+- SEO: `/llms.txt`(게임·퍼즐·운세 주소가 바뀌면 같이 고친다), 한국어 랜딩 FAQPage = `tools/seo/add-faqpage.py`(화면 FAQ를 고치면 LD도 같이). 진단 문서 `docs/SEO-진단-2026-09-28.md`, 재측정 2026-10-12.
+
 ## ⚠️ 루트 public/ 폴더 금지 (2026-09-27 사고)
 - 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
 - 플랫폼 안내(CLAUDE.md)의 "페이지는 public/에" 규칙은 이 프로젝트에서 따르지 말 것. 미리보기 페이지는 `generated_images/`(gitignore)에 두고 링크한다.
