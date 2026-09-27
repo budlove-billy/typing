@@ -436,3 +436,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
 - 플랫폼 안내(CLAUDE.md)의 "페이지는 public/에" 규칙은 이 프로젝트에서 따르지 말 것. 미리보기 페이지는 `generated_images/`(gitignore)에 두고 링크한다.
 - push: credential manager가 자주 멈춘다 → `git -c credential.helper= push "https://x-access-token:${TOKEN}@github.com/budlove-billy/typing.git" master:main` (TOKEN=.env의 GITHUB_TOKEN). 배포 후 홈·/sudoku/·/assets/stage/*.jpg 가 200인지 반드시 확인.
+
+## 답변 쓰는 법 — 사용자는 작은 글씨가 읽기 힘들다 (2026-09-28)
+- 채팅 창의 글꼴·자간은 ClaudeCrab 앱 쪽 설정이라 이 프로젝트에서 못 바꾼다. 대신 답변 모양으로 돕는다.
+- 문단은 1~2문장, 문단 사이 빈 줄. 항목 하나에 한 가지 내용. 한 줄이 길어지지 않게. 소제목(###)으로 나눈다.
+- 긴 표·빽빽한 목록보다 짧은 줄 여러 개.
