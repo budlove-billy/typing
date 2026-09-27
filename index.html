@@ -1058,8 +1058,8 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 /* ===== 말로우 런: 황혼 숲 횡스크롤 테마 (컨셉아트: canvas/ 무한 캔버스) ===== */
 #screen-run .rn-card{padding:.75rem .75rem 1.1rem;overflow:hidden}
 #screen-run .rn-stage{position:relative;border-radius:16px;overflow:hidden;background:#131238;box-shadow:inset 0 0 0 2px rgba(255,255,255,.07),0 10px 24px rgba(20,16,50,.28);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;cursor:pointer}
-#screen-run .rn-stage canvas{display:block;width:100%;height:228px}
-#screen-run .rn-stage-intro canvas{height:232px}
+#screen-run .rn-stage canvas{display:block;width:100%;height:auto;aspect-ratio:5/3}
+#screen-run .rn-stage-intro canvas{height:auto}
 #screen-run .rn-logo{position:absolute;right:14px;top:12px;text-align:right;pointer-events:none}
 #screen-run .rn-logo small{display:block;font-size:.6rem;font-weight:800;letter-spacing:.24em;color:#ffcf7a;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 #screen-run .rn-logo h2{margin:0;font-size:1.75rem;font-weight:900;line-height:1.1;color:#fff;letter-spacing:-.02em;text-shadow:0 3px 0 #b8456f,0 6px 14px rgba(0,0,0,.45)}
@@ -1108,6 +1108,9 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 #screen-run .rn-board-actions .rn-go{flex:1 1 100%}
 #screen-run .rn-ghost{flex:1;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);color:#fff;box-shadow:none;border-radius:13px;font-weight:700}
 @media (prefers-reduced-motion:reduce){#screen-run .rn-cue{animation:none}#screen-run .rn-toast.show{animation-duration:.01s}}
+/* 어려움 문항 제한시간 막대(밸런스 v2) */
+.qdl-bar{height:6px;margin:.2rem auto .55rem;max-width:340px;border-radius:99px;background:rgba(14,12,34,.45);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.qdl-bar i{display:block;height:100%;width:100%;border-radius:99px;background:linear-gradient(90deg,#ff5a6e,#ffb347,#ffe27a)}
 /* ===== STAGE-SKIN START — tools/stage-skin/build.py가 생성(직접 수정 금지) ===== */
 #screen-whack{--stage:url(assets/stage/whack.jpg);--acc:#ffb23f}
 #screen-catch{--stage:url(assets/stage/catch.jpg);--acc:#ff8fb1}
@@ -1803,6 +1806,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     </div>
     <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="st-timer">01:00</div></div>
     <div class="gm-status" id="st-status" data-i18n="stroop.pickColor">글자의 색을 고르세요</div>
+    <div class="qdl-bar" id="qdl-stroop" style="display:none"><i></i></div>
     <div class="st-word-wrap"><span class="st-word" id="st-word">빨강</span></div>
     <div class="st-options" id="st-options"></div>
     <div style="display:flex;justify-content:center;margin-top:1.25rem">
@@ -2310,6 +2314,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     </div>
     <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="sw-timer">01:00</div></div>
     <div class="gm-status" id="sw-guide" data-i18n="switch.guide">지금 규칙에 맞게 답하세요</div>
+    <div class="qdl-bar" id="qdl-switch" style="display:none"><i></i></div>
     <div style="text-align:center">
       <div class="sw-rule" id="sw-rule"></div>
       <div class="sw-num" id="sw-num">7</div>
@@ -2420,6 +2425,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
     </div>
     <div style="text-align:center;margin-bottom:1rem"><div class="mg-timer" id="rt2-timer">01:00</div></div>
     <div class="gm-status" id="rt2-status" data-i18n="rotate.guide">같은 도형일까요, 뒤집힌 도형일까요?</div>
+    <div class="qdl-bar" id="qdl-rotate" style="display:none"><i></i></div>
     <div class="rot-stage">
       <div class="rot-box"><span class="rot-glyph" id="rot-left">F</span></div>
       <div class="rot-vs">vs</div>
@@ -2683,6 +2689,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="flank.combo">COMBO</div><div class="mg-stat-value" id="fk-combo">0</div></div>
     </div>
     <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="fk-timer">01:00</div></div>
+    <div class="qdl-bar" id="qdl-flank" style="display:none"><i></i></div>
     <div class="fk-stage"><div class="fk-row" id="fk-row"></div></div>
     <div class="gm-status" data-i18n="flank.guide">가운데 화살표 방향을 누르세요</div>
     <div class="fk-btns"><button class="fk-btn" onclick="fkAns(-1)">◀</button><button class="fk-btn" onclick="fkAns(1)">▶</button></div>
@@ -2724,6 +2731,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
       <div class="mg-stat-box"><div class="mg-stat-label" data-i18n="guess.combo">COMBO</div><div class="mg-stat-value" id="gu-combo">0</div></div>
     </div>
     <div style="text-align:center;margin-bottom:.8rem"><div class="mg-timer" id="gu-timer">01:00</div></div>
+    <div class="qdl-bar" id="qdl-guess" style="display:none"><i></i></div>
     <div class="gu-q" id="gu-q"></div>
     <div class="gu-choices" id="gu-choices"></div>
     <div style="display:flex;justify-content:center;margin-top:1.1rem"><button class="btn btn-outline" onclick="leaveGuess()" data-i18n="guess.leave">나가기</button></div>
@@ -3490,7 +3498,7 @@ const I18N = {
   "flank.intro": {ko:"<b>가운데 화살표</b>가 가리키는 방향을 누르세요. 양옆 화살표는 함정이니 무시!<br>60초 동안 최대한 많이 맞히세요.", en:"Tap the direction of the <b>center arrow</b>. Ignore the flankers — they're traps!<br>Score as much as you can in 60 seconds.", th:"แตะทิศของ<b>ลูกศรตรงกลาง</b> อย่าสนใจลูกศรข้างๆ มันคือกับดัก!<br>ทำคะแนนให้มากที่สุดใน 60 วินาที"},
   "flank.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "flank.easyDesc": {ko:"함정 적음", en:"Few traps", th:"กับดักน้อย"},
   "flank.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "flank.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "flank.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "flank.hardDesc": {ko:"함정 많음", en:"Many traps", th:"กับดักเยอะ"},
+  "flank.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "flank.hardDesc": {ko:"함정 많음·0.9초", en:"Many decoys · 0.9s", th:"ตัวลวงเยอะ·0.9 วิ"},
   "flank.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "flank.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "flank.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "flank.guide": {ko:"가운데 화살표 방향을 누르세요", en:"Tap the center arrow's direction", th:"แตะทิศของลูกศรตรงกลาง"},
@@ -3502,7 +3510,7 @@ const I18N = {
   "guess.intro": {ko:"정확히 계산하지 말고 <b>가장 가까운 어림값</b>을 빠르게 고르세요.<br>60초 안에 수 감각을 최대한 발휘해보세요!", en:"Don't calculate exactly — quickly pick the <b>closest estimate</b>.<br>Sharpen your number sense in 60 seconds!", th:"ไม่ต้องคำนวณเป๊ะ เลือก<b>ค่าที่ใกล้ที่สุด</b>ให้ไว<br>ฝึกสัมผัสตัวเลขใน 60 วินาที!"},
   "guess.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "guess.easyDesc": {ko:"두 자리", en:"2-digit", th:"เลข 2 หลัก"},
   "guess.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "guess.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "guess.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "guess.hardDesc": {ko:"세 자리", en:"3-digit", th:"เลข 3 หลัก"},
+  "guess.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "guess.hardDesc": {ko:"세 자리·문항당 3.2초", en:"3-digit · 3.2s each", th:"สามหลัก·ข้อละ 3.2 วิ"},
   "guess.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "guess.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "guess.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "guess.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "guess.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -3885,7 +3893,7 @@ const I18N = {
 // ---- Wave2-3·2차 게임 누락 i18n 일괄 보충 (2026-07-12) ----
   "flank.easyDesc": {ko:"함정 적음", en:"Few decoys", th:"ตัวลวงน้อย"},
   "flank.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "flank.hardDesc": {ko:"함정 많음", en:"Many decoys", th:"ตัวลวงเยอะ"},
+  "flank.hardDesc": {ko:"함정 많음·0.9초", en:"Many decoys · 0.9s", th:"ตัวลวงเยอะ·0.9 วิ"},
   "flank.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "flank.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "flank.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"},
@@ -3893,7 +3901,7 @@ const I18N = {
   "flank.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "guess.easyDesc": {ko:"두 자리", en:"2-digit", th:"สองหลัก"},
   "guess.normalDesc": {ko:"기본", en:"Default", th:"ปกติ"},
-  "guess.hardDesc": {ko:"세 자리", en:"3-digit", th:"สามหลัก"},
+  "guess.hardDesc": {ko:"세 자리·문항당 3.2초", en:"3-digit · 3.2s each", th:"สามหลัก·ข้อละ 3.2 วิ"},
   "guess.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "guess.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
   "guess.maxCombo": {ko:"최고 콤보", en:"Max Combo", th:"คอมโบสูงสุด"},
@@ -4117,7 +4125,7 @@ const I18N = {
   "stroop.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
   "stroop.normalDesc": {ko:"5색·기본", en:"5 colors · standard", th:"5 สี·มาตรฐาน"},
   "stroop.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
-  "stroop.hardDesc": {ko:"6색·부조화 많음", en:"6 colors · high clash", th:"6 สี·ขัดกันมาก"},
+  "stroop.hardDesc": {ko:"6색·문항당 1.5초", en:"6 colors · 1.5s each", th:"6 สี·ข้อละ 1.5 วิ"},
   "stroop.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "stroop.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "stroop.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
@@ -4261,7 +4269,7 @@ const I18N = {
   "switch.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
   "switch.normalDesc": {ko:"기본 전환", en:"Standard", th:"มาตรฐาน"},
   "switch.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
-  "switch.hardDesc": {ko:"규칙 자주 전환", en:"Frequent switches", th:"สลับบ่อย"},
+  "switch.hardDesc": {ko:"자주 전환·문항당 1.5초", en:"Frequent switch · 1.5s each", th:"สลับบ่อย·ข้อละ 1.5 วิ"},
   "switch.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "switch.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "switch.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
@@ -4317,7 +4325,7 @@ const I18N = {
   "rotate.normal": {ko:"보통", en:"Normal", th:"ปกติ"},
   "rotate.normalDesc": {ko:"45° 단위", en:"45° steps", th:"ทีละ 45°"},
   "rotate.hard": {ko:"어려움", en:"Hard", th:"ยาก"},
-  "rotate.hardDesc": {ko:"30° 단위", en:"30° steps", th:"ทีละ 30°"},
+  "rotate.hardDesc": {ko:"30° 단위·문항당 2.2초", en:"30° steps · 2.2s each", th:"ทีละ 30°·ข้อละ 2.2 วิ"},
   "rotate.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "rotate.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"},
   "rotate.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
@@ -4873,6 +4881,7 @@ function _audioUnlock(){
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
   stopRecordFx();
+  try{ Object.keys(QDL_MS).forEach(qdlClear); }catch(e){}
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram','resetWordsearch','resetDiff','resetPitch','resetTrace','resetRun'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
@@ -6117,8 +6126,7 @@ function checkSkComplete(){
   document.getElementById('sk-r-time').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   document.getElementById('sk-r-mistakes').textContent=SK.mistakes+t('sudoku.timesLabel');
   document.getElementById('sk-r-hints').textContent=SK.hintsUsed+t('sudoku.timesLabel');
-  const skBase={easy:60,medium:85,expert:110};
-  const skScore=Math.max(30, Math.round((skBase[SK.diff]||60) - SK.mistakes*4 - SK.hintsUsed*6 - SK.timeSec/20));
+  const skScore=parScore('sudoku', {easy:'easy',medium:'normal',expert:'hard'}[SK.diff]||'easy', SK.timeSec, Math.min(0.6, SK.mistakes*0.04 + SK.hintsUsed*0.06));
   if(typeof saveFlatBest==='function') saveFlatBest('sudoku', skScore);
 }
 
@@ -6132,6 +6140,7 @@ const MG = {
   diff:'beginner',
   score:0,
   highScore:{beginner:0, advanced:0, expert:0}, // 세션 중에만 유지되는 난이도별 최고점
+  combo:0,
   correctCount:0,
   wrongCount:0,
   timeLeft:MG_TIME_LIMIT,
@@ -6202,7 +6211,7 @@ function mg_generateProblem(diff){
 }
 
 function startMathGame(){
-  MG.score=0;
+  MG.score=0; MG.combo=0;
   MG.correctCount=0;
   MG.wrongCount=0;
   MG.timeLeft=MG_TIME_LIMIT;
@@ -6285,7 +6294,7 @@ function mgSubmitAnswer(){
   const fb=document.getElementById('mg-feedback');
 
   if(isCorrect){
-    MG.score++;
+    MG.combo++; MG.score+=dmScore({beginner:'easy',advanced:'normal',expert:'hard'}[MG.diff], comboPts(MG.combo), 'math');   // 밸런스 v2: 정답 수 → 콤보 점수
     MG.correctCount++;
     sfx('good');
     inp.className='mg-answer-input correct';
@@ -6297,6 +6306,7 @@ function mgSubmitAnswer(){
       document.getElementById('mg-highscore').textContent=MG.highScore[MG.diff];
     }
   }else{
+    MG.combo=0;
     MG.wrongCount++;
     sfx('bad');
     inp.className='mg-answer-input wrong';
@@ -6380,9 +6390,26 @@ const DMULT={easy:1, normal:1.4, hard:2};
 /* 게임별 특수 배수 — 난이도가 '판 크기'라서 총점 규모 자체가 수십 배 차이 나는 경우.
    기본 배수(1.4/2)로는 보정이 안 된다. merge(2048)는 .logs/merge_sim.mjs 400판 시뮬로
    중앙값 easy 20916 / normal 2880 / hard 272 를 측정 → 세 난이도가 같은 눈금이 되도록 산출. */
-const DMULT_GAME={ merge:{easy:1, normal:7, hard:70} };
+/* 밸런스 v2(2026-09-27): 게임마다 '같은 사람이 쉬움 0.8 : 보통 1 : 어려움 1.25'를 받도록 시뮬레이션으로 산출한 배수.
+   (tools/balance/calibrate.mjs → calib.json, 근거 docs/밸런스-분석-제안.md) 보통 규모는 예전과 같다. */
+const DMULT_GAME={"stroop":{"easy":0.96,"normal":1.4,"hard":2.38},"flank":{"easy":1.05,"normal":1.4,"hard":2.26},"switch":{"easy":1.03,"normal":1.4,"hard":2.15},"rotate":{"easy":1.21,"normal":1.4,"hard":1.62},"guess":{"easy":0.94,"normal":1.4,"hard":4.14},"math":{"easy":0.31,"normal":1,"hard":3.42},"spot":{"easy":0.67,"normal":1.4,"hard":2.9},"odd":{"easy":0.62,"normal":1.4,"hard":2.69},"bubble":{"easy":0.78,"normal":1.4,"hard":2.41},"nback":{"easy":1.19,"normal":1.4,"hard":2.81},"trail":{"easy":1.17,"normal":1.4,"hard":1.88},"whack":{"easy":0.92,"normal":1.4,"hard":3.34},"catch":{"easy":0.82,"normal":1.4,"hard":2.27},"react":{"easy":1.23,"normal":1.4,"hard":1.6},"cards":{"easy":1.29,"normal":1.4,"hard":1.59},"count":{"easy":0.36,"normal":1,"hard":1.67},"flash":{"easy":0.97,"normal":1.4,"hard":2.29},"melody":{"easy":1.02,"normal":1.4,"hard":2.51},"rev":{"easy":0.9,"normal":1.4,"hard":4.2},"rhythm":{"easy":1.19,"normal":1.4,"hard":2.62},"pitch":{"easy":0.9,"normal":1.4,"hard":2.47},"diff":{"easy":1.19,"normal":1.4,"hard":1.79},"anagram":{"easy":0.54,"normal":1.4,"hard":2.81},"wordsearch":{"easy":1.18,"normal":1.4,"hard":1.98},"trace":{"easy":0.85,"normal":1.4,"hard":2.7},"chop":{"easy":0.75,"normal":1.4,"hard":2.06},"merge":{"easy":0.72,"normal":7,"hard":86.82},"run":{"easy":0.58,"normal":1.4,"hard":3.04}};
 function dm(d,game){ const o=game&&DMULT_GAME[game]; return (o&&o[d])||DMULT[d]||1; }
 function dmScore(d,pts,game){ return Math.round(pts*dm(d,game)); }
+/* 풀이형(컬러 소트·슬라이딩·픽셀 로직·스도쿠) 점수: K × (기준시간/걸린시간)^0.8, 최저 0.15배.
+   기준시간 = 보통 실력자의 풀이 시간. 예전 '기준점 − 시간'은 어려움이 거의 늘 바닥 점수였다. */
+const PAR_SCORE={"sort":{"easy":{"K":663,"par":45},"normal":{"K":581,"par":110},"hard":{"K":559,"par":220}},"slide":{"easy":{"K":469,"par":70},"normal":{"K":464,"par":330},"hard":{"K":535,"par":900}},"nono":{"easy":{"K":413,"par":60},"normal":{"K":350,"par":280},"hard":{"K":366,"par":560}},"sudoku":{"easy":{"K":40,"par":560},"normal":{"K":54,"par":1150},"hard":{"K":73,"par":2200}}};
+function parScore(game, diff, sec, pen){ const c=PAR_SCORE[game][diff]; return Math.max(10, Math.round(c.K*Math.max(0.15, Math.pow(c.par/Math.max(1,sec),0.8))*(1-(pen||0)))); }
+/* 어려움 전용 문항 제한시간 — 지금 어려움은 문항당 15% 느려질 뿐이라 '다른 게임'처럼 느껴지지 않았다.
+   넘기면 오답처럼 콤보만 끊고(시간 감점 없음) 다음 문항. 남은 시간은 판 위 얇은 막대로 보인다. */
+const QDL_MS={stroop:1500, flank:900, switch:1500, rotate:2200, guess:3200};
+const _qdl={};
+function qdlClear(id){ clearTimeout(_qdl[id]); _qdl[id]=0; }
+function qdlArm(id, diff, onTimeout){
+  qdlClear(id); const ms=(diff==='hard')&&QDL_MS[id]; const bar=document.getElementById('qdl-'+id);
+  if(!ms){ if(bar) bar.style.display='none'; return; }
+  if(bar){ bar.style.display='block'; const i=bar.firstElementChild; i.style.transition='none'; i.style.width='100%'; void i.offsetWidth; i.style.transition='width '+ms+'ms linear'; i.style.width='0%'; }
+  _qdl[id]=setTimeout(()=>{ _qdl[id]=0; onTimeout(); }, ms);
+}
 function bt_today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function bt_loadBest(key){
   const empty={easy:{all:0,day:0,date:''},normal:{all:0,day:0,date:''},hard:{all:0,day:0,date:''}};
@@ -6456,6 +6483,20 @@ const COMBO_MIGR={"stroop":0.53,"flank":0.53,"switch":0.61,"guess":0.79,"spot":0
       localStorage.setItem(key,JSON.stringify(o));
     });
     localStorage.setItem('brain.comboMigr','1');
+  }catch(e){}
+})();
+/* ══════════ 밸런스 v2 — 기록 새로 시작(2026-09-27) ══════════
+   점수 공식·배수·메달이 바뀌어 옛 기록과 비교할 수 없다(사용자 결정: 초기화). 최고 기록·봇 사다리·최근 판 비율·능력치 기준을 지운다.
+   주간 포인트·미션·설정은 그대로 둔다. */
+(function migrateBalanceV2(){
+  try{
+    if(localStorage.getItem('brain.balanceV2')==='1') return;
+    const drop=[];
+    for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i);
+      if(/^brain\.[a-z0-9]+\.(best|flat)$/.test(k) || /^brain\.bot\./.test(k)) drop.push(k); }
+    ['brain.recent','brain.ability.base','brain.ability.seen','brain.newRecords'].forEach(k=>drop.push(k));
+    drop.forEach(k=>localStorage.removeItem(k));
+    localStorage.setItem('brain.balanceV2','1');
   }catch(e){}
 })();
 let _LR=null;
@@ -6557,7 +6598,7 @@ function fmTapCell(cellIdx){
 }
 function fmClear(){
   FM.phase='idle';
-  FM.score+=dmScore(FM.diff, FM.n); FM.maxLevel=Math.max(FM.maxLevel, FM.n);
+  FM.score+=dmScore(FM.diff, FM.n, 'flash'); FM.maxLevel=Math.max(FM.maxLevel, FM.n);
   FM.n=Math.min(FM.n+1, FM_GRID);
   fmSetStatus('flash.cleared','good'); fmUpdateStats();
   clearTimeout(FM.timer); FM.timer=setTimeout(fmNewRound, 900);
@@ -6619,7 +6660,7 @@ function setCountDiff(d){
 function hc_randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 function hcClearTimers(){ HC.timers.forEach(clearTimeout); HC.timers=[]; }
 function startCount(){
-  HC.score=0; HC.lives=3; HC.streak=0; HC.maxStreak=0;
+  HC.score=0; HC.lives=3; HC.streak=0; HC.maxStreak=0; HC.ok=0;
   document.getElementById('count-intro-card').style.display='none';
   document.getElementById('count-result-card').style.display='none';
   document.getElementById('count-game-card').style.display='block';
@@ -6636,7 +6677,7 @@ function hcSetStatus(key,cls,literal){
 }
 function hcBuildSequence(){ // inside가 음수가 되지 않도록 입/출 생성
   const cfg=HC_CFG[HC.diff];
-  const n=hc_randInt(cfg.events[0], cfg.events[1]);
+  const n=hc_randInt(cfg.events[0], cfg.events[1]) + Math.floor((HC.ok||0)/4);   // 4번 맞힐 때마다 이벤트 1개씩 늘어난다
   let inside=0; const seq=[];
   for(let i=0;i<n;i++){
     let enter;
@@ -6705,7 +6746,8 @@ function hcAnswer(v, btn){
     btn.classList.add('correct'); sfx('good');
     const cfg=HC_CFG[HC.diff];
     HC.streak++; HC.maxStreak=Math.max(HC.maxStreak, HC.streak);
-    HC.score += cfg.pts + (HC.streak-1)*2;
+    HC.ok=(HC.ok||0)+1;
+    HC.score += dmScore(HC.diff, cfg.pts + Math.min(HC.streak-1,10)*2, 'count');   // 연속 보너스 상한 +20(예전엔 무한)
     hcSetStatus('count.correctMsg','good');
   }else{
     btn.classList.add('wrong'); sfx('bad');
@@ -6823,12 +6865,13 @@ function stNextTrial(){
   const w=document.getElementById('st-word');
   w.textContent=t('color.'+wordKey);
   w.style.color=ink.hex;
+  qdlArm('stroop', ST.diff, ()=>{ if(!ST.running) return; ST.combo=0; sfx('bad'); stUpdateStats(); stNextTrial(); });
 }
 function stAnswer(key, btn){
   if(!ST.running) return;
   if(key===ST.inkKey){
     ST.correct++; ST.combo++; ST.maxCombo=Math.max(ST.maxCombo,ST.combo);
-    ST.score += dmScore(ST.diff, comboPts(ST.combo));
+    ST.score += dmScore(ST.diff, comboPts(ST.combo), 'stroop');
     sfx('good');
   }else{
     ST.combo=0; sfx('bad');
@@ -6840,7 +6883,7 @@ function stAnswer(key, btn){
   stUpdateStats();
   if(ST.running && ST.timeLeft>0) stNextTrial();
 }
-function finishStroop(){
+function finishStroop(){ qdlClear('stroop');
   clearInterval(ST.timer); ST.running=false;
   const newRec=bt_recordScore(ST.best, ST.diff, ST.score); bt_saveBest('brain.stroop.best', ST.best);
   missionMark('stroop');
@@ -6936,7 +6979,7 @@ function trTapNode(num,node){
   if(num===TR.next){
     node.classList.add('done'); node.onclick=null; TR.next++; sfx('good');
     if(TR.next>TR.n){ // 판 클리어
-      TR.boards++; TR.score+=dmScore(TR.diff, TR.n); TR.n++;
+      TR.boards++; TR.score+=dmScore(TR.diff, TR.n, 'trail'); TR.n++;
       trUpdateStats();
       setTimeout(()=>{ if(TR.running) trNewBoard(); }, 350);
     }else{ trUpdateStats(); }
@@ -7364,7 +7407,7 @@ function startSort(){
 }
 function finishSort(){
   clearInterval(SO.timer); SO.running=false;
-  SO.score=Math.max(10, SO_CFG[SO.diff].base - SO.sec*2 - SO.moves*3);
+  SO.score=parScore('sort', SO.diff, SO.sec);
   const newRec=bt_recordScore(SO.best, SO.diff, SO.score); bt_saveBest('brain.sort.best', SO.best);
   missionMark('sort');
   sfx('win');
@@ -7389,7 +7432,7 @@ function resetSort(){
 }
 
 // ========== 말로우 타워 (팀버맨류 / 순발력) ==========
-const CP_CFG={ easy:{decay:2.8,gain:8,forkP:0.5,accel:0.015}, normal:{decay:3.5,gain:6.5,forkP:0.55,accel:0.02}, hard:{decay:4.4,gain:5.5,forkP:0.65,accel:0.025} };
+const CP_CFG={ easy:{decay:2.6,gain:8,forkP:0.45,accel:0.13}, normal:{decay:3.4,gain:7,forkP:0.55,accel:0.2}, hard:{decay:4.2,gain:6.2,forkP:0.65,accel:0.28} };   // 밸런스 v2: accel은 '깨문 횟수'당
 const CP_VISIBLE=6, CP_SEG_H=52;
 const CP={ diff:'normal', score:0, gauge:100, side:'L', segs:[], running:false,
   timer:null, best:bt_loadBest('brain.chop.best') };
@@ -7436,7 +7479,7 @@ function cpChop(side){
   CP.segs.shift();
   CP.segs.push(cpNewSeg());
   if(CP.segs[0]===side){ cpRender(); cpDie('fork'); return; }
-  CP.score += dmScore(CP.diff, 10);
+  CP.score += dmScore(CP.diff, 10, 'chop'); CP.chops=(CP.chops||0)+1;
   CP.gauge=Math.min(100, CP.gauge+CP_CFG[CP.diff].gain);
   _beep(700+Math.random()*80,0.05,'square',0.12);
   try{ navigator.vibrate&&navigator.vibrate(10); }catch(_){}
@@ -7453,7 +7496,7 @@ function cpDie(cause){
   setTimeout(()=>{ if(p) p.classList.remove('hit'); finishChop(cause); }, cause==='fork'?750:350);
 }
 function startChop(){
-  CP.score=0; CP.gauge=100; CP.side='L'; CP.running=true;
+  CP.score=0; CP.chops=0; CP.gauge=100; CP.side='L'; CP.running=true;
   CP.segs=['N','N','N','N','N']; // 워밍업: 첫 5칸은 포크 없음
   while(CP.segs.length<CP_VISIBLE+2) CP.segs.push(cpNewSeg());
   document.getElementById('chop-intro-card').style.display='none';
@@ -7464,7 +7507,7 @@ function startChop(){
   CP.timer=setInterval(()=>{
     if(!CP.running) return;
     const cfg=CP_CFG[CP.diff];
-    CP.gauge -= (cfg.decay + CP.score*cfg.accel)*0.1; // 100ms 틱
+    CP.gauge -= (cfg.decay + (CP.chops||0)*cfg.accel)*0.1; // 100ms 틱 — 가속은 깨문 횟수 기준(점수엔 난이도 배수가 곱해져 있다)
     cpGaugeRender();
     if(CP.gauge<=0) cpDie('time');
   },100);
@@ -7722,7 +7765,7 @@ function startSlide(){
 }
 function finishSlide(){
   clearInterval(SL.timer); SL.running=false;
-  SL.score=Math.max(10, SL_CFG[SL.diff].base - SL.sec*3 - SL.moves);
+  SL.score=parScore('slide', SL.diff, SL.sec);
   const newRec=bt_recordScore(SL.best, SL.diff, SL.score); bt_saveBest('brain.slide.best', SL.best);
   missionMark('slide');
   sfx('good');
@@ -7802,7 +7845,7 @@ function spTap(isOdd,el){
   if(isOdd){
     SP.lock=true;
     SP.combo++; SP.maxCombo=Math.max(SP.maxCombo,SP.combo);
-    SP.score += dmScore(SP.diff, comboPts(SP.combo));
+    SP.score += dmScore(SP.diff, comboPts(SP.combo), 'spot');
     SP.level++;
     sfx('good'); spUpdateStats();
     spNewRound();
@@ -7905,7 +7948,7 @@ function odTap(isOdd,el){
   if(isOdd){
     OD.lock=true;
     OD.combo++; OD.maxCombo=Math.max(OD.maxCombo,OD.combo);
-    OD.score += dmScore(OD.diff, comboPts(OD.combo));
+    OD.score += dmScore(OD.diff, comboPts(OD.combo), 'odd');
     OD.level++;
     sfx('good'); odUpdateStats();
     odNewRound();
@@ -8020,7 +8063,7 @@ function bbTap(i,el){
   if(sum===BB.target){
     BB.lock=true;
     BB.combo++; BB.maxCombo=Math.max(BB.maxCombo,BB.combo);
-    BB.score += dmScore(BB.diff, comboPts(BB.combo));
+    BB.score += dmScore(BB.diff, comboPts(BB.combo), 'bubble');
     BB.rounds++; BB.level++;
     sfx('good'); bbUpdateStats();
     const cur=document.getElementById('bb-current'); cur.textContent='🫧 '+t('bubble.clear'); cur.style.color='var(--teal2)';
@@ -8553,7 +8596,7 @@ const ABILITY_MAP={
    예전 값은 근거 없이 잡혀 있어 한 판만 해도 대부분 100%에 닿았고(9개 중 7개) 순서 잇기는 28%가 한계였다.
    측정하지 못한 게임(chop·run·fit·nono·slide·sort·math·sudoku·iq)은 근거가 없어 그대로 뒀다.
    merge는 이미 400판 시뮬로 보정된 값이다. */
-const GAME_REF={flash:70,count:770,nback:110,cards:530,stroop:1470,switch:1510,trail:130,react:5000,rotate:660,math:45,iq:135,vocab:100,sudoku:110,typing:420,whack:2280,melody:460,bubble:460,spot:870,odd:900,slide:700,merge:20000,chop:1300,run:600,sort:650,flank:2510,guess:780,rev:160,rhythm:600,catch:2620,fit:800,nono:1300,anagram:980,wordsearch:890,diff:1820,pitch:480,trace:600};
+const GAME_REF={vocab:100,typing:420,stroop:3700,flank:6400,switch:3800,rotate:2500,guess:2300,math:660,spot:3100,odd:2300,bubble:610,nback:460,trail:270,whack:5300,catch:2600,react:7600,cards:1000,count:1300,flash:54,melody:760,rev:760,rhythm:790,pitch:970,diff:2400,anagram:710,wordsearch:1500,trace:7900,chop:2600,fit:3100,sort:1600,slide:1400,nono:1400,sudoku:160,merge:41000,run:23000,iq:132};   // 밸런스 v2: 💎 목표 = 상위 1%의 중앙값 → 능력치 100%
 function saveFlatBest(id,val){ track('game_finish', {game:id, score:val});
   let prev=0; try{ prev=parseFloat(localStorage.getItem('brain.'+id+'.flat')||'0')||0; }catch(e){}
   try{ if(val>prev) localStorage.setItem('brain.'+id+'.flat',String(val)); }catch(e){}
@@ -8574,7 +8617,9 @@ const MEDAL_STEPS=[
 ];
 /* 플레이 속도·점수 단위가 특히 큰 게임은 실제 플레이 확인값을 우선한다.
    말로우 런: 2,048점은 Silver, Diamond는 8,000점의 장기 목표. */
-const MEDAL_GOALS={run:[600,1800,4000,8000]};
+/* 밸런스 v2: 메달 = 플레이어 분포(시뮬레이션). 🥉 초보의 보통 중앙값 · 🥈 상위25% · 🥇 상위10% · 💎 상위1% 중앙값.
+   예전 GAME_REF×0.6/1.8/4/8은 지수라 30개 게임에서 상위 1%도 💎이 불가능했고 몇 개는 공짜였다. IQ는 IQ 척도 그대로. */
+const MEDAL_GOALS={"stroop":[1000,2200,2800,3700],"flank":[1900,4000,5200,6400],"switch":[1200,2500,3100,3800],"rotate":[1000,1700,2000,2500],"guess":[420,970,1500,2300],"math":[160,380,470,660],"spot":[370,1300,2100,3100],"odd":[320,850,1300,2300],"bubble":[140,330,400,610],"nback":[100,200,280,460],"trail":[110,200,240,270],"whack":[630,2300,3500,5300],"catch":[1000,1800,1900,2600],"react":[2700,5600,6500,7600],"cards":[450,770,920,1000],"count":[87,320,500,1300],"flash":[16,33,40,54],"melody":[160,380,560,760],"rev":[56,210,470,760],"rhythm":[160,390,580,790],"pitch":[250,550,700,970],"diff":[680,1500,2000,2400],"anagram":[180,420,540,710],"wordsearch":[590,1000,1300,1500],"trace":[1700,4300,5500,7900],"chop":[250,950,1200,2600],"fit":[680,1400,2000,3100],"sort":[480,970,1300,1600],"slide":[410,840,1100,1400],"nono":[420,820,1100,1400],"sudoku":[40,83,120,160],"merge":[10000,22000,26000,41000],"run":[940,6200,13000,23000],"iq":[100,112,122,132]};
 function medalCopy(key){
   const C={
     ko:{collection:'Mallow 메달 컬렉션',empty:'첫 메달을 향해 한 판 시작해 보세요.',earned:'획득',next:'다음 목표',complete:'이 게임의 모든 메달을 모았어요!',medal:'메달'},
@@ -8877,12 +8922,13 @@ function swNextTrial(first){
     bA.textContent=t('switch.low');  bA.dataset.k='low';
     bB.textContent=t('switch.high'); bB.dataset.k='high';
   }
+  qdlArm('switch', SW.diff, ()=>{ if(!SW.running) return; SW.combo=0; sfx('bad'); swUpdateStats(); swNextTrial(false); });
 }
 function swAnswer(btn){
   if(!SW.running) return;
   if(btn.dataset.k===SW.answer){
     SW.correct++; SW.combo++; SW.maxCombo=Math.max(SW.maxCombo,SW.combo);
-    SW.score += dmScore(SW.diff, comboPts(SW.combo));
+    SW.score += dmScore(SW.diff, comboPts(SW.combo), 'switch');
     sfx('good');
   }else{
     SW.combo=0; sfx('bad'); SW.timeLeft=Math.max(0, SW.timeLeft-2); updateSwTimerDisplay();
@@ -8891,7 +8937,7 @@ function swAnswer(btn){
   swUpdateStats();
   if(SW.running && SW.timeLeft>0) swNextTrial(false);
 }
-function finishSwitch(){
+function finishSwitch(){ qdlClear('switch');
   clearInterval(SW.timer); SW.running=false;
   const newRec=bt_recordScore(SW.best, SW.diff, SW.score); bt_saveBest('brain.switch.best', SW.best);
   missionMark('switch');
@@ -8987,7 +9033,7 @@ function nbPress(){
   const el=document.getElementById('nb-stim');
   if(NB.isMatch){
     NB.hits++; NB.combo++; NB.maxCombo=Math.max(NB.maxCombo,NB.combo);
-    NB.score += dmScore(NB.diff, comboPts(NB.combo));
+    NB.score += dmScore(NB.diff, comboPts(NB.combo), 'nback');
     sfx('good');
     el.classList.add('hit');
   }else{
@@ -9072,13 +9118,14 @@ function rtNextTrial(){
   right.textContent=g; right.style.transform='rotate('+ang+'deg)'+(mirror?' scaleX(-1)':'');
   document.getElementById('rot-opt-same').classList.remove('flash-wrong');
   document.getElementById('rot-opt-diff').classList.remove('flash-wrong');
+  qdlArm('rotate', RT.diff, ()=>{ if(!RT.running) return; RT.combo=0; sfx('bad'); rtUpdateStats(); rtNextTrial(); });
 }
 function rtAnswer(ans, btn){
   if(!RT.running) return;
   if(btn&&btn.blur) btn.blur();
   if(ans===RT.answer){
     RT.correct++; RT.combo++; RT.maxCombo=Math.max(RT.maxCombo,RT.combo);
-    RT.score += dmScore(RT.diff, comboPts(RT.combo));
+    RT.score += dmScore(RT.diff, comboPts(RT.combo), 'rotate');
     sfx('good');
   }else{
     RT.combo=0; sfx('bad'); RT.timeLeft=Math.max(0, RT.timeLeft-2); updateRtTimer();
@@ -9087,7 +9134,7 @@ function rtAnswer(ans, btn){
   rtUpdateStats();
   if(RT.running && RT.timeLeft>0) rtNextTrial();
 }
-function finishRotate(){
+function finishRotate(){ qdlClear('rotate');
   clearInterval(RT.timer); RT.running=false;
   const newRec=bt_recordScore(RT.best, RT.diff, RT.score); bt_saveBest('brain.rotate.best', RT.best);
   missionMark('rotate');
@@ -9180,10 +9227,10 @@ function cmFlip(i,b){
     f.b.classList.remove('up'); f.b.classList.add('done');
     b.classList.remove('up'); b.classList.add('done');
     CM.combo++; CM.maxCombo=Math.max(CM.maxCombo,CM.combo);
-    CM.score += dmScore(CM.diff, comboPts(CM.combo)); CM.matched++; sfx('good');
+    CM.score += dmScore(CM.diff, comboPts(CM.combo), 'cards'); CM.matched++; sfx('good');
     cmUpdateStats();
     if(CM.matched>=CM.pairs){ // 판 클리어
-      CM.boards++; CM.score += dmScore(CM.diff, 20); CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
+      CM.boards++; CM.score += dmScore(CM.diff, 20, 'cards'); CM.pairs=Math.min(CM.pairs+1, CM_EMOJIS.length);
       cmUpdateStats(); CM.lock=true;
       CM.flipT=setTimeout(()=>{ if(CM.running) cmNewBoard(); }, 550);
     }
@@ -9279,8 +9326,8 @@ function rcSignal(){
 function rcSurviveNoGo(){
   if(!RC.running) return;
   RC.state='resolved';
-  RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=dmScore(RC.diff, 120); RC.done++;
-  sfx('good'); rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+120'); rcSchedNext();
+  RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo); RC.score+=dmScore(RC.diff, 150, 'react'); RC.done++;
+  sfx('good'); rcUpdateStats(); rcSetBox('good', t('react.goodNogo'), '+150'); rcSchedNext();
 }
 function rcTap(){
   if(!RC.running) return;
@@ -9288,7 +9335,7 @@ function rcTap(){
     const rt=Math.round(_rcNow()-RC.goAt);
     RC.state='resolved'; RC.rtSum+=rt; RC.rtCount++;
     RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo);
-    const pts=Math.max(20, Math.round(500 - rt*0.5)); RC.score+=dmScore(RC.diff, pts); RC.done++;
+    const pts=Math.max(20, Math.round(1000 - rt*2.2)); RC.score+=dmScore(RC.diff, pts, 'react');   // 예전 500-rt/2는 상위1%와 초보 차이가 19%뿐 RC.done++;
     sfx('good'); rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
   }else if(RC.state==='waiting'){
     clearTimeout(RC.waitT);
@@ -9423,7 +9470,7 @@ function wkTap(i){
     WK.timeLeft=Math.max(0, WK.timeLeft-3); updateWkTimer();
   }else{
     sfx('good'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
-    const gain=comboPts(WK.combo); WK.score += dmScore(WK.diff, gain);
+    const gain=comboPts(WK.combo); WK.score += dmScore(WK.diff, gain, 'whack');
     const cell=document.getElementById('wk-cell-'+i);
     if(cell) fxCelebrate(cell,'+'+gain);
     if(WK.combo>=3 && WK.combo%3===0) fxCombo('x'+WK.combo+' COMBO!');
@@ -9509,7 +9556,7 @@ function mlTap(i){
     ML.pos++;
     if(ML.pos>=ML.seq.length){ // 라운드 성공
       ML.playing=true;
-      ML.score += dmScore(ML.diff, ML.len*10); ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
+      ML.score += dmScore(ML.diff, ML.len*10, 'melody'); ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
       mlSetStatus('melody.goodRound','good'); mlUpdateStats(); sfx('good');
       ML.timers.push(setTimeout(mlNewRound, 900));
     }
@@ -9555,14 +9602,15 @@ function setFlankDiff(d){ FK.diff=d; ['easy','normal','hard'].forEach(k=>documen
 function fkStats(){ document.getElementById('fk-score').textContent=FK.score; document.getElementById('fk-combo').textContent=FK.combo; }
 function fkTimer(){ const el=document.getElementById('fk-timer'); const m=Math.floor(FK.timeLeft/60),s=FK.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=FK.timeLeft<=10?'var(--red)':''; }
 function fkRound(){ const cfg=FK_CFG[FK.diff]; FK.cur=Math.random()<0.5?-1:1; const fl=(Math.random()<cfg.incong)?-FK.cur:FK.cur; const A=v=>v<0?'◀':'▶';
-  document.getElementById('fk-row').innerHTML=A(fl)+A(fl)+' <b>'+A(FK.cur)+'</b> '+A(fl)+A(fl); FK.lock=false; }
+  document.getElementById('fk-row').innerHTML=A(fl)+A(fl)+' <b>'+A(FK.cur)+'</b> '+A(fl)+A(fl); FK.lock=false;
+  qdlArm('flank', FK.diff, ()=>{ if(!FK.running) return; FK.combo=0; sfx('bad'); fkStats(); fkRound(); }); }
 function fkAns(dir){ if(!FK.running||FK.lock) return;
-  if(dir===FK.cur){ FK.lock=true; FK.combo++; FK.maxCombo=Math.max(FK.maxCombo,FK.combo); FK.score+=dmScore(FK.diff, comboPts(FK.combo)); sfx('good'); fkStats(); fkRound(); }
+  if(dir===FK.cur){ FK.lock=true; FK.combo++; FK.maxCombo=Math.max(FK.maxCombo,FK.combo); FK.score+=dmScore(FK.diff, comboPts(FK.combo), 'flank'); sfx('good'); fkStats(); fkRound(); }
   else{ FK.combo=0; sfx('bad'); FK.timeLeft=Math.max(0,FK.timeLeft-2); fkTimer(); fkStats(); if(FK.timeLeft<=0) finishFlank(); } }
 function startFlank(){ FK.score=0;FK.combo=0;FK.maxCombo=0;FK.timeLeft=FK_TIME;FK.running=true;
   document.getElementById('flank-intro-card').style.display='none'; document.getElementById('flank-result-card').style.display='none'; document.getElementById('flank-game-card').style.display='block';
   fkStats(); fkTimer(); fkRound(); clearInterval(FK.timer); FK.timer=setInterval(()=>{ FK.timeLeft--; fkTimer(); if(FK.timeLeft<=0) finishFlank(); },1000); }
-function finishFlank(){ clearInterval(FK.timer); FK.running=false;
+function finishFlank(){ qdlClear('flank'); clearInterval(FK.timer); FK.running=false;
   const nr=bt_recordScore(FK.best,FK.diff,FK.score); bt_saveBest('brain.flank.best',FK.best); missionMark('flank');
   document.getElementById('flank-game-card').style.display='none'; document.getElementById('flank-result-card').style.display='block';
   document.getElementById('fk-result-emoji').textContent=nr?'🏆':'🎯'; document.getElementById('fk-result-title').textContent=nr?t('flank.newRecord'):t('flank.timeOver');
@@ -9591,14 +9639,15 @@ function guGen(mx){ const ops=['+','-','×'];
 function guRound(){ const g=guGen(GU_CFG[GU.diff].mx); GU.correct=g.correct;
   document.getElementById('gu-q').textContent=g.a+' '+g.op+' '+g.b+' ≈ ?';
   const box=document.getElementById('gu-choices'); box.innerHTML=''; const order=g.choices.slice().sort(()=>Math.random()-0.5);
-  order.forEach(v=>{ const b=document.createElement('button'); b.className='gu-choice'; b.textContent=v; b.onclick=()=>guAns(v,b); box.appendChild(b); }); GU.lock=false; }
+  order.forEach(v=>{ const b=document.createElement('button'); b.className='gu-choice'; b.textContent=v; b.onclick=()=>guAns(v,b); box.appendChild(b); }); GU.lock=false;
+  qdlArm('guess', GU.diff, ()=>{ if(!GU.running) return; GU.combo=0; sfx('bad'); guStats(); guRound(); }); }
 function guAns(v,el){ if(!GU.running||GU.lock) return;
-  if(v===GU.correct){ GU.lock=true; GU.combo++; GU.maxCombo=Math.max(GU.maxCombo,GU.combo); GU.score+=dmScore(GU.diff, comboPts(GU.combo)); sfx('good'); guStats(); setTimeout(guRound,140); }
+  if(v===GU.correct){ GU.lock=true; GU.combo++; GU.maxCombo=Math.max(GU.maxCombo,GU.combo); GU.score+=dmScore(GU.diff, comboPts(GU.combo), 'guess'); sfx('good'); guStats(); qdlClear('guess'); setTimeout(guRound,140); }
   else{ GU.combo=0; sfx('bad'); GU.timeLeft=Math.max(0,GU.timeLeft-2); guTimer(); guStats(); el.classList.add('no'); setTimeout(()=>el.classList.remove('no'),300); if(GU.timeLeft<=0) finishGuess(); } }
 function startGuess(){ GU.score=0;GU.combo=0;GU.maxCombo=0;GU.timeLeft=GU_TIME;GU.running=true;
   document.getElementById('guess-intro-card').style.display='none'; document.getElementById('guess-result-card').style.display='none'; document.getElementById('guess-game-card').style.display='block';
   guStats(); guTimer(); guRound(); clearInterval(GU.timer); GU.timer=setInterval(()=>{ GU.timeLeft--; guTimer(); if(GU.timeLeft<=0) finishGuess(); },1000); }
-function finishGuess(){ clearInterval(GU.timer); GU.running=false;
+function finishGuess(){ qdlClear('guess'); clearInterval(GU.timer); GU.running=false;
   const nr=bt_recordScore(GU.best,GU.diff,GU.score); bt_saveBest('brain.guess.best',GU.best); missionMark('guess');
   document.getElementById('guess-game-card').style.display='none'; document.getElementById('guess-result-card').style.display='block';
   document.getElementById('gu-result-emoji').textContent=nr?'🏆':'📊'; document.getElementById('gu-result-title').textContent=nr?t('guess.newRecord'):t('guess.timeOver');
@@ -9626,7 +9675,7 @@ function rvShow(){ rvClear(); RV.phase='show'; RV.seq=Array.from({length:RV.len}
 function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); if(sndOn()) _beep(680,0.05,'sine',0.12); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
 function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); if(sndOn()) _beep(360,0.05,'sine',0.10); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
 function rvCheck(){ RV.phase='wait'; const target=RV.seq.slice().reverse(); const ok=RV.entry.every((v,i)=>v===target[i]);
-  if(ok){ RV.score+=dmScore(RV.diff, RV.len*10); RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
+  if(ok){ RV.score+=dmScore(RV.diff, RV.len*10, 'rev'); RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
   else{ RV.lives--; sfx('bad'); rvStatus('rev.miss','bad'); rvStats(); if(RV.lives<=0) RV.timers.push(setTimeout(finishRev,900)); else RV.timers.push(setTimeout(rvShow,1100)); } }
 function finishRev(){ rvClear(); RV.running=false;
   const nr=bt_recordScore(RV.best,RV.diff,RV.score); bt_saveBest('brain.rev.best',RV.best); missionMark('rev');
@@ -9659,7 +9708,7 @@ function rhPlay(){ rhClear(); RH.phase='play'; RH.pattern=rhGenPattern(RH.len); 
 function rhTap(){ if(!RH.running||RH.phase!=='input') return; rhFlash(); RH.taps.push(performance.now()); if(RH.taps.length===RH.pattern.length+1) rhCheck(); }
 function rhCheck(){ RH.phase='wait'; const gaps=[]; for(let i=1;i<RH.taps.length;i++) gaps.push(RH.taps[i]-RH.taps[i-1]);
   let ok; if(!gaps.length){ ok=true; } else { const mn=Math.min.apply(null,gaps); const cls=gaps.map(g=>g/mn<1.7?1:2); ok=cls.every((v,i)=>v===RH.pattern[i]); }
-  if(ok){ RH.score+=dmScore(RH.diff, RH.len*10); RH.maxLen=Math.max(RH.maxLen,RH.len); RH.len++; sfx('good'); rhStatus('rhythm.good','good'); rhStats(); RH.timers.push(setTimeout(rhPlay,900)); }
+  if(ok){ RH.score+=dmScore(RH.diff, RH.len*10, 'rhythm'); RH.maxLen=Math.max(RH.maxLen,RH.len); RH.len++; sfx('good'); rhStatus('rhythm.good','good'); rhStats(); RH.timers.push(setTimeout(rhPlay,900)); }
   else{ RH.lives--; sfx('bad'); rhStatus('rhythm.miss','bad'); rhStats(); if(RH.lives<=0) RH.timers.push(setTimeout(finishRhythm,900)); else RH.timers.push(setTimeout(rhPlay,1100)); } }
 function finishRhythm(){ rhClear(); RH.running=false;
   const nr=bt_recordScore(RH.best,RH.diff,RH.score); bt_saveBest('brain.rhythm.best',RH.best); missionMark('rhythm');
@@ -9686,17 +9735,20 @@ document.addEventListener('keydown',e=>{ if(!CA.running) return; if(e.code==='Ar
 function caSpawn(){ if(!CA.running) return; const cfg=CA_CFG[CA.diff]; const lane=Math.floor(Math.random()*CA_LANES); const bad=Math.random()<cfg.badP;
   const el=document.createElement('div'); el.className='ca-item'+(bad?' fork':' good'); el.innerHTML=bad?forkSVG(30):mallowSVG('happy',{size:44}); el.style.left=((lane+0.5)/CA_LANES*100)+'%'; el.style.top='0px'; caArea().appendChild(el); CA.items.push({el,lane,y:0,bad}); }
 function caFlash(bad){ const a=caArea(); if(!a) return; a.style.background=bad?'#f8d7dd':''; if(bad) setTimeout(()=>{ const x=caArea(); if(x) x.style.background=''; },140); }
-function caTick(){ if(!CA.running) return; const a=caArea(); if(!a) return; const H=a.clientHeight||330, line=H-42, cfg=CA_CFG[CA.diff];
-  for(let i=CA.items.length-1;i>=0;i--){ const it=CA.items[i]; it.y+=cfg.spd*0.04; it.el.style.top=it.y+'px';
+function caTick(){ if(!CA.running) return; const a=caArea(); if(!a) return; const H=a.clientHeight||330, line=H-42, cfg=CA_CFG[CA.diff]; CA.ticks=(CA.ticks||0)+1;
+  const ramp=1+0.012*CA.ticks*0.04;   // 1초에 1.2%씩 빨라진다(예전엔 60초 내내 같은 속도라 실력 차가 안 났다)
+  for(let i=CA.items.length-1;i>=0;i--){ const it=CA.items[i]; it.y+=cfg.spd*ramp*0.04; it.el.style.top=it.y+'px';
     if(it.y>=line){ if(it.bad){ if(it.lane===CA.lane){ CA.combo=0; CA.timeLeft=Math.max(0,CA.timeLeft-3); caFlash(true); caStats(); caTimer(); sfx('bad'); } }
-      else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); const gain=comboPts(CA.combo); CA.score+=dmScore(CA.diff, gain); sfx('good'); caStats(); const bk=document.getElementById('ca-basket'); if(bk) fxCelebrate(bk,'+'+gain); if(CA.combo>=4 && CA.combo%4===0) fxCombo('x'+CA.combo+' COMBO!'); } else { CA.combo=0; caStats(); } }
+      else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); const gain=comboPts(CA.combo); CA.score+=dmScore(CA.diff, gain, 'catch'); sfx('good'); caStats(); const bk=document.getElementById('ca-basket'); if(bk) fxCelebrate(bk,'+'+gain); if(CA.combo>=4 && CA.combo%4===0) fxCombo('x'+CA.combo+' COMBO!'); } else { CA.combo=0; caStats(); } }
       it.el.remove(); CA.items.splice(i,1); if(CA.timeLeft<=0){ finishCatch(); return; } } } }
 function startCatch(){ CA.score=0;CA.combo=0;CA.maxCombo=0;CA.timeLeft=CA_TIME;CA.lane=1;CA.running=true;CA.items=[];
   document.getElementById('catch-intro-card').style.display='none'; document.getElementById('catch-result-card').style.display='none'; document.getElementById('catch-game-card').style.display='block';
   const a=caArea(); a.style.background=''; a.innerHTML='<div class="ca-basket" id="ca-basket">'+basketSVG(60)+'</div>'; caPlaceBasket(); caStats(); caTimer();
   clearInterval(CA.timer);clearInterval(CA.tickT);clearInterval(CA.spawnT);
   CA.timer=setInterval(()=>{ CA.timeLeft--; caTimer(); if(CA.timeLeft<=0) finishCatch(); },1000);
-  CA.tickT=setInterval(caTick,40); CA.spawnT=setInterval(caSpawn,CA_CFG[CA.diff].spawn); caSpawn(); }
+  CA.ticks=0; CA.tickT=setInterval(caTick,40); caSpawnLoop(); }
+/* 생성 간격도 1초에 0.6%씩 줄어든다(최소 45%) */
+function caSpawnLoop(){ if(!CA.running) return; caSpawn(); const k=(CA.ticks||0)*0.04; CA.spawnT=setTimeout(caSpawnLoop, CA_CFG[CA.diff].spawn*Math.max(0.45,1-0.006*k)); }
 function finishCatch(){ if(!CA.running) return; clearInterval(CA.timer);clearInterval(CA.tickT);clearInterval(CA.spawnT); CA.running=false;
   const nr=bt_recordScore(CA.best,CA.diff,CA.score); bt_saveBest('brain.catch.best',CA.best); missionMark('catch');
   document.getElementById('catch-game-card').style.display='none'; document.getElementById('catch-result-card').style.display='block';
@@ -9709,13 +9761,16 @@ function resetCatch(){ clearInterval(CA.timer);clearInterval(CA.tickT);clearInte
 
 // ========== 말로우 런 (순발력·집중력 · 엔들리스 러너) — 물리·간격은 .logs/run_sim.mjs 검증본 ==========
 // 그래픽: 황혼 숲 횡스크롤(하늘·산 2겹·숲 2겹 패럴랙스 + 지면 타일 + 장애물 4종). 컨셉아트는 canvas/ 무한 캔버스.
-// 히트박스(RN_PW×RN_PH, RN_OBW×RN_OBH)와 물리 상수는 그대로 두고 외형만 바꾼다 — 공정성 검증을 다시 할 필요가 없게.
+// 밸런스 v2: 논리 세계 400×240·시간 배속 상승·거리 누적 스폰·키 큰 장애물. 규칙 검증 = tools/balance/proposal.mjs runV2.
 const RN_G=0.9, RN_JV=15, RN_PW=40, RN_PH=42, RN_OBW=26, RN_OBH=46, RN_AIR=2*RN_JV/RN_G;
-const RN_CFG={ easy:{spd0:4.2,acc:0.0010,cap:9.0,gapRand:180,clusterP:0,clusterMax:0}, normal:{spd0:5.2,acc:0.0015,cap:11.0,gapRand:150,clusterP:0.24,clusterMax:1}, hard:{spd0:6.4,acc:0.0022,cap:12.5,gapRand:110,clusterP:0.36,clusterMax:2} };
+const RN_CFG={ easy:{ts0:0.80,a:0.0042,gLo:1.25,gHi:2.20,clusterP:0,clusterMax:0,tallP:0},
+  normal:{ts0:1.00,a:0.0052,gLo:1.12,gHi:2.00,clusterP:0.18,clusterMax:1,tallP:0.15},
+  hard:{ts0:1.18,a:0.0078,gLo:1.05,gHi:1.85,clusterP:0.30,clusterMax:2,tallP:0.30} };   // ts=시간 배속(초당 a씩 상승), 간격=안전간격×[gLo,gHi]
+const RN_WW=400, RN_WH=240, RN_BASE=6, RN_OBH_TALL=64;   // 논리 세계 크기 · 1스텝 이동량 · 키 큰 장애물 높이
 const RN_KINDS=['fence','rock','crate','crystal'];
 const RN_PX_PER_M=20;   // HUD 거리 환산(표시 전용 — 점수 공식과 무관)
 const RN={ diff:'normal', running:false, over:false, raf:0, overT:0, best:bt_loadBest('brain.run.best'),
-  score:0, dist:0, spd:0, py:0, vy:0, grounded:true, obs:[], burst:0, nextGap:0, W:0, H:0, groundY:0, px:0, run:0,
+  score:0, dist:0, spd:0, ts:1, t:0, acc:0, last:0, since:0, gap:0, py:0, vy:0, grounded:true, obs:[], burst:0, W:0, H:0, groundY:0, px:0, run:0,
   parts:[], flies:[], lines:[], landT:0, crashT:0, shake:0, prevBest:0, beat:false, hudM:-1, hudS:-1 };
 // 인트로 화면의 자동 달리기 미리보기(점수·기록 없음)
 const RNP={ running:false, raf:0, dist:0, spd:4.6, py:0, vy:0, grounded:true, obs:[], W:0, H:0, groundY:0, px:0, run:0,
@@ -9723,12 +9778,12 @@ const RNP={ running:false, raf:0, dist:0, spd:4.6, py:0, vy:0, grounded:true, ob
 function RN_DIFF_LABEL(d){ return d==='easy'?t('run.easy'):d==='hard'?t('run.hard'):t('run.normal'); }
 function rnUpdateBestLine(){ const el=document.getElementById('rn-intro-best'); if(el) el.textContent=bt_bestLineText(RN.best,RN.diff); }
 function setRunDiff(d){ RN.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('rn-diff-'+k).classList.toggle('active',k===d)); rnUpdateBestLine(); }
-function safeGapRun(spd){ return spd*RN_AIR + RN_OBW + 24; }
-// 다음 장애물까지 간격 — 군집(연속 타이트) + 가변 간격으로 리듬 깨기. 항상 safeGap 이상(공정)
-function rnNextGap(){ const cfg=RN_CFG[RN.diff], base=safeGapRun(RN.spd);
-  if(RN.burst>0){ RN.burst--; return base*(1.03+Math.random()*0.12); }
-  if(cfg.clusterMax>0 && Math.random()<cfg.clusterP){ RN.burst=cfg.clusterMax; return base*(1.03+Math.random()*0.12); }
-  return base*1.15 + Math.random()*cfg.gapRand; }
+const RN_SAFE=RN_BASE*RN_AIR + RN_OBW + 24;   // 착지 후 바로 다시 뛰어 넘을 수 있는 최소 간격(논리 px)
+// 다음 장애물까지 간격 — 연속(안전간격 바로 위) + 불규칙 간격으로 리듬을 깬다. 항상 안전간격 이상(공정)
+function rnNextGap(){ const cfg=RN_CFG[RN.diff];
+  if(RN.burst>0){ RN.burst--; return RN_SAFE*(1.03+Math.random()*0.09); }
+  if(cfg.clusterMax>0 && Math.random()<cfg.clusterP){ RN.burst=cfg.clusterMax; return RN_SAFE*(1.03+Math.random()*0.09); }
+  return RN_SAFE*(cfg.gLo + Math.random()*(cfg.gHi-cfg.gLo)); }
 function rnKind(obs){ const prev=obs.length?obs[obs.length-1].k:-1; let k=Math.floor(Math.random()*RN_KINDS.length); if(k===prev) k=(k+1)%RN_KINDS.length; return k; }
 
 // ---- 배경 아트: 크기별로 한 번만 오프스크린에 그려 두고 매 프레임 이어 붙인다 ----
@@ -9786,13 +9841,14 @@ function rnBuildArt(W,H,gy,dpr){
   art.ground={cv:gt.cv,P:GP};
   RN_ART[key]=art; return art;
 }
-function rnSize(cv,S,minH,maxH,ratio){ const cssW=Math.round(cv.clientWidth||340), cssH=Math.round(Math.min(maxH,Math.max(minH,cssW*ratio)));
+/* 논리 세계(400×240)를 캔버스 폭에 맞춰 확대한다 — 화면이 넓어도 보이는 거리·판정이 같다(예전엔 PC가 훨씬 쉬웠다) */
+function rnSize(cv,S){ const cssW=Math.round(cv.clientWidth||340), k=cssW/RN_WW, cssH=Math.round(RN_WH*k);
   const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(cssW*dpr); cv.height=Math.round(cssH*dpr); cv.style.height=cssH+'px';
-  cv.getContext('2d').setTransform(dpr,0,0,dpr,0,0); S.W=cssW; S.H=cssH; S.dpr=dpr; S.groundY=cssH-32; S.px=Math.round(cssW*0.16);
-  S.art=rnBuildArt(cssW,cssH,S.groundY,dpr);
-  S.flies=Array.from({length:7},(_,i)=>({x:(i+0.5)*cssW/7, y:cssH*(0.55+Math.random()*0.25), ph:Math.random()*6.3}));
-  S.lines=Array.from({length:5},()=>({x:Math.random()*cssW, y:12+Math.random()*(S.groundY-24), len:30+Math.random()*50})); }
-function rnResize(){ const cv=document.getElementById('rn-canvas'); if(cv) rnSize(cv,RN,228,300,0.56); }
+  cv.getContext('2d').setTransform(dpr*k,0,0,dpr*k,0,0); S.W=RN_WW; S.H=RN_WH; S.dpr=dpr*k; S.groundY=RN_WH-32; S.px=Math.round(RN_WW*0.16);
+  S.art=rnBuildArt(RN_WW,RN_WH,S.groundY,dpr*k);
+  S.flies=Array.from({length:7},(_,i)=>({x:(i+0.5)*RN_WW/7, y:RN_WH*(0.55+Math.random()*0.25), ph:Math.random()*6.3}));
+  S.lines=Array.from({length:5},()=>({x:Math.random()*RN_WW, y:12+Math.random()*(S.groundY-24), len:30+Math.random()*50})); }
+function rnResize(){ const cv=document.getElementById('rn-canvas'); if(cv) rnSize(cv,RN); }
 
 // ---- 파티클(먼지·불꽃) ----
 function rnPuff(S,x,y,n,spread,rgb,kind){ for(let i=0;i<n;i++) S.parts.push({x,y,vx:(Math.random()-0.5)*spread,vy:-Math.random()*(kind==='spark'?4.5:1.4),life:0,max:kind==='spark'?30:22+Math.random()*12,r:kind==='spark'?2+Math.random()*2:2+Math.random()*3,rgb:rgb||'232,208,172',kind:kind||'dust'}); }
@@ -9835,8 +9891,10 @@ function rnObCrystal(c,x,gy,tk){ const top=gy-RN_OBH;
     c.fillStyle=g; c.fill(); c.strokeStyle='#35196a'; c.lineWidth=1.4; c.stroke();
     c.fillStyle='rgba(255,255,255,.55)'; c.beginPath(); c.moveTo(cx-1,ty+4); c.lineTo(cx-w*0.55,ty+w*1.6); c.lineTo(cx-w*0.45,gy-6); c.lineTo(cx-1.5,gy-6); c.closePath(); c.fill(); });
   c.restore(); }
-function rnObstacle(c,o,gy,tk){ rnObShadow(c,o.x,gy); const k=RN_KINDS[o.k|0];
-  if(k==='rock') rnObRock(c,o.x,gy,tk); else if(k==='crate') rnObCrate(c,o.x,gy); else if(k==='crystal') rnObCrystal(c,o.x,gy,tk); else rnObFence(c,o.x,gy); }
+function rnObstacle(c,o,gy,tk){ rnObShadow(c,o.x,gy); const k=RN_KINDS[o.k|0], tall=(o.h||RN_OBH)>RN_OBH;
+  if(tall){ c.save(); c.translate(0,gy); c.scale(1,o.h/RN_OBH); c.translate(0,-gy); }
+  if(k==='rock') rnObRock(c,o.x,gy,tk); else if(k==='crate') rnObCrate(c,o.x,gy); else if(k==='crystal') rnObCrystal(c,o.x,gy,tk); else rnObFence(c,o.x,gy);
+  if(tall) c.restore(); }
 
 // ---- 말로우(외곽선·셀 셰이딩·달리기/점프/착지 스쿼시/충돌 포즈) ----
 function rnMallow(c,x,by,S){
@@ -9904,12 +9962,13 @@ function rnScene(c,S,tk){
   rnDrawParts(c,S);
   c.restore();
 }
-function rnFx(S){ // 게임 규칙과 무관한 연출 갱신
+function rnFx(S,f){ // 게임 규칙과 무관한 연출 갱신(f = 이번 화면 프레임이 60Hz 몇 프레임인지)
+  const sp=S.spd; if(f) S.spd=sp*f;
   if(S.landT>0) S.landT--; if(S.shake>0) S.shake*=0.86; if(S.shake<0.3) S.shake=0;
   for(const f of S.flies){ f.x-=S.spd*0.3; if(f.x<-10) f.x=S.W+10; }
   for(const l of S.lines){ l.x-=S.spd*2.4; if(l.x+l.len<0){ l.x=S.W+Math.random()*60; l.y=12+Math.random()*(S.groundY-24); } }
   if(S.grounded && S.crashT===0 && Math.random()<0.28) rnPuff(S,S.px+10,S.groundY-2,1,0.6);
-  rnStepParts(S);
+  rnStepParts(S); S.spd=sp;
 }
 function rnSnd(kind){ try{ if(!sndOn()) return;
   if(kind==='jump') _tone({freq:360,dur:0.13,type:'square',vol:0.05,glide:420});
@@ -9920,9 +9979,9 @@ function startRun(){
   clearTimeout(RN.overT); RNP.running=false; cancelAnimationFrame(RNP.raf);
   document.getElementById('run-intro-card').style.display='none'; document.getElementById('run-result-card').style.display='none'; document.getElementById('run-game-card').style.display='block';
   rnResize(); const cfg=RN_CFG[RN.diff];
-  RN.running=true; RN.over=false; RN.score=0; RN.dist=0; RN.spd=cfg.spd0; RN.py=0; RN.vy=0; RN.grounded=true; RN.run=0; RN.burst=0;
+  RN.running=true; RN.over=false; RN.score=0; RN.dist=0; RN.ts=cfg.ts0; RN.spd=RN_BASE*cfg.ts0; RN.t=0; RN.acc=0; RN.last=0; RN.py=0; RN.vy=0; RN.grounded=true; RN.run=0; RN.burst=0;
   RN.parts=[]; RN.landT=0; RN.crashT=0; RN.shake=0; RN.tk=0; RN.beat=false; RN.hudM=-1; RN.hudS=-1; RN.prevBest=RN.best[RN.diff].all||0;
-  RN.obs=[{x:RN.W+40,k:rnKind([])}]; RN.nextGap=rnNextGap();
+  RN.obs=[]; RN.since=0; RN.gap=RN_WW*0.9;   // 첫 장애물은 약 1.5초 뒤
   document.getElementById('rn-score').textContent='0'; document.getElementById('rn-dist').textContent='0';
   document.getElementById('rn-hud-best').textContent=RN.prevBest; document.getElementById('rn-score-plate').classList.remove('beat');
   const cue=document.getElementById('rn-cue'); if(cue) cue.classList.remove('hide');
@@ -9934,23 +9993,32 @@ function rnJump(){ if(!RN.running) return; if(RN.grounded){ RN.vy=RN_JV; RN.grou
 function rnHud(){
   if(RN.score!==RN.hudS){ RN.hudS=RN.score; document.getElementById('rn-score').textContent=RN.score; }
   const m=Math.floor(RN.dist/RN_PX_PER_M); if(m!==RN.hudM){ RN.hudM=m; document.getElementById('rn-dist').textContent=m.toLocaleString(); }
-  const cfg=RN_CFG[RN.diff], sp=document.getElementById('rn-speed-fill'); if(sp) sp.style.width=Math.round(100*(RN.spd-cfg.spd0)/(cfg.cap-cfg.spd0))+'%';
+  const cfg=RN_CFG[RN.diff], sp=document.getElementById('rn-speed-fill'); if(sp) sp.style.width=Math.min(100,Math.round(100*(RN.ts-cfg.ts0)/1.5))+'%';
   if(!RN.beat && RN.prevBest>0 && RN.score>RN.prevBest){ RN.beat=true; rnSnd('beat');
     document.getElementById('rn-score-plate').classList.add('beat'); const toast=document.getElementById('rn-toast'); if(toast){ toast.classList.remove('show'); void toast.offsetWidth; toast.classList.add('show'); } }
 }
-function rnLoop(){
+function rnLoop(now){
   if(!RN.running) return; const cfg=RN_CFG[RN.diff]; RN.tk++;
-  RN.spd=Math.min(cfg.cap, RN.spd+cfg.acc); RN.run=(RN.run+RN.spd*0.05)%1;
+  if(!RN.last) RN.last=now; const dt=Math.min(0.05, Math.max(0,(now-RN.last)/1000)); RN.last=now; RN.t+=dt;
+  RN.ts=cfg.ts0+cfg.a*RN.t; RN.spd=RN_BASE*RN.ts; RN.acc+=dt*60*RN.ts;   // 실제 시간 기준 — 120Hz 화면에서도 같은 속도
+  let n=Math.floor(RN.acc); RN.acc-=n;
+  for(let i=0;i<n;i++){ if(rnStep(cfg)) return; }
+  RN.run=(RN.run+RN.spd*0.05*dt*60)%1;
+  RN.score=Math.floor(RN.dist*dm(RN.diff,'run')/12); rnHud();
+  rnFx(RN,dt*60); rnDraw(); RN.raf=requestAnimationFrame(rnLoop);
+}
+/* 물리 1스텝(예전 1프레임과 같다). 충돌하면 true */
+function rnStep(cfg){
   if(!RN.grounded){ RN.py+=RN.vy; RN.vy-=RN_G; if(RN.py<=0){ RN.py=0; RN.vy=0; RN.grounded=true; RN.landT=8; rnPuff(RN,RN.px+RN_PW/2,RN.groundY-2,7,3); } }
-  for(const o of RN.obs) o.x-=RN.spd;
+  for(const o of RN.obs) o.x-=RN_BASE;
   while(RN.obs.length && RN.obs[0].x < -RN_OBW-6) RN.obs.shift();
-  const last=RN.obs[RN.obs.length-1];
-  if(!last || (RN.W - last.x) >= RN.nextGap){ RN.obs.push({x:RN.W,k:rnKind(RN.obs)}); RN.nextGap=rnNextGap(); }
-  RN.dist+=RN.spd; RN.score=Math.floor(RN.dist*dm(RN.diff)/12); rnHud();
-  // 충돌(AABB): 플레이어[px,px+PW]×[py,py+PH] vs 장애물[x,x+OBW]×[0,OBH]
+  RN.since+=RN_BASE;   // 거리 누적 스폰 — 화면에 장애물이 없어도 간격이 유지된다
+  if(RN.since>=RN.gap){ RN.obs.push({x:RN_WW, k:rnKind(RN.obs), h:Math.random()<cfg.tallP?RN_OBH_TALL:RN_OBH}); RN.since=0; RN.gap=rnNextGap(); }
+  RN.dist+=RN_BASE;
+  // 충돌(AABB): 플레이어[px,px+PW]×[py,py+PH] vs 장애물[x,x+OBW]×[0,h]
   const pxL=RN.px, pxR=RN.px+RN_PW;
-  for(const o of RN.obs){ if(o.x+RN_OBW < pxL) continue; if(o.x > pxR) break; if(RN.py < RN_OBH){ rnGameOver(); return; } }
-  rnFx(RN); rnDraw(); RN.raf=requestAnimationFrame(rnLoop);
+  for(const o of RN.obs){ if(o.x+RN_OBW < pxL) continue; if(o.x > pxR) break; if(RN.py < (o.h||RN_OBH)){ rnGameOver(); return true; } }
+  return false;
 }
 function rnDraw(){ const cv=document.getElementById('rn-canvas'); if(!cv) return; rnScene(cv.getContext('2d'),RN,RN.tk); }
 // 충돌 연출(약 0.75초: 흔들림·불꽃·쓰러짐) 뒤 결과 카드. 기록은 충돌 즉시 저장한다(연출 중 이탈해도 유지).
@@ -9982,7 +10050,7 @@ function resetRun(){ RN.running=false; RN.over=false; RN.crashT=0; clearTimeout(
 // ---- 인트로 미리보기: 자동으로 점프하며 달리는 모습(화면이 보일 때만 돈다) ----
 function rnPreviewStart(){ const cv=document.getElementById('rn-preview'); if(!cv || RNP.running || RN.running) return;
   requestAnimationFrame(()=>{ if(!cv.offsetParent || RNP.running || RN.running) return;
-    rnSize(cv,RNP,232,270,0.56); RNP.dist=0; RNP.py=0; RNP.vy=0; RNP.grounded=true; RNP.parts=[]; RNP.obs=[{x:RNP.W*0.7,k:0}]; RNP.gap=RNP.W*0.55; RNP.tk=0;
+    rnSize(cv,RNP); RNP.dist=0; RNP.py=0; RNP.vy=0; RNP.grounded=true; RNP.parts=[]; RNP.obs=[{x:RNP.W*0.7,k:0}]; RNP.gap=RNP.W*0.55; RNP.tk=0;
     RNP.running=true; cancelAnimationFrame(RNP.raf); RNP.raf=requestAnimationFrame(rnPreviewLoop); }); }
 function rnPreviewLoop(){ const cv=document.getElementById('rn-preview');
   if(!cv || !cv.offsetParent || RN.running){ RNP.running=false; return; }
@@ -10173,7 +10241,7 @@ function startNono(){ const cfg=NO_CFG[NO.diff]; NO.n=cfg.n; NO.sol=noGen(cfg.n,
   document.getElementById('nono-intro-card').style.display='none'; document.getElementById('nono-result-card').style.display='none'; document.getElementById('nono-game-card').style.display='block';
   const b=document.getElementById('no-mode-btn'); b.innerHTML='🖌️ <span>'+t('nono.fillMode')+'</span>'; noBuild(); noTimer(); clearInterval(NO.timer); NO.timer=setInterval(noTimer,1000); }
 function finishNono(){ if(!NO.running) return; clearInterval(NO.timer); NO.running=false; const secs=Math.floor((Date.now()-NO.started)/1000);
-  const score=Math.max(50, NO_CFG[NO.diff].base - Math.round(secs*NO_CFG[NO.diff].rate)); sfx('win');
+  const score=parScore('nono', NO.diff, secs); sfx('win');
   const nr=bt_recordScore(NO.best,NO.diff,score); bt_saveBest('brain.nono.best',NO.best); NO.score=score; missionMark('nono');
   document.getElementById('nono-game-card').style.display='none'; document.getElementById('nono-result-card').style.display='block';
   document.getElementById('no-result-emoji').textContent=nr?'🏆':'🖼️'; document.getElementById('no-result-title').textContent=nr?t('nono.newRecord'):t('nono.complete');
@@ -10196,7 +10264,7 @@ const AG_WORDS={
 const AG_LEN={ easy:{ko:[2,3],en:[3,4]}, normal:{ko:[4],en:[5]}, hard:{ko:[5,6],en:[6]} };
 const AG_HINTS={ easy:3, normal:2, hard:1 };
 const AG_PENALTY={ easy:0, normal:1, hard:2 };   // 오답 시 시간(초) 차감
-const AG_MULT={ easy:1.0, normal:1.4, hard:2.0 }; // 난이도 점수 배율
+const AG_MULT=DMULT_GAME.anagram; // 난이도 점수 배율(밸런스 v2 보정값)
 const AG_TIME=60;
 const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, wordStart:0, bag:{}, best:bt_loadBest('brain.anagram.best') };
 function AG_DIFF_LABEL(d){ return d==='easy'?t('anagram.easy'):d==='hard'?t('anagram.hard'):t('anagram.normal'); }
@@ -10309,9 +10377,9 @@ function wsHighlight(cells){ document.querySelectorAll('.ws-cell.sel').forEach(e
 function wsCommit(){ if(!WS.drag) return; const cells=wsLine(WS.drag.start,WS.drag.cur); document.querySelectorAll('.ws-cell.sel').forEach(e=>e.classList.remove('sel'));
   const str=cells.map(p=>WS.grid[p.r][p.c]).join(''), rev=cells.slice().reverse().map(p=>WS.grid[p.r][p.c]).join(''); WS.drag=null;
   const tt=WS.targets.find(t=>!t.found&&(t.word===str||t.word===rev));
-  if(tt){ tt.found=true; WS.combo++; WS.maxCombo=Math.max(WS.maxCombo,WS.combo); WS.score+=dmScore(WS.diff, [...tt.word].length*4+comboBonus(WS.combo)); sfx('good');
+  if(tt){ tt.found=true; WS.combo++; WS.maxCombo=Math.max(WS.maxCombo,WS.combo); WS.score+=dmScore(WS.diff, [...tt.word].length*4+comboBonus(WS.combo), 'wordsearch'); sfx('good');
     cells.forEach(p=>{ const el=wsCellEl(p.r,p.c); if(el) el.classList.add('found'); }); wsRenderWords(); wsStats();
-    if(WS.targets.every(t=>t.found)){ WS.score+=dmScore(WS.diff, 20); sfx('win'); if(wsBuild()) wsRender(); wsStats(); } }
+    if(WS.targets.every(t=>t.found)){ WS.score+=dmScore(WS.diff, 20, 'wordsearch'); sfx('win'); if(wsBuild()) wsRender(); wsStats(); } }
   else { WS.combo=0; wsStats(); }
 }
 function startWordsearch(){ WS.score=0;WS.combo=0;WS.maxCombo=0;WS.timeLeft=WS_TIME[WS.diff];WS.running=true;WS.drag=null;
@@ -10378,9 +10446,9 @@ function dfRender(){
 }
 function dfMark(i){ ['df-grid1','df-grid2'].forEach(gid=>{ const c=document.getElementById(gid).children[i]; if(c) c.classList.add('found'); }); }
 function dfTap(i,el){ if(!DF.running||DF.lock||DF.foundSet.has(i)) return;
-  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=dmScore(DF.diff, comboPts(DF.combo)); sfx('good'); dfMark(i); dfStats(); dfCount();
+  if(DF.diffs.includes(i)){ DF.foundSet.add(i); DF.found++; DF.combo++; DF.maxCombo=Math.max(DF.maxCombo,DF.combo); DF.score+=dmScore(DF.diff, comboPts(DF.combo), 'diff'); sfx('good'); dfMark(i); dfStats(); dfCount();
     if(DF.found>=DF.diffs.length){ DF.level++; DF.lock=true;
-      const bonus=Math.min(DF_BONUS[DF.diff], DF_TIME[DF.diff]-DF.timeLeft);   // 시작 시간을 넘지 않게
+      const bonus=Math.min(Math.max(2, Math.round(DF_BONUS[DF.diff]-0.6*(DF.level-2))), DF_TIME[DF.diff]-DF.timeLeft);   // 시작 시간을 넘지 않게 · 레벨마다 0.6초씩 줄어 상위권도 끝난다
       DF.timeLeft+=bonus; dfTimer();
       if(bonus>0){ const ce=document.getElementById('df-count'); if(ce) fxCelebrate(ce,'+'+bonus+'s'); } sfx('win'); setTimeout(()=>{ DF.lock=false; if(DF.running) dfBuild(); },350); } }
   else { DF.combo=0; sfx('bad'); DF.timeLeft=Math.max(0,DF.timeLeft-2); dfTimer(); dfStats(); el.classList.add('miss'); setTimeout(()=>el.classList.remove('miss'),320); if(DF.timeLeft<=0) finishDiff(); }
@@ -10398,7 +10466,7 @@ function leaveDiff(){ resetDiff(); showScreen('games'); }
 function resetDiff(){ clearInterval(DF.timer); DF.running=false; const g=document.getElementById('diff-game-card');if(g)g.style.display='none'; const r=document.getElementById('diff-result-card');if(r)r.style.display='none'; const i=document.getElementById('diff-intro-card');if(i)i.style.display='block'; dfUpdateBestLine(); }
 
 // ========== 높은음 찾기 (청각) ==========
-const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:26}, hard:{nStart:5,nMax:7,c0:62,cStep:5,cMin:18} }; // hard가 normal과 같은 4로 시작해 사실상 동일했음
+const PT_CFG={ easy:{nStart:3,nMax:5,c0:100,cStep:6,cMin:35}, normal:{nStart:4,nMax:6,c0:80,cStep:5,cMin:16}, hard:{nStart:5,nMax:7,c0:62,cStep:5,cMin:10} }; // hard가 normal과 같은 4로 시작해 사실상 동일했음
 const PT_TIME={easy:60, normal:75, hard:90}; // 패드 수↑ = 한 라운드 청음 시간↑
 const PT={ diff:'normal', score:0, combo:0, maxCombo:0, level:1, timeLeft:PT_TIME.normal, timer:null, running:false, lock:false, pause:false, freqs:[], odd:0, timers:[], best:bt_loadBest('brain.pitch.best') };
 function PT_DIFF_LABEL(d){ return d==='easy'?t('pitch.easy'):d==='hard'?t('pitch.hard'):t('pitch.normal'); }
@@ -10419,7 +10487,7 @@ function ptRound(){ const cfg=PT_CFG[PT.diff]; const n=Math.min(cfg.nMax,cfg.nSt
   ptRenderPads(n); PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptReplay(){ if(!PT.running||PT.lock) return; PT.lock=true; ptStatus('pitch.listen'); ptPlaySeq(()=>{ PT.lock=false; ptStatus('pitch.find','turn'); }); }
 function ptTap(i){ if(!PT.running||PT.lock) return; ptFlash(i,PT.freqs[i],300);
-  if(i===PT.odd){ PT.lock=true; PT.pause=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=dmScore(PT.diff, comboPts(PT.combo)); PT.level++; sfx('good'); ptStats(); ptStatus('pitch.nextRound','good'); PT.timers.push(setTimeout(ptRound,1100)); }
+  if(i===PT.odd){ PT.lock=true; PT.pause=true; PT.combo++; PT.maxCombo=Math.max(PT.maxCombo,PT.combo); PT.score+=dmScore(PT.diff, comboPts(PT.combo), 'pitch'); PT.level++; sfx('good'); ptStats(); ptStatus('pitch.nextRound','good'); PT.timers.push(setTimeout(ptRound,1100)); }
   else { PT.combo=0; sfx('bad'); PT.timeLeft=Math.max(0,PT.timeLeft-2); ptTimer(); ptStats(); if(PT.timeLeft<=0) finishPitch(); } }
 /* 소리가 꺼져 있으면 이 게임은 찍기밖에 안 된다 — 시작을 막고 켜는 길을 준다 */
 function ptEnableSound(){ if(!sndOn()) toggleSound(); const n=document.getElementById('pt-noaudio'); if(n) n.style.display='none'; startPitch(); }
@@ -10532,7 +10600,7 @@ function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail
 function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>=3){ TC.trail.push({x:p.x,y:p.y}); const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points', TC.trail.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ')); }
   const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
 function tcStray(){ if(!TC.active) return; TC.active=false; TC.cur=null; TC.grip=null; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
-function tcClearLevel(){ TC.active=false; TC.cur=null; TC.grip=null; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
+function tcClearLevel(){ TC.active=false; TC.cur=null; TC.grip=null; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10, 'trace'); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
 /* 화면 크기가 바뀌면(회전 등) 좌표계도 바뀌어야 한다. 그리는 중에는 건드리지 않는다. */
 let _tcResizeT=null;
 window.addEventListener('resize',()=>{ if(!TC.running||TC.active) return;

@@ -76,7 +76,7 @@ try {
             const retry=!!document.querySelector('#flash-result-card .pg-box');
             const medal=!!document.querySelector('#flash-result-card .medal-moment');
             const collection=document.querySelector('#home-collection')?.textContent.includes('Mallow');
-            const runMedal=medalState('run',2048);
+            const runMedal=medalState('run',6500);   // 밸런스 v2 목표: 🥈 6,200 · 🥇 13,000
             pgRetry('flash');
             return saved===1000&&visible&&retry&&medal&&collection&&runMedal.current?.key==='silver'&&runMedal.next?.key==='gold'&&document.getElementById('flash-game-card').style.display==='block';
           });
