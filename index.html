@@ -5028,7 +5028,7 @@ function sfx(kind, arg){
         if(st.timeLeft<=5){ SV.hat(0,0.2); _osc('square',900+(6-st.timeLeft)*180,SV.T(),0.05,0.05,_AM.sfx); } }
     }
   }catch(_){} return; }
-  if(kind==='good'||kind==='merge'||kind==='cork'||kind==='lines'||kind==='rt') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
+  if(kind==='good'||kind==='merge'||kind==='cork'||kind==='lines'||kind==='rt'||kind==='clap') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
   else if(kind==='win') fxBurst(_fxXY.x,_fxXY.y,{count:20,spread:95});
   const vib=(p)=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
   if(kind==='good'||kind==='merge'||kind==='cork'||kind==='lines'||kind==='rt'){ SND.streak++; bgmLevelUpdate(); }
@@ -5063,6 +5063,7 @@ function sfx(kind, arg){
     case 'crash': SV.kick(0,1); SV.snare(0,0.55); SV.sub(0.02,0.9); SV.glass(0.05); vib(60); break;
     case 'milestone': SV.bell(1318.5,0,0.18); SV.bell(1760,0.09,0.16); break;
     case 'beat': [0,4,7,12].forEach((s,k)=>SV.bell(1046.5*Math.pow(2,s/12),k*0.06,0.12)); SV.hat(0,0.2); break;   // 달리는 중 최고점 돌파
+    case 'clap': [0,0.16].forEach(o=>{ for(let k=0;k<3;k++) _hit(T0+o+k*0.011,0.5,_AM.sfx,1300,0.045,'bandpass'); _hit(T0+o+0.03,0.3,_AM.sfx,1300,0.14,'bandpass'); }); vib(15); break;   // 박수 — 음정이 없어 멜로디 기억의 다음 멜로디와 섞이지 않는다
     case 'bite': _hit(T0,0.36,_AM.sfx,1200,0.05,'bandpass'); SV.kick(0,0.3); _osc('square',_J(180,0.1),T0,0.05,0.07,_AM.sfx,{glide:-60}); break;
     case 'heart': SV.kick(0,0.55); SV.kick(0.15,0.3); break;
     case 'pop': if(_once('pop',60)) _osc('sine',_J(300,0.08),T0,0.13,0.18,_AM.sfx,{glide:500}); break;
@@ -9894,7 +9895,7 @@ function mlTap(i){
     if(ML.pos>=ML.seq.length){ // 라운드 성공
       ML.playing=true;
       ML.score += dmScore(ML.diff, ML.len*10, 'melody'); ML.maxLen=Math.max(ML.maxLen, ML.len); ML.len++;
-      mlSetStatus('melody.goodRound','good'); mlUpdateStats(); sfx('good');
+      mlSetStatus('melody.goodRound','good'); mlUpdateStats(); sfx('clap');
       ML.timers.push(setTimeout(mlNewRound, 900));
     }
   }else{
