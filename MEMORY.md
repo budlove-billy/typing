@@ -407,3 +407,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 새싹 모찌 마스코트 (2026-09-20)
 - `mallowSVG()`는 외부 이미지 없이 모든 웹 게임·홈·공유 카드에 쓰이는 단일 마스코트 원본이다. A 시안으로 확정된 새싹 모찌는 두 장의 초록 잎, 둥근 모찌 몸통, 민트 기본 네비게이션, 큰 광택 하이라이트를 쓴다. 기존 한입 큐브처럼 우측이 파인 윤곽을 다시 도입하지 않는다.
 - 결과 공통 `pg-box`는 아이보리 보상 패널, `medal-moment`는 골드 진행 트랙, `pg-retry`는 입체 파란 주 버튼으로 유지한다. 390px 결과 화면에서 새싹 SVG·메달·재도전·가로 넘침 0을 확인하는 `.logs/medal-smoke.mjs`를 사용할 수 있다.
+
+## 말로우 런 그래픽 (2026-09-27)
+- `index.html`의 말로우 런은 황혼 숲 횡스크롤 테마를 절차적 캔버스로 그린다(외부 이미지 없음). 배경은 `rnBuildArt()`가 크기별로 오프스크린 타일을 한 번 만들어 `RN_ART`에 캐시하고, `rnScene(c,S)`가 게임(`RN`)·인트로 미리보기(`RNP`) 공용으로 그린다. 컨셉아트는 `canvas/pages/main/assets/`.
+- 물리·히트박스·간격(`RN_G/RN_JV/RN_PW/RN_PH/RN_OBW/RN_OBH`, `rnNextGap`)은 `.logs/run_sim.mjs` 검증본이다. 장애물 외형을 바꿀 때도 26×46 상자를 채우는 크기를 유지한다. 점프 최고점 여유 때문에 캔버스 최소 높이 228px(미리보기 232px) 아래로 줄이지 않는다.
