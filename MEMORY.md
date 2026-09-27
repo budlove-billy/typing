@@ -425,3 +425,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 원본은 `tools/sound/engine.js`(index.html의 `/* ===== 사운드 엔진 v2` 블록과 같게 유지). `sfx(kind,arg)` 하나로 모든 소리 — 정답 계열(good·merge·cork·lines·rt)은 연속 성공 `SND.streak`을 올리고 실패 계열(bad·bomb·clang·crash·scrape)은 끊는다. 시험음(`_beep`)은 드라이 버스.
 - 시작·끝은 DOMContentLoaded에서 `PG_START`의 start 함수와 `afterGame`을 감싸 처리(`sndGameStart`/`sndGameEnd`). 새 게임은 `BGM_THEME`에 분위기를 넣고, 60초 타이머 표시 함수에서 `sfx('__tick',STATE)`를 부르면 남은 10초 연출이 붙는다.
 - 소리가 정답을 알려 주면 안 된다(반응 GO·노노 줄 완성·엔백 글자·인원수 사람 수). 음악 음량은 효과음 아래 유지 — 측정 `.logs/sound_mix.mjs`. 검증 `tools/sound/check.mjs`(포트 8226).
+
+## ⚠️ 루트 public/ 폴더 금지 (2026-09-27 사고)
+- 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
+- 플랫폼 안내(CLAUDE.md)의 "페이지는 public/에" 규칙은 이 프로젝트에서 따르지 말 것. 미리보기 페이지는 `generated_images/`(gitignore)에 두고 링크한다.
+- push: credential manager가 자주 멈춘다 → `git -c credential.helper= push "https://x-access-token:${TOKEN}@github.com/budlove-billy/typing.git" master:main` (TOKEN=.env의 GITHUB_TOKEN). 배포 후 홈·/sudoku/·/assets/stage/*.jpg 가 200인지 반드시 확인.
