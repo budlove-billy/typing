@@ -429,6 +429,10 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 
 /* LANGUAGE SELECT */
 .lang-select-wrap{flex-shrink:0;padding:0 1rem 0 .5rem;display:flex;align-items:center;gap:.4rem}
+.snd-panel{position:absolute;z-index:9999;display:flex;flex-direction:column;gap:.55rem;padding:.75rem .85rem;min-width:210px;border-radius:14px;background:#fff;border:1px solid var(--border);box-shadow:0 10px 28px rgba(20,20,60,.22)}
+.snd-panel label{display:flex;align-items:center;justify-content:space-between;gap:.6rem;font-size:.84rem;font-weight:700;color:var(--text)}
+.snd-panel input{width:110px}
+.snd-mute{font:inherit;font-weight:800;border:1px solid var(--border);background:var(--bg3);border-radius:10px;padding:.45rem;cursor:pointer}
 .snd-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);font-size:.9rem;padding:.25rem .4rem;cursor:pointer;line-height:1}
 .lang-select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.35rem .5rem;font-size:.8rem;color:var(--text);font-family:inherit;cursor:pointer;outline:none}
 .lang-select:hover{border-color:var(--purple)}
@@ -1238,7 +1242,7 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
   <button id="nav-exit" class="nav-exit" onclick="navTo('home')" style="display:none"><span class="nav-exit-x">←</span> <span data-i18n="nav.exit">나가기</span></button>
   <div class="nav-logo" onclick="navTo('home')" role="button"><span class="nav-mascot" data-mallow="default" data-mallow-variant="mint" data-mallow-size="40" aria-label="플레이말로우 새싹 모찌 마스코트" role="img"></span><span class="nav-brand">Mallow</span><span class="nav-game" id="nav-game"></span><span class="nav-tagline" data-i18n="nav.tagline"> 가볍게 즐기는 두뇌게임</span></div>
   <div class="lang-select-wrap">
-    <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="sound">🔊</button>
+    <button class="snd-btn" id="snd-btn" onclick="openSndPanel(event)" title="sound">🔊</button>
     <select class="lang-select" id="lang-select" onchange="setLanguage(this.value,true)">
       <option value="ko">🇰🇷 한국어</option>
       <option value="en">🇺🇸 English</option>
@@ -3717,6 +3721,8 @@ const I18N = {
   "merge.newRecord": {ko:"신기록 달성!", en:"New Record!", th:"สถิติใหม่!"},
   "merge.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "nav.chop": {ko:"말로우 타워", en:"Mallow Tower", th:"หอมัลโลว์"},
+  "snd.music": {ko:"음악", en:"Music", th:"เพลง"}, "snd.sfx": {ko:"효과음", en:"Effects", th:"เสียงเอฟเฟกต์"},
+  "snd.on": {ko:"소리 켜짐", en:"Sound on", th:"เปิดเสียง"}, "snd.off": {ko:"소리 꺼짐", en:"Sound off", th:"ปิดเสียง"},
   "nav.run": {ko:"말로우 런", en:"Mallow Run", th:"มาโลว์รัน"},
   "run.title": {ko:"말로우 런", en:"Mallow Run", th:"มาโลว์รัน"},
   "run.intro": {ko:"황혼의 숲을 달리는 말로우! 다가오는 <b>가시 울타리·바위·상자·수정</b>을 <b>점프</b>로 넘으세요. 갈수록 빨라집니다.<br>화면을 탭하거나 스페이스바로 점프. 얼마나 멀리 갈까요?", en:"Mallow dashes through a twilight forest! <b>Jump</b> over incoming <b>spike fences, rocks, crates and crystals</b> — it keeps getting faster.<br>Tap the screen or press Space to jump. How far can you run?", th:"มาโลว์วิ่งผ่านป่ายามพลบค่ำ! <b>กระโดด</b>ข้าม<b>รั้วหนาม หิน ลัง และคริสตัล</b>ที่พุ่งเข้ามา ยิ่งวิ่งยิ่งเร็ว!<br>แตะหน้าจอหรือกด Space เพื่อกระโดด วิ่งได้ไกลแค่ไหน?"},
@@ -4662,7 +4668,7 @@ function toggleSound(){
   const on=!sndOn();
   try{ localStorage.setItem('brain.sound', on?'on':'off'); }catch(e){}
   const b=document.getElementById('snd-btn'); if(b) b.textContent=on?'🔊':'🔇';
-  if(on) sfx('good');
+  if(on) sfx('good'); else bgmStop();
 }
 function _beep(freq,dur,type,vol,when){
   try{
@@ -4670,7 +4676,7 @@ function _beep(freq,dur,type,vol,when){
     if(_AC.state==='suspended') _AC.resume();
     const o=_AC.createOscillator(), g=_AC.createGain();
     o.type=type||'sine'; o.frequency.value=freq;
-    o.connect(g); g.connect(_AC.destination);
+    o.connect(g); g.connect(_dryOut());
     const t=_AC.currentTime+(when||0);
     g.gain.setValueAtTime(vol||0.12,t);
     g.gain.exponentialRampToValueAtTime(0.001,t+dur);
@@ -4698,7 +4704,7 @@ function _tone(o){
     g.gain.setValueAtTime(0.0001,t);
     g.gain.linearRampToValueAtTime(vol,t+(o.attack||0.006));
     g.gain.exponentialRampToValueAtTime(0.001,t+dur);
-    g.connect(_AC.destination);
+    g.connect(_sfxOut());
     // 메인 + 옥타브 위 서브 레이어(밝은 배음)
     [['',1],['',2]].forEach(function(pr,i){
       const osc=_AC.createOscillator();
@@ -4716,7 +4722,7 @@ function _tone(o){
       const ng=_AC.createGain();
       ng.gain.setValueAtTime(vol*o.noise,t);
       ng.gain.exponentialRampToValueAtTime(0.001,t+Math.min(dur,0.09));
-      src.connect(nf); nf.connect(ng); ng.connect(_AC.destination);
+      src.connect(nf); nf.connect(ng); ng.connect(_sfxOut());
       src.start(t); src.stop(t+0.12);
     }
   }catch(e){}
@@ -4768,7 +4774,7 @@ function fxBurst(x,y,opts){ opts=opts||{}; if(fxReduced()) return; const n=opts.
   }
 }
 function fxScorePop(x,y,text,color){ if(fxReduced()) return; const layer=_fxLayer(); const p=document.createElement('div'); p.className='fx-pop'; p.textContent=text; p.style.color=color||'#21a67a'; p.style.left=x+'px'; p.style.top=y+'px'; layer.appendChild(p); p.addEventListener('animationend',()=>p.remove()); }
-function fxCombo(text){ if(fxReduced()) return; const b=document.createElement('div'); b.className='fx-combo'; b.textContent=text; document.body.appendChild(b); b.addEventListener('animationend',()=>b.remove()); if(sndOn()){ try{ [880,1175,1568].forEach((f,i)=>_tone({freq:f,dur:0.07,type:'triangle',vol:0.11,when:i*0.05})); navigator.vibrate&&navigator.vibrate(18); }catch(_){} } }
+function fxCombo(text){ if(fxReduced()) return; const b=document.createElement('div'); b.className='fx-combo'; b.textContent=text; document.body.appendChild(b); b.addEventListener('animationend',()=>b.remove()); try{ navigator.vibrate&&navigator.vibrate(18); }catch(_){} }
 /* 요소 중심에서 축하 연출 */
 function fxCelebrate(el,text,color){ if(!el||!el.getBoundingClientRect) return; const r=el.getBoundingClientRect(); const x=r.left+r.width/2,y=r.top+r.height/2; fxBurst(x,y); if(text) fxScorePop(x,y-r.height*0.35,text,color); }
 /* 신기록 결과 화면: 점수 주변에 지속적으로 팡팡 */
@@ -4800,56 +4806,193 @@ function _markNewRecord(id){ try{ const s=new Set(JSON.parse(localStorage.getIte
 function _getNewRecords(){ try{ return new Set(JSON.parse(localStorage.getItem('brain.newRecords')||'[]')); }catch(e){ return new Set(); } }
 function _clearNewRecords(){ try{ localStorage.removeItem('brain.newRecords'); }catch(e){} }
 
-function sfx(kind){
-  if(kind==='__tick'){ try{ // 60초 타임어택 공통: 마지막 5초 초당 틱(타이머 표시 함수에서 호출)
-    const st=arguments[1];
-    if(st && st.running && typeof st.timeLeft==='number' && st.timeLeft>0 && st.timeLeft<=5 && sndOn()){
-      if(st.__lastTick!==st.timeLeft){ st.__lastTick=st.timeLeft; _tone({freq:1100,dur:0.04,type:'sine',vol:0.07,noise:0.4,noiseFreq:5000}); }
+/* ===== 사운드 엔진 v2 (2026-09-27) — docs/사운드-점검-개선안.md · 데모 public/sound-demo.html =====
+   효과음 버스(리버브 센드) + 드라이 버스(시험음: 멜로디·리듬·높은음·거꾸로 기억 — 울림 없이) + 음악 버스
+   → 컴프레서 → 리미터. 음원 파일 없이 합성. 음량: brain.vol.sfx / brain.vol.music (0~1). */
+let _AM=null;
+function sndVol(k){ try{ const v=parseFloat(localStorage.getItem('brain.vol.'+k)); if(!isNaN(v)) return Math.max(0,Math.min(1,v)); }catch(e){} return k==='music'?0.6:0.85; }
+function _ac(){
+  if(!_AC) _AC=new (window.AudioContext||window.webkitAudioContext)();
+  if(_AC.state==='suspended') _AC.resume();
+  if(!_AM){ const A=_AC;
+    const comp=A.createDynamicsCompressor(); comp.threshold.value=-18; comp.knee.value=12; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.18;
+    const lim=A.createDynamicsCompressor(); lim.threshold.value=-2; lim.ratio.value=20; lim.attack.value=0.001; lim.release.value=0.05;
+    comp.connect(lim); lim.connect(A.destination);
+    const verb=A.createConvolver(), len=Math.floor(A.sampleRate*1.3), ir=A.createBuffer(2,len,A.sampleRate);
+    for(let c=0;c<2;c++){ const d=ir.getChannelData(c); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2); }
+    verb.buffer=ir; const vg=A.createGain(); vg.gain.value=0.2; verb.connect(vg); vg.connect(comp);
+    const sfx=A.createGain(), dry=A.createGain(), mus=A.createGain(), ms=A.createGain();
+    sfx.connect(comp); sfx.connect(verb); dry.connect(comp); mus.connect(comp); ms.gain.value=0.35; mus.connect(ms); ms.connect(verb);
+    _AM={sfx,dry,mus}; sndApplyVol(); }
+  return _AC;
+}
+function sndApplyVol(){ if(!_AM) return; const t=_AC.currentTime, s=sndVol('sfx'), m=sndVol('music');
+  _AM.sfx.gain.setTargetAtTime(s*1.1,t,0.05); _AM.dry.gain.setTargetAtTime(s*1.25,t,0.05); _AM.mus.gain.setTargetAtTime(m*0.17,t,0.05); }   // 음악은 효과음보다 6dB 이상 아래(측정: .logs/sound_mix.mjs)
+function setSndVol(k,v){ try{ localStorage.setItem('brain.vol.'+k,String(v)); }catch(e){} sndApplyVol(); if(k==='music' && BGM.on && v<=0.001) bgmStop(); }
+function _sfxOut(){ _ac(); return _AM.sfx; }
+function _dryOut(){ _ac(); return _AM.dry; }
+
+/* ---- 음색 ---- */
+let _NZ=null; function _nz(){ if(_NZ) return _NZ; const A=_ac(), b=A.createBuffer(1,A.sampleRate,A.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; return _NZ=b; }
+const _J=(v,p)=>v*(1+(Math.random()*2-1)*(p==null?0.03:p));   // 같은 소리 반복의 기계감 줄이기
+function _env(g,t,a,peak,dec){ g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(peak,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+dec); }
+function _osc(type,f,t,dur,peak,dest,o){ o=o||{}; const A=_AC, x=A.createOscillator(), g=A.createGain(); x.type=type; x.frequency.setValueAtTime(f,t);
+  if(o.glide) x.frequency.exponentialRampToValueAtTime(Math.max(20,f+o.glide),t+dur); if(o.det) x.detune.value=o.det;
+  _env(g,t,o.a||0.004,peak,dur); x.connect(g); g.connect(dest); x.start(t); x.stop(t+(o.a||0.004)+dur+0.05); }
+function _hit(t,vol,dest,freq,dec,type){ const A=_AC, s=A.createBufferSource(); s.buffer=_nz(); const f=A.createBiquadFilter(); f.type=type||'highpass'; f.frequency.value=freq; const g=A.createGain(); _env(g,t,0.001,vol,dec); s.connect(f); f.connect(g); g.connect(dest); s.start(t); s.stop(t+dec+0.05); }
+const SV={
+  T(dt){ return _ac().currentTime+(dt||0); },
+  pluck(f,dt,vol,dest){ const t=SV.T(dt); dest=dest||_AM.sfx; vol=vol==null?0.34:vol; const f0=_J(f,0.004);
+    const lp=_AC.createBiquadFilter(); lp.type='lowpass'; lp.Q.value=4; lp.frequency.setValueAtTime(f0*9,t); lp.frequency.exponentialRampToValueAtTime(f0*1.5,t+0.25); lp.connect(dest);
+    _osc('sawtooth',f0,t,0.32,vol*0.5,lp); _osc('triangle',f0*2,t,0.18,vol*0.35,lp); _osc('sine',f0/2,t,0.2,vol*0.4,dest); },
+  bell(f,dt,vol,dest){ const t=SV.T(dt); dest=dest||_AM.sfx; vol=vol==null?0.22:vol; [1,2.76,5.4].forEach((r,i)=>_osc('sine',f*r,t,[1.1,0.6,0.3][i],vol*[1,0.4,0.2][i],dest)); },
+  kick(dt,vol,dest){ const t=SV.T(dt); dest=dest||_AM.sfx; vol=vol==null?0.85:vol; _osc('sine',150,t,0.28,vol,dest,{a:0.002,glide:-105}); _hit(t,vol*0.16,dest,3000,0.02); },
+  snare(dt,vol,dest){ const t=SV.T(dt); dest=dest||_AM.sfx; vol=vol==null?0.35:vol; _hit(t,vol,dest,1800,0.14,'bandpass'); _osc('triangle',220,t,0.08,vol*0.5,dest,{glide:-60}); },
+  hat(dt,vol,dest){ _hit(SV.T(dt),vol==null?0.12:vol,dest||_AM.sfx,8000,0.04); },
+  sub(dt,vol){ const t=SV.T(dt); vol=vol==null?0.8:vol; _osc('sine',110,t,0.55,vol,_AM.sfx,{glide:-70}); _osc('sawtooth',55,t,0.4,vol*0.25,_AM.sfx,{glide:-25}); },
+  riser(dur,vol){ const t=SV.T(), A=_AC, s=A.createBufferSource(); s.buffer=_nz(); s.loop=true; const bp=A.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=3;
+    bp.frequency.setValueAtTime(300,t); bp.frequency.exponentialRampToValueAtTime(6000,t+dur); const g=A.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*0.95); g.gain.exponentialRampToValueAtTime(0.0001,t+dur+0.05);
+    s.connect(bp); bp.connect(g); g.connect(_AM.sfx); s.start(t); s.stop(t+dur+0.1); _osc('sawtooth',180,t,dur,vol*0.25,_AM.sfx,{a:dur*0.9,glide:700}); },
+  whoosh(dt,vol){ const t=SV.T(dt), A=_AC, s=A.createBufferSource(); s.buffer=_nz(); const bp=A.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=1.2;
+    bp.frequency.setValueAtTime(500,t); bp.frequency.exponentialRampToValueAtTime(2800,t+0.18); const g=A.createGain(); _env(g,t,0.05,vol==null?0.3:vol,0.18); s.connect(bp); bp.connect(g); g.connect(_AM.sfx); s.start(t); s.stop(t+0.3); },
+  glass(dt){ dt=dt||0; for(let i=0;i<7;i++) SV.bell(_J(2400+Math.random()*2200,0.1),dt+i*0.018+Math.random()*0.02,0.07); _hit(SV.T(dt),0.3,_AM.sfx,5000,0.12); },
+};
+const _PENTA=[0,2,4,7,9];
+function _note(i,base){ base=base||523.25; return base*Math.pow(2,(Math.floor(i/5)*12+_PENTA[((i%5)+5)%5])/12); }
+
+/* ---- 공통 문법 상태: 연속 성공(streak) — 게임마다 콤보 규칙이 달라 소리는 '정답 연속'으로 센다 ---- */
+const SND={ streak:0, lastEnd:0, medalAt:{}, last:{} };
+function _once(k,ms){ const n=performance.now(); if(SND.last[k] && n-SND.last[k]<ms) return false; SND.last[k]=n; return true; }   // 같은 소리 폭주 방지
+function _sndGood(step){ const i=Math.min(step,14); SV.pluck(_note(i),0,0.32); SV.bell(_note(i+5)*2,0.03,0.05);
+  const c=SND.streak; if(step===c-1 && (c===5||c===10||(c>10&&c%10===0))){ [0,4,7,12].forEach((s,k)=>SV.pluck(_note(i)*Math.pow(2,s/12),0.12+k*0.06,0.24)); SV.hat(0.1,0.18); } }
+function _sndBreak(){ const s=SND.streak; SND.streak=0; bgmLevelUpdate(); return s>=5; }
+
+function sfx(kind, arg){
+  if(kind==='__tick'){ try{ // 60초 게임 공통: 남은 10초 심장박동(점점 빨라짐) + 5초부터 틱 음이 오른다. 타이머 표시 함수가 부른다
+    const st=arg;
+    if(st && st.running && typeof st.timeLeft==='number'){
+      BGM.urgent = st.timeLeft>0 && st.timeLeft<=15 ? (16-st.timeLeft) : 0; bgmLevelUpdate();
+      if(st.timeLeft>0 && st.timeLeft<=10 && sndOn() && st.__lastTick!==st.timeLeft){ st.__lastTick=st.timeLeft; _ac();
+        const n=st.timeLeft<=3?3:st.timeLeft<=6?2:1; for(let k=0;k<n;k++){ SV.kick(k/n*0.9,0.7); SV.kick(k/n*0.9+0.14,0.38); }
+        if(st.timeLeft<=5){ SV.hat(0,0.2); _osc('square',900+(6-st.timeLeft)*180,SV.T(),0.05,0.05,_AM.sfx); } }
     }
   }catch(_){} return; }
-  if(kind==='good') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
+  if(kind==='good'||kind==='merge'||kind==='cork'||kind==='lines'||kind==='rt') fxBurst(_fxXY.x,_fxXY.y,{count:9,spread:46});
   else if(kind==='win') fxBurst(_fxXY.x,_fxXY.y,{count:20,spread:95});
-  if(!sndOn()) return;
   const vib=(p)=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
+  if(kind==='good'||kind==='merge'||kind==='cork'||kind==='lines'||kind==='rt'){ SND.streak++; bgmLevelUpdate(); }
+  else if(kind==='bad'||kind==='bomb'||kind==='clang'||kind==='crash'||kind==='scrape'){ if(_sndBreak() && sndOn()){ try{ _ac(); SV.glass(0.1); [7,4,2,0].forEach((d,k)=>SV.pluck(_note(d,392),0.18+k*0.07,0.16)); }catch(e){} } }
+  if(!sndOn()) return;
+  try{ _ac(); const T0=SV.T();
   switch(kind){
-    case 'good': // 정답 — 밝은 상승 2음 + 가벼운 타격
-      _tone({freq:740,dur:0.09,type:'triangle',vol:0.15,noise:0.18,noiseFreq:3000});
-      _tone({freq:988,dur:0.12,type:'sine',vol:0.13,when:0.06});
-      vib(12); break;
-    case 'bad': // 오답 — 하강 글라이드 저음
-      _tone({freq:220,dur:0.20,type:'square',vol:0.09,glide:-110});
-      _tone({freq:147,dur:0.22,type:'sine',vol:0.10,when:0.04});
-      vib([40,30,40]); break;
-    case 'win': // 클리어 — 메이저 아르페지오 4음
-      [523,659,784,1047].forEach((f,i)=>_tone({freq:f,dur:i===3?0.34:0.11,type:'triangle',vol:0.13,when:i*0.09}));
-      vib([20,40,20,40,60]); break;
-    case 'tap': // UI 탭 — 짧은 클릭
-      _tone({freq:1500,dur:0.035,type:'sine',vol:0.06,noise:0.5,noiseFreq:4000}); break;
-    case 'combo': // 콤보 — 상승 3연음
-      _tone({freq:880,dur:0.06,type:'triangle',vol:0.12});
-      _tone({freq:1175,dur:0.08,type:'triangle',vol:0.12,when:0.05});
-      _tone({freq:1568,dur:0.10,type:'sine',vol:0.10,when:0.10});
-      vib(18); break;
-    case 'level': // 레벨업 — 5도 점프
-      _tone({freq:587,dur:0.10,type:'triangle',vol:0.13,noise:0.15});
-      _tone({freq:880,dur:0.22,type:'triangle',vol:0.13,when:0.09});
-      vib([15,30,45]); break;
-    case 'flip': // 카드/타일 — 부드러운 스윕
-      _tone({freq:420,dur:0.07,type:'sine',vol:0.09,glide:260}); break;
-    case 'whoosh': // 스와이프/이동 — 노이즈 중심
-      _tone({freq:300,dur:0.10,type:'sine',vol:0.05,glide:200,noise:0.9,noiseType:'bandpass',noiseFreq:900}); break;
-    case 'tick': // 시간 임박
-      _tone({freq:1100,dur:0.04,type:'sine',vol:0.08,noise:0.4,noiseFreq:5000}); break;
-    case 'count': // 카운트다운 3·2·1
-      _tone({freq:660,dur:0.08,type:'sine',vol:0.12}); break;
-    case 'go': // 카운트다운 시작!
-      _tone({freq:988,dur:0.18,type:'triangle',vol:0.14,noise:0.2}); vib(25); break;
-    case 'record': // 신기록 — 팡파르(승리 + 고음 화성)
-      [523,659,784,1047,1319].forEach((f,i)=>_tone({freq:f,dur:i>=3?0.30:0.10,type:'triangle',vol:0.12,when:i*0.08}));
-      _tone({freq:2093,dur:0.5,type:'sine',vol:0.05,when:0.36});
+    case 'good': _sndGood(typeof arg==='number'?arg:SND.streak-1); vib(12); break;                       // 정답 — 음계 계단, 5·10콤보 팡파르
+    case 'bad': SV.kick(0,0.8); _osc('sawtooth',_J(116),T0,0.22,0.12,_AM.sfx,{det:-35,glide:-30}); _osc('sawtooth',_J(123),T0,0.22,0.1,_AM.sfx,{det:25,glide:-30}); vib([40,30,40]); break;
+    case 'win': [0,4,7,12].forEach((s,k)=>{ SV.pluck(523.25*Math.pow(2,s/12),k*0.07,0.26); SV.bell(1046.5*Math.pow(2,s/12),k*0.07+0.02,0.05); }); SV.hat(0.28,0.15); vib([20,40,20,40,60]); break;
+    case 'tap': if(_once('tap',40)) _hit(T0,0.07,_AM.dry,4000,0.025); break;
+    case 'combo': [0,4,7,12].forEach((s,k)=>SV.pluck(_note(SND.streak)*Math.pow(2,s/12),k*0.06,0.24)); vib(18); break;
+    case 'level': SV.riser(0.45,0.14); [0,4,7,12].forEach((s,k)=>SV.pluck(392*Math.pow(2,s/12),0.42+k*0.05,0.24)); SV.kick(0.42,0.6); vib([15,30,45]); break;
+    case 'flip': _hit(T0,0.18,_AM.sfx,2500,0.03,'bandpass'); _osc('triangle',_J(520),T0,0.06,0.1,_AM.sfx,{glide:220}); break;
+    case 'whoosh': SV.whoosh(0,0.22); break;
+    case 'tick': SV.hat(0,0.18); _osc('square',1200,T0,0.025,0.04,_AM.sfx); break;
+    case 'count': SV.kick(0,0.5); SV.bell(660,0,0.16); break;
+    case 'go': SV.kick(0,0.9); SV.snare(0,0.35); [0,4,7,12].forEach(s=>SV.pluck(523.25*Math.pow(2,s/12),0,0.16)); vib(25); break;
+    case 'record': SND.lastEnd=performance.now(); SV.riser(0.6,0.18);
+      [0,4,7,12,16,19].forEach((s,k)=>SV.pluck(523.25*Math.pow(2,s/12),0.6+k*0.07,0.26)); SV.kick(0.6,1); SV.snare(0.6,0.45);
+      [0,4,7].forEach(s=>SV.bell(1046.5*Math.pow(2,s/12),1.05,0.1)); for(let k=0;k<10;k++) SV.bell(_J(3000+k*180,0.1),1.1+k*0.04,0.035);
       vib([25,35,25,35,25,35,80]); break;
+    case 'end': SND.lastEnd=performance.now(); _osc('sawtooth',440,T0,0.9,0.14,_AM.sfx,{glide:-330}); SV.sub(0.05,0.8); SV.bell(98,0.1,0.4); _hit(T0+0.1,0.2,_AM.sfx,400,0.9,'lowpass'); break;
+    case 'medal': { const L={bronze:[0,4,7],silver:[0,4,7,12],gold:[0,4,7,12,16],diamond:[0,4,7,11,14,19,24]}[arg]||[0,4,7], b=arg==='diamond'?587.33:523.25;
+      L.forEach((s,i)=>{ SV.pluck(b*Math.pow(2,s/12),i*0.075,0.26); SV.bell(b*2*Math.pow(2,s/12),i*0.075+0.02,arg==='diamond'?0.1:0.05); });
+      if(arg==='gold'||arg==='diamond') SV.kick(0,0.7);
+      if(arg==='diamond'){ SV.riser(0.5,0.12); for(let i=0;i<14;i++) SV.bell(_J(2500+i*230,0.08),0.55+i*0.035,0.05); } vib([20,30,20,30,60]); break; }
+    case 'dltick': for(let i=0;i<4;i++){ _hit(T0+i*0.11,0.2,_AM.sfx,6000,0.03); _osc('square',1200+i*140,T0+i*0.11,0.025,0.045,_AM.sfx); } break;   // 어려움 문항 제한시간 임박
+    // ---- 게임별 시그니처 ----
+    case 'jump': SV.whoosh(0,0.26); _osc('triangle',260,T0,0.16,0.26,_AM.sfx,{glide:520}); break;
+    case 'land': if(_once('land',120)){ SV.kick(0,0.32); _hit(T0,0.08,_AM.sfx,900,0.05,'lowpass'); } break;
+    case 'crash': SV.kick(0,1); SV.snare(0,0.55); SV.sub(0.02,0.9); SV.glass(0.05); vib(60); break;
+    case 'milestone': SV.bell(1318.5,0,0.18); SV.bell(1760,0.09,0.16); break;
+    case 'beat': [0,4,7,12].forEach((s,k)=>SV.bell(1046.5*Math.pow(2,s/12),k*0.06,0.12)); SV.hat(0,0.2); break;   // 달리는 중 최고점 돌파
+    case 'bite': _hit(T0,0.36,_AM.sfx,1200,0.05,'bandpass'); SV.kick(0,0.3); _osc('square',_J(180,0.1),T0,0.05,0.07,_AM.sfx,{glide:-60}); break;
+    case 'heart': SV.kick(0,0.55); SV.kick(0.15,0.3); break;
+    case 'pop': if(_once('pop',60)) _osc('sine',_J(300,0.08),T0,0.13,0.18,_AM.sfx,{glide:500}); break;
+    case 'bonk': SV.kick(0,0.45); break;
+    case 'bomb': SV.sub(0,1); _hit(T0,0.55,_AM.sfx,300,0.6,'lowpass'); _hit(T0,0.28,_AM.sfx,3000,0.2); vib([50,30,50]); break;
+    case 'clang': SV.bell(1760,0,0.2); SV.bell(1864,0.01,0.14); SV.kick(0,0.6); vib([40,30,40]); break;
+    case 'rt': { const f=Math.max(660,Math.min(1760,1900-2.4*(arg||400))); SV.pluck(f/2,0,0.3); SV.bell(f,0.02,0.18); vib(12); break; }   // 반응 속도: 빠를수록 높은 차임
+    case 'bubble': _osc('sine',arg?_J(900-arg*22,0.04):420,T0,0.08,0.2,_AM.sfx,{glide:arg?260:-120}); _hit(T0,0.06,_AM.sfx,3000,0.03); break;
+    case 'place': if(_once('place',50)){ SV.kick(0,0.32); _hit(T0,0.1,_AM.sfx,1400,0.04,'bandpass'); } break;
+    case 'lines': SV.whoosh(0,0.32); for(let i=0;i<Math.min(arg||1,4);i++) [0,4,7].forEach(s=>SV.pluck(392*Math.pow(2,(s+i*5)/12),0.06+i*0.08,0.2)); if((arg||1)>=2) SV.kick(0.06,0.6); vib(18); break;
+    case 'merge': { const s=Math.log2(Math.max(4,arg||4)); SV.pluck(196*Math.pow(2,Math.min(s,14)/4),0,0.3); _osc('sine',120+s*20,T0,0.12,0.22,_AM.sfx,{glide:160}); vib(12); break; }
+    case 'blip': _osc('sine',660,T0,0.07,0.08,_AM.sfx); break;                                           // 엔백: 글자마다 같은 중립음(정보 없음)
+    case 'unit': [0,7,12,16].forEach((s,k)=>SV.bell(784*Math.pow(2,s/12),k*0.05,0.12)); break;          // 스도쿠 행·열·박스 완성
+    case 'brush': if(_once('brush',40)){ _hit(T0,0.12,_AM.sfx,2200,0.06,'bandpass'); _osc('triangle',_J(330,0.05),T0,0.05,0.05,_AM.sfx); } break;
+    case 'cork': _osc('sine',_J(520),T0,0.09,0.3,_AM.sfx,{glide:-260}); _hit(T0,0.15,_AM.sfx,2000,0.03); SV.bell(1568,0.06,0.1); vib(12); break;
+    case 'pour': { const t=T0; for(let i=0;i<5;i++) _osc('sine',_J(500+i*90,0.08),t+i*0.035,0.05,0.07,_AM.sfx,{glide:120}); break; }
+    case 'click': if(_once('click',40)){ _hit(T0,0.14,_AM.sfx,3200,0.02,'bandpass'); _osc('square',_J(1800,0.05),T0,0.012,0.03,_AM.sfx); } break;
+    case 'letter': SV.pluck(_note(arg||0,659.25),0,0.2); break;
+    case 'trace': SV.bell(_note(Math.min(Math.floor((arg||0)/45),14),392),0,0.07); break;
+    case 'scrape': _hit(T0,0.35,_AM.sfx,1400,0.22,'bandpass'); _osc('sawtooth',140,T0,0.22,0.12,_AM.sfx,{glide:-60}); vib([40,30,40]); break;
   }
+  }catch(e){}
 }
+
+/* ---- 적응형 배경음악: 분위기 4종 × 강도 3단계(연속 성공·남은 시간·게임 속도) ---- */
+const BGM_THEME={run:'arcade',chop:'arcade',whack:'arcade',catch:'arcade',react:'arcade',fit:'arcade',
+  stroop:'focus',flank:'focus',switch:'focus',rotate:'focus',guess:'focus',math:'focus',bubble:'focus',trail:'focus',spot:'focus',odd:'focus',diff:'focus',nback:'focus',wordsearch:'focus',anagram:'focus',
+  flash:'memory',count:'memory',cards:'memory',
+  sudoku:'puzzle',nono:'puzzle',sort:'puzzle',slide:'puzzle',merge:'puzzle',iq:'puzzle',trace:'puzzle'};
+/* 멜로디·리듬·높은음·거꾸로 기억은 소리가 문제라 음악을 틀지 않는다. 반응 속도·첫 제시가 바로 나오는 게임은 GO 소리를 내지 않는다(신호와 헷갈림) */
+const SND_NO_GO={react:1,melody:1,rhythm:1,pitch:1,rev:1};
+const BGM={on:null,level:0,forced:0,urgent:0,bpm:108,base:108,step:0,next:0,timer:0,paused:false};
+const BGM_PROG={arcade:[[0,7,12],[-4,3,8],[-7,0,5],[-2,5,10]], focus:[[0,3,7],[-4,0,3],[-7,-3,0],[-5,-2,2]], memory:[[0,4,7],[-3,0,4],[-7,-3,0],[-5,-1,2]], puzzle:[[0,4,11],[5,9,16],[2,5,12],[7,11,14]]};
+const BGM_ROOT={arcade:246.94, focus:220, memory:261.63, puzzle:261.63}, BGM_BPM={arcade:118, focus:100, memory:84, puzzle:78};
+function bgmLevelUpdate(){ const s=SND.streak; BGM.level=Math.max(BGM.forced, s>=10?2:s>=5?1:0, BGM.urgent>=6?2:BGM.urgent>0?1:0); }
+function sndIntensity(n){ BGM.forced=n|0; bgmLevelUpdate(); }
+function bgmStart(theme){ bgmStop(); if(!sndOn() || sndVol('music')<=0.001 || !theme) return; _ac();
+  BGM.on=theme; BGM.base=BGM.bpm=BGM_BPM[theme]; BGM.step=0; BGM.forced=0; BGM.urgent=0; bgmLevelUpdate(); BGM.next=_AC.currentTime+0.08; BGM.timer=setInterval(_bgmTick,25); }
+function bgmStop(){ clearInterval(BGM.timer); BGM.timer=0; BGM.on=null; BGM.urgent=0; BGM.forced=0; }
+function _bgmTick(){ if(!BGM.on) return; if(!sndOn()){ bgmStop(); return; }
+  BGM.bpm=BGM.base*(1+Math.min(BGM.urgent,15)*0.02);                    // 남은 시간이 줄수록 템포가 오른다
+  while(BGM.next<_AC.currentTime+0.12){ _bgm16(BGM.step, BGM.next-_AC.currentTime); BGM.next+=60/BGM.bpm/4; BGM.step++; } }
+function _bgm16(s,t){ const k=BGM.on, L=BGM.level, bar=Math.floor(s/16)%4, i=s%16, ch=BGM_PROG[k][bar], D=_AM.mus, f=n=>BGM_ROOT[k]*Math.pow(2,n/12);
+  if(k==='puzzle'){ if(i%8===0) ch.forEach(n=>SV.bell(f(n),t,0.1,D)); if(i%4===2&&Math.random()<0.55) SV.pluck(f(ch[(i/2|0)%3]+12),t,0.11,D); if(L>=1&&i%8===4) SV.hat(t,0.07,D); if(L>=2&&i===0) SV.kick(t,0.3,D); return; }
+  if(k==='memory'){ if(i===0) ch.forEach(n=>_osc('triangle',f(n)/2,_AC.currentTime+t,60/BGM.bpm*4*0.95,0.07,D,{a:0.5})); if(i%4===0) SV.bell(f(ch[(i/4)%3]+12),t,0.09,D); if(L>=1&&i%8===4) SV.hat(t,0.06,D); if(L>=2&&i%8===0) SV.kick(t,0.3,D); return; }
+  if(i%4===0) SV.kick(t,k==='focus'?0.3:0.45,D);
+  if(i===0) ch.forEach(n=>_osc('sawtooth',f(n)/2,_AC.currentTime+t,60/BGM.bpm*4*0.95,0.022,D,{a:0.3}));      // 패드
+  if(i%2===0) _osc('sawtooth',f(ch[0])/4,_AC.currentTime+t,0.12,k==='focus'?0.065:0.09,D);                   // 베이스 맥박
+  if(L>=1){ if(i%4===2) SV.hat(t,0.07,D); if(i===4||i===12) SV.snare(t,0.2,D); }
+  if(L>=2){ SV.pluck(f(ch[i%3]+12+(i%8>=4?12:0)),t,0.06,D); if(i%2===1) SV.hat(t,0.045,D); }
+  if(BGM.urgent>=6&&i%2===0) SV.hat(t,0.09,D); }
+document.addEventListener('visibilitychange',()=>{ try{ if(document.hidden){ if(BGM.on){ BGM.paused=BGM.on; bgmStop(); } } else if(BGM.paused){ const th=BGM.paused; BGM.paused=false; if(document.querySelector('.screen.active [id$="-game-card"]:not([style*="none"]), #iq-test-card:not([style*="none"])')) bgmStart(th); } }catch(e){} });
+
+/* ---- 게임 시작·끝 훅: 34개 start 함수와 결과 공통 함수(afterGame)를 감싸 한 곳에서 처리 ---- */
+function sndGameStart(id){ SND.streak=0; SND.medalAt[id]=(typeof medalState==='function')?medalState(id,gameBestVal(id)).index:-1;
+  bgmStart(BGM_THEME[id]); if(!SND_NO_GO[id]) sfx('go'); }
+function sndGameEnd(id, r){ bgmStop(); BGM.paused=false; SND.streak=0; if(!sndOn()) return;
+  const was=SND.medalAt[id]; let up=null; try{ const st=medalState(id,gameBestVal(id)); if(was!=null && st.index>was) up=st.current.key; }catch(e){}
+  const recent=performance.now()-SND.lastEnd<500;                    // 방금 신기록·클리어 팡파르가 울렸으면 마무리 음은 생략
+  if(!recent) sfx('end');
+  if(up) setTimeout(()=>sfx('medal',up), recent?1500:900); }
+function skUnitDone(r,c){ const ok=(rr,cc)=>SK.board[rr][cc]===SK.solution[rr][cc]; let row=true,col=true,box=true; const br=r-r%3, bc=c-c%3;
+  for(let i=0;i<9;i++){ if(!ok(r,i)) row=false; if(!ok(i,c)) col=false; if(!ok(br+Math.floor(i/3),bc+i%3)) box=false; } return row||col||box; }
+window.addEventListener('DOMContentLoaded',()=>{ try{
+  Object.keys(PG_START).forEach(id=>{ const name=PG_START[id], orig=window[name]; if(typeof orig!=='function') return;
+    window[name]=function(){ const r=orig.apply(this,arguments);
+      try{ const gc=document.getElementById(id==='iq'?'iq-test-card':id+'-game-card'); if(gc && gc.style.display!=='none') sndGameStart(id); }catch(e){} return r; }; });
+  const ag=window.afterGame; if(typeof ag==='function') window.afterGame=function(id,r){ const x=ag.apply(this,arguments); try{ sndGameEnd(id,r); }catch(e){} return x; };
+}catch(e){} });
+
+/* ---- 음량 패널(🔊 버튼) ---- */
+function openSndPanel(ev){ if(ev) ev.stopPropagation(); let p=document.getElementById('snd-panel');
+  if(p){ p.remove(); return; }
+  p=document.createElement('div'); p.id='snd-panel'; p.className='snd-panel';
+  const on=sndOn();
+  p.innerHTML='<button class="snd-mute" onclick="toggleSound();openSndPanel();openSndPanel()">'+(on?'🔊 '+t('snd.on'):'🔇 '+t('snd.off'))+'</button>'+
+    '<label>🎵 '+t('snd.music')+'<input type="range" min="0" max="1" step="0.05" value="'+sndVol('music')+'" oninput="setSndVol(\'music\',+this.value)"'+(on?'':' disabled')+'></label>'+
+    '<label>🔔 '+t('snd.sfx')+'<input type="range" min="0" max="1" step="0.05" value="'+sndVol('sfx')+'" oninput="setSndVol(\'sfx\',+this.value)" onchange="sfx(\'good\',4)"'+(on?'':' disabled')+'></label>';
+  document.body.appendChild(p); const b=document.getElementById('snd-btn').getBoundingClientRect();
+  p.style.top=(b.bottom+window.scrollY+6)+'px'; p.style.right=Math.max(8,innerWidth-b.right)+'px';
+  setTimeout(()=>document.addEventListener('pointerdown',function h(e){ if(!p.contains(e.target) && e.target.id!=='snd-btn'){ p.remove(); document.removeEventListener('pointerdown',h); } }),0); }
 // UI 버튼 탭 사운드 — 위임 리스너(개별 onclick 수정 없이 전역 적용)
 if(typeof document!=='undefined'){
   // 탭 사운드: pointerdown에서 바로 울리면 '스크롤 시작 터치'에도 소리가 남.
@@ -4881,7 +5024,7 @@ function _audioUnlock(){
 const TAB_FOR={home:'home', games:'games', records:'records'};
 function haltRunningGames(){
   stopRecordFx();
-  try{ Object.keys(QDL_MS).forEach(qdlClear); }catch(e){}
+  try{ Object.keys(QDL_MS).forEach(qdlClear); bgmStop(); SND.streak=0; }catch(e){}
   ['resetFlash','resetCount','resetStroop','resetTrail','resetSwitch','resetNback','resetRotate','resetCards','resetReact','resetMathGame','resetWhack','resetMelody','resetBubble','resetSpot','resetOdd','resetSlide','resetMerge','resetChop','resetSort','resetFlank','resetGuess','resetRev','resetRhythm','resetCatch','resetFit','resetNono','resetAnagram','resetWordsearch','resetDiff','resetPitch','resetTrace','resetRun'].forEach(fn=>{
     try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
   });
@@ -5569,6 +5712,7 @@ function startIQTest(){
 function iqTick(){
   if(!IQS.running)return;
   IQS.timeLeft--;
+  if(IQS.timeLeft>0 && IQS.timeLeft<=30) sfx('tick');   // 마지막 30초
   updateIQTimerDisplay();
   if(IQS.timeLeft<=0){
     IQS.timeLeft=0;
@@ -6029,6 +6173,7 @@ function skInputNumber(n){
   SK.history.push({r,c,type:'value',prevValue,prevNotes:new Set(SK.notes[r][c])});
   SK.board[r][c]=n;
   SK.notes[r][c].clear();
+  if(n===SK.solution[r][c]){ if(skUnitDone(r,c)) sfx('unit'); } else sfx('bad');
 
   if(n!==SK.solution[r][c]){
     SK.mistakes++;
@@ -6117,7 +6262,7 @@ function checkSkComplete(){
     if(SK.board[r][c]!==SK.solution[r][c]) return;
   }
   // 완성!
-  SK.running=false;
+  SK.running=false; sfx('win');
   clearInterval(SK.timerHandle);
   document.getElementById('sudoku-game-card').style.display='none';
   document.getElementById('sudoku-result-card').style.display='block';
@@ -6403,12 +6548,13 @@ function parScore(game, diff, sec, pen){ const c=PAR_SCORE[game][diff]; return M
    넘기면 오답처럼 콤보만 끊고(시간 감점 없음) 다음 문항. 남은 시간은 판 위 얇은 막대로 보인다. */
 const QDL_MS={stroop:1500, flank:900, switch:1500, rotate:2200, guess:3200};
 const _qdl={};
-function qdlClear(id){ clearTimeout(_qdl[id]); _qdl[id]=0; }
+function qdlClear(id){ clearTimeout(_qdl[id]); _qdl[id]=0; clearTimeout(_qdl[id+'_t']); }
 function qdlArm(id, diff, onTimeout){
   qdlClear(id); const ms=(diff==='hard')&&QDL_MS[id]; const bar=document.getElementById('qdl-'+id);
   if(!ms){ if(bar) bar.style.display='none'; return; }
   if(bar){ bar.style.display='block'; const i=bar.firstElementChild; i.style.transition='none'; i.style.width='100%'; void i.offsetWidth; i.style.transition='width '+ms+'ms linear'; i.style.width='0%'; }
   _qdl[id]=setTimeout(()=>{ _qdl[id]=0; onTimeout(); }, ms);
+  _qdl[id+'_t']=setTimeout(()=>sfx('dltick'), ms*0.62);
 }
 function bt_today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function bt_loadBest(key){
@@ -6591,13 +6737,13 @@ function fmTapCell(cellIdx){
   if(FM.phase!=='input') return;
   const c=document.getElementById('fm-cell-'+cellIdx);
   if(cellIdx===FM.order[FM.expect-1]){
-    c.textContent=FM.expect; c.classList.remove('empty'); c.classList.add('done'); c.onclick=null; sfx('good');
+    c.textContent=FM.expect; c.classList.remove('empty'); c.classList.add('done'); c.onclick=null; sfx('good', FM.expect-1);
     FM.expect++;
     if(FM.expect>FM.n) fmClear();
   }else{ fmFail(); }
 }
 function fmClear(){
-  FM.phase='idle';
+  FM.phase='idle'; sfx('win');
   FM.score+=dmScore(FM.diff, FM.n, 'flash'); FM.maxLevel=Math.max(FM.maxLevel, FM.n);
   FM.n=Math.min(FM.n+1, FM_GRID);
   fmSetStatus('flash.cleared','good'); fmUpdateStats();
@@ -6977,9 +7123,9 @@ function trNewBoard(){
 function trTapNode(num,node){
   if(!TR.running) return;
   if(num===TR.next){
-    node.classList.add('done'); node.onclick=null; TR.next++; sfx('good');
+    node.classList.add('done'); node.onclick=null; TR.next++; sfx('good', TR.next-2);
     if(TR.next>TR.n){ // 판 클리어
-      TR.boards++; TR.score+=dmScore(TR.diff, TR.n, 'trail'); TR.n++;
+      TR.boards++; TR.score+=dmScore(TR.diff, TR.n, 'trail'); TR.n++; sfx('win');
       trUpdateStats();
       setTimeout(()=>{ if(TR.running) trNewBoard(); }, 350);
     }else{ trUpdateStats(); }
@@ -7371,7 +7517,7 @@ function soTap(ti){
   if(!SO.running) return;
   if(SO.sel===-1){
     if(SO.tubes[ti].length===0 || soTubeDone(SO.tubes[ti])) return;
-    SO.sel=ti; _beep(600,0.04,'sine',0.12); soRender(); return;
+    SO.sel=ti; sfx('click'); soRender(); return;
   }
   if(SO.sel===ti){ SO.sel=-1; soRender(); return; }
   const A=SO.tubes[SO.sel], B=SO.tubes[ti];
@@ -7384,8 +7530,8 @@ function soTap(ti){
   const amt=Math.min(run, SO_CAP-B.length);
   for(let i=0;i<amt;i++) B.push(A.pop());
   SO.moves++; SO.sel=-1;
-  _beep(760,0.05,'sine',0.14);
-  if(soTubeDone(B)) sfx('good');
+  sfx('pour');
+  if(soTubeDone(B)) sfx('cork');
   soRender();
   if(soSolvedAll()) finishSort();
 }
@@ -7481,7 +7627,7 @@ function cpChop(side){
   if(CP.segs[0]===side){ cpRender(); cpDie('fork'); return; }
   CP.score += dmScore(CP.diff, 10, 'chop'); CP.chops=(CP.chops||0)+1;
   CP.gauge=Math.min(100, CP.gauge+CP_CFG[CP.diff].gain);
-  _beep(700+Math.random()*80,0.05,'square',0.12);
+  sfx('bite');
   try{ navigator.vibrate&&navigator.vibrate(10); }catch(_){}
   cpRender(); cpGaugeRender();
 }
@@ -7509,6 +7655,7 @@ function startChop(){
     const cfg=CP_CFG[CP.diff];
     CP.gauge -= (cfg.decay + (CP.chops||0)*cfg.accel)*0.1; // 100ms 틱 — 가속은 깨문 횟수 기준(점수엔 난이도 배수가 곱해져 있다)
     cpGaugeRender();
+    if(CP.gauge<30){ CP._hb=(CP._hb||0)+1; if(CP._hb%7===1) sfx('heart'); } else CP._hb=0;   // 게이지 30% 아래 심장박동
     if(CP.gauge<=0) cpDie('time');
   },100);
 }
@@ -7596,7 +7743,7 @@ function mrMove(dir){ // 'left'|'right'|'up'|'down'
   if(!moved) return;
   MR.prev={grid:before, score:MR.score};
   MR.score+=dmScore(MR.diff, gain, 'merge');
-  if(gain>0) sfx('good'); else sfx('whoosh');
+  sfx('whoosh'); if(gain>0) sfx('merge', gain);
   mrSpawn();
   const mx=Math.max.apply(null,MR.grid);
   MR.maxTile=Math.max(MR.maxTile,mx);
@@ -7741,7 +7888,7 @@ function slTap(i){
   if(Math.abs(r-er)+Math.abs(c-ec)!==1) return; // 빈칸과 인접해야 이동
   SL.tiles[empty]=SL.tiles[i]; SL.tiles[i]=0;
   SL.moves++; document.getElementById('sl-moves').textContent=SL.moves;
-  sfx('whoosh');
+  sfx('click');
   slRender();
   if(slSolved()) finishSlide();
 }
@@ -8056,8 +8203,8 @@ function bbNewRound(){
 function bbTap(i,el){
   if(!BB.running||BB.lock) return;
   const at=BB.sel.indexOf(i);
-  if(at>=0){ BB.sel.splice(at,1); el.classList.remove('sel'); _beep(420,0.05,'sine',0.12); bbCurrentLine(); return; }
-  BB.sel.push(i); el.classList.add('sel'); _beep(660,0.05,'sine',0.15);
+  if(at>=0){ BB.sel.splice(at,1); el.classList.remove('sel'); sfx('bubble',0); bbCurrentLine(); return; }
+  BB.sel.push(i); el.classList.add('sel'); sfx('bubble', BB.vals[i]);
   bbCurrentLine();
   const sum=bbSum();
   if(sum===BB.target){
@@ -9025,7 +9172,7 @@ function nbAdvance(){
   NB.isMatch = (i>=NB.n) && (NB.seq[i]===NB.seq[i-NB.n]);
   NB.pressed=false;
   const el=document.getElementById('nb-stim');
-  el.className='nb-stim'; el.textContent=letter;
+  el.className='nb-stim'; el.textContent=letter; sfx('blip');
 }
 function nbPress(){
   if(!NB.running || NB.pressed) return;
@@ -9336,7 +9483,7 @@ function rcTap(){
     RC.state='resolved'; RC.rtSum+=rt; RC.rtCount++;
     RC.combo++; RC.maxCombo=Math.max(RC.maxCombo,RC.combo);
     const pts=Math.max(20, Math.round(1000 - rt*2.2)); RC.score+=dmScore(RC.diff, pts, 'react');   // 예전 500-rt/2는 상위1%와 초보 차이가 19%뿐 RC.done++;
-    sfx('good'); rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
+    sfx('rt', rt); rcUpdateStats(); rcSetBox('good', rt+' ms', '+'+pts); rcSchedNext();
   }else if(RC.state==='waiting'){
     clearTimeout(RC.waitT);
     RC.state='resolved'; RC.combo=0; RC.done++;
@@ -9449,7 +9596,7 @@ function wkSpawn(){
     const sp=document.getElementById('wk-sp-'+idx);
     if(bad){ sp.className='wk-sprite bomb'; sp.textContent='💣'; }
     else{ sp.className='wk-sprite'; const vn=WK_COLORS[Math.floor(Math.random()*(WK_COLORN[WK.diff]||6))]; sp.innerHTML=mallowSVG('default',{size:82,variant:vn}); }
-    document.getElementById('wk-cell-'+idx).classList.add('up');
+    document.getElementById('wk-cell-'+idx).classList.add('up'); if(!bad) sfx('pop');
     WK.slots[idx]={ bad, hideT:setTimeout(()=>{
       if(!bad){ WK.combo=0; wkUpdateStats(); } // 말로우 놓침 → 콤보 리셋
       wkRemove(idx);
@@ -9466,10 +9613,10 @@ function wkTap(i){
   if(!WK.running) return;
   const sl=WK.slots[i]; if(!sl) return;
   if(sl.bad){
-    sfx('bad'); WK.combo=0;
+    sfx('bomb'); WK.combo=0;
     WK.timeLeft=Math.max(0, WK.timeLeft-3); updateWkTimer();
   }else{
-    sfx('good'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
+    sfx('good'); sfx('bonk'); WK.hits++; WK.combo++; WK.maxCombo=Math.max(WK.maxCombo,WK.combo);
     const gain=comboPts(WK.combo); WK.score += dmScore(WK.diff, gain, 'whack');
     const cell=document.getElementById('wk-cell-'+i);
     if(cell) fxCelebrate(cell,'+'+gain);
@@ -9600,7 +9747,7 @@ function FK_DIFF_LABEL(d){ return d==='easy'?t('flank.easy'):d==='hard'?t('flank
 function fkUpdateBestLine(){ const el=document.getElementById('fk-intro-best'); if(el) el.textContent=bt_bestLineText(FK.best,FK.diff); }
 function setFlankDiff(d){ FK.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('fk-diff-'+k).classList.toggle('active',k===d)); fkUpdateBestLine(); }
 function fkStats(){ document.getElementById('fk-score').textContent=FK.score; document.getElementById('fk-combo').textContent=FK.combo; }
-function fkTimer(){ const el=document.getElementById('fk-timer'); const m=Math.floor(FK.timeLeft/60),s=FK.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=FK.timeLeft<=10?'var(--red)':''; }
+function fkTimer(){ const el=document.getElementById('fk-timer'); const m=Math.floor(FK.timeLeft/60),s=FK.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=FK.timeLeft<=10?'var(--red)':''; sfx('__tick',FK); }
 function fkRound(){ const cfg=FK_CFG[FK.diff]; FK.cur=Math.random()<0.5?-1:1; const fl=(Math.random()<cfg.incong)?-FK.cur:FK.cur; const A=v=>v<0?'◀':'▶';
   document.getElementById('fk-row').innerHTML=A(fl)+A(fl)+' <b>'+A(FK.cur)+'</b> '+A(fl)+A(fl); FK.lock=false;
   qdlArm('flank', FK.diff, ()=>{ if(!FK.running) return; FK.combo=0; sfx('bad'); fkStats(); fkRound(); }); }
@@ -9627,7 +9774,7 @@ function GU_DIFF_LABEL(d){ return d==='easy'?t('guess.easy'):d==='hard'?t('guess
 function guUpdateBestLine(){ const el=document.getElementById('gu-intro-best'); if(el) el.textContent=bt_bestLineText(GU.best,GU.diff); }
 function setGuessDiff(d){ GU.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('gu-diff-'+k).classList.toggle('active',k===d)); guUpdateBestLine(); }
 function guStats(){ document.getElementById('gu-score').textContent=GU.score; document.getElementById('gu-combo').textContent=GU.combo; }
-function guTimer(){ const el=document.getElementById('gu-timer'); const m=Math.floor(GU.timeLeft/60),s=GU.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=GU.timeLeft<=10?'var(--red)':''; }
+function guTimer(){ const el=document.getElementById('gu-timer'); const m=Math.floor(GU.timeLeft/60),s=GU.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=GU.timeLeft<=10?'var(--red)':''; sfx('__tick',GU); }
 function guGen(mx){ const ops=['+','-','×'];
   for(let tr=0;tr<60;tr++){ const op=ops[Math.floor(Math.random()*ops.length)]; let a=2+Math.floor(Math.random()*mx), b=2+Math.floor(Math.random()*mx); let T;
     if(op==='+')T=a+b; else if(op==='-'){ if(a<b){const w=a;a=b;b=w;} T=a-b; } else T=a*b;
@@ -9727,7 +9874,7 @@ function CA_DIFF_LABEL(d){ return d==='easy'?t('catch.easy'):d==='hard'?t('catch
 function caUpdateBestLine(){ const el=document.getElementById('ca-intro-best'); if(el) el.textContent=bt_bestLineText(CA.best,CA.diff); }
 function setCatchDiff(d){ CA.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ca-diff-'+k).classList.toggle('active',k===d)); caUpdateBestLine(); }
 function caStats(){ document.getElementById('ca-score').textContent=CA.score; document.getElementById('ca-combo').textContent=CA.combo; }
-function caTimer(){ const el=document.getElementById('ca-timer'); const m=Math.floor(CA.timeLeft/60),s=CA.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=CA.timeLeft<=10?'var(--red)':''; }
+function caTimer(){ const el=document.getElementById('ca-timer'); const m=Math.floor(CA.timeLeft/60),s=CA.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=CA.timeLeft<=10?'var(--red)':''; sfx('__tick',CA); }
 function caArea(){ return document.getElementById('ca-area'); }
 function caPlaceBasket(){ const b=document.getElementById('ca-basket'); if(b) b.style.left=((CA.lane+0.5)/CA_LANES*100)+'%'; }
 function caMove(d){ if(!CA.running) return; CA.lane=Math.max(0,Math.min(CA_LANES-1,CA.lane+d)); caPlaceBasket(); }
@@ -9738,7 +9885,7 @@ function caFlash(bad){ const a=caArea(); if(!a) return; a.style.background=bad?'
 function caTick(){ if(!CA.running) return; const a=caArea(); if(!a) return; const H=a.clientHeight||330, line=H-42, cfg=CA_CFG[CA.diff]; CA.ticks=(CA.ticks||0)+1;
   const ramp=1+0.012*CA.ticks*0.04;   // 1초에 1.2%씩 빨라진다(예전엔 60초 내내 같은 속도라 실력 차가 안 났다)
   for(let i=CA.items.length-1;i>=0;i--){ const it=CA.items[i]; it.y+=cfg.spd*ramp*0.04; it.el.style.top=it.y+'px';
-    if(it.y>=line){ if(it.bad){ if(it.lane===CA.lane){ CA.combo=0; CA.timeLeft=Math.max(0,CA.timeLeft-3); caFlash(true); caStats(); caTimer(); sfx('bad'); } }
+    if(it.y>=line){ if(it.bad){ if(it.lane===CA.lane){ CA.combo=0; CA.timeLeft=Math.max(0,CA.timeLeft-3); caFlash(true); caStats(); caTimer(); sfx('clang'); } }
       else{ if(it.lane===CA.lane){ CA.combo++; CA.maxCombo=Math.max(CA.maxCombo,CA.combo); const gain=comboPts(CA.combo); CA.score+=dmScore(CA.diff, gain, 'catch'); sfx('good'); caStats(); const bk=document.getElementById('ca-basket'); if(bk) fxCelebrate(bk,'+'+gain); if(CA.combo>=4 && CA.combo%4===0) fxCombo('x'+CA.combo+' COMBO!'); } else { CA.combo=0; caStats(); } }
       it.el.remove(); CA.items.splice(i,1); if(CA.timeLeft<=0){ finishCatch(); return; } } } }
 function startCatch(){ CA.score=0;CA.combo=0;CA.maxCombo=0;CA.timeLeft=CA_TIME;CA.lane=1;CA.running=true;CA.items=[];
@@ -9970,10 +10117,7 @@ function rnFx(S,f){ // 게임 규칙과 무관한 연출 갱신(f = 이번 화�
   if(S.grounded && S.crashT===0 && Math.random()<0.28) rnPuff(S,S.px+10,S.groundY-2,1,0.6);
   rnStepParts(S); S.spd=sp;
 }
-function rnSnd(kind){ try{ if(!sndOn()) return;
-  if(kind==='jump') _tone({freq:360,dur:0.13,type:'square',vol:0.05,glide:420});
-  else if(kind==='beat') [659,880,1175].forEach((f,i)=>_tone({freq:f,dur:0.1,type:'triangle',vol:0.11,when:i*0.07}));
-}catch(e){} }
+function rnSnd(kind){ sfx(kind); }   // jump · beat → 사운드 엔진 v2
 
 function startRun(){
   clearTimeout(RN.overT); RNP.running=false; cancelAnimationFrame(RNP.raf);
@@ -9992,7 +10136,8 @@ function rnJump(){ if(!RN.running) return; if(RN.grounded){ RN.vy=RN_JV; RN.grou
   try{if(navigator.vibrate)navigator.vibrate(10);}catch(e){} const cue=document.getElementById('rn-cue'); if(cue) cue.classList.add('hide'); } }
 function rnHud(){
   if(RN.score!==RN.hudS){ RN.hudS=RN.score; document.getElementById('rn-score').textContent=RN.score; }
-  const m=Math.floor(RN.dist/RN_PX_PER_M); if(m!==RN.hudM){ RN.hudM=m; document.getElementById('rn-dist').textContent=m.toLocaleString(); }
+  const m=Math.floor(RN.dist/RN_PX_PER_M); if(m!==RN.hudM){ RN.hudM=m; document.getElementById('rn-dist').textContent=m.toLocaleString(); if(m>0&&m%100===0) sfx('milestone'); }
+  sndIntensity(RN.ts>1.45?2:RN.ts>1.15?1:0);   // 배속이 오르면 음악도 쌓인다
   const cfg=RN_CFG[RN.diff], sp=document.getElementById('rn-speed-fill'); if(sp) sp.style.width=Math.min(100,Math.round(100*(RN.ts-cfg.ts0)/1.5))+'%';
   if(!RN.beat && RN.prevBest>0 && RN.score>RN.prevBest){ RN.beat=true; rnSnd('beat');
     document.getElementById('rn-score-plate').classList.add('beat'); const toast=document.getElementById('rn-toast'); if(toast){ toast.classList.remove('show'); void toast.offsetWidth; toast.classList.add('show'); } }
@@ -10009,7 +10154,7 @@ function rnLoop(now){
 }
 /* 물리 1스텝(예전 1프레임과 같다). 충돌하면 true */
 function rnStep(cfg){
-  if(!RN.grounded){ RN.py+=RN.vy; RN.vy-=RN_G; if(RN.py<=0){ RN.py=0; RN.vy=0; RN.grounded=true; RN.landT=8; rnPuff(RN,RN.px+RN_PW/2,RN.groundY-2,7,3); } }
+  if(!RN.grounded){ RN.py+=RN.vy; RN.vy-=RN_G; if(RN.py<=0){ RN.py=0; RN.vy=0; RN.grounded=true; RN.landT=8; rnPuff(RN,RN.px+RN_PW/2,RN.groundY-2,7,3); sfx('land'); } }
   for(const o of RN.obs) o.x-=RN_BASE;
   while(RN.obs.length && RN.obs[0].x < -RN_OBW-6) RN.obs.shift();
   RN.since+=RN_BASE;   // 거리 누적 스폰 — 화면에 장애물이 없어도 간격이 유지된다
@@ -10036,7 +10181,7 @@ function rnCrashLoop(){
 function rnShowResult(){ if(!RN.over) return; RN.crashT=0;
   document.getElementById('run-game-card').style.display='none'; document.getElementById('run-result-card').style.display='block'; }
 function rnGameOver(){ if(RN.over) return; RN.over=true; RN.running=false; cancelAnimationFrame(RN.raf);
-  try{sfx('bad');}catch(e){} try{if(navigator.vibrate)navigator.vibrate(60);}catch(e){}
+  try{sfx('crash');}catch(e){}
   const nr=bt_recordScore(RN.best,RN.diff,RN.score); bt_saveBest('brain.run.best',RN.best); missionMark('run');
   document.getElementById('rn-result-emoji').textContent=nr?'🏆':'💥'; document.getElementById('rn-result-title').textContent=nr?t('run.newRecord'):t('run.gameOver');
   document.getElementById('rn-result-score').textContent=RN.score; document.getElementById('rn-r-diff').textContent=RN_DIFF_LABEL(RN.diff); document.getElementById('rn-r-best').textContent=RN.best[RN.diff].all;
@@ -10172,8 +10317,8 @@ function ftDoPlace(idx,r,c){ if(FT.over||!FT.running) return; const item=FT.tray
     FT.lines+=lines;
     if(FT.combo>=2) fxCombo('x'+FT.combo+' COMBO!');
     while(FT.lines>=FT.linesToNext){ FT.level++; FT.linesToNext+=8; FT.time=Math.min(100,FT.time+12); ftLevelUp(); } // 레벨업
-    sfx(lines>=2?'win':'good');
-  } else { FT.combo=0; sfx('good'); }
+    sfx('place'); sfx('lines', lines);
+  } else { FT.combo=0; sfx('place'); }
   item.used=true;
   if(FT.tray.every(x=>x.used)) ftNewTray();
   ftRender(); ftUpdateTimeBar();
@@ -10234,7 +10379,7 @@ function noBuild(){ const n=NO.n; const rowC=NO.sol.map(r=>noCluesOf(r)); const 
   for(let c=0;c<n;c++){ const d=document.createElement('div'); d.className='no-clue col'; d.innerHTML=(colC[c].length?colC[c]:[0]).map(x=>'<span>'+x+'</span>').join(''); wrap.appendChild(d); }
   for(let r=0;r<n;r++){ const rc=document.createElement('div'); rc.className='no-clue row'; rc.innerHTML=(rowC[r].length?rowC[r]:[0]).map(x=>'<span>'+x+'</span>').join(''); wrap.appendChild(rc);
     for(let c=0;c<n;c++){ const cell=document.createElement('div'); cell.className='no-cell'; cell.onclick=()=>noTap(r,c,cell); wrap.appendChild(cell); } } }
-function noTap(r,c,cell){ if(!NO.running) return; if(NO.mark==='fill'){ NO.grid[r][c]=NO.grid[r][c]===1?0:1; } else { NO.grid[r][c]=NO.grid[r][c]===2?0:2; }
+function noTap(r,c,cell){ if(!NO.running) return; sfx(NO.mark==='fill'?'brush':'click'); if(NO.mark==='fill'){ NO.grid[r][c]=NO.grid[r][c]===1?0:1; } else { NO.grid[r][c]=NO.grid[r][c]===2?0:2; }
   cell.classList.toggle('fill',NO.grid[r][c]===1); cell.textContent=NO.grid[r][c]===2?'✕':''; noCheck(); }
 function noCheck(){ for(let r=0;r<NO.n;r++)for(let c=0;c<NO.n;c++){ if((NO.grid[r][c]===1)!==(NO.sol[r][c]===1)) return; } finishNono(); }
 function startNono(){ const cfg=NO_CFG[NO.diff]; NO.n=cfg.n; NO.sol=noGen(cfg.n,cfg.dens); NO.grid=Array.from({length:NO.n},()=>Array(NO.n).fill(0)); NO.mark='fill'; NO.running=true; NO.started=Date.now();
@@ -10271,7 +10416,7 @@ function AG_DIFF_LABEL(d){ return d==='easy'?t('anagram.easy'):d==='hard'?t('ana
 function agUpdateBestLine(){ const el=document.getElementById('ag-intro-best'); if(el) el.textContent=bt_bestLineText(AG.best,AG.diff); }
 function setAnagramDiff(d){ AG.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ag-diff-'+k).classList.toggle('active',k===d)); agUpdateBestLine(); }
 function agStats(){ document.getElementById('ag-score').textContent=AG.score; document.getElementById('ag-combo').textContent=AG.combo; document.getElementById('ag-hint-n').textContent=AG.hints; }
-function agTimer(){ const el=document.getElementById('ag-timer'); const m=Math.floor(AG.timeLeft/60),s=AG.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=AG.timeLeft<=10?'var(--red)':''; }
+function agTimer(){ const el=document.getElementById('ag-timer'); const m=Math.floor(AG.timeLeft/60),s=AG.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=AG.timeLeft<=10?'var(--red)':''; sfx('__tick',AG); }
 function agNextWord(lang){
   const pool=AG_LEN[AG.diff][lang].reduce((a,l)=>a.concat(AG_WORDS[lang][l]||[]),[]);
   const key=lang+'|'+AG.diff; let bag=AG.bag[key];
@@ -10286,7 +10431,7 @@ function agRender(){ const wl=[...AG.word].length; const ss=document.getElementB
   for(let i=0;i<wl;i++){ const ti=AG.slots[i]; const d=document.createElement('div'); d.className='ag-slot'+(ti!=null?' filled':''); d.textContent=ti!=null?AG.tiles[ti].ch:''; if(ti!=null) d.onclick=()=>agUnplace(i); ss.appendChild(d); }
   const ts=document.getElementById('ag-tiles'); ts.innerHTML='';
   AG.tiles.forEach((tile,idx)=>{ const b=document.createElement('button'); b.className='ag-tile'+(tile.used?' used':''); b.textContent=tile.ch; b.onclick=()=>agTapTile(idx); ts.appendChild(b); }); agStats(); }
-function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; if(navigator.vibrate) navigator.vibrate(8); AG.slots.push(idx); tile.used=true; agRender();
+function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; if(navigator.vibrate) navigator.vibrate(8); AG.slots.push(idx); tile.used=true; sfx('letter', p); agRender();
   if(AG.slots.length===[...AG.word].length) agSubmit(); }
 function agUnplace(i){ if(!AG.running||AG.slots[i]==null) return; if(navigator.vibrate) navigator.vibrate(6); const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
 function agSubmit(){ const asm=AG.slots.map(i=>AG.tiles[i].ch).join('');
@@ -10333,7 +10478,7 @@ function WS_DIFF_LABEL(d){ return d==='easy'?t('wordsearch.easy'):d==='hard'?t('
 function wsUpdateBestLine(){ const el=document.getElementById('ws-intro-best'); if(el) el.textContent=bt_bestLineText(WS.best,WS.diff); }
 function setWordsearchDiff(d){ WS.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('ws-diff-'+k).classList.toggle('active',k===d)); wsUpdateBestLine(); }
 function wsStats(){ document.getElementById('ws-score').textContent=WS.score; document.getElementById('ws-combo').textContent=WS.combo; }
-function wsTimer(){ const el=document.getElementById('ws-timer'); const m=Math.floor(WS.timeLeft/60),s=WS.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=WS.timeLeft<=10?'var(--red)':''; }
+function wsTimer(){ const el=document.getElementById('ws-timer'); const m=Math.floor(WS.timeLeft/60),s=WS.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=WS.timeLeft<=10?'var(--red)':''; sfx('__tick',WS); }
 function wsFill(lang){ if(lang==='ko'){ return WS_FILL_KO[Math.floor(Math.random()*WS_FILL_KO.length)]; } return String.fromCharCode(65+Math.floor(Math.random()*26)); }
 function wsPlace(n, words, diag){
   const grid=Array.from({length:n},()=>Array(n).fill(null)); const dirs=diag?[[0,1],[1,0],[1,1],[1,-1]]:[[0,1],[1,0]];
@@ -10412,7 +10557,7 @@ function DF_DIFF_LABEL(d){ return d==='easy'?t('diff.easy'):d==='hard'?t('diff.h
 function dfUpdateBestLine(){ const el=document.getElementById('df-intro-best'); if(el) el.textContent=bt_bestLineText(DF.best,DF.diff); }
 function setDiffDiff(d){ DF.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('df-diff-'+k).classList.toggle('active',k===d)); dfUpdateBestLine(); }
 function dfStats(){ document.getElementById('df-score').textContent=DF.score; document.getElementById('df-combo').textContent=DF.combo; }
-function dfTimer(){ const el=document.getElementById('df-timer'); const m=Math.floor(DF.timeLeft/60),s=DF.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=DF.timeLeft<=10?'var(--red)':''; }
+function dfTimer(){ const el=document.getElementById('df-timer'); const m=Math.floor(DF.timeLeft/60),s=DF.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=DF.timeLeft<=10?'var(--red)':''; sfx('__tick',DF); }
 function dfParams(){ const cfg=DF_CFG[DF.diff]; const n=Math.min(cfg.nMax,cfg.nStart+Math.floor((DF.level-1)/3)); const k=Math.max(1,Math.min(Math.floor(n*n/4), 1+Math.floor((DF.level-1)/2))); return {n,k}; }
 function dfBuild(){ const p=dfParams(); DF.n=p.n; const total=p.n*p.n;
   const base=Array.from({length:total},()=>DF_POOL[Math.floor(Math.random()*DF_POOL.length)]); const g2=base.slice();
@@ -10473,7 +10618,7 @@ function PT_DIFF_LABEL(d){ return d==='easy'?t('pitch.easy'):d==='hard'?t('pitch
 function ptUpdateBestLine(){ const el=document.getElementById('pt-intro-best'); if(el) el.textContent=bt_bestLineText(PT.best,PT.diff); }
 function setPitchDiff(d){ PT.diff=d; ['easy','normal','hard'].forEach(k=>document.getElementById('pt-diff-'+k).classList.toggle('active',k===d)); ptUpdateBestLine(); }
 function ptStats(){ document.getElementById('pt-score').textContent=PT.score; document.getElementById('pt-combo').textContent=PT.combo; }
-function ptTimer(){ const el=document.getElementById('pt-timer'); const m=Math.floor(PT.timeLeft/60),s=PT.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=PT.timeLeft<=10?'var(--red)':''; }
+function ptTimer(){ const el=document.getElementById('pt-timer'); const m=Math.floor(PT.timeLeft/60),s=PT.timeLeft%60; el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); el.style.color=PT.timeLeft<=10?'var(--red)':''; sfx('__tick',PT); }
 function ptStatus(key,cls){ const el=document.getElementById('pt-status'); el.textContent=t(key); el.className='gm-status'+(cls?(' '+cls):''); }
 function ptClear(){ PT.timers.forEach(clearTimeout); PT.timers=[]; }
 function ptPads(){ return document.getElementById('pt-pads'); }
@@ -10599,7 +10744,7 @@ function tcRender(){
 function tcResetTrail(){ TC.trail=[]; const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points',''); const cur=document.getElementById('tc-cursor'); if(cur) cur.setAttribute('opacity','0'); }
 function tcAddTrail(p){ const last=TC.trail[TC.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>=3){ TC.trail.push({x:p.x,y:p.y}); const el=document.getElementById('tc-trail'); if(el) el.setAttribute('points', TC.trail.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ')); }
   const cur=document.getElementById('tc-cursor'); if(cur){ cur.setAttribute('cx',p.x.toFixed(1)); cur.setAttribute('cy',p.y.toFixed(1)); cur.setAttribute('opacity','1'); } }
-function tcStray(){ if(!TC.active) return; TC.active=false; TC.cur=null; TC.grip=null; TC.lives--; sfx('bad'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
+function tcStray(){ if(!TC.active) return; TC.active=false; TC.cur=null; TC.grip=null; TC.lives--; sfx('scrape'); tcStats(); tcResetTrail(); if(TC.lives<=0){ finishTrace(); return; } tcStatus('trace.stray','bad'); }
 function tcClearLevel(){ TC.active=false; TC.cur=null; TC.grip=null; TC.level++; TC.score+=dmScore(TC.diff, 30+TC.level*10, 'trace'); sfx('win'); tcStats(); tcStatus('trace.clear','good'); setTimeout(()=>{ if(TC.running) tcRender(); },550); }
 /* 화면 크기가 바뀌면(회전 등) 좌표계도 바뀌어야 한다. 그리는 중에는 건드리지 않는다. */
 let _tcResizeT=null;
@@ -10634,7 +10779,7 @@ function startTrace(){ TC.score=0;TC.lives=3;TC.level=1;TC.running=true;TC.activ
       /* 규칙은 하나 — 그려진 길에서 얼마나 나갔나. 그려진 길은 경로를 굵기 w로
          둥글게 그린 것이라 tcDist가 곧 화면상의 거리이고, 모퉁이의 둥근 부분도 그대로 맞는다. */
       if(tcDist(q)>TC.tol){ TC.cur=q; tcStray(); return; }
-      TC.cur=q; tcAddTrail(q);
+      TC.cur=q; tcAddTrail(q); if(TC.trail.length%45===0) sfx('trace', TC.trail.length);
     }
     TC.cur={x:nx,y:ny};
     const en=TC.path[TC.path.length-1];

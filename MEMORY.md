@@ -420,3 +420,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 밸런스 시뮬레이터 (2026-09-27)
 - `tools/balance/`: `model.mjs`(플레이어 5단계 수행 모델 + 게임 34종 점수식, index.html 줄 번호 주석) · `proposal.mjs`(제안 설정·메커닉) · `calibrate.mjs`(배수·메달 자동 산출 → calib.json) · `run.mjs cur|prop N`(비교표). 게임 규칙을 바꾸면 model.mjs의 해당 식도 같이 고친다.
 - 밸런스 v2 **적용 완료(2026-09-27)**: `DMULT_GAME`·`MEDAL_GOALS`·`GAME_REF`(=💎)는 calib.json에서 생성. 규칙을 바꾸면 model.mjs → calibrate → 표 갱신 순서로. 말로우 런은 논리 400×240 세계·시간 배속·거리 누적 스폰(`rnStep`). 어려움 제한시간은 `QDL_MS`/`qdlArm`. 기록 초기화 플래그 `brain.balanceV2`. 회귀 검증 `tools/balance/check_v2.mjs`(포트 8226 서버 필요).
+
+## 사운드 v2 (2026-09-27)
+- 원본은 `tools/sound/engine.js`(index.html의 `/* ===== 사운드 엔진 v2` 블록과 같게 유지). `sfx(kind,arg)` 하나로 모든 소리 — 정답 계열(good·merge·cork·lines·rt)은 연속 성공 `SND.streak`을 올리고 실패 계열(bad·bomb·clang·crash·scrape)은 끊는다. 시험음(`_beep`)은 드라이 버스.
+- 시작·끝은 DOMContentLoaded에서 `PG_START`의 start 함수와 `afterGame`을 감싸 처리(`sndGameStart`/`sndGameEnd`). 새 게임은 `BGM_THEME`에 분위기를 넣고, 60초 타이머 표시 함수에서 `sfx('__tick',STATE)`를 부르면 남은 10초 연출이 붙는다.
+- 소리가 정답을 알려 주면 안 된다(반응 GO·노노 줄 완성·엔백 글자·인원수 사람 수). 음악 음량은 효과음 아래 유지 — 측정 `.logs/sound_mix.mjs`. 검증 `tools/sound/check.mjs`(포트 8226).
