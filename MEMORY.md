@@ -424,7 +424,13 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 사운드 v2 (2026-09-27)
 - 원본은 `tools/sound/engine.js`(index.html의 `/* ===== 사운드 엔진 v2` 블록과 같게 유지). `sfx(kind,arg)` 하나로 모든 소리 — 정답 계열(good·merge·cork·lines·rt)은 연속 성공 `SND.streak`을 올리고 실패 계열(bad·bomb·clang·crash·scrape)은 끊는다. 시험음(`_beep`)은 드라이 버스.
 - 시작·끝은 DOMContentLoaded에서 `PG_START`의 start 함수와 `afterGame`을 감싸 처리(`sndGameStart`/`sndGameEnd`). 새 게임은 `BGM_THEME`에 분위기를 넣고, 60초 타이머 표시 함수에서 `sfx('__tick',STATE)`를 부르면 남은 10초 연출이 붙는다.
-- 소리가 정답을 알려 주면 안 된다(반응 GO·노노 줄 완성·엔백 글자·인원수 사람 수). 음악 음량은 효과음 아래 유지 — 측정 `.logs/sound_mix.mjs`. 검증 `tools/sound/check.mjs`(포트 8226).
+- 소리가 정답을 알려 주면 안 된다(반응 GO·노노 줄 완성·엔백 글자·인원수 사람 수). 음악 음량은 효과음 아래 유지(효과음보다 4~8dB 아래). 검증 `tools/sound/check.mjs`(포트 8226).
+
+## 오늘의 퍼즐 3종 디자인·사운드 (2026-09-28)
+- 모아모아·말로우 크라운·말로우 탱고는 각자 단일 html(`moamoa/` `queens/` `tango/`)이라 index.html 엔진을 못 쓴다 → 공용 `/assets/daily-sound.js`(엔진 v2 축약, `DS.play/bgm/level/stop/panel`)와 `/assets/daily-fx.js`(`DFX.confetti/burst/cascade`). script 태그에 `?v=N` — SW가 비HTML을 캐시 우선으로 주므로 고치면 N을 올린다.
+- 켜기/끄기는 `brain.sound`(메인)와 `mallow_mute`(예전 퍼즐 키)를 함께 읽고 쓴다. 음량 키는 메인과 공유(`brain.vol.*`).
+- 스킨은 각 파일 <style> 끝 '게임 월드 스킨' 블록, 배경 `assets/stage/{moamoa,queens,tango}.jpg`. 적용 스크립트 `tools/daily-redesign/`(1회용). 확인 `.logs/daily/play.mjs`(플레이 캡처·소리 순서)·`sound_levels.mjs`(오프라인 음량)·`edge.mjs`.
+- 판 칸은 바뀐 칸만 다시 그린다(`d._s`/`d._v`) — 전체 innerHTML을 다시 쓰면 등장 애니메이션이 매 탭마다 모든 칸에서 반복된다.
 
 ## ⚠️ 루트 public/ 폴더 금지 (2026-09-27 사고)
 - 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
