@@ -438,6 +438,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 오늘의 두뇌 3판 = `missionToday()`, 3판 다 하면 행운 카드(`lbLuckyToday`, 날짜 시드, `brain.lucky.seen`으로 하루 한 번 뒤집힘). 하단 탭 목록은 `NAV_SCREENS`.
 - SEO: `/llms.txt`(게임·퍼즐·운세 주소가 바뀌면 같이 고친다), 한국어 랜딩 FAQPage = `tools/seo/add-faqpage.py`(화면 FAQ를 고치면 LD도 같이). 진단 문서 `docs/SEO-진단-2026-09-28.md`, 재측정 2026-10-12.
 
+## 공통 상단바 (2026-09-28)
+- 따로 만든 페이지는 `</header>` 바로 뒤 `/assets/topbar.js`가 사이트 게임 화면과 같은 상단바를 만든다(#backHome·#muteBtn·#langSel을 옮겨 씀, 이름표는 topbar.js의 NAMES = index.html nav.<id>). 새 독립 페이지를 만들면 topbar.css·js 두 줄을 넣는다. 뒤로 가기 문구는 어디서나 '← 홈'.
+
 ## ⚠️ 루트 public/ 폴더 금지 (2026-09-27 사고)
 - 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
 - 플랫폼 안내(CLAUDE.md)의 "페이지는 public/에" 규칙은 이 프로젝트에서 따르지 말 것. 미리보기 페이지는 `generated_images/`(gitignore)에 두고 링크한다.
