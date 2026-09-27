@@ -411,3 +411,8 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 말로우 런 그래픽 (2026-09-27)
 - `index.html`의 말로우 런은 황혼 숲 횡스크롤 테마를 절차적 캔버스로 그린다(외부 이미지 없음). 배경은 `rnBuildArt()`가 크기별로 오프스크린 타일을 한 번 만들어 `RN_ART`에 캐시하고, `rnScene(c,S)`가 게임(`RN`)·인트로 미리보기(`RNP`) 공용으로 그린다. 컨셉아트는 `canvas/pages/main/assets/`.
 - 물리·히트박스·간격(`RN_G/RN_JV/RN_PW/RN_PH/RN_OBW/RN_OBH`, `rnNextGap`)은 `.logs/run_sim.mjs` 검증본이다. 장애물 외형을 바꿀 때도 26×46 상자를 채우는 크기를 유지한다. 점프 최고점 여유 때문에 캔버스 최소 높이 228px(미리보기 232px) 아래로 줄이지 않는다.
+
+## 게임 월드 스킨 (2026-09-27)
+- 스킬 게임 33종의 플레이·시작·결과 카드 디자인은 `index.html` <style> 끝의 `STAGE-SKIN START~END` 블록이다. 직접 고치지 말고 `tools/stage-skin/build.py`를 고쳐 재실행한다(여러 번 실행 가능). 게임별 강조색·판 처리(light/clear/dark/keep)·판 선택자가 표로 들어 있다.
+- 배경은 `assets/stage/<id>.jpg`(구 `assets/<id>-bg.jpg`는 orphan `brain_app.html`만 참조). 글자는 그림 위에 직접 두지 않는다 — 알약·명판·유리 패널 중 하나 위. 패널 테두리는 JS가 폭으로 판 크기를 계산하므로 border 대신 box-shadow 링을 쓴다.
+- 확인 도구: `.logs/stage_shots.mjs [ids] [width]` + `.logs/stage_sheet.py`, 배너 제목 넘침 `.logs/stage_titles.mjs`, 대비 `.logs/design_audit3.mjs`(포트 8226).
