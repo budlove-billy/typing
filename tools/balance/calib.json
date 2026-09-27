@@ -1,0 +1,1216 @@
+{
+ "dm": {
+  "stroop": {
+   "easy": 0.961,
+   "normal": 1.4,
+   "hard": 2.382
+  },
+  "flank": {
+   "easy": 1.05,
+   "normal": 1.4,
+   "hard": 2.258
+  },
+  "switch": {
+   "easy": 1.034,
+   "normal": 1.4,
+   "hard": 2.146
+  },
+  "rotate": {
+   "easy": 1.205,
+   "normal": 1.4,
+   "hard": 1.625
+  },
+  "guess": {
+   "easy": 0.936,
+   "normal": 1.4,
+   "hard": 4.141
+  },
+  "math": {
+   "easy": 0.31,
+   "normal": 1,
+   "hard": 3.417
+  },
+  "spot": {
+   "easy": 0.67,
+   "normal": 1.4,
+   "hard": 2.904
+  },
+  "odd": {
+   "easy": 0.622,
+   "normal": 1.4,
+   "hard": 2.691
+  },
+  "bubble": {
+   "easy": 0.779,
+   "normal": 1.4,
+   "hard": 2.412
+  },
+  "nback": {
+   "easy": 1.191,
+   "normal": 1.4,
+   "hard": 2.806
+  },
+  "trail": {
+   "easy": 1.169,
+   "normal": 1.4,
+   "hard": 1.882
+  },
+  "whack": {
+   "easy": 0.92,
+   "normal": 1.4,
+   "hard": 3.34
+  },
+  "catch": {
+   "easy": 0.821,
+   "normal": 1.4,
+   "hard": 2.266
+  },
+  "react": {
+   "easy": 1.231,
+   "normal": 1.4,
+   "hard": 1.6
+  },
+  "cards": {
+   "easy": 1.291,
+   "normal": 1.4,
+   "hard": 1.587
+  },
+  "count": {
+   "easy": 0.358,
+   "normal": 1,
+   "hard": 1.668
+  },
+  "flash": {
+   "easy": 0.967,
+   "normal": 1.4,
+   "hard": 2.293
+  },
+  "melody": {
+   "easy": 1.025,
+   "normal": 1.4,
+   "hard": 2.508
+  },
+  "rev": {
+   "easy": 0.896,
+   "normal": 1.4,
+   "hard": 4.2
+  },
+  "rhythm": {
+   "easy": 1.186,
+   "normal": 1.4,
+   "hard": 2.625
+  },
+  "pitch": {
+   "easy": 0.902,
+   "normal": 1.4,
+   "hard": 2.466
+  },
+  "diff": {
+   "easy": 1.185,
+   "normal": 1.4,
+   "hard": 1.791
+  },
+  "anagram": {
+   "easy": 0.536,
+   "normal": 1.4,
+   "hard": 2.81
+  },
+  "wordsearch": {
+   "easy": 1.181,
+   "normal": 1.4,
+   "hard": 1.982
+  },
+  "trace": {
+   "easy": 0.85,
+   "normal": 1.4,
+   "hard": 2.701
+  },
+  "chop": {
+   "easy": 0.751,
+   "normal": 1.4,
+   "hard": 2.065
+  },
+  "fit": {
+   "easy": 1,
+   "normal": 1,
+   "hard": 1
+  },
+  "sort": {
+   "easy": 1,
+   "normal": 1,
+   "hard": 1
+  },
+  "slide": {
+   "easy": 1,
+   "normal": 1,
+   "hard": 1
+  },
+  "nono": {
+   "easy": 1,
+   "normal": 1,
+   "hard": 1
+  },
+  "sudoku": {
+   "easy": 1,
+   "normal": 1,
+   "hard": 1
+  },
+  "merge": {
+   "easy": 0.721,
+   "normal": 7,
+   "hard": 86.816
+  },
+  "run": {
+   "easy": 0.578,
+   "normal": 1.4,
+   "hard": 3.039
+  }
+ },
+ "medals": {
+  "stroop": [
+   1000,
+   2200,
+   2800,
+   3700
+  ],
+  "flank": [
+   1900,
+   4000,
+   5200,
+   6400
+  ],
+  "switch": [
+   1200,
+   2500,
+   3100,
+   3800
+  ],
+  "rotate": [
+   1000,
+   1700,
+   2000,
+   2500
+  ],
+  "guess": [
+   420,
+   970,
+   1500,
+   2300
+  ],
+  "math": [
+   160,
+   380,
+   470,
+   660
+  ],
+  "spot": [
+   370,
+   1300,
+   2100,
+   3100
+  ],
+  "odd": [
+   320,
+   850,
+   1300,
+   2300
+  ],
+  "bubble": [
+   140,
+   330,
+   400,
+   610
+  ],
+  "nback": [
+   100,
+   200,
+   280,
+   460
+  ],
+  "trail": [
+   110,
+   200,
+   240,
+   270
+  ],
+  "whack": [
+   630,
+   2300,
+   3500,
+   5300
+  ],
+  "catch": [
+   1000,
+   1800,
+   1900,
+   2600
+  ],
+  "react": [
+   2700,
+   5600,
+   6500,
+   7600
+  ],
+  "cards": [
+   450,
+   770,
+   920,
+   1000
+  ],
+  "count": [
+   87,
+   320,
+   500,
+   1300
+  ],
+  "flash": [
+   16,
+   33,
+   40,
+   54
+  ],
+  "melody": [
+   160,
+   380,
+   560,
+   760
+  ],
+  "rev": [
+   56,
+   210,
+   470,
+   760
+  ],
+  "rhythm": [
+   160,
+   390,
+   580,
+   790
+  ],
+  "pitch": [
+   250,
+   550,
+   700,
+   970
+  ],
+  "diff": [
+   680,
+   1500,
+   2000,
+   2400
+  ],
+  "anagram": [
+   180,
+   420,
+   540,
+   710
+  ],
+  "wordsearch": [
+   590,
+   1000,
+   1300,
+   1500
+  ],
+  "trace": [
+   1700,
+   4300,
+   5500,
+   7900
+  ],
+  "chop": [
+   250,
+   950,
+   1200,
+   2600
+  ],
+  "fit": [
+   680,
+   1400,
+   2000,
+   3100
+  ],
+  "sort": [
+   480,
+   970,
+   1300,
+   1600
+  ],
+  "slide": [
+   410,
+   840,
+   1100,
+   1400
+  ],
+  "nono": [
+   420,
+   820,
+   1100,
+   1400
+  ],
+  "sudoku": [
+   40,
+   83,
+   120,
+   160
+  ],
+  "merge": [
+   10000,
+   22000,
+   26000,
+   41000
+  ],
+  "run": [
+   940,
+   6200,
+   13000,
+   23000
+  ]
+ },
+ "K": {
+  "sort": {
+   "easy": 663,
+   "normal": 581,
+   "hard": 559
+  },
+  "slide": {
+   "easy": 469,
+   "normal": 464,
+   "hard": 535
+  },
+  "nono": {
+   "easy": 413,
+   "normal": 350,
+   "hard": 366
+  },
+  "sudoku": {
+   "easy": 40,
+   "normal": 54,
+   "hard": 73
+  }
+ },
+ "detail": {
+  "stroop": {
+   "medals": [
+    1000,
+    2200,
+    2800,
+    3700
+   ],
+   "bestAt": [
+    "normal",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1247,
+    "normal": 1070,
+    "hard": 786
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0.09,
+    "expertDia": 0.35,
+    "noviceBronze": 0.57
+   }
+  },
+  "flank": {
+   "medals": [
+    1900,
+    4000,
+    5200,
+    6400
+   ],
+   "bestAt": [
+    "normal",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 2122,
+    "normal": 1990,
+    "hard": 1542
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.07,
+    "expertDia": 0.48,
+    "noviceBronze": 0.51
+   }
+  },
+  "switch": {
+   "medals": [
+    1200,
+    2500,
+    3100,
+    3800
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1361,
+    "normal": 1257,
+    "hard": 1025
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.1,
+    "expertDia": 0.35,
+    "noviceBronze": 0.57
+   }
+  },
+  "rotate": {
+   "medals": [
+    1000,
+    1700,
+    2000,
+    2500
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 821,
+    "normal": 883,
+    "hard": 951
+   },
+   "chk": {
+    "casualGold": 0.08,
+    "skilledDia": 0.06,
+    "expertDia": 0.14,
+    "noviceBronze": 0.51
+   }
+  },
+  "guess": {
+   "medals": [
+    420,
+    970,
+    1500,
+    2300
+   ],
+   "bestAt": [
+    "normal",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 541,
+    "normal": 452,
+    "hard": 191
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.06,
+    "expertDia": 0.45,
+    "noviceBronze": 0.51
+   }
+  },
+  "math": {
+   "medals": [
+    160,
+    380,
+    470,
+    660
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 635,
+    "normal": 246,
+    "hard": 90
+   },
+   "chk": {
+    "casualGold": 0.03,
+    "skilledDia": 0.09,
+    "expertDia": 0.41,
+    "noviceBronze": 0.51
+   }
+  },
+  "spot": {
+   "medals": [
+    370,
+    1300,
+    2100,
+    3100
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1001,
+    "normal": 599,
+    "hard": 361
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.48,
+    "noviceBronze": 0.52
+   }
+  },
+  "odd": {
+   "medals": [
+    320,
+    850,
+    1300,
+    2300
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 772,
+    "normal": 429,
+    "hard": 279
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.32,
+    "noviceBronze": 0.51
+   }
+  },
+  "bubble": {
+   "medals": [
+    140,
+    330,
+    400,
+    610
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 220,
+    "normal": 153,
+    "hard": 111
+   },
+   "chk": {
+    "casualGold": 0.03,
+    "skilledDia": 0.03,
+    "expertDia": 0.21,
+    "noviceBronze": 0.57
+   }
+  },
+  "nback": {
+   "medals": [
+    100,
+    200,
+    280,
+    460
+   ],
+   "bestAt": [
+    "easy",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 95,
+    "normal": 101,
+    "hard": 63
+   },
+   "chk": {
+    "casualGold": 0.1,
+    "skilledDia": 0.07,
+    "expertDia": 0.21,
+    "noviceBronze": 0.56
+   }
+  },
+  "trail": {
+   "medals": [
+    110,
+    200,
+    240,
+    270
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 102.5,
+    "normal": 107,
+    "hard": 99.5
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.36,
+    "noviceBronze": 0.81
+   }
+  },
+  "whack": {
+   "medals": [
+    630,
+    2300,
+    3500,
+    5300
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1368,
+    "normal": 1124,
+    "hard": 589
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.49,
+    "noviceBronze": 0.54
+   }
+  },
+  "catch": {
+   "medals": [
+    1000,
+    1800,
+    1900,
+    2600
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1185,
+    "normal": 869,
+    "hard": 671
+   },
+   "chk": {
+    "casualGold": 0.21,
+    "skilledDia": 0.07,
+    "expertDia": 0.2,
+    "noviceBronze": 0.63
+   }
+  },
+  "react": {
+   "medals": [
+    2700,
+    5600,
+    6500,
+    7600
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 2686,
+    "normal": 2953,
+    "hard": 3229
+   },
+   "chk": {
+    "casualGold": 0.02,
+    "skilledDia": 0.1,
+    "expertDia": 0.36,
+    "noviceBronze": 0.56
+   }
+  },
+  "cards": {
+   "medals": [
+    450,
+    770,
+    920,
+    1000
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 354,
+    "normal": 408,
+    "hard": 450
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.07,
+    "expertDia": 0.41,
+    "noviceBronze": 0.56
+   }
+  },
+  "count": {
+   "medals": [
+    87,
+    320,
+    500,
+    1300
+   ],
+   "bestAt": [
+    "easy",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 459,
+    "normal": 205.5,
+    "hard": 154
+   },
+   "chk": {
+    "casualGold": 0.06,
+    "skilledDia": 0.06,
+    "expertDia": 0.34,
+    "noviceBronze": 0.53
+   }
+  },
+  "flash": {
+   "medals": [
+    16,
+    33,
+    40,
+    54
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 22,
+    "normal": 19,
+    "hard": 14.5
+   },
+   "chk": {
+    "casualGold": 0.05,
+    "skilledDia": 0.04,
+    "expertDia": 0.3,
+    "noviceBronze": 0.59
+   }
+  },
+  "melody": {
+   "medals": [
+    160,
+    380,
+    560,
+    760
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 235,
+    "normal": 215,
+    "hard": 150
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0.02,
+    "expertDia": 0.21,
+    "noviceBronze": 0.87
+   }
+  },
+  "rev": {
+   "medals": [
+    56,
+    210,
+    470,
+    760
+   ],
+   "bestAt": [
+    "easy",
+    "normal",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 150,
+    "normal": 120,
+    "hard": 50
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.01,
+    "expertDia": 0.27,
+    "noviceBronze": 0.9
+   }
+  },
+  "rhythm": {
+   "medals": [
+    160,
+    390,
+    580,
+    790
+   ],
+   "bestAt": [
+    "normal",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 170,
+    "normal": 180,
+    "hard": 120
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0.01,
+    "expertDia": 0.24,
+    "noviceBronze": 0.51
+   }
+  },
+  "pitch": {
+   "medals": [
+    250,
+    550,
+    700,
+    970
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 355,
+    "normal": 286,
+    "hard": 203
+   },
+   "chk": {
+    "casualGold": 0.02,
+    "skilledDia": 0.03,
+    "expertDia": 0.49,
+    "noviceBronze": 0.51
+   }
+  },
+  "diff": {
+   "medals": [
+    680,
+    1500,
+    2000,
+    2400
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 705,
+    "normal": 746,
+    "hard": 729
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.45,
+    "noviceBronze": 0.52
+   }
+  },
+  "anagram": {
+   "medals": [
+    180,
+    420,
+    540,
+    710
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 451,
+    "normal": 216,
+    "hard": 134.5
+   },
+   "chk": {
+    "casualGold": 0.03,
+    "skilledDia": 0.09,
+    "expertDia": 0.49,
+    "noviceBronze": 0.53
+   }
+  },
+  "wordsearch": {
+   "medals": [
+    590,
+    1000,
+    1300,
+    1500
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 518,
+    "normal": 546,
+    "hard": 482
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.06,
+    "expertDia": 0.42,
+    "noviceBronze": 0.5
+   }
+  },
+  "trace": {
+   "medals": [
+    1700,
+    4300,
+    5500,
+    7900
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 2920,
+    "normal": 2215,
+    "hard": 1435
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0,
+    "expertDia": 0.45,
+    "noviceBronze": 0.72
+   }
+  },
+  "chop": {
+   "medals": [
+    250,
+    950,
+    1200,
+    2600
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "normal"
+   ],
+   "raw": {
+    "easy": 440,
+    "normal": 295,
+    "hard": 250
+   },
+   "chk": {
+    "casualGold": 0.17,
+    "skilledDia": 0.09,
+    "expertDia": 0.16,
+    "noviceBronze": 0.52
+   }
+  },
+  "fit": {
+   "medals": [
+    680,
+    1400,
+    2000,
+    3100
+   ],
+   "bestAt": [
+    "normal",
+    "normal",
+    "normal",
+    "normal"
+   ],
+   "raw": {
+    "normal": 1142
+   },
+   "chk": {
+    "casualGold": 0.06,
+    "skilledDia": 0.09,
+    "expertDia": 0.12,
+    "noviceBronze": 0.51
+   }
+  },
+  "sort": {
+   "medals": [
+    480,
+    970,
+    1300,
+    1600
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 845,
+    "normal": 1204,
+    "hard": 1564
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0.03,
+    "expertDia": 0.44,
+    "noviceBronze": 0.5
+   }
+  },
+  "slide": {
+   "medals": [
+    410,
+    840,
+    1100,
+    1400
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1022.5,
+    "normal": 1292.5,
+    "hard": 1401
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.05,
+    "expertDia": 0.39,
+    "noviceBronze": 0.52
+   }
+  },
+  "nono": {
+   "medals": [
+    420,
+    820,
+    1100,
+    1400
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1163,
+    "normal": 1715.5,
+    "hard": 2050
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.07,
+    "expertDia": 0.36,
+    "noviceBronze": 0.52
+   }
+  },
+  "sudoku": {
+   "medals": [
+    40,
+    83,
+    120,
+    160
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 1189,
+    "normal": 1114.5,
+    "hard": 1025.5
+   },
+   "chk": {
+    "casualGold": 0.01,
+    "skilledDia": 0.1,
+    "expertDia": 0.34,
+    "noviceBronze": 0.52
+   }
+  },
+  "merge": {
+   "medals": [
+    10000,
+    22000,
+    26000,
+    41000
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 16258,
+    "normal": 2093.5,
+    "hard": 211
+   },
+   "chk": {
+    "casualGold": 0.15,
+    "skilledDia": 0.09,
+    "expertDia": 0.17,
+    "noviceBronze": 0.56
+   }
+  },
+  "run": {
+   "medals": [
+    940,
+    6200,
+    13000,
+    23000
+   ],
+   "bestAt": [
+    "hard",
+    "hard",
+    "hard",
+    "hard"
+   ],
+   "raw": {
+    "easy": 4928.5,
+    "normal": 2543.5,
+    "hard": 1464.5
+   },
+   "chk": {
+    "casualGold": 0,
+    "skilledDia": 0.01,
+    "expertDia": 0.49,
+    "noviceBronze": 0.5
+   }
+  }
+ }
+}

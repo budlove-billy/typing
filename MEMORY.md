@@ -416,3 +416,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 스킬 게임 33종의 플레이·시작·결과 카드 디자인은 `index.html` <style> 끝의 `STAGE-SKIN START~END` 블록이다. 직접 고치지 말고 `tools/stage-skin/build.py`를 고쳐 재실행한다(여러 번 실행 가능). 게임별 강조색·판 처리(light/clear/dark/keep)·판 선택자가 표로 들어 있다.
 - 배경은 `assets/stage/<id>.jpg`(구 `assets/<id>-bg.jpg`는 orphan `brain_app.html`만 참조). 글자는 그림 위에 직접 두지 않는다 — 알약·명판·유리 패널 중 하나 위. 패널 테두리는 JS가 폭으로 판 크기를 계산하므로 border 대신 box-shadow 링을 쓴다.
 - 확인 도구: `.logs/stage_shots.mjs [ids] [width]` + `.logs/stage_sheet.py`, 배너 제목 넘침 `.logs/stage_titles.mjs`, 대비 `.logs/design_audit3.mjs`(포트 8226).
+
+## 밸런스 시뮬레이터 (2026-09-27)
+- `tools/balance/`: `model.mjs`(플레이어 5단계 수행 모델 + 게임 34종 점수식, index.html 줄 번호 주석) · `proposal.mjs`(제안 설정·메커닉) · `calibrate.mjs`(배수·메달 자동 산출 → calib.json) · `run.mjs cur|prop N`(비교표). 게임 규칙을 바꾸면 model.mjs의 해당 식도 같이 고친다.
+- 말로우 런 현재 코드에는 스폰 붕괴 버그가 있다(`!last` 즉시 스폰 → 간격=캔버스+32px). 제안서 `docs/밸런스-분석-제안.md`는 **미적용** 상태 — 적용 시 점수 공식이 바뀌는 10개 게임은 기록 키 분리 권장.
