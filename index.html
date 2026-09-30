@@ -643,6 +643,11 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .ag-tile{min-width:56px;height:56px;padding:0 .45rem;border:none;border-radius:12px;background:linear-gradient(180deg,#a988fb 0%,var(--purple) 70%);color:#fff;font-size:1.65rem;font-weight:700;cursor:pointer;box-shadow:0 3px 8px rgba(120,90,220,.32),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .1s ease,opacity .15s ease}
 .ag-tile:active{transform:scale(.9);box-shadow:0 1px 3px rgba(120,90,220,.3)}
 .ag-tile.used{opacity:.24;box-shadow:none;pointer-events:none;background:var(--purple)}
+/* 가린 글자(보통·어려움) */
+.ag-tile.q{background:linear-gradient(180deg,#ffd46b 0%,#f39a1e 75%);color:#6b3a00;box-shadow:0 3px 8px rgba(220,130,20,.38),inset 0 1px 0 rgba(255,255,255,.5)}
+.ag-tile.q.used{background:#f39a1e}
+.ag-slot.filled.q{border-color:#f39a1e;background:#fff3d6;color:#b86400}
+.ag-slots.ok .ag-slot{border-style:solid;border-color:#21a67a;background:#e3f7ee;color:#137a57;animation:mrPop .18s ease}
 @media(max-width:480px){
   .ag-slot,.ag-tile{min-width:60px;height:60px;font-size:1.75rem;border-radius:14px}
   .ag-slots,.ag-tiles{gap:.5rem}
@@ -3729,9 +3734,10 @@ const I18N = {
   "anagram.title": {ko:"글자 맞추기", en:"Word Scramble", th:"เรียงอักษร"},
   "anagram.intro": {ko:"뒤섞인 글자를 <b>올바른 순서</b>로 배열해 단어를 완성하세요!<br>60초 동안 최대한 많은 단어를 맞혀보세요. 막히면 힌트를 쓰세요.", en:"Arrange the scrambled letters in the <b>right order</b> to spell the word!<br>Solve as many as you can in 60 seconds. Stuck? Use a hint.", th:"เรียงอักษรที่สลับให้<b>ถูกลำดับ</b>เป็นคำ!<br>ทำให้ได้มากที่สุดใน 60 วินาที ติดขัดก็ใช้คำใบ้"},
   "anagram.easy": {ko:"쉬움", en:"Easy", th:"ง่าย"}, "anagram.easyDesc": {ko:"2~3글자 · 힌트3", en:"2-3 letters · 3 hints", th:"2-3 ตัว · ใบ้3"},
-  "anagram.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "anagram.normalDesc": {ko:"4글자 · 힌트2", en:"4 letters · 2 hints", th:"4 ตัว · ใบ้2"},
-  "anagram.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "anagram.hardDesc": {ko:"5~6글자 · 힌트1 · 점수2배", en:"5-6 letters · 1 hint · x2", th:"5-6 ตัว · ใบ้1 · x2"},
+  "anagram.normal": {ko:"보통", en:"Normal", th:"ปกติ"}, "anagram.normalDesc": {ko:"4글자 · 1글자 가림 · 힌트2", en:"4 letters · 1 hidden · 2 hints", th:"4 ตัว · ซ่อน1 · ใบ้2"},
+  "anagram.hard": {ko:"어려움", en:"Hard", th:"ยาก"}, "anagram.hardDesc": {ko:"5~6글자 · 1글자 가림 · 힌트1 · 점수2배", en:"5-6 letters · 1 hidden · 1 hint · x2", th:"5-6 ตัว · ซ่อน1 · ใบ้1 · x2"},
   "anagram.prompt": {ko:"글자를 순서대로 눌러 단어를 완성하세요", en:"Tap the letters in order to spell the word", th:"แตะตัวอักษรตามลำดับเพื่อสะกดคำ"},
+  "anagram.promptHidden": {ko:"? 는 가려진 글자예요 — 단어를 추리해 채우세요", en:"? is a hidden letter — guess the word to place it", th:"? คือตัวอักษรที่ซ่อนไว้ — เดาคำแล้ววางให้ถูก"},
   "anagram.startGame": {ko:"게임 시작", en:"Start Game", th:"เริ่มเกม"},
   "anagram.score": {ko:"SCORE", en:"SCORE", th:"คะแนน"}, "anagram.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"}, "anagram.hint": {ko:"힌트", en:"Hint", th:"ใบ้"},
   "anagram.leave": {ko:"나가기", en:"Leave", th:"ออก"}, "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -4135,8 +4141,8 @@ const I18N = {
   "nono.best": {ko:"최고 기록", en:"Best", th:"สถิติ"},
   "nono.newGame": {ko:"새 게임", en:"New Game", th:"เกมใหม่"},
   "anagram.easyDesc": {ko:"2~3글자 · 힌트3", en:"2-3 letters · 3 hints", th:"2-3 ตัว · ใบ้3"},
-  "anagram.normalDesc": {ko:"4글자 · 힌트2", en:"4 letters · 2 hints", th:"4 ตัว · ใบ้2"},
-  "anagram.hardDesc": {ko:"5~6글자 · 힌트1 · 점수2배", en:"5-6 letters · 1 hint · x2", th:"5-6 ตัว · ใบ้1 · x2"},
+  "anagram.normalDesc": {ko:"4글자 · 1글자 가림 · 힌트2", en:"4 letters · 1 hidden · 2 hints", th:"4 ตัว · ซ่อน1 · ใบ้2"},
+  "anagram.hardDesc": {ko:"5~6글자 · 1글자 가림 · 힌트1 · 점수2배", en:"5-6 letters · 1 hidden · 1 hint · x2", th:"5-6 ตัว · ซ่อน1 · ใบ้1 · x2"},
   "anagram.combo": {ko:"COMBO", en:"COMBO", th:"คอมโบ"},
   "anagram.hint": {ko:"힌트", en:"Hint", th:"คำใบ้"},
   "anagram.finalScore": {ko:"최종 점수", en:"Final Score", th:"คะแนนสุดท้าย"},
@@ -10653,7 +10659,8 @@ const AG_WORDS={
        6:['GARDEN','ORANGE','FLOWER','PLANET','ROCKET','CASTLE','DRAGON','BASKET','PENCIL','WINTER','GUITAR','MONKEY','TURTLE','BRIDGE','CANDLE','ISLAND','JUNGLE','MIRROR','PEPPER','YELLOW','PURPLE','BUTTON','COOKIE','DONKEY'] } };
 const AG_LEN={ easy:{ko:[2,3],en:[3,4]}, normal:{ko:[4],en:[5]}, hard:{ko:[5,6],en:[6]} };
 const AG_HINTS={ easy:3, normal:2, hard:1 };
-const AG_PENALTY={ easy:0, normal:1, hard:2 };   // 오답 시 시간(초) 차감
+const AG_PENALTY={ easy:0, normal:1, hard:2 };
+const AG_HIDE={ easy:0, normal:1, hard:1 };        // 가리는 글자 수('?' 글자판)   // 오답 시 시간(초) 차감
 const AG_MULT=DMULT_GAME.anagram; // 난이도 점수 배율(밸런스 v2 보정값)
 const AG_TIME=60;
 const AG={ diff:'normal', score:0, combo:0, maxCombo:0, timeLeft:AG_TIME, timer:null, running:false, word:'', tiles:[], slots:[], hints:3, wordStart:0, bag:{}, best:bt_loadBest('brain.anagram.best') };
@@ -10671,23 +10678,32 @@ function agNextWord(lang){
   const w=bag.words[bag.i++]; bag.last=w; return w; }
 function agPick(){ const lang=(CURRENT_LANG==='ko')?'ko':'en'; AG.word=agNextWord(lang);
   const chars=[...AG.word]; let order; do{ order=chars.map((c,i)=>i); for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=order[i]; order[i]=order[j]; order[j]=tmp; } }while(order.map(i=>chars[i]).join('')===AG.word && chars.length>1);
-  AG.tiles=order.map(i=>({ch:chars[i],used:false})); AG.slots=[]; AG.wordStart=Date.now(); }
+  AG.tiles=order.map(i=>({ch:chars[i],used:false,hidden:false})); AG.slots=[]; AG.wordStart=Date.now();
+  if(AG_HIDE[AG.diff]){ let cand=AG.tiles.map((t,i)=>i).filter(i=>chars.filter(c=>c===AG.tiles[i].ch).length===1);   // 한 번만 나오는 글자를 가린다
+    if(!cand.length) cand=AG.tiles.map((t,i)=>i); AG.tiles[cand[Math.floor(Math.random()*cand.length)]].hidden=true; } }
 function agRender(){ const wl=[...AG.word].length; const ss=document.getElementById('ag-slots'); ss.innerHTML='';
-  for(let i=0;i<wl;i++){ const ti=AG.slots[i]; const d=document.createElement('div'); d.className='ag-slot'+(ti!=null?' filled':''); d.textContent=ti!=null?AG.tiles[ti].ch:''; if(ti!=null) d.onclick=()=>agUnplace(i); ss.appendChild(d); }
+  for(let i=0;i<wl;i++){ const ti=AG.slots[i]; const d=document.createElement('div'); d.className='ag-slot'+(ti!=null?' filled':'')+(ti!=null&&AG.tiles[ti].hidden?' q':''); d.textContent=ti!=null?(AG.tiles[ti].hidden?'?':AG.tiles[ti].ch):''; if(ti!=null) d.onclick=()=>agUnplace(i); ss.appendChild(d); }
   const ts=document.getElementById('ag-tiles'); ts.innerHTML='';
-  AG.tiles.forEach((tile,idx)=>{ const b=document.createElement('button'); b.className='ag-tile'+(tile.used?' used':''); b.textContent=tile.ch; b.onclick=()=>agTapTile(idx); ts.appendChild(b); }); agStats(); }
-function agTapTile(idx){ if(!AG.running) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; if(navigator.vibrate) navigator.vibrate(8); AG.slots.push(idx); tile.used=true; sfx('letter', p); agRender();
+  AG.tiles.forEach((tile,idx)=>{ const b=document.createElement('button'); b.className='ag-tile'+(tile.used?' used':'')+(tile.hidden?' q':''); b.textContent=tile.hidden?'?':tile.ch; b.onclick=()=>agTapTile(idx); ts.appendChild(b); });
+  const pr=document.querySelector('#anagram-game-card .ag-prompt'), pk=AG.tiles.some(x=>x.hidden)?'anagram.promptHidden':'anagram.prompt';
+  if(pr&&pr.getAttribute('data-i18n')!==pk){ pr.setAttribute('data-i18n',pk); pr.textContent=t(pk); }
+  agStats(); }
+function agTapTile(idx){ if(!AG.running||AG.lock) return; const tile=AG.tiles[idx]; if(!tile||tile.used) return; const p=AG.slots.length; if(p>=[...AG.word].length) return; if(navigator.vibrate) navigator.vibrate(8); AG.slots.push(idx); tile.used=true; sfx('letter', p); agRender();
   if(AG.slots.length===[...AG.word].length) agSubmit(); }
-function agUnplace(i){ if(!AG.running||AG.slots[i]==null) return; if(navigator.vibrate) navigator.vibrate(6); const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
+function agUnplace(i){ if(!AG.running||AG.lock||AG.slots[i]==null) return; if(navigator.vibrate) navigator.vibrate(6); const idx=AG.slots[i]; AG.tiles[idx].used=false; AG.slots.splice(i,1); agRender(); }
 function agSubmit(){ const asm=AG.slots.map(i=>AG.tiles[i].ch).join('');
   if(asm===AG.word){ AG.combo++; AG.maxCombo=Math.max(AG.maxCombo,AG.combo);
     const wlen=[...AG.word].length, base=wlen*5, spent=Math.floor((Date.now()-AG.wordStart)/1000), speed=Math.max(0,10-spent), comboB=comboBonus(AG.combo);
-    AG.score+=Math.round((base+speed+comboB)*AG_MULT[AG.diff]); sfx('good'); agStats(); agPick(); agRender(); }
+    AG.score+=Math.round((base+speed+comboB)*AG_MULT[AG.diff]); sfx('good'); agStats();
+    if(AG.tiles.some(x=>x.hidden)){   // 가린 글자가 있었으면 정답을 잠깐 보여 준다
+      const ss=document.getElementById('ag-slots'); ss.classList.add('ok'); [...ss.children].forEach((d,i)=>{ d.textContent=AG.tiles[AG.slots[i]].ch; d.classList.remove('q'); });
+      AG.lock=true; setTimeout(()=>{ AG.lock=false; ss.classList.remove('ok'); if(AG.running){ agPick(); agRender(); } },450); }
+    else{ agPick(); agRender(); } }
   else{ AG.combo=0; const pen=AG_PENALTY[AG.diff]; if(pen>0){ AG.timeLeft=Math.max(0,AG.timeLeft-pen); agTimer(); } sfx('bad'); const ss=document.getElementById('ag-slots'); ss.classList.add('miss'); setTimeout(()=>ss.classList.remove('miss'),320); AG.tiles.forEach(t=>t.used=false); AG.slots=[]; agRender(); if(AG.timeLeft<=0) finishAnagram(); } }
-function agHint(){ if(!AG.running||AG.hints<=0) return; const wc=[...AG.word]; const p=AG.slots.length; if(p>=wc.length) return; const need=wc[p];
+function agHint(){ if(!AG.running||AG.lock||AG.hints<=0) return; const wc=[...AG.word]; const p=AG.slots.length; if(p>=wc.length) return; const need=wc[p];
   let found=-1; for(let i=0;i<AG.tiles.length;i++){ if(!AG.tiles[i].used && AG.tiles[i].ch===need){ found=i; break; } } if(found<0) return;
-  AG.hints--; AG.slots.push(found); AG.tiles[found].used=true; agRender(); if(AG.slots.length===wc.length) agSubmit(); }
-function startAnagram(){ AG.score=0;AG.combo=0;AG.maxCombo=0;AG.timeLeft=AG_TIME;AG.hints=AG_HINTS[AG.diff];AG.bag={};AG.running=true;
+  AG.hints--; AG.slots.push(found); AG.tiles[found].used=true; AG.tiles[found].hidden=false; agRender(); if(AG.slots.length===wc.length) agSubmit(); }
+function startAnagram(){ AG.lock=false; AG.score=0;AG.combo=0;AG.maxCombo=0;AG.timeLeft=AG_TIME;AG.hints=AG_HINTS[AG.diff];AG.bag={};AG.running=true;
   document.getElementById('anagram-intro-card').style.display='none'; document.getElementById('anagram-result-card').style.display='none'; document.getElementById('anagram-game-card').style.display='block';
   agPick(); agRender(); agTimer(); clearInterval(AG.timer); AG.timer=setInterval(()=>{ AG.timeLeft--; agTimer(); if(AG.timeLeft<=0) finishAnagram(); },1000); }
 function finishAnagram(){ if(!AG.running) return; clearInterval(AG.timer); AG.running=false;
