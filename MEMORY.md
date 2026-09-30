@@ -434,6 +434,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 
 ## 홈 로비 (2026-09-28)
 - 홈·전체 게임·운세 탭은 `body.lobby`(어두운 톤). 적용 스크립트 `tools/home-lobby/apply.py`(1회용), 표지 `tools/home-lobby/covers.py`(재실행 가능 — 새 게임은 assets/stage/<id>.jpg를 만든 뒤 실행). CSS는 index.html `HOME-LOBBY` 블록.
+- 게임 표지 = 캔버스 i2i 그림(프롬프트 'cover-<id> —', 참조 assets/stage/<id>.jpg, 물건은 위 15~68%, 아래 30%는 제목 자리로 비움). `covers.py`가 가장 나중 노드를 고른다(createdAt이 비어 있을 수 있음). 새 게임은 표지를 만들기 전까지 세계 그림 + 이모지로 나간다. 표지를 바꾸면 index.html의 `cover/'+g.id+'.jpg?v=N`을 올린다.
 - 홈 칸은 모두 CSS로 크기를 미리 잡는다(늦게 채워도 밀리지 않게 — 예전 CLS 0.80). 새 칸을 넣을 때도 min-height/aspect-ratio 필수. 측정 `.logs/seo/cls.mjs <url>`(느린 4G·CPU 4배).
 - 오늘의 두뇌 3판 = `missionToday()`, 3판 다 하면 행운 카드(`lbLuckyToday`, 날짜 시드, `brain.lucky.seen`으로 하루 한 번 뒤집힘). 하단 탭 목록은 `NAV_SCREENS`.
 - SEO: `/llms.txt`(게임·퍼즐·운세 주소가 바뀌면 같이 고친다), 한국어 랜딩 FAQPage = `tools/seo/add-faqpage.py`(화면 FAQ를 고치면 LD도 같이). 진단 문서 `docs/SEO-진단-2026-09-28.md`, 재측정 2026-10-12.

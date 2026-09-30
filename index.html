@@ -8763,7 +8763,6 @@ function featureStart(){ showScreen(_featureId||'games'); }
 /* ===== 홈 로비 (2026-09-28) — docs/홈-개편-제안.md. 게임은 세계 그림 표지, 오늘의 두뇌 3판 → 행운 카드.
    칸 크기는 CSS로 미리 잡혀 있어 여기서 늦게 채워도 화면이 밀리지 않는다(CLS). ===== */
 const LB_COVERS=new Set(["anagram", "bubble", "cards", "catch", "chop", "count", "diff", "fit", "flank", "flash", "guess", "iq", "math", "melody", "merge", "moamoa", "nback", "nono", "odd", "pitch", "queens", "react", "rev", "rhythm", "rotate", "run", "slide", "sort", "spot", "stroop", "sudoku", "switch", "tango", "trace", "trail", "whack", "wordsearch"]);
-const LB_NO_EMOJI={run:1};   // 표지가 이미 플레이 화면 캡처라 이모지를 얹지 않는다
 function lbKst(){ return new Date(Date.now()+9*3600*1000).toISOString().slice(0,10); }
 // 데일리 퍼즐(KST 자정 리셋)·운세를 오늘 이미 했는지 — 빨간 점/NEW 표시용
 function lbSeen(id){ try{ const k=lbKst();
@@ -8776,8 +8775,8 @@ function lbVisible(g){ return (!g.koOnly||CURRENT_LANG==='ko') && (!g.langs||g.l
 function lbOpen(g){ if(g.external){ goExternal(g); return; } showScreen(g.id); }
 function lbCard(g, o){ o=o||{}; const b=document.createElement('button'); const cov=LB_COVERS.has(g.id);
   b.className='lb-card'+(cov?'':' nocover')+(o.done?' done':''); b.onclick=()=>{ track('home_card',{game:g.id,from:o.from||''}); lbOpen(g); };
-  b.innerHTML=(cov?'<img class="lb-img" src="assets/cover/'+g.id+'.jpg" alt="" width="240" height="320" decoding="async"'+(o.lazy?' loading="lazy"':'')+'>':'')+
-    (LB_NO_EMOJI[g.id]&&cov?'':'<span class="lb-emoji">'+g.emoji+'</span>')+
+  b.innerHTML=(cov?'<img class="lb-img" src="assets/cover/'+g.id+'.jpg?v=2" alt="" width="240" height="320" decoding="async"'+(o.lazy?' loading="lazy"':'')+'>':'')+
+    (cov?'':'<span class="lb-emoji">'+g.emoji+'</span>')+   // 표지 그림 안에 게임 물건이 그려져 있다(2026-09-28) — 이모지는 표지가 없을 때만
     (o.tag?'<em class="lb-tag'+(o.done?' ok':'')+'">'+o.tag+'</em>':'')+(o.dot?'<i class="lb-dot"></i>':'')+
     '<span class="lb-name">'+t(g.key)+'</span>';
   return b; }
