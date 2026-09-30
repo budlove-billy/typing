@@ -442,6 +442,9 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 공통 상단바 (2026-09-28)
 - 따로 만든 페이지는 `</header>` 바로 뒤 `/assets/topbar.js`가 사이트 게임 화면과 같은 상단바를 만든다(#backHome·#muteBtn·#langSel을 옮겨 씀, 이름표는 topbar.js의 NAMES = index.html nav.<id>). 새 독립 페이지를 만들면 topbar.css·js 두 줄을 넣는다. 뒤로 가기 문구는 어디서나 '← 홈'.
 
+## 홍보 영상 (2026-09-30)
+- `tools/promo-video/render.html`이 프레임·소리를 결정적으로 그린다(AI 영상 모델 대신 — 끝 장면·주소 글자를 정확히 보장). `prep.mjs`(마스코트 SVG·홈 캡처·표지 원본) → `render.mjs [--preview]`. ffmpeg는 시스템에 없어 `pip install --target .logs/pylib imageio-ffmpeg`로 받아 쓴다(프로젝트 안).
+
 ## ⚠️ 루트 public/ 폴더 금지 (2026-09-27 사고)
 - 이 저장소는 Vercel 정적 배포라 루트에 `public/` 폴더가 생기면 Vercel이 **그 폴더만** 사이트로 서빙한다 → 사이트 전체 404. 사운드 데모를 `public/`에 커밋·배포해 수 분간 전체 다운됐다(d24cd1f로 복구, 데모는 `docs/demo/`).
 - 플랫폼 안내(CLAUDE.md)의 "페이지는 public/에" 규칙은 이 프로젝트에서 따르지 말 것. 미리보기 페이지는 `generated_images/`(gitignore)에 두고 링크한다.
