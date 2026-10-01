@@ -72,7 +72,7 @@ if '/about/' not in s:
     s = s.rstrip() + nl + nl + '## 사이트 정보' + nl + \
         '- [소개](https://playmallow.com/about/): 운영자(필명 Billy Lee), 만든 이유, 게임 설계 원칙' + nl + \
         '- [업데이트 소식](https://playmallow.com/updates/): 날짜별 변경 기록' + nl + \
-        '- [문의](https://playmallow.com/contact/): contact@playmallow.com' + nl + \
+        '- [문의](https://playmallow.com/contact/): billylee0038@gmail.com' + nl + \
         '- [이용약관](https://playmallow.com/terms/) · [개인정보처리방침](https://playmallow.com/privacy/)' + nl
     wr(p, s); done.append('llms.txt')
 print('updated', len(done), '· skipped noindex', len(skipped))

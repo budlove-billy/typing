@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """신뢰 페이지 4종 — /about/ /contact/ /terms/ /updates/ (ko·en, 2026-10-02 애드센스 2차 반려 대응).
 개인정보처리방침(/privacy/)과 같은 틀·글꼴·언어 전환(?lang=en). 여러 번 실행해도 된다(덮어씀).
-운영자 표기: 필명 Billy Lee (사용자 블로그 mallow.kr과 같은 이름). 연락처: contact@playmallow.com."""
+운영자 표기: 필명 Billy Lee (사용자 블로그 mallow.kr과 같은 이름). 연락처: billylee0038@gmail.com (contact@playmallow.com은 수신이 안 돼 2026-10-02 교체)."""
 import os, io
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 UPDATED = '2026-10-02'
@@ -122,7 +122,7 @@ function setL(l){{
 </html>
 '''
 
-MAIL = '<a class="mail" href="mailto:contact@playmallow.com">contact@playmallow.com</a>'
+MAIL = '<a class="mail" href="mailto:billylee0038@gmail.com">billylee0038@gmail.com</a>'
 
 # ---------------------------------------------------------------- 소개
 ABOUT_KO = '''    <div class="lead"><b>플레이말로우(Mallow)</b>는 가입·설치 없이 브라우저에서 바로 하는 무료 두뇌게임 사이트입니다. 기억력·집중력·순발력·논리·언어 감각을 쓰는 게임 34종과, 매일 자정에 새 문제가 열리는 오늘의 퍼즐 3종(모아모아·말로우 크라운·말로우 탱고), 재미로 보는 운세 콘텐츠를 한국어·영어·태국어로 제공합니다.</div>
@@ -192,7 +192,7 @@ ABOUT_EN = '''    <div class="lead"><b>Mallow (playmallow.com)</b> is a free bra
       ''' + MAIL + '''
     </section>'''
 ABOUT_LD = '''
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"AboutPage","url":"https://playmallow.com/about/","name":"플레이말로우 소개","mainEntity":{"@type":"WebSite","name":"Mallow","alternateName":"플레이말로우","url":"https://playmallow.com/","inLanguage":["ko","en","th"],"author":{"@type":"Person","name":"Billy Lee","email":"contact@playmallow.com"}}}</script>'''
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"AboutPage","url":"https://playmallow.com/about/","name":"플레이말로우 소개","mainEntity":{"@type":"WebSite","name":"Mallow","alternateName":"플레이말로우","url":"https://playmallow.com/","inLanguage":["ko","en","th"],"author":{"@type":"Person","name":"Billy Lee","email":"billylee0038@gmail.com"}}}</script>'''
 
 # ---------------------------------------------------------------- 문의
 CONTACT_KO = '''    <div class="lead">플레이말로우는 Billy Lee가 혼자 운영하는 사이트라, 보내 주신 메일은 제가 직접 읽고 답합니다. 아래 주소로 편하게 보내 주세요.</div>
@@ -291,7 +291,7 @@ TERMS_KO = '''    <div class="lead">이 약관은 플레이말로우(playmallow.
     </section>
     <section>
       <h2>7. 약관 변경과 문의</h2>
-      <p>약관을 바꿀 때는 이 페이지의 시행일을 고치고 업데이트 소식에 알립니다. 약관에 대한 문의는 <a class="inline" href="/contact/">문의 페이지</a> 또는 contact@playmallow.com으로 보내 주세요. 이 약관은 대한민국 법을 따릅니다.</p>
+      <p>약관을 바꿀 때는 이 페이지의 시행일을 고치고 업데이트 소식에 알립니다. 약관에 대한 문의는 <a class="inline" href="/contact/">문의 페이지</a> 또는 billylee0038@gmail.com으로 보내 주세요. 이 약관은 대한민국 법을 따릅니다.</p>
     </section>'''
 TERMS_EN = '''    <div class="lead">These terms are the basic rules for using Mallow (playmallow.com, “the site”). By using the site you agree to them. Effective date: 2 October 2026.</div>
     <section>
@@ -325,7 +325,7 @@ TERMS_EN = '''    <div class="lead">These terms are the basic rules for using Ma
     </section>
     <section>
       <h2>7. Changes and contact</h2>
-      <p>When these terms change, the effective date on this page is updated and the change is announced on the Updates page. Questions about these terms can be sent via the <a class="inline" href="/contact/?lang=en">Contact</a> page or to contact@playmallow.com. These terms are governed by the laws of the Republic of Korea.</p>
+      <p>When these terms change, the effective date on this page is updated and the change is announced on the Updates page. Questions about these terms can be sent via the <a class="inline" href="/contact/?lang=en">Contact</a> page or to billylee0038@gmail.com. These terms are governed by the laws of the Republic of Korea.</p>
     </section>'''
 
 # ---------------------------------------------------------------- 업데이트 소식 (docs/CHANGELOG.md에서 이용자에게 보이는 변화만 골라 쉬운 말로)
@@ -374,7 +374,7 @@ UPD_EN = '''    <div class="lead">A record of what changed on Mallow and when, i
 
 PAGES = [
  ('about', '플레이말로우 소개', 'About Mallow', '플레이말로우(playmallow.com)는 Billy Lee가 만들고 운영하는 무료 두뇌게임 사이트입니다. 만든 이유, 게임 설계 원칙, 기록과 개인정보 안내.', 'Mallow (playmallow.com) is a free brain-game site made and run by Billy Lee — why it exists, how the games are designed, and how your records are kept.', ABOUT_KO, ABOUT_EN, ABOUT_LD),
- ('contact', '문의하기', 'Contact', '플레이말로우 문의 — 버그, 퍼즐 오류, 게임 제안, 제휴 문의는 contact@playmallow.com으로 보내 주세요.', 'Contact Mallow — send bug reports, puzzle errors, game ideas and partnership requests to contact@playmallow.com.', CONTACT_KO, CONTACT_EN, ''),
+ ('contact', '문의하기', 'Contact', '플레이말로우 문의 — 버그, 퍼즐 오류, 게임 제안, 제휴 문의는 billylee0038@gmail.com으로 보내 주세요.', 'Contact Mallow — send bug reports, puzzle errors, game ideas and partnership requests to billylee0038@gmail.com.', CONTACT_KO, CONTACT_EN, ''),
  ('terms', '이용약관', 'Terms of Use', '플레이말로우(playmallow.com) 이용약관 — 서비스, 기록 저장, 이용자 의무, 권리, 광고, 책임의 한계.', 'Terms of use for playmallow.com — the service, record storage, your responsibilities, ownership, ads and liability.', TERMS_KO, TERMS_EN, ''),
  ('updates', '업데이트 소식', 'Updates', '플레이말로우 업데이트 기록 — 새 게임, 난이도 조정, 디자인·소리 개선, 이용자 의견으로 고친 내용.', 'Mallow update log — new games, difficulty tuning, art and sound improvements, and fixes from player feedback.', UPD_KO, UPD_EN, ''),
 ]

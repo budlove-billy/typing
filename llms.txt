@@ -2,7 +2,7 @@
 
 > 가입·설치 없이 브라우저에서 바로 하는 무료 두뇌게임 사이트. 10개 능력 영역(기억력·집중력·순발력·관찰력·공간감각·계산·논리·언어·청각·협응)의 미니게임 34종, 매일 새로 나오는 데일리 퍼즐 3종, 재미로 보는 운세를 제공한다. 한국어·영어·태국어.
 
-- 운영: playmallow.com (문의 contact@playmallow.com)
+- 운영: playmallow.com (문의 billylee0038@gmail.com)
 - 요금: 전부 무료. 회원가입·로그인 없음. 광고(Google AdSense)로 운영한다.
 - 기록: 점수·메달·연속 방문 기록은 서버가 아니라 사용자의 기기(브라우저 저장소)에만 저장된다.
 - 두뇌게임은 오락이며 의학적 진단·치료가 아니다. IQ·두뇌 유형 결과도 재미용 지표다. 운세는 재미로 보는 콘텐츠다.
@@ -58,5 +58,5 @@
 ## 사이트 정보
 - [소개](https://playmallow.com/about/): 운영자(필명 Billy Lee), 만든 이유, 게임 설계 원칙
 - [업데이트 소식](https://playmallow.com/updates/): 날짜별 변경 기록
-- [문의](https://playmallow.com/contact/): contact@playmallow.com
+- [문의](https://playmallow.com/contact/): billylee0038@gmail.com
 - [이용약관](https://playmallow.com/terms/) · [개인정보처리방침](https://playmallow.com/privacy/)
