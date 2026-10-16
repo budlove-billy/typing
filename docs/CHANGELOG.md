@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-02 — **홈에 Hi5Games(앱테크 게임) 앱 다운로드 배너**(사용자 요청, 기간 ~2026-11-30 KST): 오늘의 퍼즐 아래·운세 위. HTML로 그린 보라색 카드(HP 배지, "게임하고 모은 HP를 상품권으로", 편의점·커피숍 사용 안내) + Google Play·App Store 버튼, '광고' 표기·rel="sponsored". 한국어 화면에서만, 기한이 지나면 저절로 숨음, 그리는 순간 표시 여부를 정해 CLS 0.008 유지. 클릭은 GA 이벤트 hi5_click. 제거 방법은 `tools/hi5-banner/apply.py` 머리말.
+
 - 2026-10-02 — **문의 메일 주소 교체**: contact@playmallow.com(ImprovMX 전달)이 실제로 수신되지 않음(사용자 확인) → 소개·문의·이용약관·개인정보처리방침·llms.txt를 billylee0038@gmail.com으로.
 
 - 2026-10-02 — **신뢰 페이지 4종 + 전 페이지 하단 링크**(애드센스 2차 반려 대응, 사용자 승인): `/about/`(운영자 필명 Billy Lee, 만든 이유, 게임 설계 원칙, AI 도구 사용 고지, 오락·비의료 고지), `/contact/`(contact@playmallow.com, 받는 문의·제보 요령), `/terms/`(시행 2026-10-02, 대한민국 법), `/updates/`(이용자에게 보이는 변경 23건, CHANGELOG에서 추림) — 모두 ko·en, 개인정보처리방침과 같은 틀. 전에는 개인정보처리방침이 홈에서만 링크됐다 → 공개 페이지 46곳 하단에 소개·문의·이용약관·개인정보처리방침·업데이트 소식 링크(ko/en/th 낱말, 푸터 글자색 상속). 사이트맵·llms.txt에 추가. `tools/trust-pages/{build,footer}.py`.
