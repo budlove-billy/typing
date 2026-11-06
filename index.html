@@ -589,6 +589,14 @@ button[onclick^="leave"]::before{content:"←";font-weight:900;margin-right:.35r
 .rv-key{padding:.85rem 0;font-size:1.3rem;font-weight:700;border:1.5px solid var(--border);border-radius:var(--radius2);background:var(--bg);cursor:pointer}
 .rv-key:active{background:var(--purple3)}
 .rv-key.empty{border:none;background:none;pointer-events:none}
+/* 입력 칸: 상자 안에 입력한 숫자 + 남은 빈칸 */
+.rv-slots{display:flex;gap:.3rem;justify-content:center;flex-wrap:nowrap;letter-spacing:0}
+.rv-slot{display:flex;align-items:flex-end;justify-content:center;width:1.9rem;height:2.6rem;font-size:2rem;line-height:1;font-weight:900;color:var(--purple);border-bottom:3px solid #c9d2e6}
+.rv-slot.f{border-bottom-color:var(--purple)}
+.rv-slot.n{border-bottom-color:var(--purple);animation:mrPop .15s ease}
+.rv-slots.long .rv-slot{width:1.45rem;font-size:1.55rem}
+.rv-slots.xl{gap:.18rem}.rv-slots.xl .rv-slot{width:1.05rem;font-size:1.2rem}
+#rv-entry{display:none}
 .rh-pad{display:block;width:100%;max-width:300px;aspect-ratio:2/1;margin:1.2rem auto;border:none;border-radius:var(--radius2);background:#7e57f0;opacity:.5;cursor:pointer;transition:opacity .08s,transform .08s}
 .rh-pad.lit{opacity:1;box-shadow:0 0 22px rgba(126,87,240,.5)}
 .rh-pad:active{transform:scale(.98)}
@@ -10123,9 +10131,13 @@ function startRev(){ RV.len=RV_CFG[RV.diff].start; RV.score=0; RV.lives=3; RV.ma
 function rvShow(){ rvClear(); RV.phase='show'; RV.seq=Array.from({length:RV.len},()=>Math.floor(Math.random()*10)); RV.entry=[];
   document.getElementById('rv-entry').textContent=''; rvStatus('rev.watch'); rvStats(); const sp=RV_CFG[RV.diff].speed; const disp=document.getElementById('rv-display'); disp.textContent='';
   RV.seq.forEach((d,i)=>{ RV.timers.push(setTimeout(()=>{ disp.textContent=d; if(sndOn()) _beep(330*Math.pow(2,d/12),0.16,'sine',0.16); try{navigator.vibrate&&navigator.vibrate(10)}catch(_){} RV.timers.push(setTimeout(()=>{ if(disp.textContent===String(d)) disp.textContent=''; }, sp*0.55)); }, 500+i*sp)); });
-  RV.timers.push(setTimeout(()=>{ RV.phase='input'; disp.textContent='?'; rvStatus('rev.input','turn'); }, 500+RV.seq.length*sp+150)); }
-function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); if(sndOn()) _beep(680,0.05,'sine',0.12); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); if(RV.entry.length===RV.len) rvCheck(); }
-function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); if(sndOn()) _beep(360,0.05,'sine',0.10); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} document.getElementById('rv-entry').textContent=RV.entry.join(' '); }
+  RV.timers.push(setTimeout(()=>{ RV.phase='input'; rvSlots(); rvStatus('rev.input','turn'); }, 500+RV.seq.length*sp+150)); }
+// 입력 단계 상자: 입력한 숫자는 보라색, 남은 자리는 빈 밑줄 칸
+function rvSlots(){ const d=document.getElementById('rv-display'); let h='';
+  for(let i=0;i<RV.len;i++){ const v=RV.entry[i]; h+='<span class="rv-slot'+(v!=null?' f'+(i===RV.entry.length-1?' n':''):'')+'">'+(v!=null?v:'')+'</span>'; }
+  d.innerHTML='<span class="rv-slots'+(RV.len>10?' xl':RV.len>7?' long':'')+'">'+h+'</span>'; }
+function rvKey(n){ if(!RV.running||RV.phase!=='input'||RV.entry.length>=RV.len) return; RV.entry.push(n); if(sndOn()) _beep(680,0.05,'sine',0.12); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} rvSlots(); if(RV.entry.length===RV.len) rvCheck(); }
+function rvBack(){ if(RV.phase!=='input'||!RV.entry.length) return; RV.entry.pop(); if(sndOn()) _beep(360,0.05,'sine',0.10); try{navigator.vibrate&&navigator.vibrate(12)}catch(_){} rvSlots(); }
 function rvCheck(){ RV.phase='wait'; const target=RV.seq.slice().reverse(); const ok=RV.entry.every((v,i)=>v===target[i]);
   if(ok){ RV.score+=dmScore(RV.diff, RV.len*10, 'rev'); RV.maxLen=Math.max(RV.maxLen,RV.len); RV.len++; sfx('good'); rvStatus('rev.good','good'); rvStats(); RV.timers.push(setTimeout(rvShow,900)); }
   else{ RV.lives--; sfx('bad'); rvStatus('rev.miss','bad'); rvStats(); if(RV.lives<=0) RV.timers.push(setTimeout(finishRev,900)); else RV.timers.push(setTimeout(rvShow,1100)); } }
