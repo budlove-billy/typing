@@ -1,5 +1,9 @@
 # Changelog
 
+- 2026-11-08 — **AdSense 사이트 전체 제거**(사용자 결정: 여러 번 반려되어 더 신청 안 함): 45개 HTML 머리의 AdSense meta·스크립트 삭제, 개인정보처리방침 4장·약관 5장을 '현재 광고 프로그램 없음'으로. `tools/adsense-off/apply.py`. ads.txt는 남김. 품질 검사가 재유입을 막음.
+
+- 2026-11-08 — **홈 '쉬어가는 게임'을 그림 선반으로 + 감옥 탈출 게임 추가**(사용자: 광고 자리 같은 카드라 눈에 안 띔): 오늘의 퍼즐 바로 아래 청록 테두리 섹션에 게임 썸네일 카드 9개 가로 선반 + '전체 보기 ›'. 카드를 누르면 언어별 허브로 가서 그 게임이 바로 열림(같은 사이트에서 온 클릭일 때만; 외부에서 #id로 오면 열지 않음). 9번째 게임 Barry Prison: Parkour Escape(4.5/4,372). 홈 이름은 content.py → 설정 파일 PLAYGAMA_NAMES로 빌드 때 자동 동기화. `tools/playgama/home_entry.py` v2.
+
 - 2026-11-08 — **Playgama '쉬어가는 게임' 2단계 구현(브랜치 feature/playgama, 꺼진 상태)**: 설정 한 곳(`assets/playgama-config.js`)으로 켜고 끄는 허브 `/arcade/`(ko·en·th), 클릭해야 열리는 iframe(`assets/playgama.js`), 홈 진입 카드(켜졌을 때만), 직접 쓴 게임 8종 소개(`tools/playgama/content.py`), 켜짐에 따라 사이트맵·llms·개인정보 4-1 자동 반영(`tools/playgama/build.py`), 약관 외부 콘텐츠 조항, 품질 검사 `quality-playgama.mjs`. 허브엔 AdSense 없음. 게임 선정 근거: docs/playgama-plan.md 14장.
 
 - 2026-11-08 — **Hi5Games 앱테크 배너 제거**(사용자 결정): Playgama 파트너 약관 6.1(보상·캐시아웃 목적 플랫폼 링크 금지)과 충돌. 홈의 `<!--hi5-->` 블록·CSS·renderHome 호출 삭제.

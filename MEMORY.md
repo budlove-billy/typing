@@ -463,4 +463,4 @@ _Write important context, decisions, and lessons here so future sessions can pic
 
 ## Playgama 쉬어가는 게임 /arcade/ (2026-11-08)
 - 켜고 끄기: assets/playgama-config.js 하나(enabled·clid·games[]). 꺼지면 허브 준비 중+noindex·홈 카드 숨김. 값 변경 후 `python tools/playgama/build.py` → `node tools/playgama/check.mjs` → 품질검사. 문구 tools/playgama/content.py. 상세 docs/playgama-plan.md 14·15장.
-- 약관: 클릭 전 로딩·미션/기록/보상 연동 금지, 제거 요청 시 enabled:false. 허브에 AdSense 없음. 애드센스는 더 신청 안 함(사용자, 2026-11-08). 품질검사 포트 8227.
+- 약관: 클릭 전 로딩·미션/기록/보상 연동 금지, 제거 요청 시 enabled:false. AdSense는 사이트 전체에서 제거(2026-11-08, 다시 넣지 말 것 — 품질검사가 막음). 홈은 오늘의 퍼즐 아래 썸네일 선반(home_entry.py v2), 이름은 build.py가 PLAYGAMA_NAMES로 동기화. 품질검사 포트 8227.

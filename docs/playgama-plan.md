@@ -289,3 +289,8 @@ Playgama 카탈로그 404개 메타데이터(평점·평가 수·모바일 지�
 - 약관 5장에 외부 콘텐츠 일반 조항(ko/en). 상단바 이름 '쉬어가는 게임'.
 - 검사: `tools/quality/quality-playgama.mjs`(run-quality.ps1에 포함) — 설정 JSON/JS 유효, clid·게임 주소 하드코딩 금지, 허브 AdSense 없음, 미션 연동 없음, 꺼진 상태 iframe·요청 0, 클릭 전 요청 0 → 클릭 후 iframe 1개 → 전환해도 1개 → 닫기 0, 실패 안내, 320/390/1000 넘침 0, CLS<0.1. `tools/playgama/check.mjs` — 게임·썸네일 주소 상태와 clid 유무.
 - 오픈 절차: 대시보드에서 게임별 iframe 주소(clid 포함) 복사 → 설정의 url·clid 채우고 enabled=true → `python tools/playgama/build.py` → `node tools/playgama/check.mjs` → 품질 검사 → main 병합·배포.
+
+## 16. 변경 (2026-11-08 오후, 사용자)
+- clid 적용·켜짐. AdSense 사이트 전체 제거.
+- 홈 진입을 가로 카드 1개 → 오늘의 퍼즐 아래 썸네일 선반 + 전체 보기로 변경(눈에 띄게). 카드 클릭 → 허브에서 그 게임 바로 열림(같은 사이트 referrer일 때만 — 사용자가 고른 클릭).
+- 9번째 게임: 사용자가 '감옥 탈출(네트워크 게임, 이용자 많아 보임)' 추가 요청 → 카탈로그에서 평가 수가 가장 많은 감옥 탈출 게임 Barry Prison: Parkour Escape(4.5/4,372, 모바일 지원) 선택. 다른 게임을 뜻했다면 설정에서 교체.
