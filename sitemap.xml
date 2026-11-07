@@ -379,4 +379,9 @@
   <url><loc>https://playmallow.com/terms/</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://playmallow.com/updates/</loc><lastmod>2026-10-02</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://playmallow.com/saju/</loc><lastmod>2026-11-07</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!--arcade-->
+  <url><loc>https://playmallow.com/arcade/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://playmallow.com/arcade/en</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://playmallow.com/arcade/th</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <!--/arcade-->
 </urlset>

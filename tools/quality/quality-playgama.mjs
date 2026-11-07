@@ -105,7 +105,7 @@ async function open(url, { width = 390, forceLive = false, hang = false } = {}) 
 try {
   // 1) 홈: 꺼진 설정이면 진입 카드 숨김·외부 요청 없음 / 켜면 카드 보임
   { const { ctx, page, ext } = await open('/');
-    check(await page.$eval('#lb-pg', (e) => e.hidden), '홈: 꺼진 상태인데 진입 카드가 보임');
+    check((await page.$eval('#lb-pg', (e) => e.hidden)) === !live, live ? '홈: 켜진 상태인데 진입 카드가 안 보임' : '홈: 꺼진 상태인데 진입 카드가 보임');
     check(ext.export === 0, '홈: Playgama 게임 요청이 생김'); await ctx.close(); }
   { const { ctx, page } = await open('/', { forceLive: true });
     check(!(await page.$eval('#lb-pg', (e) => e.hidden)), '홈: 켜진 상태인데 진입 카드가 안 보임');

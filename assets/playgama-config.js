@@ -6,17 +6,17 @@
    - 값을 바꾼 뒤: python tools/playgama/build.py (허브 HTML·사이트맵·llms.txt·개인정보처리방침 반영) → 품질 검사 → 배포.
    - 아래 CONFIG 표시와 END 표시 사이는 엄격한 JSON이어야 한다(빌드 스크립트가 읽는다). */
 window.PLAYGAMA = /*CONFIG*/{
-  "enabled": false,
-  "clid": "",
+  "enabled": true,
+  "clid": "p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e",
   "homeEntry": true,
   "games": [
-    {"id": "fruit-merge", "enabled": true, "url": "https://playgama.com/export/game/fruit-merge-playgama", "thumb": "https://static.playgama.com/p-img/pg/fruit-merge-playgama/big_preview/f88e2107d6554e668566d486ba0518a4?width=480"},
-    {"id": "bubble-blast", "enabled": true, "url": "https://playgama.com/export/game/bubble-blast", "thumb": "https://static.playgama.com/p-img/pg/bubble-blast/big-preview/48be0e1ca5354daa8378d69daea53114?width=480"},
-    {"id": "mahjong-lines", "enabled": true, "url": "https://playgama.com/export/game/mahjong-lines", "thumb": "https://static.playgama.com/p-img/pg/mahjong-lines/big_preview/96269817997541b48d15ed462ff66d47?width=480"},
-    {"id": "find-the-frog", "enabled": true, "url": "https://playgama.com/export/game/find-the-frog--hidden-objects", "thumb": "https://static.playgama.com/p-img/pg/find-the-frog--hidden-objects/big_preview/541792f4c5354ef88be0646eb9be4b1b?width=480"},
-    {"id": "good-sort", "enabled": true, "url": "https://playgama.com/export/game/good-sort-master", "thumb": "https://static.playgama.com/p-img/pg/good-sort-master/big-preview/87153c5702e14ce994b208df2c0a5f61?width=480"},
-    {"id": "vega-mix", "enabled": true, "url": "https://playgama.com/export/game/vega-mix-2-adventure", "thumb": "https://static.playgama.com/p-img/pg/vega-mix-2-adventure/big-preview/46f5bcaca15b411382afc96ac1c38132?width=480"},
-    {"id": "wood-blocks", "enabled": true, "url": "https://playgama.com/export/game/wood-blocks-jam", "thumb": "https://static.playgama.com/p-img/pg/wood-blocks-jam/big-preview/f8a46a136d1043fd8ab89994b49ec933?width=480"},
-    {"id": "jigsaw", "enabled": true, "url": "https://playgama.com/export/game/favorite-puzzles", "thumb": "https://static.playgama.com/p-img/pg/favorite-puzzles/big_preview/400025cc8973444fac031e1cb75faf61?width=480"}
+    {"id": "fruit-merge", "enabled": true, "url": "https://playgama.com/export/game/fruit-merge-playgama?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/fruit-merge-playgama/big_preview/f88e2107d6554e668566d486ba0518a4?width=480"},
+    {"id": "bubble-blast", "enabled": true, "url": "https://playgama.com/export/game/bubble-blast?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/bubble-blast/big-preview/48be0e1ca5354daa8378d69daea53114?width=480"},
+    {"id": "mahjong-lines", "enabled": true, "url": "https://playgama.com/export/game/mahjong-lines?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/mahjong-lines/big_preview/96269817997541b48d15ed462ff66d47?width=480"},
+    {"id": "find-the-frog", "enabled": true, "url": "https://playgama.com/export/game/find-the-frog--hidden-objects?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/find-the-frog--hidden-objects/big_preview/541792f4c5354ef88be0646eb9be4b1b?width=480"},
+    {"id": "good-sort", "enabled": true, "url": "https://playgama.com/export/game/good-sort-master?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/good-sort-master/big-preview/87153c5702e14ce994b208df2c0a5f61?width=480"},
+    {"id": "vega-mix", "enabled": true, "url": "https://playgama.com/export/game/vega-mix-2-adventure?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/vega-mix-2-adventure/big-preview/46f5bcaca15b411382afc96ac1c38132?width=480"},
+    {"id": "wood-blocks", "enabled": true, "url": "https://playgama.com/export/game/wood-blocks-jam?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/wood-blocks-jam/big-preview/f8a46a136d1043fd8ab89994b49ec933?width=480"},
+    {"id": "jigsaw", "enabled": true, "url": "https://playgama.com/export/game/favorite-puzzles?clid=p_c2e11fa1-e49c-44b9-8b87-0a6b63bbc61e", "thumb": "https://static.playgama.com/p-img/pg/favorite-puzzles/big_preview/400025cc8973444fac031e1cb75faf61?width=480"}
   ]
 }/*END*/;
