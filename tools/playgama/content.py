@@ -4,9 +4,9 @@
 
 PAGE = {
   'ko': {
-    'title': '쉬어가는 게임 — 말로우가 고른 가벼운 웹게임 8가지 | Mallow',
-    'desc': '두뇌게임 사이사이 머리를 식히기 좋은 웹게임 8가지. 수박 합치기, 버블 슈터, 사천성, 숨은그림찾기, 트리플 매치, 매치3, 블록 퍼즐, 직소 퍼즐을 설치 없이 바로.',
-    'h1': '쉬어가는 게임', 'tag': '말로우가 고른 가벼운 웹게임 8가지',
+    'title': '쉬어가는 게임 — 말로우가 고른 가벼운 웹게임 9가지 | Mallow',
+    'desc': '두뇌게임 사이사이 머리를 식히기 좋은 웹게임 9가지. 수박 합치기, 버블 슈터, 사천성, 숨은그림찾기, 트리플 매치, 매치3, 블록 퍼즐, 직소 퍼즐, 감옥 탈출 달리기를 설치 없이 바로.',
+    'h1': '쉬어가는 게임', 'tag': '말로우가 고른 가벼운 웹게임 9가지',
     'intro': [
       '두뇌게임을 몇 판 하고 나면 머리를 조금 식히고 싶을 때가 있죠. 이곳에는 그럴 때 하기 좋은 웹게임을 모았습니다. 설치나 가입 없이 버튼만 누르면 바로 열립니다.',
       '고른 기준은 세 가지예요. 한 판이 3~10분 안에 끝날 것, 말을 몰라도 그림만 보고 할 수 있을 것, 가족이 같이 해도 괜찮은 내용일 것. 폭력적이거나 무서운 게임, 도박처럼 보이는 게임은 넣지 않았습니다. 이용자 평가가 높고 휴대폰에서도 잘 돌아가는지 직접 띄워 보고 골랐습니다.',
@@ -25,9 +25,9 @@ PAGE = {
     'back': '← 말로우 두뇌게임으로',
   },
   'en': {
-    'title': 'Take a Break — 8 light web games picked by Mallow | Mallow',
-    'desc': 'Eight relaxing web games to play between brain games: fruit merge, bubble shooter, Mahjong connect, hidden objects, triple match, match-3, block puzzle and jigsaw. No install.',
-    'h1': 'Take a Break', 'tag': '8 light web games picked by Mallow',
+    'title': 'Take a Break — 9 light web games picked by Mallow | Mallow',
+    'desc': 'Nine relaxing web games to play between brain games: fruit merge, bubble shooter, Mahjong connect, hidden objects, triple match, match-3, block puzzle, jigsaw and a prison-escape parkour run. No install.',
+    'h1': 'Take a Break', 'tag': '9 light web games picked by Mallow',
     'intro': [
       'After a few brain games it can be nice to let your mind rest. This page collects games that are good for exactly that. No install, no sign-up — just press play.',
       'We picked them with three rules: a round takes 3–10 minutes, you can play from the pictures without reading, and the content is fine for families. No violent or scary games and nothing that looks like gambling. Each one is well rated by players, and we opened every game on a phone before adding it.',
@@ -46,9 +46,9 @@ PAGE = {
     'back': '← Back to Mallow brain games',
   },
   'th': {
-    'title': 'เกมพักสมอง — 8 เกมเว็บสบาย ๆ ที่ Mallow คัดมา | Mallow',
-    'desc': 'เกมเว็บ 8 เกมไว้พักสมองระหว่างเล่นเกมฝึกสมอง: รวมผลไม้ ยิงบับเบิล มาจองต่อเส้น หาของที่ซ่อน จับคู่สาม เกมเรียงสามแบบสลับ บล็อกเลื่อน และจิ๊กซอว์ เล่นได้ทันทีไม่ต้องติดตั้ง',
-    'h1': 'เกมพักสมอง', 'tag': '8 เกมเว็บสบาย ๆ ที่ Mallow คัดมา',
+    'title': 'เกมพักสมอง — 9 เกมเว็บสบาย ๆ ที่ Mallow คัดมา | Mallow',
+    'desc': 'เกมเว็บ 9 เกมไว้พักสมองระหว่างเล่นเกมฝึกสมอง: รวมผลไม้ ยิงบับเบิล มาจองต่อเส้น หาของที่ซ่อน จับคู่สาม เกมเรียงสามแบบสลับ บล็อกเลื่อน จิ๊กซอว์ และวิ่งหนีออกจากคุก เล่นได้ทันทีไม่ต้องติดตั้ง',
+    'h1': 'เกมพักสมอง', 'tag': '9 เกมเว็บสบาย ๆ ที่ Mallow คัดมา',
     'intro': [
       'เล่นเกมฝึกสมองไปหลายตาแล้ว บางทีก็อยากพักสมองสักหน่อย หน้านี้รวมเกมที่เหมาะกับช่วงเวลาแบบนั้น ไม่ต้องติดตั้ง ไม่ต้องสมัคร แค่กดเล่น',
       'เราคัดด้วยหลัก 3 ข้อ: เล่นจบตาละ 3–10 นาที ดูจากภาพก็เล่นได้ไม่ต้องอ่าน และเนื้อหาเหมาะกับทุกคนในครอบครัว ไม่มีเกมรุนแรง น่ากลัว หรือคล้ายการพนัน ทุกเกมได้คะแนนจากผู้เล่นสูง และเราลองเปิดบนมือถือก่อนนำมาใส่',
@@ -174,4 +174,17 @@ GAMES = [
          'how': 'ลากชิ้นไปวางตรงที่ถูกต้องแล้วจะติดเข้าที่ เลือกจำนวนชิ้นตอนเริ่ม',
          'tips': ['ต่อชิ้นขอบก่อนเพื่อสร้างกรอบ', 'ส่วนที่สีเดียวกันกว้าง ๆ เช่นท้องฟ้าหรือน้ำ เก็บไว้ต่อท้ายโดยดูจากรูปทรง'],
          'for': 'คนที่อยากโฟกัสแบบสบาย ๆ นาน ๆ — ถ้าจอมือถือเล็กเลือกจำนวนชิ้นน้อย'}},
+ {'id': 'barry-prison', 'mins': 8, 'ours': 'run', 'tags': {'ko': '파쿠르 · 탈출 달리기', 'en': 'Parkour · escape run', 'th': 'พาร์คัวร์ · วิ่งหนี'},
+  'ko': {'name': '감옥 탈출 파쿠르', 'intro': '감옥을 빠져나가려고 장애물 코스를 달리고 뛰어넘는 3D 파쿠르 게임이에요. 함정을 피해 발판을 건너며 구간을 하나씩 통과해 출구까지 가면 됩니다. 이용자 평가가 많은 인기 게임이에요.',
+         'how': '휴대폰은 화면의 이동·점프 버튼으로, 컴퓨터는 방향키(WASD)와 스페이스로 움직입니다.',
+         'tips': ['점프하기 전에 다음 발판까지 거리를 먼저 보고, 짧게 끊어 뛰세요.', '떨어져도 지나온 구간부터 다시 시작하니 서두르지 말고 한 구간씩 익히세요.'],
+         'for': '손을 바쁘게 움직이는 게임으로 기분을 바꾸고 싶은 분, 달리기·점프 게임을 좋아하는 분'},
+  'en': {'name': 'Prison Escape Parkour', 'intro': 'A 3D parkour game where you run and jump through an obstacle course to break out of prison. Dodge the traps, cross the platforms and clear each section until you reach the exit. A popular game with lots of player reviews.',
+         'how': 'On a phone, use the on-screen move and jump buttons; on a computer, use the arrow keys (WASD) and Space.',
+         'tips': ['Look at the distance to the next platform before jumping, and keep jumps short.', 'If you fall you restart from a section you already passed, so take it one section at a time.'],
+         'for': 'Anyone who wants a hands-on change of pace, or likes running and jumping games'},
+  'th': {'name': 'หนีออกจากคุกพาร์คัวร์', 'intro': 'เกมพาร์คัวร์ 3 มิติ วิ่งและกระโดดผ่านด่านอุปสรรคเพื่อหนีออกจากคุก หลบกับดัก ข้ามแท่น และผ่านไปทีละช่วงจนถึงทางออก เป็นเกมยอดนิยมที่มีรีวิวจากผู้เล่นเยอะ',
+         'how': 'บนมือถือใช้ปุ่มเดินและกระโดดบนหน้าจอ บนคอมพิวเตอร์ใช้ปุ่มลูกศร (WASD) และ Space',
+         'tips': ['ดูระยะถึงแท่นถัดไปก่อนกระโดด และกระโดดสั้น ๆ', 'ถ้าตกจะเริ่มใหม่จากช่วงที่ผ่านมาแล้ว ค่อย ๆ ฝึกทีละช่วง'],
+         'for': 'คนที่อยากเปลี่ยนอารมณ์ด้วยเกมที่ต้องขยับมือ หรือชอบเกมวิ่งกระโดด'}},
 ]

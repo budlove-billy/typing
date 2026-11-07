@@ -2,7 +2,7 @@
 // 실행: node tools/quality/quality-playgama.mjs   (먼저 python tools/playgama/build.py --preview 로 미리보기를 만든다)
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -50,6 +50,10 @@ if (!live) {
   check(!read('sitemap.xml').includes('/arcade/'), 'sitemap: 꺼진 상태인데 /arcade/가 있음');
   check(!read('llms.txt').includes('/arcade/'), 'llms.txt: 꺼진 상태인데 /arcade/가 있음');
 }
+// 사이트 전체 AdSense 제거(2026-11-08 결정) — 다시 들어오면 실패
+{ const walk = (d) => readdirSync(path.join(root, d), { withFileTypes: true }).flatMap((e) => e.isDirectory() ? (['.git', '.logs', 'generated_images', 'canvas', 'node_modules', '.claude', '.claudecrab', '.omc'].includes(e.name) ? [] : walk(path.join(d, e.name))) : e.name.endsWith('.html') ? [path.join(d, e.name)] : []);
+  const withAds = walk('.').filter((f) => /adsbygoogle|google-adsense-account/.test(read(f)));
+  check(!withAds.length, 'AdSense가 남아 있음: ' + withAds.slice(0, 5).join(', ')); }
 const preview = path.join(root, '.logs/arcade-preview/index.html');
 check(existsSync(preview), '미리보기 없음 — python tools/playgama/build.py --preview');
 
@@ -104,14 +108,16 @@ async function open(url, { width = 390, forceLive = false, hang = false } = {}) 
 
 try {
   // 1) 홈: 꺼진 설정이면 진입 카드 숨김·외부 요청 없음 / 켜면 카드 보임
+  const nGames = cfg ? cfg.games.filter((g) => g.enabled !== false && g.url).length : 0;
   { const { ctx, page, ext } = await open('/');
-    check((await page.$eval('#lb-pg', (e) => e.hidden)) === !live, live ? '홈: 켜진 상태인데 진입 카드가 안 보임' : '홈: 꺼진 상태인데 진입 카드가 보임');
+    check((await page.$eval('#lb-pgsec', (e) => e.hidden)) === !live, live ? '홈: 켜진 상태인데 선반이 안 보임' : '홈: 꺼진 상태인데 선반이 보임');
     check(ext.export === 0, '홈: Playgama 게임 요청이 생김'); await ctx.close(); }
   { const { ctx, page } = await open('/', { forceLive: true });
-    check(!(await page.$eval('#lb-pg', (e) => e.hidden)), '홈: 켜진 상태인데 진입 카드가 안 보임');
+    check(!(await page.$eval('#lb-pgsec', (e) => e.hidden)), '홈: 켜진 상태인데 선반이 안 보임');
+    check(await page.locator('#lb-pgshelf .lb-pgc').count() === nGames, '홈: 선반 카드 수가 설정과 다름');
     await page.evaluate(() => setLanguage('en'));
-    await page.$eval('#lb-pg', (e) => { e.addEventListener('click', (ev) => ev.preventDefault()); e.click(); });
-    check((await page.$eval('#lb-pg', (e) => e.getAttribute('href'))) === '/arcade/en', '홈: 영어일 때 진입 카드가 /arcade/en으로 가야 함');
+    check((await page.$eval('#lb-pg-all', (e) => e.getAttribute('href'))) === '/arcade/en', '홈: 영어일 때 전체 보기가 /arcade/en으로 가야 함');
+    check((await page.locator('#lb-pgshelf .lb-pgc').first().getAttribute('href')).startsWith('/arcade/en#'), '홈: 영어일 때 카드가 영어 허브로 가야 함');
     await ctx.close(); }
 
   // 2) 실제 허브(현재 설정): 꺼져 있으면 iframe 없음·준비 중 보임
@@ -138,6 +144,16 @@ try {
     check(await page.locator('iframe').count() === 1, '미리보기: 다른 게임을 눌렀는데 iframe이 여러 개');
     await page.locator('.pg-close').click();
     check(await page.locator('iframe').count() === 0, '미리보기: 닫기 후 iframe이 남음');
+    await ctx.close(); }
+
+  // 3-1) 홈 카드에서 들어오면 그 게임이 바로 열림 / 외부에서 #id로 오면 열지 않음
+  { const { ctx, page, ext } = await open('/.logs/arcade-preview/index.html');
+    const id = cfg.games.find((g) => g.enabled !== false && g.url).id;
+    await page.evaluate((h) => { location.href = h; }, '/.logs/arcade-preview/index.html?x=1#' + id); await page.waitForLoadState('load'); await page.waitForTimeout(400);
+    check(await page.locator(`.pg-card[data-id="${id}"] iframe`).count() === 1 && ext.export === 1, '허브: 같은 사이트에서 #게임id로 오면 그 게임이 열려야 함');
+    await ctx.close(); }
+  { const { ctx, page, ext } = await open('/.logs/arcade-preview/index.html#' + cfg.games[0].id);
+    check(await page.locator('iframe').count() === 0 && ext.export === 0, '허브: 외부에서 #게임id로 바로 오면 자동으로 열면 안 됨');
     await ctx.close(); }
 
   // 4) 불러오기 실패: 15초 뒤 안내+다시 시도

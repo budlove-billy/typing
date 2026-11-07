@@ -17,7 +17,7 @@ OURS_NAME = {  # index.html I18N nav.<id> 와 같게
   'merge': {'ko': '말랑 2048', 'en': 'Mallow 2048', 'th': 'มัลโลว์ 2048'}, 'spot': {'ko': '다른 색 찾기', 'en': 'Odd Color Out', 'th': 'หาสีที่ต่าง'},
   'cards': {'ko': '카드 짝', 'en': 'Card Match', 'th': 'จับคู่การ์ด'}, 'diff': {'ko': '틀린 그림 찾기', 'en': 'Spot the Difference', 'th': 'หาจุดต่าง'},
   'sort': {'ko': '컬러 소트', 'en': 'Color Sort', 'th': 'เรียงสี'}, 'slide': {'ko': '슬라이딩 퍼즐', 'en': 'Slide Puzzle', 'th': 'พัซเซิลเลื่อน'},
-  'fit': {'ko': '블록 채우기', 'en': 'Block Fit', 'th': 'ต่อบล็อก'}}
+  'fit': {'ko': '블록 채우기', 'en': 'Block Fit', 'th': 'ต่อบล็อก'}, 'run': {'ko': '말로우 런', 'en': 'Mallow Run', 'th': 'มาโลว์รัน'}}
 e = lambda s: html.escape(str(s), quote=True)
 
 def rd(p): return io.open(p, encoding='utf-8', newline='').read()
@@ -110,7 +110,7 @@ def page(l):
     body_games = f'<section id="pg-games" aria-label="{e(P["h1"])}">\n{games}\n  </section>' if LIVE else ''
     off = f'''  <div class="card off" id="pg-off"{' hidden' if LIVE else ''}><h2 style="margin:0 0 4px;font-size:18px">{e(P['off_h'])}</h2><p style="margin:0">{e(P['off_p'])}</p><a href="{home}">{e(P['off_btn'])}</a></div>'''
     faq = ''.join(f'<h3>{e(q)}</h3><p>{e(a)}</p>' for q, a in P['faq'])
-    cfg_src = '/assets/playgama-config.js?v=1'
+    cfg_src = '/assets/playgama-config.js?v=2'
     preview_override = ('<script>window.PLAYGAMA=Object.assign({},window.PLAYGAMA,{enabled:true,clid:"PREVIEW"});</script>' if PREVIEW else '')
     return f'''<!DOCTYPE html>
 <html lang="{l}">
@@ -152,7 +152,7 @@ def page(l):
 {footer(l)}
 <script src="{cfg_src}"></script>
 {preview_override}
-<script src="/assets/playgama.js?v=1" defer></script>
+<script src="/assets/playgama.js?v=2" defer></script>
 <script defer src="/seo-events.js"></script>
 </body>
 </html>
@@ -190,17 +190,25 @@ PRIV_EN = '''    <section>
       </ul>
     </section>'''
 
+def sync_names():
+    """홈 선반용 게임 이름(ko/en/th)을 설정 파일의 NAMES 칸에 채운다 — 문구 원본은 content.py 하나."""
+    p = os.path.join(ROOT, 'assets', 'playgama-config.js'); s = rd(p)
+    a = s.index('/*NAMES*/') + 9; b = s.index('/*NAMES_END*/', a)
+    names = json.dumps({g['id']: {l: g[l]['name'] for l in LANGS} for g in GAMES}, ensure_ascii=False)
+    if s[a:b] != names: io.open(p, 'w', encoding='utf-8', newline='').write(s[:a] + names + s[b:])
+
 def main():
     out = os.path.join(ROOT, '.logs', 'arcade-preview') if PREVIEW else os.path.join(ROOT, 'arcade')
     for l in LANGS: wr(os.path.join(out, FILE[l]), page(l))
     print(('preview' if PREVIEW else 'site'), 'live' if LIVE else 'off', '→', out)
     if PREVIEW: return
+    sync_names()
     # 사이트맵·llms·개인정보처리방침: 켜졌을 때만
     toggle_block('sitemap.xml', '  <!--arcade-->', '  <!--/arcade-->',
                  '\n'.join(f'  <url><loc>https://playmallow.com{URL[l]}</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>' for l in LANGS),
                  LIVE, '</urlset>')
     toggle_block('llms.txt', '<!--arcade-->', '<!--/arcade-->',
-                 '- [쉬어가는 게임](https://playmallow.com/arcade/): 말로우가 고른 외부 웹게임 8가지(Playgama 제공) — 게임별 직접 쓴 소개·요령, 플레이 버튼을 눌러야 열림\n',
+                 '- [쉬어가는 게임](https://playmallow.com/arcade/): 말로우가 고른 외부 웹게임 9가지(Playgama 제공) — 게임별 직접 쓴 소개·요령, 플레이 버튼을 눌러야 열림\n',
                  LIVE, '## 사이트 정보')
     toggle_block('privacy/index.html', '    <!--pg-ko-->', '    <!--/pg-ko-->', PRIV_KO, LIVE, '    <section>\n      <h2>5. 쿠키 거부 방법</h2>')
     toggle_block('privacy/index.html', '    <!--pg-en-->', '    <!--/pg-en-->', PRIV_EN, LIVE, '    <section>\n      <h2>5. How to Refuse Cookies</h2>')

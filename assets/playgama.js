@@ -47,7 +47,7 @@
     box.appendChild(again);
     o.stage.querySelector('.pg-frame-wrap').appendChild(box);
   }
-  function play(card){
+  function play(card, from){
     var id = card.dataset.id, g = games[id]; if (!g) return;
     if (open && open.card === card) return;
     closeOpen('switch');
@@ -69,12 +69,20 @@
     if (poster) poster.hidden = true;
     stage.hidden = false; card.classList.add('is-open'); open = o;
     o.timer = setTimeout(function(){ if (open === o && wait.isConnected) { wait.remove(); fallback(o, 'timeout'); } }, TIMEOUT_MS);
-    track('pg_play_click', { game: id, lang: lang });
+    track('pg_play_click', { game: id, lang: lang, from: from || 'hub' });
     stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   cards.forEach(function(card){
     var poster = card.querySelector('.pg-poster');
     if (poster) poster.addEventListener('click', function(){ play(card); });
   });
+  // 홈 선반에서 게임 카드를 눌러 들어오면(#게임id, 같은 사이트에서 온 이동) 그 게임을 바로 연다 — 사용자가 그 게임을 직접 고른 클릭이다.
+  // 검색·외부 링크로 #게임id에 들어오면 열지 않고 그 카드로만 데려간다(클릭 없는 로딩 금지).
+  var want = decodeURIComponent((location.hash || '').slice(1));
+  var target = want ? cards.filter(function(c){ return c.dataset.id === want; })[0] : null;
+  if (target) {
+    var fromUs = false; try { fromUs = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+    if (fromUs) play(target, 'home'); else target.scrollIntoView({ block: 'start' });
+  }
   window.addEventListener('pagehide', function(){ closeOpen('leave'); });
 })();
