@@ -260,3 +260,32 @@
 3. 연동 방식은 **큐레이션 iframe만**(추천)으로 갈까요, 위젯도 같이 실험할까요?
 4. 허브는 **한국어만 먼저**(추천) 열까요, en/th도 동시에 열까요?
 5. 허브 페이지에서 **AdSense 스크립트를 뺄까요**(추천 — 실수 클릭·이중 광고 방지, 애드센스 재검토에도 덜 해로움)?
+
+### 13-1. 답변 (2026-11-08, 사용자)
+1. Hi5Games 배너 → **내림**(d94ef0b). 2. "5개 모듈" → 무시(이전 분석의 착오). 3. 게임 선택 → **말로우가 분석해 고름**(14장), 연동은 큐레이션 iframe. 4. **ko·en·th 동시 오픈**. 5. 허브에 **AdSense 넣지 않음** — 애드센스는 여러 번 반려되어 더 신청하지 않기로 함(사이트 전체 제거 여부는 따로 확인).
+
+## 14. 게임 선정 분석 (2026-11-08)
+Playgama 카탈로그 404개 메타데이터(평점·평가 수·모바일 지원·장르·태그)를 받아 거른 뒤, 후보 9개를 폰 크기 iframe으로 실제로 띄워 확인(9개 모두 정상 표시, 게임당 약 4~6MB, 각 게임이 자체 'Let's Play' 시작 화면을 가져 자동 실행 없음).
+
+거른 기준: ① 모바일 지원 ② 평점 4.3↑·평가 수 많음 ③ 글을 몰라도 되는 게임(ko/en/th 공통) ④ 가족용(공포·총·도박·오비·io·멀티 제외) ⑤ 우리 게임과 겹치지 않음(스도쿠·2048·컬러소트 제외) ⑥ 한국 사용자에게 익숙한 장르(수박게임·사천성·버블·매치3).
+
+| 순서 | 게임 | 평점/평가 수 | 고른 이유 | 비슷한 말로우 게임 |
+|---|---|---|---|---|
+| 1 | Fruit Merge (과일 합치기) | 4.7 / 3,560 | '수박 게임' 방식 — 한국에서 크게 유행 | 말랑 2048 |
+| 2 | Bubble Blast | 4.5 / 10,795 | 평가 수 최다권 버블 슈터, 전 연령 | 다른 색 찾기 |
+| 3 | Mahjong Lines (사천성) | 4.3 / 702 | 40~60대에 익숙한 사천성 | 카드 짝 |
+| 4 | Find the Frog | 4.7 / 9,090 | 숨은그림찾기, 글 없이 가능 | 틀린 그림 찾기 |
+| 5 | Good Sort Master | 4.6 / 5,346 | 트리플 매치 정리 — 요즘 인기 장르 | 컬러 소트 |
+| 6 | Vega Mix 2 | 4.5 / 9,931 | 매치3 대표 장르 | 다른 색 찾기 |
+| 7 | Wood Blocks Jam | 4.6 / 5,344 | 블록 탈출 논리 퍼즐 | 슬라이딩 퍼즐 |
+| 8 | Favorite Puzzles (직소) | 4.6 / 1,990 | 6~1,200조각, 느긋한 집중 | 블록 채우기 |
+| 예비 | Golf Orbit | 4.7 / 2,147 | 한 손 캐주얼 — 빈자리 생기면 | — |
+
+## 15. 2단계 구현 결과 (브랜치 feature/playgama, 2026-11-08)
+- 설정 한 곳: `assets/playgama-config.js` (enabled·clid·homeEntry·games[]). **지금은 꺼짐**(enabled=false, clid 비어 있음) → 허브는 '준비 중'+noindex, 홈 카드 숨김, 사이트맵·llms·개인정보 문구 없음.
+- 허브: `tools/playgama/build.py`가 `content.py`(직접 쓴 ko/en/th 소개·하는 법·요령·이런 분께·FAQ) + 설정으로 `arcade/index.html·en.html·th.html` 생성. 켜면 사이트맵·llms.txt·개인정보처리방침 4-1(ko/en)을 자동으로 넣고, 끄면 뺀다. `--preview`는 켜진 화면을 `.logs/arcade-preview/`에 만든다.
+- 동작: `assets/playgama.js` — 플레이 클릭 때만 iframe 생성, 한 번에 하나, 닫기, 15초 실패 안내+다시 시도, 이벤트 pg_hub_view·pg_play_click·pg_iframe_load·pg_fallback·pg_close. 저장소·미션·기록 함수 사용 안 함. 런타임 킬 스위치(설정만 바꿔도 즉시 목록 제거).
+- 홈: '능력별로 골라 하기' 아래 진입 카드 1개(켜졌을 때만, 언어별 허브로, pg_entry_click). `tools/playgama/home_entry.py`.
+- 약관 5장에 외부 콘텐츠 일반 조항(ko/en). 상단바 이름 '쉬어가는 게임'.
+- 검사: `tools/quality/quality-playgama.mjs`(run-quality.ps1에 포함) — 설정 JSON/JS 유효, clid·게임 주소 하드코딩 금지, 허브 AdSense 없음, 미션 연동 없음, 꺼진 상태 iframe·요청 0, 클릭 전 요청 0 → 클릭 후 iframe 1개 → 전환해도 1개 → 닫기 0, 실패 안내, 320/390/1000 넘침 0, CLS<0.1. `tools/playgama/check.mjs` — 게임·썸네일 주소 상태와 clid 유무.
+- 오픈 절차: 대시보드에서 게임별 iframe 주소(clid 포함) 복사 → 설정의 url·clid 채우고 enabled=true → `python tools/playgama/build.py` → `node tools/playgama/check.mjs` → 품질 검사 → main 병합·배포.

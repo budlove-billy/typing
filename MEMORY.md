@@ -460,3 +460,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 ## 말로우 사주 /saju/ (2026-11-07)
 - 엔진 원본은 D:\claude\saju(읽기만). `node tools/saju-port/build.mjs` → assets/saju-engine.js(전역 SajuEngine: fullReport·dailyFortune·fortuneRange·monthlyCurve·lifeCurve + 라벨 데이터). 사주 프로젝트에서 엔진·해석 문구를 고치면 다시 빌드하고 saju/index.html의 `saju-engine.js?v=` 올릴 것.
 - 저장: localStorage `saju.me.v1`(입력), `saju.visits.v1`(연속 확인). /unse/의 `unse_birth`를 첫 입력값으로 이어받음.
+
+## Playgama 쉬어가는 게임 /arcade/ (2026-11-08)
+- 켜고 끄기: assets/playgama-config.js 하나(enabled·clid·games[]). 꺼지면 허브 준비 중+noindex·홈 카드 숨김. 값 변경 후 `python tools/playgama/build.py` → `node tools/playgama/check.mjs` → 품질검사. 문구 tools/playgama/content.py. 상세 docs/playgama-plan.md 14·15장.
+- 약관: 클릭 전 로딩·미션/기록/보상 연동 금지, 제거 요청 시 enabled:false. 허브에 AdSense 없음. 애드센스는 더 신청 안 함(사용자, 2026-11-08). 품질검사 포트 8227.
