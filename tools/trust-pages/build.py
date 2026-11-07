@@ -4,7 +4,7 @@
 운영자 표기: 필명 Billy Lee (사용자 블로그 mallow.kr과 같은 이름). 연락처: billylee0038@gmail.com (contact@playmallow.com은 수신이 안 돼 2026-10-02 교체)."""
 import os, io
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-UPDATED = '2026-11-07'
+UPDATED = '2026-11-08'
 LEGAL = [('about', '소개', 'About'), ('contact', '문의', 'Contact'), ('terms', '이용약관', 'Terms'),
          ('privacy', '개인정보처리방침', 'Privacy Policy'), ('updates', '업데이트 소식', 'Updates')]
 
@@ -284,6 +284,7 @@ TERMS_KO = '''    <div class="lead">이 약관은 플레이말로우(playmallow.
     <section>
       <h2>5. 광고와 외부 링크</h2>
       <p>사이트는 운영비를 위해 Google AdSense 광고를 게재할 수 있습니다. 광고 내용과 광고주가 제공하는 상품·서비스는 운영자가 보증하지 않습니다. 쿠키 사용은 <a class="inline" href="/privacy/">개인정보처리방침</a>을 따릅니다.</p>
+      <p>사이트에는 외부 서비스가 제공하는 게임 등 콘텐츠가 포함될 수 있습니다. 이런 콘텐츠는 이용자가 직접 열 때만 불러오며, 그 안의 광고·구매·정보 처리는 해당 제공자의 약관과 정책을 따릅니다. 외부 콘텐츠는 운영자가 만든 것이 아니며 예고 없이 빠지거나 바뀔 수 있고, 그 이용 기록은 사이트의 기록·미션에 반영되지 않습니다.</p>
     </section>
     <section>
       <h2>6. 책임의 한계</h2>
@@ -318,6 +319,7 @@ TERMS_EN = '''    <div class="lead">These terms are the basic rules for using Ma
     <section>
       <h2>5. Ads and external links</h2>
       <p>The site may show Google AdSense ads to cover running costs. The operator does not endorse advertised products or services. Cookie use follows the <a class="inline" href="/privacy/?lang=en">Privacy Policy</a>.</p>
+      <p>The site may include games or other content provided by external services. Such content loads only when you choose to open it, and any ads, purchases or data processing inside it follow that provider's own terms and policies. External content is not made by the operator, may be removed or changed without notice, and does not count toward your records or missions on the site.</p>
     </section>
     <section>
       <h2>6. Limitation of liability</h2>
