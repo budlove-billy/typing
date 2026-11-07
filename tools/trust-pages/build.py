@@ -4,7 +4,7 @@
 운영자 표기: 필명 Billy Lee (사용자 블로그 mallow.kr과 같은 이름). 연락처: billylee0038@gmail.com (contact@playmallow.com은 수신이 안 돼 2026-10-02 교체)."""
 import os, io
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-UPDATED = '2026-10-02'
+UPDATED = '2026-11-07'
 LEGAL = [('about', '소개', 'About'), ('contact', '문의', 'Contact'), ('terms', '이용약관', 'Terms'),
          ('privacy', '개인정보처리방침', 'Privacy Policy'), ('updates', '업데이트 소식', 'Updates')]
 
@@ -330,6 +330,9 @@ TERMS_EN = '''    <div class="lead">These terms are the basic rules for using Ma
 
 # ---------------------------------------------------------------- 업데이트 소식 (docs/CHANGELOG.md에서 이용자에게 보이는 변화만 골라 쉬운 말로)
 LOG = [
+ ('2026-11-07', '말로우 사주 — 내 사주 깊이 보기', 'Mallow Saju — an in-depth Four Pillars reading', '절기와 태어난 곳의 경도까지 반영해 사주팔자를 계산하고, 오행·십성·신강약·격국·용신·합충·신살과 10년 대운·12달 월운·이번 달 좋은 날 달력, 매일 바뀌는 오늘의 운세를 보여 줍니다. 계산은 브라우저 안에서만 합니다.', 'Calculates your Four Pillars with solar terms and birthplace longitude, then shows elements, ten gods, strength, structure, useful element, clashes, 10-year luck cycles, 12-month flow, a good-days calendar and a daily reading — all computed in your browser.'),
+ ('2026-11-07', '거꾸로 기억 — 입력한 숫자가 상자 안에 보이게', 'Reverse Memory — typed digits now show inside the box', '입력한 숫자가 어두운 배경에 묻혀 잘 보이지 않던 문제를 고쳤습니다(이용자 제보).', 'Fixed digits blending into the dark background (player report).'),
+ ('2026-10-02', '소개·문의·이용약관·업데이트 소식 페이지', 'About, Contact, Terms and Updates pages', '운영자 소개와 연락처, 이용약관, 이 업데이트 기록을 열었습니다.', 'Added operator info, contact, terms and this update log.'),
  ('2026-09-30', '글자 맞추기 보통·어려움에서 한 글자를 "?"로 가림', 'Word Scramble: one letter now hidden as "?" on Normal and Hard', '나머지 글자로 단어를 추리해 빈자리에 넣어야 합니다. 맞히면 정답 단어를 잠깐 보여 줍니다.', 'You deduce the word from the other letters to place it; the full word is shown briefly when you solve it.'),
  ('2026-09-30', '말로우 타워 새 그림', 'Mallow Tower redrawn', '탑 블록을 파스텔 마시멜로 큐브로, 장애물을 은빛 포크로 바꾸고, 깨물 때 이빨 자국이 남으며 블록이 날아가는 연출을 더했습니다.', 'Tower blocks are now pastel marshmallow cubes and the obstacles silver forks; each bite leaves a tooth mark as the block flies off.'),
  ('2026-09-30', '리듬 게임 터치 패드를 화면 가운데로', 'Rhythm game tap pad centred', '패드가 한쪽으로 치우쳐 보이던 문제를 고쳤습니다(이용자 제보).', 'Fixed the pad sitting off-centre (player report).'),

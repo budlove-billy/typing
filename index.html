@@ -3964,6 +3964,7 @@ const I18N = {
   "lb.go.next": {ko:"▶ 다음 판", en:"▶ Next", th:"▶ ถัดไป"},
   "lb.ft.lead": {ko:"오늘의 행운 카드와 운세·성격 테스트를 모았어요. 모두 재미로 보는 내용이에요.", en:"Your lucky card plus horoscopes and personality tests. All just for fun.", th:"รวมการ์ดนำโชค ดูดวง และแบบทดสอบบุคลิกภาพไว้ที่นี่ ทั้งหมดดูเพื่อความสนุก"},
   "lb.f.unse": {ko:"생년월일로 보는 오늘 하루의 흐름", en:"Your day by birth date", th:"ดวงรายวันตามวันเกิด"},
+  "lb.f.saju": {ko:"사주팔자·대운·월운까지 깊게, 매일 바뀌는 내 운세", en:"In-depth Four Pillars reading", th:"ดวงสี่เสาแบบละเอียด"},
   "lb.f.zodiac": {ko:"12별자리 오늘의 운세", en:"Today's horoscope for the 12 signs", th:"ดวงวันนี้ของ 12 ราศี"},
   "lb.f.ttirank": {ko:"오늘 가장 운 좋은 띠 순위", en:"Today's luckiest zodiac animals", th:"อันดับปีนักษัตรที่โชคดีที่สุดวันนี้"},
   "lb.f.tarot": {ko:"카드 한 장으로 보는 오늘의 메시지", en:"One card, one message for today", th:"ไพ่หนึ่งใบ ข้อความหนึ่งข้อสำหรับวันนี้"},
@@ -4418,6 +4419,7 @@ const I18N = {
 
   "nav.braintype": {ko:"두뇌 유형", en:"Brain Type", th:"ประเภทสมอง"},
   "nav.unse": {ko:"오늘의 운세", en:"Fortune", th:"ดวงวันนี้"},
+  "nav.saju": {ko:"말로우 사주", en:"Saju", th:"ดวงสี่เสา"},
   "nav.zodiac": {ko:"별자리 운세", en:"Horoscope", th:"ดวงราศี"},
   "nav.ttirank": {ko:"띠별 운세", en:"Zodiac Rank", th:"อันดับนักษัตร"},
   "nav.tarot": {ko:"타로 점", en:"Tarot", th:"ไพ่ทาโรต์"},
@@ -8681,6 +8683,7 @@ const HOME_GAMES=[
   {id:'tango', emoji:'🌗', key:'nav.tango', grp:'cat.daily', langs:['ko','en','th'], external:'tango/'},
   {id:'braintype', emoji:'🔮', key:'nav.braintype', grp:'cat.fun'},
   {id:'unse', emoji:'🌙', key:'nav.unse', grp:'cat.fun', koOnly:true, external:'unse/'},
+  {id:'saju', emoji:'🧭', key:'nav.saju', grp:'cat.fun', koOnly:true, external:'saju/'},   // 깊은 사주(2026-11-07, D:\claude\saju 엔진)
   {id:'zodiac', emoji:'⭐', key:'nav.zodiac', grp:'cat.fun', langs:['ko','en','th'], external:'zodiac/'},
   {id:'ttirank', emoji:'🐭', key:'nav.ttirank', grp:'cat.fun', koOnly:true, external:'ttirank/'},
   {id:'tarot', emoji:'🃏', key:'nav.tarot', grp:'cat.fun', langs:['ko','th'], external:'tarot/'},
@@ -8966,7 +8969,7 @@ function renderHome(){
   // ③ 오늘의 운세 — 행운 카드 + 운세 바로가기
   lbRenderLucky('lb-lucky');
   const fc=document.getElementById('lb-fchips');
-  if(fc){ fc.innerHTML=''; ({ko:['unse','zodiac','ttirank','tarot'], en:['zodiac','persona','luckycolor'], th:['luckycolor','zodiac','tarot','persona']}[CURRENT_LANG]||[]).forEach(id=>{
+  if(fc){ fc.innerHTML=''; ({ko:['saju','unse','zodiac','tarot'], en:['zodiac','persona','luckycolor'], th:['luckycolor','zodiac','tarot','persona']}[CURRENT_LANG]||[]).forEach(id=>{
     const g=gameMeta(id); if(!lbVisible(g)) return; const b=document.createElement('button'); b.className='lb-fchip';
     b.innerHTML='<b>'+g.emoji+'</b>'+t(g.key)+(lbSeen(id)?'':'<i class="lb-dot"></i>'); b.onclick=()=>lbOpen(g); fc.appendChild(b); }); }
   // ④ 추천 선반(약점·안 해본 게임 우선) + 능력별 선반
@@ -8997,7 +9000,7 @@ function renderHome(){
 function renderFortune(){
   lbRenderLucky('ft-lucky');
   const el=document.getElementById('ft-list'); if(!el) return; el.innerHTML='';
-  const ids={ko:['unse','zodiac','ttirank','tarot','luckycolor','persona','braintype'], en:['zodiac','persona','luckycolor','braintype'], th:['luckycolor','zodiac','tarot','persona','braintype']}[CURRENT_LANG]||[];
+  const ids={ko:['saju','unse','zodiac','ttirank','tarot','luckycolor','persona','braintype'], en:['zodiac','persona','luckycolor','braintype'], th:['luckycolor','zodiac','tarot','persona','braintype']}[CURRENT_LANG]||[];
   ids.forEach(id=>{ const g=gameMeta(id); if(!lbVisible(g)) return; const b=document.createElement('button'); b.className='ft-item';
     b.innerHTML='<b>'+g.emoji+'</b><span><span class="ft-n">'+t(g.key)+'</span><span class="ft-d">'+t('lb.f.'+id)+'</span></span>'+(lbSeen(id)?'':'<i class="lb-dot"></i>');
     b.onclick=()=>lbOpen(g); el.appendChild(b); });

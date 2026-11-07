@@ -456,3 +456,7 @@ _Write important context, decisions, and lessons here so future sessions can pic
 - 긴 표·빽빽한 목록보다 짧은 줄 여러 개.
 - **요약해서 중요한 것만** 알려 준다(2026-09-28 요청). 세부는 사용자가 다시 물으면 그때 설명한다. 한 답변에 핵심 3~5줄 + 필요한 다음 행동 한 줄이 기본.
 - 앱에서 Ctrl + '+' 확대는 작동하지 않았다.
+
+## 말로우 사주 /saju/ (2026-11-07)
+- 엔진 원본은 D:\claude\saju(읽기만). `node tools/saju-port/build.mjs` → assets/saju-engine.js(전역 SajuEngine: fullReport·dailyFortune·fortuneRange·monthlyCurve·lifeCurve + 라벨 데이터). 사주 프로젝트에서 엔진·해석 문구를 고치면 다시 빌드하고 saju/index.html의 `saju-engine.js?v=` 올릴 것.
+- 저장: localStorage `saju.me.v1`(입력), `saju.visits.v1`(연속 확인). /unse/의 `unse_birth`를 첫 입력값으로 이어받음.

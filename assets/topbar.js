@@ -6,7 +6,7 @@
   var NAMES={   // index.html의 nav.<id> 이름과 같게
     moamoa:{ko:'모아모아',en:'Moamoa',th:'โมอาโมอา'}, queens:{ko:'말로우 크라운',en:'Mallow Crown',th:'มาโลว์คราวน์'}, tango:{ko:'말로우 탱고',en:'Mallow Tango',th:'มาโลว์แทงโก้'},
     unse:{ko:'오늘의 운세',en:'Fortune',th:'ดวงวันนี้'}, zodiac:{ko:'별자리 운세',en:'Horoscope',th:'ดวงราศี'}, ttirank:{ko:'띠별 운세',en:'Zodiac Rank',th:'อันดับนักษัตร'},
-    tarot:{ko:'타로 점',en:'Tarot',th:'ไพ่ทาโรต์'}, luckycolor:{ko:'태국 행운색',en:'Lucky Colour',th:'สีมงคลวันเกิด'}, persona:{ko:'성격 유형 진단',en:'Persona Type',th:'บุคลิกภาพ'}};
+    tarot:{ko:'타로 점',en:'Tarot',th:'ไพ่ทาโรต์'}, luckycolor:{ko:'태국 행운색',en:'Lucky Colour',th:'สีมงคลวันเกิด'}, persona:{ko:'성격 유형 진단',en:'Persona Type',th:'บุคลิกภาพ'}, saju:{ko:'말로우 사주',en:'Saju',th:'ดวงสี่เสา'}};
   var HOME={ko:'홈',en:'Home',th:'หน้าแรก'};
   function lang(){ var l=(document.documentElement.lang||'ko').slice(0,2); return HOME[l]?l:'ko'; }
   var nav=document.createElement('nav'); nav.className='mtop';

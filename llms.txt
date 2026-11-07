@@ -55,6 +55,8 @@
 - [개인정보처리방침](https://playmallow.com/privacy/)
 - [사이트맵](https://playmallow.com/sitemap.xml)
 
+- [말로우 사주](https://playmallow.com/saju/): 절기·경도 보정 만세력 사주팔자, 오행·십성·신강약·격국·용신·합충·신살, 대운·세운·월운·일운 점수와 풀이(브라우저 안 계산)
+
 ## 사이트 정보
 - [소개](https://playmallow.com/about/): 운영자(필명 Billy Lee), 만든 이유, 게임 설계 원칙
 - [업데이트 소식](https://playmallow.com/updates/): 날짜별 변경 기록
