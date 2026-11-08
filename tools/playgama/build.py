@@ -205,7 +205,7 @@ def main():
     sync_names()
     # 사이트맵·llms·개인정보처리방침: 켜졌을 때만
     toggle_block('sitemap.xml', '  <!--arcade-->', '  <!--/arcade-->',
-                 '\n'.join(f'  <url><loc>https://playmallow.com{URL[l]}</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>' for l in LANGS),
+                 '\n'.join(f'  <url><loc>https://playmallow.com{URL[l]}</loc><lastmod>2026-11-08</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>' for l in LANGS),
                  LIVE, '</urlset>')
     toggle_block('llms.txt', '<!--arcade-->', '<!--/arcade-->',
                  '- [쉬어가는 게임](https://playmallow.com/arcade/): 말로우가 고른 외부 웹게임 9가지(Playgama 제공) — 게임별 직접 쓴 소개·요령, 플레이 버튼을 눌러야 열림\n',

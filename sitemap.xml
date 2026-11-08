@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://playmallow.com/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/"/>
@@ -232,7 +232,7 @@
   </url>
   <url>
     <loc>https://playmallow.com/nonogram/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/nonogram/"/>
@@ -298,13 +298,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/guide/sudoku/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://playmallow.com/guide/2048/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -328,13 +328,13 @@
   </url>
   <url>
     <loc>https://playmallow.com/privacy/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://playmallow.com/stroop/</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://playmallow.com/stroop/"/>
@@ -376,12 +376,12 @@
   </url>
   <url><loc>https://playmallow.com/about/</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://playmallow.com/contact/</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://playmallow.com/terms/</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://playmallow.com/terms/</loc><lastmod>2026-11-08</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://playmallow.com/updates/</loc><lastmod>2026-10-02</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://playmallow.com/saju/</loc><lastmod>2026-11-07</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <!--arcade-->
-  <url><loc>https://playmallow.com/arcade/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://playmallow.com/arcade/en</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://playmallow.com/arcade/th</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://playmallow.com/arcade/</loc><lastmod>2026-11-08</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://playmallow.com/arcade/en</loc><lastmod>2026-11-08</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://playmallow.com/arcade/th</loc><lastmod>2026-11-08</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <!--/arcade-->
 </urlset>

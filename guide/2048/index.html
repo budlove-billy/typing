@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2048 게임 공략 — 코너 전략과 스네이크 배열 | Mallow</title>
-<meta name="description" content="2048을 매번 게임 오버로 끝낸다면: 최대 타일 코너 고정, 금지 방향, 스네이크 배열, 되돌리기 타이밍까지 2048 핵심 전략 총정리.">
-<meta property="og:title" content="2048 게임 공략 — 코너 전략과 스네이크 배열 | Mallow">
-<meta property="og:description" content="2048을 매번 게임 오버로 끝낸다면: 최대 타일 코너 고정, 금지 방향, 스네이크 배열, 되돌리기 타이밍까지 2048 핵심 전략 총정리.">
+<title>2048 게임 공략·잘하는 법 — 코너 하나로 2048 만드는 순서 | Mallow</title>
+<meta name="description" content="2048 게임 공략: 가장 큰 타일을 한 코너에 고정하고, 위쪽 밀기를 봉인하고, ㄹ자(스네이크)로 쌓는 순서만 지키면 됩니다. 되돌리기 타이밍까지 정리.">
+<meta property="og:title" content="2048 게임 공략·잘하는 법 — 코너 하나로 2048 만드는 순서 | Mallow">
+<meta property="og:description" content="2048 게임 공략: 가장 큰 타일을 한 코너에 고정하고, 위쪽 밀기를 봉인하고, ㄹ자(스네이크)로 쌓는 순서만 지키면 됩니다. 되돌리기 타이밍까지 정리.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://playmallow.com/guide/2048/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
 <link rel="canonical" href="https://playmallow.com/guide/2048/">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"2048 게임 공략 — 코너 전략과 스네이크 배열","description":"큰 수를 한 코너에 모으는 코너 전략과 스네이크 배열로 2048을 만드는 공략.","inLanguage":"ko","datePublished":"2026-07-11","dateModified":"2026-07-21","author":{"@type":"Organization","name":"Mallow","url":"https://playmallow.com/"},"publisher":{"@type":"Organization","name":"Mallow","logo":{"@type":"ImageObject","url":"https://playmallow.com/icon-512.png"}},"mainEntityOfPage":"https://playmallow.com/guide/2048/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"게임 공략","item":"https://playmallow.com/guide/brain-games/"},{"@type":"ListItem","position":3,"name":"2048 공략","item":"https://playmallow.com/guide/2048/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"2048 게임 공략·잘하는 법 — 코너 하나로 2048 만드는 순서","description":"큰 수를 한 코너에 모으는 코너 전략과 스네이크 배열로 2048을 만드는 공략.","inLanguage":"ko","datePublished":"2026-07-11","dateModified":"2026-07-21","author":{"@type":"Organization","name":"Mallow","url":"https://playmallow.com/"},"publisher":{"@type":"Organization","name":"Mallow","logo":{"@type":"ImageObject","url":"https://playmallow.com/icon-512.png"}},"mainEntityOfPage":"https://playmallow.com/guide/2048/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"게임 공략","item":"https://playmallow.com/guide/brain-games/"},{"@type":"ListItem","position":3,"name":"2048 공략","item":"https://playmallow.com/guide/2048/"}]}]}
 </script>
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
@@ -41,6 +41,7 @@ p{font-size:.92rem;margin-bottom:.7rem}
 ul,ol{padding-left:1.2rem;margin-bottom:.7rem}
 li{font-size:.92rem;margin-bottom:.4rem}
 b{color:#182235}
+.sum{background:#eef4ff;border:1px solid #cfdcff;border-radius:14px;padding:.9rem 1rem;margin:.2rem 0 1rem}.sum b.h{display:block;font-size:.95rem;margin-bottom:.35rem}.sum ol{margin:0;padding-left:1.2rem}.sum li{margin:.2rem 0}.sum .cta{margin-top:.7rem}
 .tip{background:#e9f0ff;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
 .warn{background:#fbf0d8;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
 .cta-box{text-align:center;background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
@@ -63,6 +64,7 @@ th{background:#f5f7fb}</style>
   <h1>2048 공략 — 코너 전략이 전부다</h1>
   <p class="lede">2048은 운이 아니라 규칙적인 습관의 게임입니다. 고수들의 플레이는 놀랄 만큼 단순한 원칙 몇 개로 이루어져 있습니다.</p>
   <div class="cta-box" style="margin-top:-.35rem"><a class="cta" data-seo-role="primary_cta" href="/?game=merge&amp;from=guide-2048">공략대로 2048 한 판 시작 →</a><div class="cta-sub">코너를 고정하고 스네이크 배열을 직접 연습해 보세요</div></div>
+  <div class="sum"><b class="h">2048 공략 3줄 요약</b><ol><li>가장 큰 타일을 한 구석(예: 왼쪽 아래)에 두고 절대 옮기지 않는다.</li><li>그 코너 쪽 두 방향(왼쪽·아래)만 주로 쓰고, 위로 밀기는 하지 않는다.</li><li>큰 수부터 ㄹ자로 줄 세워 한 번에 연쇄로 합친다.</li></ol></div>
   <article>
     <h2>원칙 1 — 최대 타일을 한 코너에 고정</h2>
     <p>가장 큰 타일을 <b>한 구석(예: 왼쪽 아래)에 두고 절대 움직이지 않는 것</b>이 2048 전략의 전부라고 해도 과언이 아닙니다. 큰 타일이 판 가운데로 나오는 순간 합칠 경로가 꼬이기 시작합니다.</p>

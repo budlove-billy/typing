@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스도쿠 공략 — 추측 없이 푸는 5가지 기법 | Mallow</title>
-<meta name="description" content="스도쿠 초보부터 고수까지: 스캐닝, 유일 후보, 숨은 싱글, 노트 활용, 쌍 소거까지 추측 없이 푸는 기법을 예시와 함께 정리했습니다.">
-<meta property="og:title" content="스도쿠 공략 — 추측 없이 푸는 5가지 기법 | Mallow">
-<meta property="og:description" content="스도쿠 초보부터 고수까지: 스캐닝, 유일 후보, 숨은 싱글, 노트 활용, 쌍 소거까지 추측 없이 푸는 기법을 예시와 함께 정리했습니다.">
+<title>스도쿠 푸는법 — 초보도 추측 없이 푸는 5단계 | Mallow</title>
+<meta name="description" content="스도쿠 푸는법을 순서대로: ① 숫자별로 훑기(스캐닝) ② 이 칸엔 이것뿐(유일 후보) ③ 숨은 싱글 ④ 노트 ⑤ 쌍 소거. 초보부터 어려움 난이도까지 예시와 함께 정리.">
+<meta property="og:title" content="스도쿠 푸는법 — 초보도 추측 없이 푸는 5단계 | Mallow">
+<meta property="og:description" content="스도쿠 푸는법을 순서대로: ① 숫자별로 훑기(스캐닝) ② 이 칸엔 이것뿐(유일 후보) ③ 숨은 싱글 ④ 노트 ⑤ 쌍 소거. 초보부터 어려움 난이도까지 예시와 함께 정리.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://playmallow.com/guide/sudoku/">
 <meta property="og:image" content="https://playmallow.com/og.png?v=2">
 <link rel="canonical" href="https://playmallow.com/guide/sudoku/">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"스도쿠 공략 — 추측 없이 푸는 5가지 기법","description":"싱글 후보·숨은 싱글 등 추측 없이 스도쿠를 푸는 5가지 대표 기법을 예시와 함께 정리.","inLanguage":"ko","datePublished":"2026-07-11","dateModified":"2026-07-21","author":{"@type":"Organization","name":"Mallow","url":"https://playmallow.com/"},"publisher":{"@type":"Organization","name":"Mallow","logo":{"@type":"ImageObject","url":"https://playmallow.com/icon-512.png"}},"mainEntityOfPage":"https://playmallow.com/guide/sudoku/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"게임 공략","item":"https://playmallow.com/guide/brain-games/"},{"@type":"ListItem","position":3,"name":"스도쿠 공략","item":"https://playmallow.com/guide/sudoku/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"스도쿠 푸는법 — 초보도 추측 없이 푸는 5단계","description":"싱글 후보·숨은 싱글 등 추측 없이 스도쿠를 푸는 5가지 대표 기법을 예시와 함께 정리.","inLanguage":"ko","datePublished":"2026-07-11","dateModified":"2026-07-21","author":{"@type":"Organization","name":"Mallow","url":"https://playmallow.com/"},"publisher":{"@type":"Organization","name":"Mallow","logo":{"@type":"ImageObject","url":"https://playmallow.com/icon-512.png"}},"mainEntityOfPage":"https://playmallow.com/guide/sudoku/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://playmallow.com/"},{"@type":"ListItem","position":2,"name":"게임 공략","item":"https://playmallow.com/guide/brain-games/"},{"@type":"ListItem","position":3,"name":"스도쿠 공략","item":"https://playmallow.com/guide/sudoku/"}]}]}
 </script>
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
@@ -41,6 +41,7 @@ p{font-size:.92rem;margin-bottom:.7rem}
 ul,ol{padding-left:1.2rem;margin-bottom:.7rem}
 li{font-size:.92rem;margin-bottom:.4rem}
 b{color:#182235}
+.sum{background:#eef4ff;border:1px solid #cfdcff;border-radius:14px;padding:.9rem 1rem;margin:.2rem 0 1rem}.sum b.h{display:block;font-size:.95rem;margin-bottom:.35rem}.sum ol{margin:0;padding-left:1.2rem}.sum li{margin:.2rem 0}.sum .cta{margin-top:.7rem}
 .tip{background:#e9f0ff;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
 .warn{background:#fbf0d8;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.8rem 0}
 .cta-box{text-align:center;background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
@@ -59,9 +60,10 @@ th{background:#f5f7fb}</style>
 <body>
 <nav><a href="/"><img src="/mallow-logo.svg" alt="Mallow 마스코트">Mallow <small>가볍게 즐기는 두뇌게임</small></a></nav>
 <main>
-  <div class="crumb"><a href="/">홈</a> › <a href="/guide/brain-games/">가이드</a> › 스도쿠 공략 — 추측 없이 푸는 법</div>
-  <h1>스도쿠 공략 — 추측 없이 푸는 법</h1>
+  <div class="crumb"><a href="/">홈</a> › <a href="/guide/brain-games/">가이드</a> › 스도쿠 푸는법</div>
+  <h1>스도쿠 푸는법 — 추측 없이 푸는 5단계</h1>
   <p class="lede">스도쿠는 찍는 게임이 아니라 논리 게임입니다. 아래 기법을 순서대로 적용하면 어려움 난이도도 추측 없이 풀립니다.</p>
+  <div class="sum"><b class="h">스도쿠 푸는법 3줄 요약</b><ol><li>규칙: 각 행·열·3×3 박스에 1~9가 한 번씩.</li><li>숫자 하나를 골라 들어갈 자리가 한 곳뿐인 칸부터 채운다(스캐닝·숨은 싱글).</li><li>막히면 찍지 말고 노트로 후보를 적어 지워 나간다.</li></ol><a class="cta" data-seo-role="summary_cta" href="/?game=sudoku&amp;from=guide-sudoku-top">배운 대로 스도쿠 바로 해 보기 →</a></div>
   <article>
     <h2>기본 규칙 30초 요약</h2>
     <p>9×9 판을 1~9로 채우되, <b>각 행·각 열·각 3×3 박스에 같은 숫자가 두 번 나오면 안 됩니다.</b> 규칙은 이게 전부입니다.</p>

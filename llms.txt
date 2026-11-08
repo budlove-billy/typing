@@ -29,7 +29,7 @@
 
 ## 공략
 
-- [스도쿠 공략](https://playmallow.com/guide/sudoku/): 추측 없이 푸는 5가지 기법
+- [스도쿠 푸는법](https://playmallow.com/guide/sudoku/): 초보도 추측 없이 푸는 5단계
 - [2048 공략](https://playmallow.com/guide/2048/): 코너 전략과 스네이크 배열
 - [IQ 테스트 풀이 팁](https://playmallow.com/guide/iq-test/): 점수의 의미와 유형별 풀이
 - [컬러 소트 공략](https://playmallow.com/guide/color-sort/): 막히지 않는 4가지 원칙
