@@ -68,7 +68,7 @@ p.R('<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C
     '  var games=(c.games||[]).filter(function(g){ return g&&g.enabled!==false&&g.url&&g.thumb&&N[g.id]; });\n'
     '  if(!(c.enabled&&c.clid&&c.homeEntry!==false)||!games.length){ sec.hidden=true; return; }\n'
     '  var l=pgLang(), hub=pgHub(); box.innerHTML="";\n'
-    '  games.forEach(function(g,i){ var a=document.createElement("a"); a.className="lb-card lb-pgc"; a.href=(l==="ko"?"/arcade/"+g.id+"/":"/arcade/"+g.id+"/"+l)+"#play";\n'
+    '  games.slice(0,12).forEach(function(g,i){ var a=document.createElement("a"); a.className="lb-card lb-pgc"; a.href=(l==="ko"?"/arcade/"+g.id+"/":"/arcade/"+g.id+"/"+l)+"#play";\n'
     '    a.onclick=function(){ pgEntry(g.id); };\n'
     '    var img=document.createElement("img"); img.className="lb-img"; img.src=g.thumb; img.alt=""; img.width=240; img.height=135; img.decoding="async"; if(i>2) img.loading="lazy";\n'
     '    var nm=document.createElement("span"); nm.className="lb-name"; nm.textContent=N[g.id][l]||N[g.id].ko;\n'

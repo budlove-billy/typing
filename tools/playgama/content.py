@@ -5,11 +5,11 @@
 PAGE = {
   'ko': {
     'title': '쉬어가는 게임 — 말로우가 고른 가벼운 웹게임 {n}가지 | Mallow',
-    'desc': '두뇌게임 사이사이 머리를 식히기 좋은 웹게임 {n}가지. 수박 합치기, 버블 슈터, 사천성, 숨은그림찾기, 트리플 매치, 매치3, 블록 퍼즐, 직소 퍼즐, 감옥 탈출 달리기를 설치 없이 바로.',
+    'desc': '두뇌게임 사이사이 머리를 식히기 좋은 웹게임 {n}가지. 퍼즐·숨은그림찾기·축구·디펜스·경영·꾸미기까지 분류별로 골라 설치 없이 바로.',
     'h1': '쉬어가는 게임', 'tag': '말로우가 고른 가벼운 웹게임 {n}가지',
     'intro': [
       '두뇌게임을 몇 판 하고 나면 머리를 조금 식히고 싶을 때가 있죠. 이곳에는 그럴 때 하기 좋은 웹게임을 모았습니다. 설치나 가입 없이 버튼만 누르면 바로 열립니다.',
-      '고른 기준은 세 가지예요. 한 판이 3~10분 안에 끝날 것, 말을 몰라도 그림만 보고 할 수 있을 것, 가족이 같이 해도 괜찮은 내용일 것. 폭력적이거나 무서운 게임, 도박처럼 보이는 게임은 넣지 않았습니다. 이용자 평가가 높고 휴대폰에서도 잘 돌아가는지 직접 띄워 보고 골랐습니다.',
+      '고른 기준은 세 가지예요. 한 판이 3~10분 안에 끝날 것, 말을 몰라도 그림만 보고 할 수 있을 것, 가족이 같이 해도 괜찮은 내용일 것. 잔인하거나 무서운 게임, 도박처럼 보이는 게임은 넣지 않았습니다. 이용자 평가가 높고 휴대폰에서도 잘 돌아가는지 직접 띄워 보고 골랐습니다.',
     ],
     'notice': '이 게임들은 말로우가 만든 게임이 아니라 외부 게임 플랫폼 Playgama에서 제공합니다. 게임 안에 광고가 나오거나 아이템 구매 화면이 있을 수 있어요. 여기서 한 게임은 말로우 기록·미션·연속 기록에 포함되지 않습니다.',
     'play': '▶ 플레이', 'how': '게임방법', 'tips': '게임TIP', 'for': '이런 분께', 'mins': '한 판 약 {m}분',
@@ -26,11 +26,11 @@ PAGE = {
   },
   'en': {
     'title': 'Take a Break — {n} light web games picked by Mallow | Mallow',
-    'desc': '{n} relaxing web games to play between brain games: fruit merge, bubble shooter, Mahjong connect, hidden objects, triple match, match-3, block puzzle, jigsaw and a prison-escape parkour run. No install.',
+    'desc': '{n} relaxing web games to play between brain games — puzzles, hidden objects, soccer, tower defense, tycoon and dress-up, sorted by category. No install.',
     'h1': 'Take a Break', 'tag': '{n} light web games picked by Mallow',
     'intro': [
       'After a few brain games it can be nice to let your mind rest. This page collects games that are good for exactly that. No install, no sign-up — just press play.',
-      'We picked them with three rules: a round takes 3–10 minutes, you can play from the pictures without reading, and the content is fine for families. No violent or scary games and nothing that looks like gambling. Each one is well rated by players, and we opened every game on a phone before adding it.',
+      'We picked them with three rules: a round takes 3–10 minutes, you can play from the pictures without reading, and the content is fine for families. No gory or scary games and nothing that looks like gambling. Each one is well rated by players, and we opened every game on a phone before adding it.',
     ],
     'notice': 'These games are not made by Mallow; they are provided by the external game platform Playgama. They may show ads or offer optional purchases. Games played here do not count toward your Mallow records, missions or streaks.',
     'play': '▶ Play', 'how': 'How to play', 'tips': 'Tips', 'for': 'Good for', 'mins': 'About {m} min per round',
@@ -47,11 +47,11 @@ PAGE = {
   },
   'th': {
     'title': 'เกมพักสมอง — {n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา | Mallow',
-    'desc': 'เกมเว็บ {n} เกมไว้พักสมองระหว่างเล่นเกมฝึกสมอง: รวมผลไม้ ยิงบับเบิล มาจองต่อเส้น หาของที่ซ่อน จับคู่สาม เกมเรียงสามแบบสลับ บล็อกเลื่อน จิ๊กซอว์ และวิ่งหนีออกจากคุก เล่นได้ทันทีไม่ต้องติดตั้ง',
+    'desc': 'เกมเว็บ {n} เกมไว้พักสมองระหว่างเล่นเกมฝึกสมอง ทั้งพัซเซิล หาของที่ซ่อน ฟุตบอล ป้องกันฐาน บริหาร และแต่งตัว เลือกตามหมวด เล่นได้ทันทีไม่ต้องติดตั้ง',
     'h1': 'เกมพักสมอง', 'tag': '{n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา',
     'intro': [
       'เล่นเกมฝึกสมองไปหลายตาแล้ว บางทีก็อยากพักสมองสักหน่อย หน้านี้รวมเกมที่เหมาะกับช่วงเวลาแบบนั้น ไม่ต้องติดตั้ง ไม่ต้องสมัคร แค่กดเล่น',
-      'เราคัดด้วยหลัก 3 ข้อ: เล่นจบตาละ 3–10 นาที ดูจากภาพก็เล่นได้ไม่ต้องอ่าน และเนื้อหาเหมาะกับทุกคนในครอบครัว ไม่มีเกมรุนแรง น่ากลัว หรือคล้ายการพนัน ทุกเกมได้คะแนนจากผู้เล่นสูง และเราลองเปิดบนมือถือก่อนนำมาใส่',
+      'เราคัดด้วยหลัก 3 ข้อ: เล่นจบตาละ 3–10 นาที ดูจากภาพก็เล่นได้ไม่ต้องอ่าน และเนื้อหาเหมาะกับทุกคนในครอบครัว ไม่มีเกมโหดร้าย น่ากลัว หรือคล้ายการพนัน ทุกเกมได้คะแนนจากผู้เล่นสูง และเราลองเปิดบนมือถือก่อนนำมาใส่',
     ],
     'notice': 'เกมเหล่านี้ไม่ได้สร้างโดย Mallow แต่ให้บริการโดยแพลตฟอร์มเกมภายนอก Playgama อาจมีโฆษณาหรือการซื้อไอเท็มในเกม เกมที่เล่นที่นี่จะไม่นับรวมในสถิติ ภารกิจ หรือการเล่นต่อเนื่องของ Mallow',
     'play': '▶ เล่น', 'how': 'วิธีเล่น', 'tips': 'เคล็ดลับ', 'for': 'เหมาะกับ', 'mins': 'ตาละประมาณ {m} นาที',
@@ -188,3 +188,7 @@ GAMES = [
          'tips': ['ดูระยะถึงแท่นถัดไปก่อนกระโดด และกระโดดสั้น ๆ', 'ถ้าตกจะเริ่มใหม่จากช่วงที่ผ่านมาแล้ว ค่อย ๆ ฝึกทีละช่วง'],
          'for': 'คนที่อยากเปลี่ยนอารมณ์ด้วยเกมที่ต้องขยับมือ หรือชอบเกมวิ่งกระโดด'}},
 ]
+
+# 2차 추가분(24개) — tools/playgama/content_more.py
+from content_more import MORE as _MORE
+GAMES += [{k: v for k, v in g.items() if k not in ('slug', 'thumb')} for g in _MORE]

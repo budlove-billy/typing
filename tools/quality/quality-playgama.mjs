@@ -114,7 +114,7 @@ try {
     check(ext.export === 0, '홈: Playgama 게임 요청이 생김'); await ctx.close(); }
   { const { ctx, page } = await open('/', { forceLive: true });
     check(!(await page.$eval('#lb-pgsec', (e) => e.hidden)), '홈: 켜진 상태인데 선반이 안 보임');
-    check(await page.locator('#lb-pgshelf .lb-pgc').count() === nGames, '홈: 선반 카드 수가 설정과 다름');
+    check(await page.locator('#lb-pgshelf .lb-pgc').count() === Math.min(12, nGames), '홈: 선반 카드 수가 설정과 다름(최대 12개)');
     await page.evaluate(() => setLanguage('en'));
     check((await page.$eval('#lb-pg-all', (e) => e.getAttribute('href'))) === '/arcade/en', '홈: 영어일 때 전체 보기가 /arcade/en으로 가야 함');
     check(/^\/arcade\/[a-z0-9-]+\/en#play$/.test(await page.locator('#lb-pgshelf .lb-pgc').first().getAttribute('href')), '홈: 영어일 때 카드가 영어 게임 페이지로 가야 함');

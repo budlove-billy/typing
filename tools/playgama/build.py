@@ -17,7 +17,11 @@ OURS_NAME = {  # index.html I18N nav.<id> 와 같게
   'merge': {'ko': '말랑 2048', 'en': 'Mallow 2048', 'th': 'มัลโลว์ 2048'}, 'spot': {'ko': '다른 색 찾기', 'en': 'Odd Color Out', 'th': 'หาสีที่ต่าง'},
   'cards': {'ko': '카드 짝', 'en': 'Card Match', 'th': 'จับคู่การ์ด'}, 'diff': {'ko': '틀린 그림 찾기', 'en': 'Spot the Difference', 'th': 'หาจุดต่าง'},
   'sort': {'ko': '컬러 소트', 'en': 'Color Sort', 'th': 'เรียงสี'}, 'slide': {'ko': '슬라이딩 퍼즐', 'en': 'Slide Puzzle', 'th': 'พัซเซิลเลื่อน'},
-  'fit': {'ko': '블록 채우기', 'en': 'Block Fit', 'th': 'ต่อบล็อก'}, 'run': {'ko': '말로우 런', 'en': 'Mallow Run', 'th': 'มาโลว์รัน'}}
+  'fit': {'ko': '블록 채우기', 'en': 'Block Fit', 'th': 'ต่อบล็อก'}, 'run': {'ko': '말로우 런', 'en': 'Mallow Run', 'th': 'มาโลว์รัน'},
+  'chop': {'ko': '말로우 타워', 'en': 'Mallow Tower', 'th': 'หอมัลโลว์'}, 'trace': {'ko': '길 따라가기', 'en': 'Path Trace', 'th': 'ลากตามทาง'},
+  'react': {'ko': '반응 속도', 'en': 'Reaction', 'th': 'ความไว'}, 'math': {'ko': '암산 게임', 'en': 'Math Game', 'th': 'เกมคำนวณ'},
+  'whack': {'ko': '말로우 팡팡', 'en': 'Mallow Pop', 'th': 'ตีมัลโลว์'}, 'flank': {'ko': '화살표 집중', 'en': 'Arrow Focus', 'th': 'ลูกศรโฟกัส'},
+  'catch': {'ko': '마시멜로 받기', 'en': 'Catch Mallow', 'th': 'รับมาร์ชเมลโล่'}}
 e = lambda s: html.escape(str(s), quote=True)
 
 def rd(p): return io.open(p, encoding='utf-8', newline='').read()
