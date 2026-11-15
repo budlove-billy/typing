@@ -2,7 +2,7 @@
 """홈 로비 '쉬어가는 게임' 선반 (index.html). 여러 번 실행해도 된다.
 v2 (2026-11-08, 사용자: '광고 자리 같은 카드라 눈에 안 띈다 → 게임 목록처럼 그림 + 전체 보기'):
 - 오늘의 퍼즐 바로 아래에 [🎮 쉬어가는 게임 · 외부 게임 · 전체 보기 ›] 제목 + 게임 그림 카드 가로 선반.
-- 카드를 누르면 해당 언어 허브(/arcade/…#게임id)로 가서 그 게임이 바로 열린다(사용자가 그 게임을 직접 고른 클릭).
+- 카드를 누르면 그 게임의 하위 페이지(/arcade/<id>/…#play)로 가서 바로 열린다(사용자가 그 게임을 직접 고른 클릭). v3 2026-11-08
 - 그림·주소·이름은 assets/playgama-config.js(PLAYGAMA, PLAYGAMA_NAMES)에서만 읽는다. 꺼져 있으면 섹션 전체가 hidden.
 - 그 자리에서 동기로 그려 첫 화면 뒤 밀림이 없다. 미션·연속 기록·추천 목록과 엮지 않는다(GA4 pg_entry_click만).
 v1(능력별 아래 가로 카드 #lb-pg)이 있으면 지운다."""
@@ -68,7 +68,7 @@ p.R('<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C
     '  var games=(c.games||[]).filter(function(g){ return g&&g.enabled!==false&&g.url&&g.thumb&&N[g.id]; });\n'
     '  if(!(c.enabled&&c.clid&&c.homeEntry!==false)||!games.length){ sec.hidden=true; return; }\n'
     '  var l=pgLang(), hub=pgHub(); box.innerHTML="";\n'
-    '  games.forEach(function(g,i){ var a=document.createElement("a"); a.className="lb-card lb-pgc"; a.href=hub+"#"+g.id;\n'
+    '  games.forEach(function(g,i){ var a=document.createElement("a"); a.className="lb-card lb-pgc"; a.href=(l==="ko"?"/arcade/"+g.id+"/":"/arcade/"+g.id+"/"+l)+"#play";\n'
     '    a.onclick=function(){ pgEntry(g.id); };\n'
     '    var img=document.createElement("img"); img.className="lb-img"; img.src=g.thumb; img.alt=""; img.width=240; img.height=135; img.decoding="async"; if(i>2) img.loading="lazy";\n'
     '    var nm=document.createElement("span"); nm.className="lb-name"; nm.textContent=N[g.id][l]||N[g.id].ko;\n'

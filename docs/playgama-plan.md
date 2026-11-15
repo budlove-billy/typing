@@ -300,3 +300,8 @@ Playgama 카탈로그 404개 메타데이터(평점·평가 수·모바일 지�
 - 할 일: /arcade/를 **게임 목록(썸네일 그리드)** 으로 바꾸고, 게임마다 **하위 페이지**(/arcade/<id>/ + en/th)를 따로 만든다(소개·게임방법·게임TIP·플레이). 게임 수를 늘린다.
 - 이유: 게임이 많아지면 한 페이지 스크롤이 너무 길어 게임을 하나씩 확인하기 불편함.
 - 판단 자료: GA4 pg_entry_click·pg_play_click·pg_iframe_load·pg_close(sec), Playgama 대시보드 수익.
+
+## 18. 목록 + 게임별 페이지 (2026-11-08, 17장 앞당김)
+- 구조: /arcade/(목록·칩) → /arcade/<id>/(+en, th). 문구는 content.py(게임마다 cat·hot·mins·ours·ko/en/th 소개·게임방법·TIP·이런 분께), 주소·썸네일은 설정 파일.
+- 게임 추가 절차: picker에서 고름 → 설정 games[]에 id·url(clid)·thumb → content.py에 원문 → build.py → check.mjs → 품질 검사.
+- 주의 표시(공포·좀비·총·도박·멀티·오비·IP의심)는 넣지 않는 것을 기본으로 한다(가족용·IP 침해 회피).

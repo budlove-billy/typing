@@ -17,18 +17,44 @@
 
   var list = document.getElementById('pg-games'), off = document.getElementById('pg-off');
   var games = {}; (C.games || []).forEach(function(g){ if (g && g.id) games[g.id] = g; });
+  function qsa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function ok(id){ var g = games[id]; return !!(g && g.enabled !== false && g.url); }
+  var cards = qsa('.pg-card'), tiles = qsa('.ag-card[data-id]');
+  var isGame = cards.length > 0;   // 게임별 하위 페이지인지(허브는 그림 카드 목록만 있다)
+  var view = isGame ? 'pg_game_view' : 'pg_hub_view';
+  var fromUs = false; try { fromUs = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+  var want = decodeURIComponent((location.hash || '').slice(1));
 
-  // 꺼져 있으면(킬 스위치) 목록을 통째로 지우고 '준비 중'만 보인다 — 빌드를 다시 하지 않아도 즉시 적용된다.
-  if (!LIVE) { if (list) list.remove(); if (off) off.hidden = false; track('pg_hub_view', { enabled: 0, game_count: 0, lang: lang }); return; }
+  // 꺼져 있으면(킬 스위치) 게임·목록을 통째로 지우고 '준비 중'만 보인다 — 빌드를 다시 하지 않아도 즉시 적용된다.
+  if (!LIVE) {
+    if (list) list.remove(); cards.concat(tiles).forEach(function(n){ n.remove(); });
+    if (off) off.hidden = false; track(view, { enabled: 0, game_count: 0, lang: lang }); return;
+  }
   if (off) off.hidden = true;
-  if (!list) return;
 
-  // 설정에서 빠졌거나 꺼진 게임은 카드째 지운다(Playgama가 게임을 내리면 여기서 바로 반영).
-  var cards = Array.prototype.slice.call(list.querySelectorAll('.pg-card'));
-  cards.forEach(function(card){ var g = games[card.dataset.id]; if (!g || g.enabled === false || !g.url) card.remove(); });
-  cards = Array.prototype.slice.call(list.querySelectorAll('.pg-card'));
-  if (!cards.length) { list.remove(); if (off) off.hidden = false; }
-  track('pg_hub_view', { enabled: 1, game_count: cards.length, lang: lang });
+  // 설정에서 빠졌거나 꺼진 게임은 그 카드를 지운다(Playgama가 게임을 내리면 여기서 바로 반영).
+  tiles.forEach(function(t){ if (!ok(t.dataset.id)) t.remove(); else t.addEventListener('click', function(){ track('pg_tile_click', { game: t.dataset.id, from: isGame ? 'game' : 'hub', lang: lang }); }); });
+  cards.forEach(function(c){ if (!ok(c.dataset.id)) c.remove(); });
+  cards = qsa('.pg-card');
+  if (isGame && !cards.length && off) off.hidden = false;
+  if (list && !list.querySelector('.ag-card')) { list.remove(); if (off) off.hidden = false; }
+
+  // 허브 분류 칩 — 보이는 카드만 거른다(저장 없음).
+  qsa('.chips .chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var c = chip.dataset.cat;
+      qsa('.chips .chip').forEach(function(x){ x.classList.toggle('on', x === chip); });
+      qsa('#pg-games .ag-card').forEach(function(t){ t.hidden = !(c === 'all' || t.dataset.cat === c); });
+      track('pg_chip', { cat: c, lang: lang });
+    });
+  });
+
+  // 예전 주소(/arcade/#게임id)는 그 게임 페이지로 옮긴다. 같은 사이트에서 온 경우만 바로 열기(#play)를 붙인다.
+  if (!isGame && want && want !== 'play' && list) {
+    var t0 = list.querySelector('.ag-card[data-id="' + want.replace(/[^a-z0-9-]/g, '') + '"]');
+    if (t0) { location.replace(t0.getAttribute('href').split('#')[0] + (fromUs ? '#play' : '')); return; }
+  }
+  track(view, { enabled: 1, game_count: isGame ? cards.length : qsa('#pg-games .ag-card').length, lang: lang, game: isGame && cards[0] ? cards[0].dataset.id : '' });
 
   var open = null;   // { card, stage, timer, t0, id }
   function closeOpen(reason){
@@ -76,13 +102,8 @@
     var poster = card.querySelector('.pg-poster');
     if (poster) poster.addEventListener('click', function(){ play(card); });
   });
-  // 홈 선반에서 게임 카드를 눌러 들어오면(#게임id, 같은 사이트에서 온 이동) 그 게임을 바로 연다 — 사용자가 그 게임을 직접 고른 클릭이다.
-  // 검색·외부 링크로 #게임id에 들어오면 열지 않고 그 카드로만 데려간다(클릭 없는 로딩 금지).
-  var want = decodeURIComponent((location.hash || '').slice(1));
-  var target = want ? cards.filter(function(c){ return c.dataset.id === want; })[0] : null;
-  if (target) {
-    var fromUs = false; try { fromUs = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
-    if (fromUs) play(target, 'home'); else target.scrollIntoView({ block: 'start' });
-  }
+  // 목록·홈에서 게임 카드를 눌러 들어오면(#play, 같은 사이트에서 온 이동) 그 게임을 바로 연다 — 사용자가 그 게임을 직접 고른 클릭이다.
+  // 검색·외부 링크로 #play를 달고 와도 열지 않는다(클릭 없는 로딩 금지).
+  if (isGame && want === 'play' && fromUs && cards[0]) play(cards[0], 'list');
   window.addEventListener('pagehide', function(){ closeOpen('leave'); });
 })();

@@ -3,6 +3,8 @@
   "rewrites": [
     { "source": "/en", "destination": "/en.html" },
     { "source": "/th", "destination": "/th.html" },
+    { "source": "/arcade/:id/en", "destination": "/arcade/:id/en.html" },
+    { "source": "/arcade/:id/th", "destination": "/arcade/:id/th.html" },
     { "source": "/:dir/en", "destination": "/:dir/en.html" },
     { "source": "/:dir/th", "destination": "/:dir/th.html" }
   ],

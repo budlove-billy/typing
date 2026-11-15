@@ -62,7 +62,7 @@ const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; cha
 const server = http.createServer(async (req, res) => {
   try {
     let p = decodeURIComponent(new URL(req.url, `http://127.0.0.1:${port}`).pathname);
-    if (p === '/arcade/en' || p === '/arcade/th') p += '.html';
+    if (/^\/arcade\/([a-z0-9-]+\/)?(en|th)$/.test(p)) p += '.html';
     if (p.endsWith('/')) p += 'index.html';
     const f = path.resolve(root, '.' + p);
     if (!f.startsWith(path.resolve(root))) throw new Error('bad path');
@@ -117,7 +117,7 @@ try {
     check(await page.locator('#lb-pgshelf .lb-pgc').count() === nGames, '홈: 선반 카드 수가 설정과 다름');
     await page.evaluate(() => setLanguage('en'));
     check((await page.$eval('#lb-pg-all', (e) => e.getAttribute('href'))) === '/arcade/en', '홈: 영어일 때 전체 보기가 /arcade/en으로 가야 함');
-    check((await page.locator('#lb-pgshelf .lb-pgc').first().getAttribute('href')).startsWith('/arcade/en#'), '홈: 영어일 때 카드가 영어 허브로 가야 함');
+    check(/^\/arcade\/[a-z0-9-]+\/en#play$/.test(await page.locator('#lb-pgshelf .lb-pgc').first().getAttribute('href')), '홈: 영어일 때 카드가 영어 게임 페이지로 가야 함');
     await ctx.close(); }
 
   // 2) 실제 허브(현재 설정): 꺼져 있으면 iframe 없음·준비 중 보임
@@ -131,33 +131,33 @@ try {
     await ctx.close();
   }
 
-  // 3) 미리보기(켜진 상태): 클릭 전 0 → 클릭 후 iframe 1개 → 다른 게임 눌러도 1개 → 닫기 0개
+  // 3) 미리보기 허브: 그림 카드 수 = 설정, 분류 칩, 클릭 전 게임 요청 0
+  const first = cfg.games.find((g) => g.enabled !== false && g.url).id;
   { const { ctx, page, ext } = await open('/.logs/arcade-preview/index.html');
-    const n = await page.locator('.pg-card').count();
-    check(n === (cfg ? cfg.games.filter((g) => g.enabled !== false && g.url).length : 0), `미리보기: 카드 수(${n})가 설정과 다름`);
-    check(await page.locator('iframe').count() === 0 && ext.export === 0, '미리보기: 클릭 전에 게임을 불러옴(자동 실행 금지)');
-    await page.locator('.pg-poster').nth(0).click(); await page.waitForTimeout(300);
-    check(await page.locator('iframe').count() === 1 && ext.export === 1, '미리보기: 플레이 클릭 후 iframe 1개가 아님');
-    const allow = await page.locator('iframe').getAttribute('allow');
-    check(allow === 'fullscreen', `미리보기: iframe allow 값(${allow})`);
-    await page.locator('.pg-poster').nth(1).click(); await page.waitForTimeout(300);
-    check(await page.locator('iframe').count() === 1, '미리보기: 다른 게임을 눌렀는데 iframe이 여러 개');
+    check(await page.locator('#pg-games .ag-card').count() === nGames, '허브: 그림 카드 수가 설정과 다름');
+    check(await page.locator('iframe').count() === 0 && ext.export === 0, '허브: 게임을 불러오면 안 됨');
+    const chip = page.locator('.chips .chip').nth(1); const cat = await chip.getAttribute('data-cat'); await chip.click();
+    const vis = await page.locator('#pg-games .ag-card:visible').evaluateAll((els) => els.map((e) => e.dataset.cat));
+    check(vis.length > 0 && vis.every((c) => c === cat), '허브: 분류 칩이 카드를 거르지 못함');
+    await ctx.close(); }
+  // 3-1) 게임 페이지: 직접 들어오면 클릭 전 0 → 플레이 클릭 후 iframe 1개 → 닫기 0
+  { const { ctx, page, ext } = await open(`/.logs/arcade-preview/${first}/index.html#play`);
+    check(await page.locator('iframe').count() === 0 && ext.export === 0, '게임 페이지: 외부에서 #play로 와도 자동으로 열면 안 됨');
+    await page.locator('.pg-poster').click(); await page.waitForTimeout(300);
+    check(await page.locator('iframe').count() === 1 && ext.export === 1, '게임 페이지: 플레이 후 iframe 1개가 아님');
+    check((await page.locator('iframe').getAttribute('allow')) === 'fullscreen', '게임 페이지: iframe allow');
     await page.locator('.pg-close').click();
-    check(await page.locator('iframe').count() === 0, '미리보기: 닫기 후 iframe이 남음');
+    check(await page.locator('iframe').count() === 0, '게임 페이지: 닫기 후 iframe이 남음');
+    check(await page.locator('.ag-grid .ag-card').count() >= Math.min(6, nGames - 1), '게임 페이지: 다른 게임 카드가 없음');
     await ctx.close(); }
-
-  // 3-1) 홈 카드에서 들어오면 그 게임이 바로 열림 / 외부에서 #id로 오면 열지 않음
+  // 3-2) 목록에서 카드를 누르면(같은 사이트) 그 게임 페이지에서 바로 열림
   { const { ctx, page, ext } = await open('/.logs/arcade-preview/index.html');
-    const id = cfg.games.find((g) => g.enabled !== false && g.url).id;
-    await page.evaluate((h) => { location.href = h; }, '/.logs/arcade-preview/index.html?x=1#' + id); await page.waitForLoadState('load'); await page.waitForTimeout(400);
-    check(await page.locator(`.pg-card[data-id="${id}"] iframe`).count() === 1 && ext.export === 1, '허브: 같은 사이트에서 #게임id로 오면 그 게임이 열려야 함');
-    await ctx.close(); }
-  { const { ctx, page, ext } = await open('/.logs/arcade-preview/index.html#' + cfg.games[0].id);
-    check(await page.locator('iframe').count() === 0 && ext.export === 0, '허브: 외부에서 #게임id로 바로 오면 자동으로 열면 안 됨');
+    await page.locator(`#pg-games .ag-card[data-id="${first}"]`).click(); await page.waitForLoadState('load'); await page.waitForTimeout(500);
+    check(await page.locator('iframe').count() === 1 && ext.export === 1, '목록 카드 클릭 → 게임 페이지에서 바로 열려야 함');
     await ctx.close(); }
 
   // 4) 불러오기 실패: 15초 뒤 안내+다시 시도
-  { const { ctx, page } = await open('/.logs/arcade-preview/index.html', { hang: true });
+  { const { ctx, page } = await open(`/.logs/arcade-preview/${first}/index.html`, { hang: true });
     await page.clock.install();
     await page.locator('.pg-poster').nth(0).click();
     await page.clock.fastForward(16000); await page.waitForTimeout(200);
@@ -165,7 +165,7 @@ try {
     await ctx.close(); }
 
   // 5) 화면 넘침·밀림 (320/390/1000)
-  for (const w of [320, 390, 1000]) for (const u of ['/.logs/arcade-preview/index.html', '/.logs/arcade-preview/th.html', '/arcade/']) {
+  for (const w of [320, 390, 1000]) for (const u of ['/.logs/arcade-preview/index.html', '/.logs/arcade-preview/th.html', `/.logs/arcade-preview/${first}/index.html`, '/arcade/']) {
     const { ctx, page } = await open(u, { width: w });
     const over = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     check(over <= 0, `${u} @${w}: 가로 넘침 ${over}px`);
