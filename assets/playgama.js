@@ -7,11 +7,22 @@
   var LIVE = !!(C.enabled && C.clid);
   var lang = (document.documentElement.lang || 'ko').slice(0, 2);
   var T = {
-    ko: { loading:'게임을 불러오는 중…', fail:'게임을 불러오지 못했어요. 잠시 후 다시 시도하거나 다른 게임을 골라 보세요.', retry:'다시 시도', close:'닫기 ✕' },
-    en: { loading:'Loading the game…', fail:"The game didn't load. Try again in a moment or pick another game.", retry:'Try again', close:'Close ✕' },
-    th: { loading:'กำลังโหลดเกม…', fail:'โหลดเกมไม่สำเร็จ ลองใหม่อีกครั้งหรือเลือกเกมอื่น', retry:'ลองใหม่', close:'ปิด ✕' }
+    ko: { loading:'게임을 불러오는 중…', fail:'게임을 불러오지 못했어요. 잠시 후 다시 시도하거나 다른 게임을 골라 보세요.', retry:'다시 시도', close:'닫기 ✕', full:'⛶ 전체 화면', exitFull:'✕ 전체 화면 끝내기' },
+    en: { loading:'Loading the game…', fail:"The game didn't load. Try again in a moment or pick another game.", retry:'Try again', close:'Close ✕', full:'⛶ Full screen', exitFull:'✕ Exit full screen' },
+    th: { loading:'กำลังโหลดเกม…', fail:'โหลดเกมไม่สำเร็จ ลองใหม่อีกครั้งหรือเลือกเกมอื่น', retry:'ลองใหม่', close:'ปิด ✕', full:'⛶ เต็มจอ', exitFull:'✕ ออกจากเต็มจอ' }
   }[lang] || null;
-  if (!T) T = { loading:'Loading…', fail:'Failed to load.', retry:'Retry', close:'Close' };
+  if (!T) T = { loading:'Loading…', fail:'Failed to load.', retry:'Retry', close:'Close', full:'Full screen', exitFull:'Exit full screen' };
+  // 전체 화면(2026-11-16): 브라우저 전체 화면을 먼저 쓰고, 안 되는 곳(아이폰 사파리 등)은 화면을 꽉 채우는 덮개로 대신한다.
+  function fsEl(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
+  function enterFull(wrap){
+    var req = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+    if (req) { try { var r = req.call(wrap); if (r && r.catch) r.catch(function(){ wrap.classList.add('pg-max'); }); return; } catch (e) {} }
+    wrap.classList.add('pg-max'); document.documentElement.classList.add('pg-noscroll');
+  }
+  function exitFull(wrap){
+    if (fsEl()) { var ex = document.exitFullscreen || document.webkitExitFullscreen; try { ex && ex.call(document); } catch (e) {} }
+    if (wrap) wrap.classList.remove('pg-max'); document.documentElement.classList.remove('pg-noscroll');
+  }
   var TIMEOUT_MS = 15000;
   function track(name, params){ try{ if (typeof gtag === 'function') gtag('event', name, params || {}); }catch(e){} }
 
@@ -61,6 +72,7 @@
     if (!open) return;
     var o = open; open = null; clearTimeout(o.timer);
     track('pg_close', { game: o.id, sec: Math.round((Date.now() - o.t0) / 1000), reason: reason || 'close' });
+    exitFull(o.stage.querySelector('.pg-frame-wrap'));
     o.stage.innerHTML = ''; o.stage.hidden = true; o.card.classList.remove('is-open');
     var poster = o.card.querySelector('.pg-poster'); if (poster) poster.hidden = false;
   }
@@ -82,7 +94,8 @@
     var bar = document.createElement('div'); bar.className = 'pg-bar';
     var x = document.createElement('button'); x.type = 'button'; x.className = 'pg-close'; x.textContent = T.close;
     x.onclick = function(){ closeOpen('close'); poster && poster.focus && poster.focus(); };
-    bar.appendChild(x); stage.appendChild(bar);
+    var fs = document.createElement('button'); fs.type = 'button'; fs.className = 'pg-btn pg-fs'; fs.textContent = T.full;
+    bar.appendChild(fs); bar.appendChild(x); stage.appendChild(bar);
     var wrap = document.createElement('div'); wrap.className = 'pg-frame-wrap';
     var wait = document.createElement('div'); wait.className = 'pg-wait'; wait.textContent = T.loading; wrap.appendChild(wait);
     var f = document.createElement('iframe');
@@ -91,7 +104,10 @@
     var o = { card: card, stage: stage, id: id, t0: Date.now(), timer: 0 };
     f.addEventListener('load', function(){ if (open !== o) return; clearTimeout(o.timer); wait.remove(); track('pg_iframe_load', { game: id, ms: Date.now() - o.t0 }); });
     f.addEventListener('error', function(){ if (open === o) fallback(o, 'error'); });
-    wrap.appendChild(f); stage.appendChild(wrap);
+    var out = document.createElement('button'); out.type = 'button'; out.className = 'pg-fs-out'; out.textContent = T.exitFull;
+    out.onclick = function(){ exitFull(wrap); };
+    fs.onclick = function(){ enterFull(wrap); track('pg_fullscreen', { game: id }); };
+    wrap.appendChild(f); wrap.appendChild(out); stage.appendChild(wrap);
     if (poster) poster.hidden = true;
     stage.hidden = false; card.classList.add('is-open'); open = o;
     o.timer = setTimeout(function(){ if (open === o && wait.isConnected) { wait.remove(); fallback(o, 'timeout'); } }, TIMEOUT_MS);
