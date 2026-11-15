@@ -1421,9 +1421,6 @@ body.lobby #screen-home .home-install,body.lobby #screen-home .home-ios-hint{mar
     <button class="lb-gift" id="lb-gift" onclick="lbGoLucky()">&nbsp;</button>
     <button class="lb-play" id="lb-play" onclick="lbPlay()">&nbsp;</button>
   </section>
-  <h2 class="lb-h2">🧩 <span data-i18n="cat.daily">오늘의 퍼즐</span><small data-i18n="lb.puz.sub">하루 한 판</small></h2>
-  <div class="lb-row3 lb-puz" id="lb-puz"><button class="lb-card" tabindex="-1" aria-hidden="true"></button><button class="lb-card" tabindex="-1" aria-hidden="true"></button><button class="lb-card" tabindex="-1" aria-hidden="true"></button></div>
-  <p class="lb-count" id="lb-count">&nbsp;</p>
   <script src="/assets/playgama-config.js?v=2"></script>
   <section class="lb-pgsec" id="lb-pgsec" hidden aria-labelledby="lb-pg-title">
     <h2 class="lb-h2">🎮 <span id="lb-pg-title" data-i18n="pg.title">쉬어가는 게임</span><em class="lb-pgx" data-i18n="pg.ext">외부 게임</em><a class="lb-more" id="lb-pg-all" href="/arcade/" onclick="pgEntry('all')" data-i18n="lb.all">전체 보기 ›</a></h2>
@@ -1431,6 +1428,9 @@ body.lobby #screen-home .home-install,body.lobby #screen-home .home-ios-hint{mar
     <p class="lb-pgsub" data-i18n="pg.sub">두뇌게임 사이 머리 식히기 · 설치 없이 바로 · Playgama 제공</p>
   </section>
   <script>pgShelf();</script>
+  <h2 class="lb-h2">🧩 <span data-i18n="cat.daily">오늘의 퍼즐</span><small data-i18n="lb.puz.sub">하루 한 판</small></h2>
+  <div class="lb-row3 lb-puz" id="lb-puz"><button class="lb-card" tabindex="-1" aria-hidden="true"></button><button class="lb-card" tabindex="-1" aria-hidden="true"></button><button class="lb-card" tabindex="-1" aria-hidden="true"></button></div>
+  <p class="lb-count" id="lb-count">&nbsp;</p>
   <h2 class="lb-h2">🔮 <span data-i18n="lb.fortune.title">오늘의 운세</span><button class="lb-more" onclick="showScreen('fortune')" data-i18n="lb.more">더 보기 ›</button></h2>
   <div id="lb-lucky" class="lb-lucky-wrap"></div>
   <div class="lb-fchips" id="lb-fchips"></div>
