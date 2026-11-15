@@ -1,4 +1,4 @@
-// Playgama(쉬어가는 게임) 품질 검사 — 파트너 약관·킬 스위치·클릭 전 미로딩·화면 넘침·밀림을 확인한다. (docs/playgama-plan.md)
+// Playgama(말로우 아케이드) 품질 검사 — 파트너 약관·킬 스위치·클릭 전 미로딩·화면 넘침·밀림을 확인한다. (docs/playgama-plan.md)
 // 실행: node tools/quality/quality-playgama.mjs   (먼저 python tools/playgama/build.py --preview 로 미리보기를 만든다)
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';

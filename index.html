@@ -29,7 +29,7 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
 <script>
-// 쉬어가는 게임(Playgama) 홈 선반 — 설정이 켜져 있을 때만. 언어가 바뀌면 다시 그린다(setLanguage).
+// 말로우 아케이드(Playgama) 홈 선반 — 설정이 켜져 있을 때만. 언어가 바뀌면 다시 그린다(setLanguage).
 function pgLang(){ var l=(document.documentElement.lang||"ko").slice(0,2); return l==="en"||l==="th"?l:"ko"; }
 function pgHub(){ var l=pgLang(); return l==="en"?"/arcade/en":l==="th"?"/arcade/th":"/arcade/"; }
 function pgEntry(game){ try{ if(typeof gtag==="function") gtag("event","pg_entry_click",{game:game,lang:pgLang()}); }catch(e){} }
@@ -166,6 +166,13 @@ body.ingame .nav-logo{padding-left:.7rem;gap:.35rem}
    로고 영역을 줄어들 수 있게 만들고, 좁은 화면에서는 브랜드명을 감춰 폭을 확보한다. */
 body.ingame .nav-logo{flex-shrink:1;min-width:0;overflow:hidden}
 @media (max-width:480px){ body.ingame .nav-brand,body.ingame .nav-mascot{display:none} body.ingame .nav-logo{padding-left:.55rem} body.ingame .lang-select{max-width:76px} }
+/* 게임 화면 상단바 가운데 정렬(2026-11-16): 왼쪽 홈 · 가운데 게임 이름 · 오른쪽 소리/언어 */
+body.ingame nav{display:grid;grid-template-columns:1fr minmax(0,auto) 1fr}
+body.ingame .nav-exit{justify-self:start}
+body.ingame .nav-logo{justify-self:center;padding:0 .4rem}
+body.ingame .nav-brand,body.ingame .nav-mascot{display:none}
+body.ingame .lang-select-wrap{justify-self:end}
+@media (max-width:640px){ body.ingame nav{height:48px} body.ingame .nav-exit{min-height:34px;padding:.35rem .7rem;font-size:.86rem;border-radius:10px} body.ingame .lang-select-wrap{padding-right:.6rem} }
 .mallow{display:inline-block;vertical-align:middle;overflow:visible}
 .mallow-bob{animation:mallowBob 2.2s ease-in-out infinite}
 @keyframes mallowBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8%)}}
@@ -1362,7 +1369,7 @@ body.lobby .site-footer,body.lobby .site-footer a{color:#aaa2d8}
 .lb-chip.on{background:#8fd3ff;color:#10204a;border-color:#8fd3ff}
 /* 이번 주 나 */
 .lb-me{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-/* 쉬어가는 게임(Playgama) 선반 — assets/playgama-config.js가 켜져 있을 때만 보인다 */
+/* 말로우 아케이드(Playgama) 선반 — assets/playgama-config.js가 켜져 있을 때만 보인다 */
 .lb-pgsec{margin-top:1.4rem;border-radius:24px;padding:.2rem 1rem 1rem;background:linear-gradient(160deg,#0f4a5e,#13284f);border:2px solid rgba(120,230,255,.5);box-shadow:0 14px 30px rgba(0,0,0,.4)}
 .lb-pgsec[hidden]{display:none}
 .lb-pgsec .lb-h2{margin-top:1rem}
@@ -1423,7 +1430,7 @@ body.lobby #screen-home .home-install,body.lobby #screen-home .home-ios-hint{mar
   </section>
   <script src="/assets/playgama-config.js?v=2"></script>
   <section class="lb-pgsec" id="lb-pgsec" hidden aria-labelledby="lb-pg-title">
-    <h2 class="lb-h2">🎮 <span id="lb-pg-title" data-i18n="pg.title">쉬어가는 게임</span><em class="lb-pgx" data-i18n="pg.ext">외부 게임</em><a class="lb-more" id="lb-pg-all" href="/arcade/" onclick="pgEntry('all')" data-i18n="lb.all">전체 보기 ›</a></h2>
+    <h2 class="lb-h2">🎮 <span id="lb-pg-title" data-i18n="pg.title">말로우 아케이드</span><em class="lb-pgx" data-i18n="pg.ext">외부 게임</em><a class="lb-more" id="lb-pg-all" href="/arcade/" onclick="pgEntry('all')" data-i18n="lb.all">전체 보기 ›</a></h2>
     <div class="lb-shelf" id="lb-pgshelf"></div>
     <p class="lb-pgsub" data-i18n="pg.sub">두뇌게임 사이 머리 식히기 · 설치 없이 바로 · Playgama 제공</p>
   </section>
@@ -3603,7 +3610,7 @@ const I18N = {
   "nav.tagline": {ko:" 가볍게 즐기는 두뇌게임", en:" light brain games", th:" เกมสมองเบา ๆ"},
   "nav.leaveConfirm": {ko:"게임을 종료하고 이동할까요? 진행 상황은 저장되지 않아요.", en:"Quit the current game and leave? Your progress won't be saved.", th:"ออกจากเกมแล้วไปต่อไหม? ความคืบหน้าจะไม่ถูกบันทึก"},
   "nav.exit": {ko:"홈", en:"Home", th:"หน้าแรก"},
-  "pg.title": {ko:"쉬어가는 게임", en:"Take a Break", th:"เกมพักสมอง"},
+  "pg.title": {ko:"말로우 아케이드", en:"Mallow Arcade", th:"มาโลว์อาร์เคด"},
   "pg.ext": {ko:"외부 게임", en:"External", th:"เกมภายนอก"},
   "pg.sub": {ko:"두뇌게임 사이 머리 식히기 · 설치 없이 바로 · Playgama 제공", en:"Unwind between brain games · no install · by Playgama", th:"พักสมองระหว่างเกมฝึกสมอง · ไม่ต้องติดตั้ง · โดย Playgama"},
   "legal.about": {ko:"소개", en:"About", th:"เกี่ยวกับเรา"},
@@ -4426,7 +4433,7 @@ const I18N = {
   "home.todayPick": {ko:"✨ 오늘의 추천", en:"✨ Today's Pick", th:"✨ แนะนำวันนี้"},
   "home.startNow": {ko:"지금 시작 →", en:"Start now →", th:"เริ่มเลย →"},
   "mission.label": {ko:"🎯 오늘의 미션", en:"🎯 Today's Mission", th:"🎯 ภารกิจวันนี้"},
-  "mission.sub": {ko:"머리 식힐 겸, 딱 3판만 가볍게", en:"Just 3 quick games to unwind", th:"เล่นเบา ๆ แค่ 3 เกมพักสมอง"},
+  "mission.sub": {ko:"머리 식힐 겸, 딱 3판만 가볍게", en:"Just 3 quick games to unwind", th:"เล่นเบา ๆ แค่ 3 มาโลว์อาร์เคด"},
   "mission.cta": {ko:"가볍게 시작하기 →", en:"Start easy →", th:"เริ่มแบบสบาย ๆ →"},
   "mission.done": {ko:"오늘의 미션 완료! 🎉", en:"Mission complete! 🎉", th:"ภารกิจสำเร็จ! 🎉"},
   "home.allGames": {ko:"전체 트레이닝", en:"All Training", th:"การฝึกทั้งหมด"},

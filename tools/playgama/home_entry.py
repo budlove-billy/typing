@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""홈 로비 '쉬어가는 게임' 선반 (index.html). 여러 번 실행해도 된다.
+"""홈 로비 '말로우 아케이드' 선반 (index.html). 여러 번 실행해도 된다.
 v2 (2026-11-08, 사용자: '광고 자리 같은 카드라 눈에 안 띈다 → 게임 목록처럼 그림 + 전체 보기'):
-- (2026-11-16부터 오늘의 퍼즐 바로 위로 옮김) 원래 오늘의 퍼즐 바로 아래에 [🎮 쉬어가는 게임 · 외부 게임 · 전체 보기 ›] 제목 + 게임 그림 카드 가로 선반.
+- (2026-11-16부터 오늘의 퍼즐 바로 위로 옮김) 원래 오늘의 퍼즐 바로 아래에 [🎮 말로우 아케이드 · 외부 게임 · 전체 보기 ›] 제목 + 게임 그림 카드 가로 선반.
 - 카드를 누르면 그 게임의 하위 페이지(/arcade/<id>/…#play)로 가서 바로 열린다(사용자가 그 게임을 직접 고른 클릭). v3 2026-11-08
 - 그림·주소·이름은 assets/playgama-config.js(PLAYGAMA, PLAYGAMA_NAMES)에서만 읽는다. 꺼져 있으면 섹션 전체가 hidden.
 - 그 자리에서 동기로 그려 첫 화면 뒤 밀림이 없다. 미션·연속 기록·추천 목록과 엮지 않는다(GA4 pg_entry_click만).
@@ -16,10 +16,10 @@ nl = p.nl
 
 # ---- v1 걷어내기 ----
 if 'id="lb-pg"' in p.s:
-    p.s = re.sub(r'/\* 쉬어가는 게임\(Playgama\) 진입 카드[^\n]*\n(?:\.lb-pg[^\n]*\n)+', '', p.s)
+    p.s = re.sub(r'/\* 말로우 아케이드\(Playgama\) 진입 카드[^\n]*\n(?:\.lb-pg[^\n]*\n)+', '', p.s)
     p.s = re.sub(r'  <script src="/assets/playgama-config\.js\?v=1"></script>\r?\n  <a class="lb-pg" id="lb-pg"[^\n]*\n  <script>\(function\(\)\{var c=window\.PLAYGAMA[^\n]*\n', '', p.s)
     p.s = re.sub(r'  "pg\.entry\.(?:title|ext|sub)":[^\n]*\n', '', p.s)
-    p.s = re.sub(r'// 쉬어가는 게임\(Playgama\) 진입[^\n]*\nfunction pgEntryClick\(a\)\{\r?\n(?:[^\n]*\n){2}\}\r?\n', '', p.s)
+    p.s = re.sub(r'// 말로우 아케이드\(Playgama\) 진입[^\n]*\nfunction pgEntryClick\(a\)\{\r?\n(?:[^\n]*\n){2}\}\r?\n', '', p.s)
     assert 'lb-pg"' not in p.s and 'pgEntryClick' not in p.s, 'v1 leftovers'
 
 if 'id="lb-pgsec"' in p.s: p.save(); print('v2 already applied'); sys.exit()
@@ -27,7 +27,7 @@ if 'id="lb-pgsec"' in p.s: p.save(); print('v2 already applied'); sys.exit()
 # ---- v2 ----
 p.R('.lb-me{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}',
     '.lb-me{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}\n'
-    '/* 쉬어가는 게임(Playgama) 선반 — assets/playgama-config.js가 켜져 있을 때만 보인다 */\n'
+    '/* 말로우 아케이드(Playgama) 선반 — assets/playgama-config.js가 켜져 있을 때만 보인다 */\n'
     '.lb-pgsec{margin-top:1.4rem;border-radius:24px;padding:.2rem 1rem 1rem;background:linear-gradient(160deg,#0f4a5e,#13284f);border:2px solid rgba(120,230,255,.5);box-shadow:0 14px 30px rgba(0,0,0,.4)}\n'
     '.lb-pgsec[hidden]{display:none}\n'
     '.lb-pgsec .lb-h2{margin-top:1rem}\n'
@@ -42,7 +42,7 @@ p.R('  <p class="lb-count" id="lb-count">&nbsp;</p>\n',
     '  <p class="lb-count" id="lb-count">&nbsp;</p>\n'
     '  <script src="/assets/playgama-config.js?v=2"></script>\n'
     '  <section class="lb-pgsec" id="lb-pgsec" hidden aria-labelledby="lb-pg-title">\n'
-    '    <h2 class="lb-h2">🎮 <span id="lb-pg-title" data-i18n="pg.title">쉬어가는 게임</span><em class="lb-pgx" data-i18n="pg.ext">외부 게임</em><a class="lb-more" id="lb-pg-all" href="/arcade/" onclick="pgEntry(\'all\')" data-i18n="lb.all">전체 보기 ›</a></h2>\n'
+    '    <h2 class="lb-h2">🎮 <span id="lb-pg-title" data-i18n="pg.title">말로우 아케이드</span><em class="lb-pgx" data-i18n="pg.ext">외부 게임</em><a class="lb-more" id="lb-pg-all" href="/arcade/" onclick="pgEntry(\'all\')" data-i18n="lb.all">전체 보기 ›</a></h2>\n'
     '    <div class="lb-shelf" id="lb-pgshelf"></div>\n'
     '    <p class="lb-pgsub" data-i18n="pg.sub">두뇌게임 사이 머리 식히기 · 설치 없이 바로 · Playgama 제공</p>\n'
     '  </section>\n'
@@ -50,7 +50,7 @@ p.R('  <p class="lb-count" id="lb-count">&nbsp;</p>\n',
 
 p.R('  "nav.exit": {ko:"홈", en:"Home", th:"หน้าแรก"},',
     '  "nav.exit": {ko:"홈", en:"Home", th:"หน้าแรก"},\n'
-    '  "pg.title": {ko:"쉬어가는 게임", en:"Take a Break", th:"เกมพักสมอง"},\n'
+    '  "pg.title": {ko:"말로우 아케이드", en:"Mallow Arcade", th:"มาโลว์อาร์เคด"},\n'
     '  "pg.ext": {ko:"외부 게임", en:"External", th:"เกมภายนอก"},\n'
     '  "pg.sub": {ko:"두뇌게임 사이 머리 식히기 · 설치 없이 바로 · Playgama 제공", en:"Unwind between brain games · no install · by Playgama", th:"พักสมองระหว่างเกมฝึกสมอง · ไม่ต้องติดตั้ง · โดย Playgama"},')
 
@@ -58,7 +58,7 @@ p.R('  "nav.exit": {ko:"홈", en:"Home", th:"หน้าแรก"},',
 p.R('<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>',
     '<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>\n'
     '<script>\n'
-    '// 쉬어가는 게임(Playgama) 홈 선반 — 설정이 켜져 있을 때만. 언어가 바뀌면 다시 그린다(setLanguage).\n'
+    '// 말로우 아케이드(Playgama) 홈 선반 — 설정이 켜져 있을 때만. 언어가 바뀌면 다시 그린다(setLanguage).\n'
     'function pgLang(){ var l=(document.documentElement.lang||"ko").slice(0,2); return l==="en"||l==="th"?l:"ko"; }\n'
     'function pgHub(){ var l=pgLang(); return l==="en"?"/arcade/en":l==="th"?"/arcade/th":"/arcade/"; }\n'
     'function pgEntry(game){ try{ if(typeof gtag==="function") gtag("event","pg_entry_click",{game:game,lang:pgLang()}); }catch(e){} }\n'

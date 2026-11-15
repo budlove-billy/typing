@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""쉬어가는 게임(/arcade/) 빌드 — assets/playgama-config.js(켜기·끄기) + tools/playgama/content.py(원문) → 정적 HTML.
+"""말로우 아케이드(/arcade/) 빌드 — assets/playgama-config.js(켜기·끄기) + tools/playgama/content.py(원문) → 정적 HTML.
   python tools/playgama/build.py            사이트용: arcade/index.html·en.html·th.html + sitemap.xml·llms.txt·개인정보처리방침 반영
   python tools/playgama/build.py --preview  미리보기: .logs/arcade-preview/ (켜진 상태로 강제, 배포되지 않음)
 설정이 꺼져 있거나 clid가 비어 있으면: 게임 목록을 아예 만들지 않고 '준비 중' 화면 + noindex, 사이트맵·llms·개인정보 문구에서 뺀다.
@@ -104,12 +104,12 @@ CAT = {'puzzle': {'ko': '퍼즐', 'en': 'Puzzle', 'th': 'พัซเซิล'}
        'strategy': {'ko': '전략·디펜스', 'en': 'Strategy', 'th': 'กลยุทธ์'}, 'sim': {'ko': '경영·시뮬', 'en': 'Simulation', 'th': 'จำลอง'},
        'sports': {'ko': '스포츠', 'en': 'Sports', 'th': 'กีฬา'}, 'girls': {'ko': '꾸미기', 'en': 'Dress up', 'th': 'แต่งตัว'},
        'card': {'ko': '카드·보드', 'en': 'Card & board', 'th': 'การ์ด·บอร์ด'}, 'kids': {'ko': '어린이', 'en': 'Kids', 'th': 'เด็ก'}}
-UI = {'ko': {'all': '전체', 'hot': 'Hot', 'list': '게임 목록', 'more': '다른 게임도 해 보세요', 'back_list': '← 쉬어가는 게임 목록',
-             'title': '{n} 무료 웹게임 — 게임방법·게임TIP | 쉬어가는 게임 | Mallow', 'crumb': '쉬어가는 게임'},
-      'en': {'all': 'All', 'hot': 'Hot', 'list': 'Games', 'more': 'Try another game', 'back_list': '← All Take a Break games',
-             'title': '{n} — free web game, how to play & tips | Mallow', 'crumb': 'Take a Break'},
-      'th': {'all': 'ทั้งหมด', 'hot': 'Hot', 'list': 'รายการเกม', 'more': 'ลองเกมอื่นด้วย', 'back_list': '← รายการเกมพักสมอง',
-             'title': '{n} เกมเว็บฟรี — วิธีเล่นและเคล็ดลับ | Mallow', 'crumb': 'เกมพักสมอง'}}
+UI = {'ko': {'all': '전체', 'hot': 'Hot', 'list': '게임 목록', 'more': '다른 게임도 해 보세요', 'back_list': '← 말로우 아케이드 목록',
+             'title': '{n} 무료 웹게임 — 게임방법·게임TIP | 말로우 아케이드 | Mallow', 'crumb': '말로우 아케이드'},
+      'en': {'all': 'All', 'hot': 'Hot', 'list': 'Games', 'more': 'Try another game', 'back_list': '← All Mallow Arcade games',
+             'title': '{n} — free web game, how to play & tips | Mallow', 'crumb': 'Mallow Arcade'},
+      'th': {'all': 'ทั้งหมด', 'hot': 'Hot', 'list': 'รายการเกม', 'more': 'ลองเกมอื่นด้วย', 'back_list': '← รายการมาโลว์อาร์เคด',
+             'title': '{n} เกมเว็บฟรี — วิธีเล่นและเคล็ดลับ | Mallow', 'crumb': 'มาโลว์อาร์เคด'}}
 GAME_MARK = '<!--pg-game-->'
 BASE = '/.logs/arcade-preview/' if PREVIEW else '/arcade/'
 
@@ -153,7 +153,7 @@ def head(l, title, desc, url, alts, ld, og_img='https://playmallow.com/og/home.p
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EQEH5BF0C"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-9EQEH5BF0C');</script>
 <style>{CSS}</style>
-<link rel="stylesheet" href="/assets/topbar.css?v=1">
+<link rel="stylesheet" href="/assets/topbar.css?v=2">
 </head>'''
 
 def tail(l):
@@ -197,7 +197,7 @@ def page(l):
   <h1>{e(P['h1'])}</h1>
   <p class="tag">{e(P['tag'])}</p>
 </header>
-<script src="/assets/topbar.js?v=4"></script>
+<script src="/assets/topbar.js?v=5"></script>
 <main>
   {body}
 {off_box(l)}
@@ -232,7 +232,7 @@ def game_page(g, l):
   <h1>{e(t['name'])}</h1>
   <p class="tag">{e(CAT[g['cat']][l])} · {e(P['mins'].format(m=g['mins']))}</p>
 </header>
-<script src="/assets/topbar.js?v=4"></script>
+<script src="/assets/topbar.js?v=5"></script>
 <main>
   <article class="card pg-card" data-id="{e(gid)}">
     <h3 hidden>{e(t['name'])}</h3>
@@ -271,7 +271,7 @@ def toggle_block(path, start, end, block, on, anchor):
 
 PRIV_KO = '''    <section>
       <h2>4-1. 외부 게임 (Playgama)</h2>
-      <p><a class="inline" href="/arcade/">쉬어가는 게임</a> 페이지의 게임은 외부 게임 플랫폼 <b>Playgama</b>(LeadToChanges L.L.C-FZ)가 제공합니다. 이용자가 <b>플레이 버튼을 누르기 전에는</b> 게임을 불러오지 않습니다.</p>
+      <p><a class="inline" href="/arcade/">말로우 아케이드</a> 페이지의 게임은 외부 게임 플랫폼 <b>Playgama</b>(LeadToChanges L.L.C-FZ)가 제공합니다. 이용자가 <b>플레이 버튼을 누르기 전에는</b> 게임을 불러오지 않습니다.</p>
       <ul>
         <li>플레이를 누르면 게임이 Playgama 서버에서 열리며, Playgama와 그 광고 파트너가 게임 안에서 쿠키·기기 정보를 사용하고 광고를 보여 주거나 선택 구매 화면을 제공할 수 있습니다.</li>
         <li>이 과정의 정보 처리는 Playgama의 정책을 따릅니다. 말로우는 이 게임들을 통해 이용자 개인정보를 따로 수집하지 않습니다.</li>
@@ -280,7 +280,7 @@ PRIV_KO = '''    <section>
     </section>'''
 PRIV_EN = '''    <section>
       <h2>4-1. External Games (Playgama)</h2>
-      <p>Games on the <a class="inline" href="/arcade/en">Take a Break</a> page are provided by the external game platform <b>Playgama</b> (LeadToChanges L.L.C-FZ). Nothing is loaded from Playgama <b>until you press Play</b>.</p>
+      <p>Games on the <a class="inline" href="/arcade/en">Mallow Arcade</a> page are provided by the external game platform <b>Playgama</b> (LeadToChanges L.L.C-FZ). Nothing is loaded from Playgama <b>until you press Play</b>.</p>
       <ul>
         <li>After you press Play, the game opens from Playgama's servers, and Playgama and its advertising partners may use cookies and device information inside the game, show ads, or offer optional purchases.</li>
         <li>That processing is governed by Playgama's policies. Mallow does not collect any personal information through these games.</li>
@@ -314,7 +314,7 @@ def main():
                            [f'  <url><loc>https://playmallow.com{gurl(g["id"], l)}</loc><lastmod>{TODAY}</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>' for g in live_games() for l in LANGS]),
                  LIVE, '</urlset>')
     toggle_block('llms.txt', '<!--arcade-->', '<!--/arcade-->',
-                 '- [쉬어가는 게임](https://playmallow.com/arcade/): 말로우가 고른 외부 웹게임 목록(Playgama 제공) — 게임마다 따로 된 페이지에 직접 쓴 소개·게임방법·게임TIP, 플레이 버튼을 눌러야 열림\n',
+                 '- [말로우 아케이드](https://playmallow.com/arcade/): 말로우가 고른 외부 웹게임 목록(Playgama 제공) — 게임마다 따로 된 페이지에 직접 쓴 소개·게임방법·게임TIP, 플레이 버튼을 눌러야 열림\n',
                  LIVE, '## 사이트 정보')
     toggle_block('privacy/index.html', '    <!--pg-ko-->', '    <!--/pg-ko-->', PRIV_KO, LIVE, '    <section>\n      <h2>5. 쿠키 거부 방법</h2>')
     toggle_block('privacy/index.html', '    <!--pg-en-->', '    <!--/pg-en-->', PRIV_EN, LIVE, '    <section>\n      <h2>5. How to Refuse Cookies</h2>')

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""쉬어가는 게임 2차 추가분(2026-11-15, 사용자가 tools/playgama/picker.py 화면에서 고른 24개) — 말로우가 직접 쓴 원문.
+"""말로우 아케이드 2차 추가분(2026-11-15, 사용자가 tools/playgama/picker.py 화면에서 고른 24개) — 말로우가 직접 쓴 원문.
 Playgama 소개 문구를 옮기지 않는다. 확인할 수 없는 세부(레벨 수·등장 인물 등)는 쓰지 않는다.
 slug = Playgama 주소 이름, thumb = 썸네일 주소 → assets/playgama-config.js 에 들어간다(tools/playgama/add_more.py)."""
 

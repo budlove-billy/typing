@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""쉬어가는 게임(/arcade/) 문구 — 말로우가 직접 쓴 원문(ko·en·th). Playgama 소개 문구는 그대로 쓰지 않는다(중복 콘텐츠 방지).
+"""말로우 아케이드(/arcade/) 문구 — 말로우가 직접 쓴 원문(ko·en·th). Playgama 소개 문구는 그대로 쓰지 않는다(중복 콘텐츠 방지).
 게임 순서·선정 이유: docs/playgama-plan.md 14장. 게임을 빼거나 넣으면 assets/playgama-config.js와 함께 고친다."""
 
 PAGE = {
   'ko': {
-    'title': '쉬어가는 게임 — 말로우가 고른 가벼운 웹게임 {n}가지 | Mallow',
+    'title': '말로우 아케이드 — 엄선한 무료 웹게임 {n}가지 | Mallow',
     'desc': '두뇌게임 사이사이 머리를 식히기 좋은 웹게임 {n}가지. 퍼즐·숨은그림찾기·축구·디펜스·경영·꾸미기까지 분류별로 골라 설치 없이 바로.',
-    'h1': '쉬어가는 게임', 'tag': '말로우가 고른 가벼운 웹게임 {n}가지',
+    'h1': '말로우 아케이드', 'tag': '말로우가 고른 가벼운 웹게임 {n}가지',
     'intro': [
       '두뇌게임을 몇 판 하고 나면 머리를 조금 식히고 싶을 때가 있죠. 이곳에는 그럴 때 하기 좋은 웹게임을 모았습니다. 설치나 가입 없이 버튼만 누르면 바로 열립니다.',
       '고른 기준은 세 가지예요. 한 판이 3~10분 안에 끝날 것, 말을 몰라도 그림만 보고 할 수 있을 것, 가족이 같이 해도 괜찮은 내용일 것. 잔인하거나 무서운 게임, 도박처럼 보이는 게임은 넣지 않았습니다. 이용자 평가가 높고 휴대폰에서도 잘 돌아가는지 직접 띄워 보고 골랐습니다.',
@@ -14,7 +14,7 @@ PAGE = {
     'notice': '이 게임들은 말로우가 만든 게임이 아니라 외부 게임 플랫폼 Playgama에서 제공합니다. 게임 안에 광고가 나오거나 아이템 구매 화면이 있을 수 있어요. 여기서 한 게임은 말로우 기록·미션·연속 기록에 포함되지 않습니다.',
     'play': '▶ 플레이', 'how': '게임방법', 'tips': '게임TIP', 'for': '이런 분께', 'mins': '한 판 약 {m}분',
     'ours': '말로우에서 비슷한 게임', 'off_h': '지금은 준비 중이에요',
-    'off_p': '쉬어가는 게임을 정리하고 있어요. 그동안 말로우 두뇌게임을 즐겨 보세요.', 'off_btn': '말로우 두뇌게임 하러 가기',
+    'off_p': '말로우 아케이드을 정리하고 있어요. 그동안 말로우 두뇌게임을 즐겨 보세요.', 'off_btn': '말로우 두뇌게임 하러 가기',
     'faq_h': '자주 묻는 질문',
     'faq': [
       ('무료인가요?', '네, 모두 무료로 할 수 있어요. 게임 안에 광고가 나오거나 선택해서 사는 아이템이 있을 수 있습니다.'),
@@ -25,9 +25,9 @@ PAGE = {
     'back': '← 말로우 두뇌게임으로',
   },
   'en': {
-    'title': 'Take a Break — {n} light web games picked by Mallow | Mallow',
+    'title': 'Mallow Arcade — {n} free web games, hand-picked | Mallow',
     'desc': '{n} relaxing web games to play between brain games — puzzles, hidden objects, soccer, tower defense, tycoon and dress-up, sorted by category. No install.',
-    'h1': 'Take a Break', 'tag': '{n} light web games picked by Mallow',
+    'h1': 'Mallow Arcade', 'tag': '{n} light web games picked by Mallow',
     'intro': [
       'After a few brain games it can be nice to let your mind rest. This page collects games that are good for exactly that. No install, no sign-up — just press play.',
       'We picked them with three rules: a round takes 3–10 minutes, you can play from the pictures without reading, and the content is fine for families. No gory or scary games and nothing that looks like gambling. Each one is well rated by players, and we opened every game on a phone before adding it.',
@@ -46,9 +46,9 @@ PAGE = {
     'back': '← Back to Mallow brain games',
   },
   'th': {
-    'title': 'เกมพักสมอง — {n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา | Mallow',
+    'title': 'มาโลว์อาร์เคด — {n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา | Mallow',
     'desc': 'เกมเว็บ {n} เกมไว้พักสมองระหว่างเล่นเกมฝึกสมอง ทั้งพัซเซิล หาของที่ซ่อน ฟุตบอล ป้องกันฐาน บริหาร และแต่งตัว เลือกตามหมวด เล่นได้ทันทีไม่ต้องติดตั้ง',
-    'h1': 'เกมพักสมอง', 'tag': '{n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา',
+    'h1': 'มาโลว์อาร์เคด', 'tag': '{n} เกมเว็บสบาย ๆ ที่ Mallow คัดมา',
     'intro': [
       'เล่นเกมฝึกสมองไปหลายตาแล้ว บางทีก็อยากพักสมองสักหน่อย หน้านี้รวมเกมที่เหมาะกับช่วงเวลาแบบนั้น ไม่ต้องติดตั้ง ไม่ต้องสมัคร แค่กดเล่น',
       'เราคัดด้วยหลัก 3 ข้อ: เล่นจบตาละ 3–10 นาที ดูจากภาพก็เล่นได้ไม่ต้องอ่าน และเนื้อหาเหมาะกับทุกคนในครอบครัว ไม่มีเกมโหดร้าย น่ากลัว หรือคล้ายการพนัน ทุกเกมได้คะแนนจากผู้เล่นสูง และเราลองเปิดบนมือถือก่อนนำมาใส่',
@@ -56,7 +56,7 @@ PAGE = {
     'notice': 'เกมเหล่านี้ไม่ได้สร้างโดย Mallow แต่ให้บริการโดยแพลตฟอร์มเกมภายนอก Playgama อาจมีโฆษณาหรือการซื้อไอเท็มในเกม เกมที่เล่นที่นี่จะไม่นับรวมในสถิติ ภารกิจ หรือการเล่นต่อเนื่องของ Mallow',
     'play': '▶ เล่น', 'how': 'วิธีเล่น', 'tips': 'เคล็ดลับ', 'for': 'เหมาะกับ', 'mins': 'ตาละประมาณ {m} นาที',
     'ours': 'เกมคล้ายกันใน Mallow', 'off_h': 'กำลังเตรียมหน้านี้',
-    'off_p': 'เรากำลังจัดเตรียมเกมพักสมอง ระหว่างนี้ลองเล่นเกมฝึกสมองของ Mallow ก่อนนะ', 'off_btn': 'ไปเล่นเกมฝึกสมองของ Mallow',
+    'off_p': 'เรากำลังจัดเตรียมมาโลว์อาร์เคด ระหว่างนี้ลองเล่นเกมฝึกสมองของ Mallow ก่อนนะ', 'off_btn': 'ไปเล่นเกมฝึกสมองของ Mallow',
     'faq_h': 'คำถามที่พบบ่อย',
     'faq': [
       ('เล่นฟรีไหม?', 'ฟรีทุกเกม บางเกมมีโฆษณาหรือไอเท็มให้ซื้อได้ตามต้องการ'),
