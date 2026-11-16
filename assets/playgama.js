@@ -104,7 +104,7 @@
     var o = { card: card, stage: stage, id: id, t0: Date.now(), timer: 0 };
     f.addEventListener('load', function(){ if (open !== o) return; clearTimeout(o.timer); wait.remove(); track('pg_iframe_load', { game: id, ms: Date.now() - o.t0 }); });
     f.addEventListener('error', function(){ if (open === o) fallback(o, 'error'); });
-    var out = document.createElement('button'); out.type = 'button'; out.className = 'pg-fs-out'; out.textContent = T.exitFull;
+    var out = document.createElement('button'); out.type = 'button'; out.className = 'pg-fs-out'; out.textContent = '✕'; out.setAttribute('aria-label', T.exitFull); out.title = T.exitFull;  // 게임 메뉴(위쪽 양 끝)를 가리지 않게 위 가운데 작은 ✕만
     out.onclick = function(){ exitFull(wrap); };
     fs.onclick = function(){ enterFull(wrap); track('pg_fullscreen', { game: id }); };
     wrap.appendChild(f); wrap.appendChild(out); stage.appendChild(wrap);
